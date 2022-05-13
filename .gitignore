@@ -29,3 +29,5 @@ src/extras/authentication/vendor/
 src/extras/authentication/composer.lock
 
 src/extras/authentication/settings.php
+
+composer.lock
