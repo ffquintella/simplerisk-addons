@@ -7,7 +7,7 @@ require_once "../../includes/authenticate.php";
 require_once "settings.php";
 
 
-$needsAuth = empty($_SESSION['samlUserdata']);
+$needsAuth = empty($_SESSION['samlUsername'] );
 
 if ($needsAuth) {
     
@@ -39,8 +39,15 @@ if ($needsAuth) {
     if ($needsAuth) {
         $auth->login();
     }
+}else{
+
+    if (is_valid_saml_user($_SESSION['samlUsername'] )){
+        set_user_permissions($_SESSION['samlUsername'] );
+        grant_access();
+    }
+
+    Redirect("/reports/index.php", false);
 }
 
-Redirect("/reports/index.php", false);
 
-//var_dump($auth);
+

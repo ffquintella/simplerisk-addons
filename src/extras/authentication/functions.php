@@ -29,7 +29,7 @@ function is_valid_saml_user($user){
     if($user != $_SESSION['samlUsername'] ) return false;
 
     $type = get_user_type($user);
-    if($type == "SAML") return true;
+    if($type == "saml") return true;
 
     return false;
 }
