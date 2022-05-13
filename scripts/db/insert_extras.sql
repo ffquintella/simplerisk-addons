@@ -1,0 +1,1 @@
+INSERT into settings VALUES('custom_auth' , 'true');
