@@ -1,0 +1,1 @@
+openssl req -nodes -x509 -newkey rsa:4096 -keyout ../../src/extras/authentication/vendor/onelogin/php-saml/certs/sp.key -out ../../src/extras/authentication/vendor/onelogin/php-saml/certs/sp.crt -sha256 -days 365
