@@ -16,11 +16,22 @@
         <mkdir dir="${simpleRiskInstallation}/extras/authentication" />
     </target>
 
+    <!-- ============================================  -->
+    <!-- Target: build                                 -->
+    <!-- ============================================  -->
+    <target name="build">
+        <composer command="install" composer="/usr/local/bin/composer">
+        <arg value="--working-dir=./src/extras/authentication"/>
+        <arg value="--no-dev"/>
+        <arg value="--no-interaction"/>
+        </composer>
+    </target>
+
 
     <!-- ============================================  -->
     <!-- (DEFAULT)  Target: dist                       -->
     <!-- ============================================  -->
-    <target name="dist" depends="prepare">
+    <target name="dist" depends="build">
         <echo msg="Coping files..." />
         <copy todir="${simpleRiskInstallation}/extras/authentication"
             overwrite="true" includeemptydirs="true">
