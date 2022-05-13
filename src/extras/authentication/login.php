@@ -11,9 +11,6 @@ session_start();
 $needsAuth = empty($_SESSION['samlUserdata']);
 
 if ($needsAuth) {
-    // put SAML settings into an array to avoid placing files in the
-    // composer vendor/ directories 
-    $samlsettings = array(/*...config goes here...*/);
     
     $auth = new \OneLogin\Saml2\Auth($settings);
 
