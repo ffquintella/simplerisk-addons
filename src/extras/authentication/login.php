@@ -1,13 +1,12 @@
 <?php
 require_once "functions.php";
+require_once "../../includes/authenticate.php";
 
 //define("TOOLKIT_PATH", 'vendor/onelogin/php-saml/');
 //require_once('vendor/onelogin/php-saml/_toolkit_loader.php');
 require_once "settings.php";
 
-//$auth = new \OneLogin\Saml2\Auth($settings);
 
-session_start();
 $needsAuth = empty($_SESSION['samlUserdata']);
 
 if ($needsAuth) {
@@ -21,6 +20,19 @@ if ($needsAuth) {
             // user has authenticated successfully
             $needsAuth = false;
             $_SESSION['samlUserdata'] = $auth->getAttributes();
+
+            $userName = $auth->getNameId();
+            $_SESSION['samlUsername'] = $userName;
+            
+            if (is_valid_saml_user($userName)){
+                set_user_permissions($userName);
+                grant_access();
+            }else{
+                Redirect("/index.php", false);
+            }
+
+
+
         }
     }
 
@@ -29,6 +41,6 @@ if ($needsAuth) {
     }
 }
 
-
+Redirect("/reports/index.php", false);
 
 //var_dump($auth);

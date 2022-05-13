@@ -21,11 +21,16 @@ function multi_factor_authentication_options($type)
 }
 
 function is_valid_saml_user($user){
-    $needsAuth = empty($_SESSION['samlUserdata']);
-
+    $needsAuth = empty($_SESSION['samlUsername']);
     if ($needsAuth) {
         Redirect('extras/authentication/login.php', false);
     }
+
+    if($user != $_SESSION['samlUsername'] ) return false;
+
+    $type = get_user_type($user);
+    if($type == "SAML") return true;
+
     return false;
 }
 
