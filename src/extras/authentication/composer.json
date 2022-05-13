@@ -1,5 +1,8 @@
 {
     "require": {
         "onelogin/php-saml": "^4.0"
+    },
+    "require": {
+        "monolog/monolog": "^3.0"
     }
 }
