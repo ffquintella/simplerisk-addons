@@ -1,16 +1,12 @@
 <?php
-require_once "vendor/autoload.php";
+require_once __DIR__."/vendor/autoload.php";
+require_once __DIR__.'/vendor/analog/analog/lib/Analog.php';
 
-use Monolog\Level;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+use Analog\Analog;
 
-// create a log channel
-$log = new Logger('name');
-$log->pushHandler(new StreamHandler('/var/log/apache2/simplerisk-addons.log', Level::Info));
+Analog::handler (Analog\Handler\Stderr::init ());
 
-// add records to the log
-$log->info('Enabling SimpleRiskAddons');
+Analog::log ('TESTE LOG');
 
 // Check if the user has multi factor authentication
 function enabled_auth($user){

@@ -2,7 +2,8 @@
 
 <project name="simplerisk-addons" default="dist">
 
-    <input propertyname="simpleRiskInstallation">Enter Simple Risk Installation dir:</input>
+    <input propertyname="simpleRiskInstallation"
+    defaultValue="../../www/simplerisk/"> Enter Simple Risk Installation dir:</input>
 
     <echo>Installing addons to: ${simpleRiskInstallation}</echo>
 
