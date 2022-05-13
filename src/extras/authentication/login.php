@@ -1,4 +1,8 @@
 <?php
 require_once "vendor/autoload.php";
+require_once "settings.php";
 
-phpinfo();
+$auth = new \OneLogin\Saml2\Auth($settings);
+
+
+var_dump($auth);
