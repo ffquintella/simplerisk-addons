@@ -13,3 +13,9 @@ Analog::log ('SimpleRisk Addons Activated', Analog::INFO);
 function enabled_auth($user){
     return 1;
 }
+
+// We do not implement MFA here it's on charge of the SAML
+function multi_factor_authentication_options($type)
+{
+    return;
+}
