@@ -74,9 +74,15 @@ global $escaper, $lang;
         <td>Certificate Fingerprint:</td> <td><input name="custom_auth_ip_cert_fingerprint" type="text" maxlength="50" size="50" value="<?php echo isset($custom_auth_ip_cert_fingerprint) ? $escaper->escapeHtml($custom_auth_ip_cert_fingerprint) : "" ?>" /></td>
         </tr>
         <tr>
-        <td>Certificate Fingerprint Algorithm:</td> <td><input name="custom_auth_ip_cert_fingerprint_algorithm" type="text" maxlength="50" size="50" value="<?php echo isset($custom_auth_ip_cert_fingerprint_algorithm) ? $escaper->escapeHtml($custom_auth_ip_cert_fingerprint_algorithm) : "" ?>" /></td>
+        <td>Certificate Fingerprint Algorithm:</td> <td>
+            <select name="custom_auth_ip_cert_fingerprint_algorithm" id="custom_auth_ip_cert_fingerprint_algorithm">
+                <option value="sha1" <?php echo isset($custom_auth_ip_cert_fingerprint_algorithm) ? $custom_auth_ip_cert_fingerprint_algorithm == "sha1" ? $escaper->escapeHtml('selected') : "" : "" ?>>SHA1</option>
+                <option value="sha256" <?php echo isset($custom_auth_ip_cert_fingerprint_algorithm) ? $custom_auth_ip_cert_fingerprint_algorithm == "sha256" ? $escaper->escapeHtml('selected') : "" : ""?>>SHA256</option>
+                <option value="sha384" <?php echo isset($custom_auth_ip_cert_fingerprint_algorithm) ? $custom_auth_ip_cert_fingerprint_algorithm == "sha384" ? $escaper->escapeHtml('selected') : "" : ""?>>SHA384</option>
+                <option value="sha512" <?php echo isset($custom_auth_ip_cert_fingerprint_algorithm) ? $custom_auth_ip_cert_fingerprint_algorithm == "sha512" ? $escaper->escapeHtml('selected') : "" : ""?>>SHA512</option>
+            </select>
+        </td>
         </tr>
-        
         </table>
         
         <input type="submit" value="<?php echo $escaper->escapeHtml($lang['Update']); ?>" name="update_saml" />
