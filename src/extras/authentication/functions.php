@@ -47,3 +47,29 @@ function Redirect($url, $permanent = false)
     exit();
 }
 
+function enable_authentication_extra(){
+    // Open the database connection
+    $db = db_open();
+
+    // Store the file in the database
+    $stmt = $db->prepare("UPDATE settings SET VALUE='true' WHERE NAME='custom_auth';");
+    $stmt->execute();
+
+    // Close the database connection
+    db_close($db);
+    return;
+}
+
+function disable_authentication_extra(){
+        // Open the database connection
+        $db = db_open();
+
+        // Store the file in the database
+        $stmt = $db->prepare("UPDATE settings SET VALUE='false' WHERE NAME='custom_auth';");
+        $stmt->execute();
+    
+        // Close the database connection
+        db_close($db);
+    return;
+}
+
