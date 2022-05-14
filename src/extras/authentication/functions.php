@@ -61,15 +61,45 @@ function enable_authentication_extra(){
 }
 
 function disable_authentication_extra(){
-        // Open the database connection
-        $db = db_open();
+    // Open the database connection
+    $db = db_open();
 
-        // Store the file in the database
-        $stmt = $db->prepare("UPDATE settings SET VALUE='false' WHERE NAME='custom_auth';");
-        $stmt->execute();
-    
-        // Close the database connection
-        db_close($db);
+    // Store the file in the database
+    $stmt = $db->prepare("UPDATE settings SET VALUE='false' WHERE NAME='custom_auth';");
+    $stmt->execute();
+
+    // Close the database connection
+    db_close($db);
+    return;
+}
+
+function update_authentication_config(){
+    // Open the database connection
+    $db = db_open();
+
+
+    if(!empty($_POST['custom_auth_sp_entity_id'])){
+        if (!empty(get_setting('custom_auth_sp_entity_id'))){
+            // Update the value in the database
+            $stmt = $db->prepare("UPDATE settings SET VALUE=:custom_auth_sp_entity_id WHERE NAME='custom_auth_sp_entity_id';");
+            
+            $stmt->bindParam(":custom_auth_sp_entity_id", $_POST['custom_auth_sp_entity_id'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }else{
+            // Store the value in the database
+            $stmt = $db->prepare("INSERT INTO settings VALUES('custom_auth_sp_entity_id',:custom_auth_sp_entity_id);");
+            
+            $stmt->bindParam(":custom_auth_sp_entity_id", $_POST['custom_auth_sp_entity_id'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }
+    }
+
+
+
+    // Close the database connection
+    db_close($db);
     return;
 }
 
