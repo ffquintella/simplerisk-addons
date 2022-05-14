@@ -150,6 +150,94 @@ function update_authentication_config(){
         }
     }
 
+    if(!empty($_POST['custom_auth_ip_single_signOn_service_url'])){
+        if (!empty(get_setting('custom_auth_ip_single_signOn_service_url'))){
+            // Update the value in the database
+            $stmt = $db->prepare("UPDATE settings SET VALUE=:custom_auth_ip_single_signOn_service_url WHERE NAME='custom_auth_ip_single_signOn_service_url';");
+            
+            $stmt->bindParam(":custom_auth_ip_single_signOn_service_url", $_POST['custom_auth_ip_single_signOn_service_url'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }else{
+            // Store the value in the database
+            $stmt = $db->prepare("INSERT INTO settings VALUES('custom_auth_ip_single_signOn_service_url',:custom_auth_ip_single_signOn_service_url);");
+            
+            $stmt->bindParam(":custom_auth_ip_single_signOn_service_url", $_POST['custom_auth_ip_single_signOn_service_url'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }
+    }
+
+    if(!empty($_POST['custom_auth_ip_single_logout_service_url'])){
+        if (!empty(get_setting('custom_auth_ip_single_logout_service_url'))){
+            // Update the value in the database
+            $stmt = $db->prepare("UPDATE settings SET VALUE=:custom_auth_ip_single_logout_service_url WHERE NAME='custom_auth_ip_single_logout_service_url';");
+            
+            $stmt->bindParam(":custom_auth_ip_single_logout_service_url", $_POST['custom_auth_ip_single_logout_service_url'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }else{
+            // Store the value in the database
+            $stmt = $db->prepare("INSERT INTO settings VALUES('custom_auth_ip_single_logout_service_url',:custom_auth_ip_single_logout_service_url);");
+            
+            $stmt->bindParam(":custom_auth_ip_single_logout_service_url", $_POST['custom_auth_ip_single_logout_service_url'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }
+    }
+
+    if(!empty($_POST['custom_auth_ip_single_logout_service_response_url'])){
+        if (!empty(get_setting('custom_auth_ip_single_logout_service_response_url'))){
+            // Update the value in the database
+            $stmt = $db->prepare("UPDATE settings SET VALUE=:custom_auth_ip_single_logout_service_response_url WHERE NAME='custom_auth_ip_single_logout_service_response_url';");
+            
+            $stmt->bindParam(":custom_auth_ip_single_logout_service_response_url", $_POST['custom_auth_ip_single_logout_service_response_url'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }else{
+            // Store the value in the database
+            $stmt = $db->prepare("INSERT INTO settings VALUES('custom_auth_ip_single_logout_service_response_url',:custom_auth_ip_single_logout_service_response_url);");
+            
+            $stmt->bindParam(":custom_auth_ip_single_logout_service_response_url", $_POST['custom_auth_ip_single_logout_service_response_url'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }
+    }
+    if(!empty($_POST['custom_auth_ip_cert_fingerprint'])){
+        if (!empty(get_setting('custom_auth_ip_cert_fingerprint'))){
+            // Update the value in the database
+            $stmt = $db->prepare("UPDATE settings SET VALUE=:custom_auth_ip_cert_fingerprint WHERE NAME='custom_auth_ip_cert_fingerprint';");
+            
+            $stmt->bindParam(":custom_auth_ip_cert_fingerprint", $_POST['custom_auth_ip_cert_fingerprint'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }else{
+            // Store the value in the database
+            $stmt = $db->prepare("INSERT INTO settings VALUES('custom_auth_ip_cert_fingerprint',:custom_auth_ip_cert_fingerprint);");
+            
+            $stmt->bindParam(":custom_auth_ip_cert_fingerprint", $_POST['custom_auth_ip_cert_fingerprint'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }
+    }
+    if(!empty($_POST['custom_auth_ip_cert_fingerprint_algorithm'])){
+        if (!empty(get_setting('custom_auth_ip_cert_fingerprint_algorithm'))){
+            // Update the value in the database
+            $stmt = $db->prepare("UPDATE settings SET VALUE=:custom_auth_ip_cert_fingerprint_algorithm WHERE NAME='custom_auth_ip_cert_fingerprint_algorithm';");
+            
+            $stmt->bindParam(":custom_auth_ip_cert_fingerprint_algorithm", $_POST['custom_auth_ip_cert_fingerprint_algorithm'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }else{
+            // Store the value in the database
+            $stmt = $db->prepare("INSERT INTO settings VALUES('custom_auth_ip_cert_fingerprint_algorithm',:custom_auth_ip_cert_fingerprint_algorithm);");
+            
+            $stmt->bindParam(":custom_auth_ip_cert_fingerprint_algorithm", $_POST['custom_auth_ip_cert_fingerprint_algorithm'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }
+    }
+
 
     // Close the database connection
     db_close($db);
