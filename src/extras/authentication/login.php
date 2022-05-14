@@ -6,6 +6,23 @@ require_once "../../includes/authenticate.php";
 //require_once('vendor/onelogin/php-saml/_toolkit_loader.php');
 require_once "settings.php";
 
+if (!isset($_SESSION))
+{
+    // Session handler is database
+    if (USE_DATABASE_FOR_SESSIONS == "true")
+    {
+        session_set_save_handler('sess_open', 'sess_close', 'sess_read', 'sess_write', 'sess_destroy', 'sess_gc');
+    }
+
+    // Start session
+    session_set_cookie_params(0, '/', '', isset($_SERVER["HTTPS"]), true);
+
+    sess_gc(1440);
+    session_name('SimpleRisk');
+    session_start();
+}
+
+
 
 $needsAuth = empty($_SESSION['samlUsername'] );
 
@@ -41,7 +58,7 @@ if ($needsAuth) {
     }
 }else{
 
-    if (is_valid_saml_user($_SESSION['samlUsername'] )){
+    if (is_valid_saml_user($_SESSION['samlUsername'])){
         set_user_permissions($_SESSION['samlUsername'] );
         grant_access();
     }

@@ -3,7 +3,6 @@ require_once __DIR__."/vendor/autoload.php";
 require_once __DIR__.'/vendor/analog/analog/lib/Analog.php';
 
 use Analog\Analog;
-session_start();
 
 Analog::handler (\Analog\Handler\Syslog::init ('SR-ADDONS', 'user'));
 
