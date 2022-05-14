@@ -1,6 +1,13 @@
 <?php
 require_once __DIR__."/vendor/autoload.php";
 require_once __DIR__.'/vendor/analog/analog/lib/Analog.php';
+require_once __DIR__.'/../../includes/functions.php';
+
+// Include the SimpleRisk language file
+require_once(language_file());
+// Include Laminas Escaper for HTML Output Encoding
+$escaper = new Laminas\Escaper\Escaper('utf-8');
+
 
 use Analog\Analog;
 
