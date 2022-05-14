@@ -96,6 +96,59 @@ function update_authentication_config(){
         }
     }
 
+    if(!empty($_POST['custom_auth_sp_assertion_consumer_service_url'])){
+        if (!empty(get_setting('custom_auth_sp_assertion_consumer_service_url'))){
+            // Update the value in the database
+            $stmt = $db->prepare("UPDATE settings SET VALUE=:custom_auth_sp_assertion_consumer_service_url WHERE NAME='custom_auth_sp_assertion_consumer_service_url';");
+            
+            $stmt->bindParam(":custom_auth_sp_assertion_consumer_service_url", $_POST['custom_auth_sp_assertion_consumer_service_url'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }else{
+            // Store the value in the database
+            $stmt = $db->prepare("INSERT INTO settings VALUES('custom_auth_sp_assertion_consumer_service_url',:custom_auth_sp_assertion_consumer_service_url);");
+            
+            $stmt->bindParam(":custom_auth_sp_assertion_consumer_service_url", $_POST['custom_auth_sp_assertion_consumer_service_url'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }
+    }
+
+    if(!empty($_POST['custom_auth_sp_single_logout_service_url'])){
+        if (!empty(get_setting('custom_auth_sp_single_logout_service_url'))){
+            // Update the value in the database
+            $stmt = $db->prepare("UPDATE settings SET VALUE=:custom_auth_sp_single_logout_service_url WHERE NAME='custom_auth_sp_single_logout_service_url';");
+            
+            $stmt->bindParam(":custom_auth_sp_single_logout_service_url", $_POST['custom_auth_sp_single_logout_service_url'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }else{
+            // Store the value in the database
+            $stmt = $db->prepare("INSERT INTO settings VALUES('custom_auth_sp_single_logout_service_url',:custom_auth_sp_single_logout_service_url);");
+            
+            $stmt->bindParam(":custom_auth_sp_single_logout_service_url", $_POST['custom_auth_sp_single_logout_service_url'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }
+    }
+
+    if(!empty($_POST['custom_auth_ip_entity_id'])){
+        if (!empty(get_setting('custom_auth_ip_entity_id'))){
+            // Update the value in the database
+            $stmt = $db->prepare("UPDATE settings SET VALUE=:custom_auth_ip_entity_id WHERE NAME='custom_auth_ip_entity_id';");
+            
+            $stmt->bindParam(":custom_auth_ip_entity_id", $_POST['custom_auth_ip_entity_id'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }else{
+            // Store the value in the database
+            $stmt = $db->prepare("INSERT INTO settings VALUES('custom_auth_ip_entity_id',:custom_auth_ip_entity_id);");
+            
+            $stmt->bindParam(":custom_auth_ip_entity_id", $_POST['custom_auth_ip_entity_id'], PDO::PARAM_STR, 100);
+            
+            $stmt->execute();
+        }
+    }
 
 
     // Close the database connection
