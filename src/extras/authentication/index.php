@@ -26,10 +26,10 @@ if (!empty(get_setting('custom_auth_ip_single_logout_service_response_url'))){
     $custom_auth_ip_single_logout_service_response_url = get_setting('custom_auth_ip_single_logout_service_response_url');
 }
 if (!empty(get_setting('custom_auth_ip_cert_fingerprint'))){
-    $custom_auth_ip_single_logout_service_response_url = get_setting('custom_auth_ip_cert_fingerprint');
+    $custom_auth_ip_cert_fingerprint = get_setting('custom_auth_ip_cert_fingerprint');
 }
 if (!empty(get_setting('custom_auth_ip_cert_fingerprint_algorithm'))){
-    $custom_auth_ip_single_logout_service_response_url = get_setting('custom_auth_ip_cert_fingerprint_algorithm');
+    $custom_auth_ip_cert_fingerprint_algorithm = get_setting('custom_auth_ip_cert_fingerprint_algorithm');
 }
 
 global $escaper, $lang;
