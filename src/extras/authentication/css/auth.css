@@ -1,0 +1,10 @@
+tr.title td{
+    color: blue;
+    align-content: center;
+    text-align: center;
+}
+
+tr.sub_title td{
+    font-style: italic;
+    font-weight: bold;
+}
