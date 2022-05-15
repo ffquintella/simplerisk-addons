@@ -60,6 +60,7 @@ if ($needsAuth) {
             if (is_valid_saml_user($userName)){
                 set_user_permissions($userName);
                 grant_access();
+                Redirect("/reports/index.php", false);
             }else{
                 Redirect("/index.php", false);
             }
