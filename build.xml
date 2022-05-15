@@ -2,6 +2,11 @@
 
 <project name="simplerisk-addons" default="dist">
 
+    <property name="builddir" value="./build/" override="true" />
+    <property name="appdir" value="./build/app" override="true" />
+
+    <property name="version" value="20220306-001" override="true" />
+
     <input propertyname="simpleRiskInstallation"
     defaultValue="../../www/simplerisk/"> Enter Simple Risk Installation dir:</input>
 
@@ -18,9 +23,9 @@
     </target>
 
     <!-- ============================================  -->
-    <!-- Target: build                                 -->
+    <!-- Target: update                                 -->
     <!-- ============================================  -->
-    <target name="build">
+    <target name="update">
         <composer command="install" composer="/usr/local/bin/composer">
         <arg value="--working-dir=./src/extras/authentication"/>
         <arg value="--no-dev"/>
@@ -28,11 +33,23 @@
         </composer>
     </target>
 
+    <!-- ============================================  -->
+    <!-- Target: build                                 -->
+    <!-- ============================================  -->
+    <target name="build">
+        <delete dir="${builddir}" />
+        <mkdir dir="${builddir}" />
+        <mkdir dir="${appdir}" />
+        <httpget url="https://github.com/ffquintella/simplerisk/archive/refs/tags/${version}.tar.gz" 
+            dir="${appdir}" followRedirects="true" />
+
+    </target>
+
 
     <!-- ============================================  -->
     <!-- (DEFAULT)  Target: dist                       -->
     <!-- ============================================  -->
-    <target name="dist" depends="build">
+    <target name="dist" depends="update">
         <echo msg="Coping files..." />
         <copy todir="${simpleRiskInstallation}/extras/authentication"
             overwrite="true" includeemptydirs="true">
