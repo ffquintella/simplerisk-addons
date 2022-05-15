@@ -58,20 +58,20 @@ global $escaper, $lang;
         </td></tr>
         <tr>
         <tr>
-        <td>Entity ID:</td> <td><input name="custom_auth_ip_entity_id" type="text" maxlength="50" size="50" value="<?php echo isset($custom_auth_ip_entity_id) ? $escaper->escapeHtml($custom_auth_ip_entity_id) : "" ?>" /></td>
+        <td>Entity ID:</td> <td><input name="custom_auth_ip_entity_id" type="text" maxlength="100" size="50" value="<?php echo isset($custom_auth_ip_entity_id) ? $escaper->escapeHtml($custom_auth_ip_entity_id) : "" ?>" /></td>
         </tr>
         <tr>
         <tr>
-        <td>Single SignOn Service URL:</td> <td><input name="custom_auth_ip_single_signOn_service_url" type="text" maxlength="50" size="50" value="<?php echo isset($custom_auth_ip_single_signOn_service_url) ? $escaper->escapeHtml($custom_auth_ip_single_signOn_service_url) : "" ?>" /></td>
+        <td>Single SignOn Service URL:</td> <td><input name="custom_auth_ip_single_signOn_service_url" type="text" maxlength="100" size="50" value="<?php echo isset($custom_auth_ip_single_signOn_service_url) ? $escaper->escapeHtml($custom_auth_ip_single_signOn_service_url) : "" ?>" /></td>
         </tr>
         <tr>
-        <td>Single Logout Service URL:</td> <td><input name="custom_auth_ip_single_logout_service_url" type="text" maxlength="50" size="50" value="<?php echo isset($custom_auth_ip_single_logout_service_url) ? $escaper->escapeHtml($custom_auth_ip_single_logout_service_url) : "" ?>" /></td>
+        <td>Single Logout Service URL:</td> <td><input name="custom_auth_ip_single_logout_service_url" type="text" maxlength="100" size="50" value="<?php echo isset($custom_auth_ip_single_logout_service_url) ? $escaper->escapeHtml($custom_auth_ip_single_logout_service_url) : "" ?>" /></td>
         </tr>
         <tr>
-        <td>Single Logout Service Response URL:</td> <td><input name="custom_auth_ip_single_logout_service_response_url" type="text" maxlength="50" size="50" value="<?php echo isset($custom_auth_ip_single_logout_service_response_url) ? $escaper->escapeHtml($custom_auth_ip_single_logout_service_response_url) : "" ?>" /></td>
+        <td>Single Logout Service Response URL:</td> <td><input name="custom_auth_ip_single_logout_service_response_url" type="text" maxlength="100" size="50" value="<?php echo isset($custom_auth_ip_single_logout_service_response_url) ? $escaper->escapeHtml($custom_auth_ip_single_logout_service_response_url) : "" ?>" /></td>
         </tr>
         <tr>
-        <td>Certificate Fingerprint:</td> <td><input name="custom_auth_ip_cert_fingerprint" type="text" maxlength="50" size="50" value="<?php echo isset($custom_auth_ip_cert_fingerprint) ? $escaper->escapeHtml($custom_auth_ip_cert_fingerprint) : "" ?>" /></td>
+        <td>Certificate Fingerprint:</td> <td><input name="custom_auth_ip_cert_fingerprint" type="text" maxlength="100" size="50" value="<?php echo isset($custom_auth_ip_cert_fingerprint) ? $escaper->escapeHtml($custom_auth_ip_cert_fingerprint) : "" ?>" /></td>
         </tr>
         <tr>
         <td>Certificate Fingerprint Algorithm:</td> <td>
