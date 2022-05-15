@@ -27,6 +27,22 @@ if (!isset($_SESSION))
 $needsAuth = empty($_SESSION['samlUsername'] );
 
 if ($needsAuth) {
+
+    if(empty(get_setting('custom_auth_sp_entity_id'))) {
+        echo "SAML not configured";
+        return;
+    }
+
+    //Updating the variables we need
+    $settings['sp']['entityId'] = get_setting('custom_auth_sp_entity_id');
+    $settings['sp']['assertionConsumerService']['url'] = get_setting('custom_auth_sp_assertion_consumer_service_url');
+    $settings['sp']['singleLogoutService']['url'] = get_setting('custom_auth_sp_single_logout_service_url');
+    $settings['idp']['entityId'] = get_setting('custom_auth_ip_entity_id');
+    $settings['idp']['singleSignOnService']['url'] = get_setting('custom_auth_ip_single_signOn_service_url');
+    $settings['idp']['singleLogoutService']['url'] = get_setting('custom_auth_ip_single_logout_service_url');
+    $settings['idp']['singleLogoutService']['responseUrl'] = get_setting('custom_auth_ip_single_logout_service_response_url');
+    $settings['idp']['certFingerprint'] = get_setting('custom_auth_ip_cert_fingerprint');
+    $settings['idp']['certFingerprintAlgorithm'] = get_setting('custom_auth_ip_cert_fingerprint_algorithm');
     
     $auth = new \OneLogin\Saml2\Auth($settings);
 
