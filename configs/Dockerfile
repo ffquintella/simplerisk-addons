@@ -84,11 +84,11 @@ RUN echo %sudo  ALL=NOPASSWD: ALL >> /etc/sudoers && \
 #    curl -sL https://github.com/simplerisk/bundles/raw/master/simplerisk-20220401-001.tgz | tar xz -C /var/www
 
 WORKDIR /var/www/
-COPY app/simplerisk ./
+COPY app/simplerisk /var/www/simplerisk
 
 
 # Permissions
-RUN chown -R www-data: /var/www/simplerisk
+RUN chown -R www-data:www-data /var/www/simplerisk
 
 # Setting up cronjob
 RUN echo "* * * * * /usr/bin/php -f /var/www/simplerisk/cron/cron.php > /dev/null 2>&1" >> /etc/cron.d/backup-cron && \
