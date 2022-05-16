@@ -58,6 +58,17 @@
         <copy todir="${builddir}" file="scripts/docker/docker-test.sh" /> 
     </target>
 
+    <!-- ============================================  -->
+    <!-- Target: create-docker-image                   -->
+    <!-- ============================================  -->
+    <target name="create-docker-image" depends="build">
+        <!-- build docker image -->
+        <exec executable="docker" dir="${builddir}" passthru="true">
+            <arg value="build" />
+            <arg line="-t ffquintella/simplerisk-addons:${version} ."/>
+        </exec>
+    </target>
+
 
     <!-- ============================================  -->
     <!-- (DEFAULT)  Target: dist                       -->
