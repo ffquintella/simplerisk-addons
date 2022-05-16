@@ -3,6 +3,7 @@ FROM php:8.1-apache
 WORKDIR /var/www/html
 
 COPY app/simplerisk/ ./
+RUN chown -R www-data:www-data /var/www/html
 
 COPY sr-apache-site.conf /etc/apache2/sites-available/sr-apache-site.conf
 
