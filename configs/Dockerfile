@@ -1,5 +1,5 @@
 # Using Ubuntu kinetic image
-FROM ubuntu:kinetic
+FROM ubuntu:jammy
 
 # Maintained by SimpleRisk
 LABEL maintainer="ffquintella"
@@ -19,7 +19,7 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
                                                       mysql-server \
                                                       php-dev \
                                                       php-ldap \
-                                                      php7.4-mbstring \
+                                                      php-mbstring \
                                                       php-curl \
                                                       php-zip \
                                                       php-gd \
