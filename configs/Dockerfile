@@ -85,11 +85,12 @@ RUN echo %sudo  ALL=NOPASSWD: ALL >> /etc/sudoers && \
 
 WORKDIR /var/www/
 COPY app/simplerisk /var/www/simplerisk
-COPY mysql-initi.sql /scripts/db/mysql-initi.sql
+COPY mysql-init.sql /scripts/db/mysql-init.sql
 
 
 # Database PWD
-RUN mysql < /scripts/db/mysql-initi.sql
+#RUN mysql < /scripts/db/mysql-init.sql
+RUN mysqld_safe --init-file=/scripts/db/mysql-init.sql &
 
 # Permissions
 RUN chown -R www-data:www-data /var/www/simplerisk
