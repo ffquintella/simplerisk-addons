@@ -42,7 +42,10 @@
         <mkdir dir="${appdir}" />
         <httpget url="https://github.com/ffquintella/simplerisk/archive/refs/tags/${version}.tar.gz" 
             dir="${appdir}" followRedirects="true" />
-
+        <untar file="${appdir}/${version}.tar.gz" todir="${appdir}"/>
+        <delete file="${appdir}/${version}.tar.gz" />
+        <move file="${appdir}/simplerisk-${version}/simplerisk" todir="${appdir}" includeemptydirs="true"/>
+        <delete dir="${appdir}/simplerisk-${version}" />
     </target>
 
 
