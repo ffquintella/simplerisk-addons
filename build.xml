@@ -47,6 +47,7 @@
         <delete dir="${appdir}/simplerisk-${version}" />
         <copy todir="${builddir}" file="configs/Dockerfile" /> 
         <copy todir="${builddir}" file="configs/sr-apache-site.conf" /> 
+        <copy todir="${builddir}" file="scripts/docker/build.sh" /> 
     </target>
 
 
