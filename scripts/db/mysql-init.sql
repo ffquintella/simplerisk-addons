@@ -1,0 +1,6 @@
+USE mysql;
+
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'mysqlAdmin';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT PERMISSIONS;
+
+FLUSH PRIVILEGES;
