@@ -2,7 +2,7 @@ FROM php:8.1-apache
 
 WORKDIR /var/www/html
 
-COPY app/simplerisk/* ./
+COPY app/simplerisk/ ./
 
 COPY sr-apache-site.conf /etc/apache2/sites-available/sr-apache-site.conf
 
