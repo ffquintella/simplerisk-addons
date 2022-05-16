@@ -46,6 +46,8 @@
         <delete file="${appdir}/${version}.tar.gz" />
         <move file="${appdir}/simplerisk-${version}/simplerisk" todir="${appdir}" includeemptydirs="true"/>
         <delete dir="${appdir}/simplerisk-${version}" />
+        <copy todir="${builddir}" file="configs/Dockerfile" /> 
+        <copy todir="${builddir}" file="configs/sr-apache-site.conf" /> 
     </target>
 
 
