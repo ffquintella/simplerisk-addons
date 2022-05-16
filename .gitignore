@@ -33,3 +33,5 @@ src/extras/authentication/settings.php
 composer.lock
 
 build/app/
+
+build/

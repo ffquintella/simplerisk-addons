@@ -7,15 +7,14 @@
 
     <property name="version" value="20220306-001" override="true" />
 
-    <input propertyname="simpleRiskInstallation"
-    defaultValue="../../www/simplerisk/"> Enter Simple Risk Installation dir:</input>
-
+    <input propertyname="simpleRiskInstallation" defaultValue="../../www/simplerisk/"> Enter Simple Risk Installation dir:</input>
     <echo>Installing addons to: ${simpleRiskInstallation}</echo>
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
     <!-- ============================================  -->
     <target name="prepare">
+        
         <echo msg="Making directory ${simpleRiskInstallation}/extras" />
         <mkdir dir="${simpleRiskInstallation}/extras" />
         <echo msg="Making directory ${simpleRiskInstallation}/extras/authentication" />
