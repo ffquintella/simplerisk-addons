@@ -28,7 +28,7 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
                                                       chrony \
                                                       cron \
                                                       python-setuptools \
-                                                      vim-tiny \
+                                                      vim \
                                                       sendmail \
                                                       openssl \
                                                       ufw \
