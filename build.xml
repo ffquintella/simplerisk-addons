@@ -7,8 +7,7 @@
 
     <property name="version" value="20220401-001" override="true" />
 
-    <input propertyname="simpleRiskInstallation" defaultValue="../../www/simplerisk/"> Enter Simple Risk Installation dir:</input>
-    <echo>Installing addons to: ${simpleRiskInstallation}</echo>
+
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
@@ -33,9 +32,32 @@
     </target>
 
     <!-- ============================================  -->
+    <!-- Target: prepare-build                            -->
+    <!-- ============================================  -->
+    <target name="prepare-build">
+        
+        <composer command="install" composer="/usr/local/bin/composer">
+            <arg value="--working-dir=./src/extras/authentication"/>
+            <arg value="--no-dev"/>
+            <arg value="--no-interaction"/>
+        </composer>
+
+        <composer command="update" composer="/usr/local/bin/composer">
+            <arg value="--working-dir=./src/extras/authentication"/>
+            <arg value="--no-dev"/>
+            <arg value="--no-interaction"/>
+        </composer>
+
+        <echo msg="Making directory ${appdir}/simplerisk/extras" />
+        <mkdir dir="${appdir}/simplerisk/extrass" />
+        <echo msg="Making directory ${appdir}/simplerisk/extras/authentication" />
+        <mkdir dir="${appdir}/simplerisk/extras/authentication" />
+    </target>
+
+    <!-- ============================================  -->
     <!-- Target: build                                 -->
     <!-- ============================================  -->
-    <target name="build">
+    <target name="build" depends="prepare-build">
         <delete dir="${builddir}" />
         <mkdir dir="${builddir}" />
         <mkdir dir="${appdir}" />
@@ -45,6 +67,13 @@
         <delete file="${appdir}/${version}.tar.gz" />
         <move file="${appdir}/simplerisk-${version}/simplerisk" todir="${appdir}" includeemptydirs="true"/>
         <delete dir="${appdir}/simplerisk-${version}" />
+
+        <copy todir="${appdir}/simplerisk/extras/authentication" overwrite="true" >
+            <fileset dir="./src/extras/authentication">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
         <copy todir="${builddir}" file="configs/Dockerfile" /> 
         <copy todir="${builddir}/common">
             <fileset dir="configs/common/">
@@ -75,6 +104,8 @@
     <!-- (DEFAULT)  Target: dist                       -->
     <!-- ============================================  -->
     <target name="dist" depends="update">
+        <input propertyname="simpleRiskInstallation" defaultValue="../../www/simplerisk/"> Enter Simple Risk Installation dir:</input>
+        <echo>Installing addons to: ${simpleRiskInstallation}</echo>
         <echo msg="Coping files..." />
         <copy todir="${simpleRiskInstallation}/extras/authentication"
             overwrite="true" includeemptydirs="true">
