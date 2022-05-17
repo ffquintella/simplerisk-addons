@@ -51,9 +51,19 @@ function enable_authentication_extra(){
     // Open the database connection
     $db = db_open();
 
-    // Store the file in the database
-    $stmt = $db->prepare("UPDATE settings SET VALUE='true' WHERE NAME='custom_auth';");
-    $stmt->execute();
+    if (!empty(get_setting('custom_auth'))){
+        // Store the file in the database
+        $stmt = $db->prepare("UPDATE settings SET VALUE='true' WHERE NAME='custom_auth';");
+        $stmt->execute();
+
+    }else{
+
+        // Store the value in the database
+        $stmt = $db->prepare("INSERT INTO settings VALUES('custom_auth','true');");
+        $stmt->execute();
+    }
+
+
 
     // Close the database connection
     db_close($db);
