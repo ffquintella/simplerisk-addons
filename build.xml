@@ -56,7 +56,7 @@
         <copy todir="${builddir}" file="configs/sr-apache-site.conf" /> 
         <copy todir="${builddir}" file="scripts/docker/build.sh" /> 
         <copy todir="${builddir}" file="scripts/docker/docker-test.sh" /> 
-        <copy todir="${builddir}" file="scripts/db/mysql-init.sql" /> 
+        <copy tofile="${builddir}/simplerisk.sql" file="scripts/db/simplerisk-${version}.sql" /> 
     </target>
 
     <!-- ============================================  -->

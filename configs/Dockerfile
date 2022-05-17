@@ -11,12 +11,13 @@ RUN mkdir -p /configurations /etc/apache2/ssl /passwords /var/{log,lib/mysql,www
 RUN dpkg-divert --local --rename /usr/bin/ischroot && \
     ln -sf /bin/true /usr/bin/ischroot && \
     apt-get update && \
+    apt-get upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                                                       php \
                                                       php-mysql \
                                                       php-json \
-                                                      mysql-client \
-                                                      mysql-server \
+                                                      mariadb-client\
+                                                      mariadb-server \
                                                       php-dev \
                                                       php-ldap \
                                                       php-mbstring \
@@ -31,6 +32,8 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
                                                       sendmail \
                                                       openssl \
                                                       ufw \
+                                                      sudo \
+                                                      fish \
                                                       supervisor && \
     rm -rf /var/lib/apt/lists
 
@@ -43,7 +46,7 @@ COPY common/supervisord.conf /etc/supervisord.conf
 RUN service supervisor restart
 
 # Configure MySQL
-RUN sed -i 's/\[mysqld\]/\[mysqld\]\nsql-mode="NO_ENGINE_SUBSTITUTION"/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+#RUN sed -i 's/\[mysqld\]/\[mysqld\]\nsql-mode="NO_ENGINE_SUBSTITUTION"/g' /etc/mysql/mysql.conf.d/mysqld.cnf
 
 # Configure Apache
 COPY common/foreground.sh /etc/apache2/foreground.sh
@@ -85,7 +88,7 @@ RUN echo %sudo  ALL=NOPASSWD: ALL >> /etc/sudoers && \
 
 WORKDIR /var/www/
 COPY app/simplerisk /var/www/simplerisk
-#COPY mysql-init.sql /scripts/db/mysql-init.sql
+COPY simplerisk.sql /scripts/db/simplerisk.sql
 
 
 # Database PWD
