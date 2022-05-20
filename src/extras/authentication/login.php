@@ -8,7 +8,7 @@ require_once "settings.php";
 
 Analog::handler (\Analog\Handler\File::init ("/var/log/apache2/simplerisk-saml.log"));
 
-Analog::log ('SAML authentication required', Analog::INFO);
+Analog::log ('SAML authentication flux initialized', Analog::DEBUG);
 
 if (!isset($_SESSION))
 {
@@ -31,7 +31,7 @@ if (!isset($_SESSION))
 $needsAuth = empty($_SESSION['samlUsername'] );
 
 if ($needsAuth) {
-
+    Analog::log ('Starting SAML request', Analog::DEBUG);
     if(empty(get_setting('custom_auth_sp_entity_id'))) {
         echo "SAML not configured";
         return;
@@ -60,17 +60,19 @@ if ($needsAuth) {
 
             $userName = $auth->getNameId();
             $_SESSION['samlUsername'] = $userName;
-            
+            Analog::log ('SAML authentication from user: '.$_SESSION['samlUsername'], Analog::INFO);
+
             if (is_valid_saml_user($userName)){
                 set_user_permissions($userName);
                 grant_access();
+                Analog::log ('SAML authentication OK', Analog::INFO);
                 Redirect("/reports/index.php", false);
             }else{
+                Analog::log ('SAML authentication Failed', Analog::INFO);
                 Redirect("/index.php", false);
             }
-
-
-
+        }else{
+            Analog::log ('SAML authentication error'.$errors, Analog::ERROR);
         }
     }
 
@@ -86,6 +88,4 @@ if ($needsAuth) {
 
     Redirect("/reports/index.php", false);
 }
-
-
 
