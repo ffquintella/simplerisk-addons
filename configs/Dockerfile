@@ -99,7 +99,7 @@ COPY simplerisk.sql /scripts/db/simplerisk.sql
 #RUN mysqld_safe --init-file=/scripts/db/mysql-init.sql &
 
 # Permissions
-RUN chown -R www-data:www-data /var/www/simplerisk
+RUN chown -R www-data:www-data /var/www/simplerisk && chown -R :www-data /var/log/apache2 && chmod g+rwx /var/log/apache2
 
 # Setting up cronjob
 RUN echo "* * * * * /usr/bin/php -f /var/www/simplerisk/cron/cron.php > /dev/null 2>&1" >> /etc/cron.d/backup-cron && \

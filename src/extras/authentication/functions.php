@@ -8,10 +8,13 @@ require_once(language_file());
 // Include Laminas Escaper for HTML Output Encoding
 $escaper = new Laminas\Escaper\Escaper('utf-8');
 
-
 use Analog\Analog;
 
-Analog::handler (\Analog\Handler\Syslog::init ('SR-ADDONS', 'user'));
+Analog::handler (\Analog\Handler\FirePHP::init ());
+
+// debug-level message
+//Analog::log (array ('A debug message', __FILE__, __LINE__), Analog::DEBUG);
+//Analog::handler (\Analog\Handler\Syslog::init ('SR-ADDONS', 'user'));
 
 Analog::log ('SimpleRisk Addons Activated', Analog::INFO);
 

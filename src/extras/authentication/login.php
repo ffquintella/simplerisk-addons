@@ -6,6 +6,10 @@ require_once "../../includes/authenticate.php";
 //require_once('vendor/onelogin/php-saml/_toolkit_loader.php');
 require_once "settings.php";
 
+Analog::handler (\Analog\Handler\File::init ("/var/log/apache2/simplerisk-saml.log"));
+
+Analog::log ('SAML authentication required', Analog::INFO);
+
 if (!isset($_SESSION))
 {
     // Session handler is database
