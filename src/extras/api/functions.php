@@ -27,6 +27,30 @@ function list_api_keys(){
 }
 
 
+function update_api_key($name, $value){
+    $db = db_open();
+
+    $stmt = $db->prepare("SELECT count(*) as count_values FROM  addons_api_keys WHERE name=:api_name ;");
+    $stmt->bindParam(":api_name", $name, PDO::PARAM_STR, 30);
+    $stmt->execute();
+    // Store the list in the array
+    $result = $stmt->fetch();
+
+    if($result["count_values"] > 0){
+        $stmt = $db->prepare("UPDATE addons_api_keys SET VALUE=:api_value WHERE NAME=:api_name;");
+        $stmt->bindParam(":api_name", $name, PDO::PARAM_STR, 30);
+        $stmt->bindParam(":api_value", $value, PDO::PARAM_STR, 50);
+        $stmt->execute(); 
+    }else{
+        $stmt = $db->prepare("INSERT INTO addons_api_keys(name, value, status) VALUES(:api_name,:api_value,'enabled');");
+        $stmt->bindParam(":api_name", $name, PDO::PARAM_STR, 30);
+        $stmt->bindParam(":api_value", $value, PDO::PARAM_STR, 50);
+        $stmt->execute(); 
+    }
+
+    db_close($db);
+}
+
 function enable_api_extra(){
     // Open the database connection
     $db = db_open();

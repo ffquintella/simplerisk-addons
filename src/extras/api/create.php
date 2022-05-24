@@ -48,6 +48,9 @@ if (is_authenticated())
         exit();    
     }
 
+    update_api_key($api_name, $api_value);
+
+
     header("Location: /admin/api.php");
     exit();
 
