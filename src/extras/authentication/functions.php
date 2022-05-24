@@ -16,7 +16,7 @@ Analog::handler (\Analog\Handler\FirePHP::init ());
 //Analog::log (array ('A debug message', __FILE__, __LINE__), Analog::DEBUG);
 //Analog::handler (\Analog\Handler\Syslog::init ('SR-ADDONS', 'user'));
 
-Analog::log ('SimpleRisk Addons Activated', Analog::INFO);
+Analog::log ('SimpleRisk Authentication Addon Activated', Analog::INFO);
 
 // Check if the user has multi factor authentication
 function enabled_auth($user){

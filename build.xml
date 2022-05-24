@@ -35,7 +35,19 @@
     <!-- Target: prepare-build                            -->
     <!-- ============================================  -->
     <target name="prepare-build">
-        
+
+        <composer command="install" composer="/usr/local/bin/composer">
+            <arg value="--working-dir=./src/extras/api"/>
+            <arg value="--no-dev"/>
+            <arg value="--no-interaction"/>
+        </composer>
+
+        <composer command="update" composer="/usr/local/bin/composer">
+            <arg value="--working-dir=./src/extras/api"/>
+            <arg value="--no-dev"/>
+            <arg value="--no-interaction"/>
+        </composer>
+
         <composer command="install" composer="/usr/local/bin/composer">
             <arg value="--working-dir=./src/extras/authentication"/>
             <arg value="--no-dev"/>
@@ -112,6 +124,12 @@
         <copy todir="${simpleRiskInstallation}/extras/authentication"
             overwrite="true" includeemptydirs="true">
             <fileset dir="./src/extras/authentication">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+        <copy todir="${simpleRiskInstallation}/extras/api"
+            overwrite="true" includeemptydirs="true">
+            <fileset dir="./src/extras/api">
                 <include name="**/*" />
             </fileset>
         </copy>

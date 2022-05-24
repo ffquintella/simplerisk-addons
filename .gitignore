@@ -35,3 +35,5 @@ composer.lock
 build/app/
 
 build/
+
+src/extras/api/vendor/
