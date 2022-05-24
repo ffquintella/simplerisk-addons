@@ -27,12 +27,14 @@ if($_SESSION["validation-error"] == true){
 
     <div class="sheader">API KEYS</div>
     <table>
-        <tr> <th> Name </th> <th> Value </th></tr>
+        <tr> <th> Name </th></tr>
 <?php
     $keys = list_api_keys();
 
     foreach($keys as $key){
-        echo "<tr><td>".$key["name"]."</td><td> disable delete </td></tr>";
+        if($key["status"] == 'enabled') $img = "on-button.png";
+        else $img = "off-button.png";
+        echo "<tr><td>".$key["name"]."</td> <td><img class='btimg' src='/extras/api/imgs/".$img."' /></td> <td> delete </td></tr>";
     }
 
 ?>

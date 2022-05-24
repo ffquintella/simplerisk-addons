@@ -17,7 +17,7 @@ Analog::log ('SimpleRisk API Addon Activated', Analog::INFO);
 
 function list_api_keys(){
     $db = db_open();
-    $stmt = $db->prepare("SELECT * FROM addons_api_keys WHERE status='enabled';");
+    $stmt = $db->prepare("SELECT * FROM addons_api_keys;");
     $stmt->execute();
 
     $result = $stmt->fetchAll();
