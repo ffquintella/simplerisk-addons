@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__."/vendor/autoload.php";
 require_once __DIR__.'/vendor/analog/analog/lib/Analog.php';
 require_once __DIR__.'/../../includes/functions.php';
 
@@ -18,6 +17,26 @@ Analog::log ('SimpleRisk API Addon Activated', Analog::INFO);
 function enable_api_extra(){
     // Open the database connection
     $db = db_open();
+
+
+    // Check if the apiKey table exists
+    $stmt = $db->prepare("SELECT count(*) as tables FROM information_schema.TABLES WHERE TABLE_NAME = 'addons_api_keys' AND TABLE_SCHEMA in (SELECT DATABASE());");
+    $stmt->execute();
+    // Store the list in the array
+    $result = $stmt->fetch();
+
+    Analog::log ('API Key database '.strval($result["tables"]), Analog::DEBUG);
+
+    if($result["tables"] == 0) {
+        $stmt = $db->prepare("CREATE TABLE addons_api_keys (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(30) NOT NULL,
+            value VARCHAR(50) NOT NULL,
+            creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            );");
+        $stmt->execute();
+        Analog::log ('Table addons_api_keys created', Analog::DEBUG);
+    }
 
     if (!empty(get_setting('api'))){
         // Store the file in the database
