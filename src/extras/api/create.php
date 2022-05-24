@@ -13,10 +13,16 @@ use Analog\Analog;
 
 Analog::handler (\Analog\Handler\FirePHP::init ());
 
-Analog::log ('SimpleRisk API Addon Activated', Analog::INFO);
 
 if (is_authenticated())
 {
+
+    // Add the session
+    $permissions = array(
+        "check_access" => true,
+        "check_admin" => true,
+    );
+    add_session_check($permissions);
 
     Analog::log ('Creating API Key', Analog::INFO);
 

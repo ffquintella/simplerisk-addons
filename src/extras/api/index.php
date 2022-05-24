@@ -32,10 +32,16 @@ if($_SESSION["validation-error"] == true){
     $keys = list_api_keys();
 
     foreach($keys as $key){
-        if($key["status"] == 'enabled') $img = "on-button.png";
-        else $img = "off-button.png";
+        if($key["status"] == 'enabled') {
+            $img = "on-button.png";
+            $action = "disable.php";
+        }
+        else {
+            $img = "off-button.png";
+            $action = "enable.php";
+        }
         echo "<tr><td>".$key["name"]."</td> 
-        <td> <a href='/extras/api/disable.php?id=".$key["id"]."'><img class='btimg' src='/extras/api/imgs/".$img."' /></a></td> 
+        <td> <a href='/extras/api/".$action."?id=".$key["id"]."'><img class='btimg' src='/extras/api/imgs/".$img."' /></a></td> 
         <td> <a href='/extras/api/delete.php?id=".$key["id"]."'><img class='btimg2' src='/extras/api/imgs/delete.png' /></a> </td></tr>";
     }
 

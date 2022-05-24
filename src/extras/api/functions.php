@@ -26,6 +26,44 @@ function list_api_keys(){
     return $result;
 }
 
+function disable_api_key($id){
+    Analog::log ('Disabling api with ID:'.$id, Analog::DEBUG);
+    $db = db_open();
+
+    $stmt = $db->prepare("SELECT count(*) as count_values FROM  addons_api_keys WHERE id=:id ;");
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+    $stmt->execute();
+    // Store the list in the array
+    $result = $stmt->fetch();
+
+    if($result["count_values"] > 0){
+        $stmt = $db->prepare("UPDATE addons_api_keys SET status='disabled' WHERE id=:id;");
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute(); 
+    }
+
+    db_close($db);
+}
+
+function enable_api_key($id){
+
+    Analog::log ('Enabling api with ID:'.$id, Analog::DEBUG);
+    $db = db_open();
+
+    $stmt = $db->prepare("SELECT count(*) as count_values FROM  addons_api_keys WHERE id=:id ;");
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+    $stmt->execute();
+    // Store the list in the array
+    $result = $stmt->fetch();
+
+    if($result["count_values"] > 0){
+        $stmt = $db->prepare("UPDATE addons_api_keys SET status='enabled' WHERE id=:id;");
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute(); 
+    }
+
+    db_close($db);
+}
 
 function update_api_key($name, $value){
     $db = db_open();
