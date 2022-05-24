@@ -17,8 +17,11 @@ function display_api(){
         URL: https://yoursite/extras/api/api.php/records/endpoint. 
         All endpoints can be listet at https://yoursite/extras/api/api.php/openapi </div>
 
-    
 
+    <div class="sheader">API KEYS</div>
+    <table>
+        <tr> <th> Name </th> <th> Value </th></tr>
+    </table>
 
     <form name="api_settings" method="post" action="">
     <input type="submit" name="deactivate" value="<?php echo $escaper->escapeHtml($lang['Deactivate']); ?>" name="deactivate" />

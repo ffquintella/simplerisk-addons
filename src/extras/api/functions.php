@@ -14,6 +14,16 @@ Analog::handler (\Analog\Handler\FirePHP::init ());
 
 Analog::log ('SimpleRisk API Addon Activated', Analog::INFO);
 
+
+function list_api_keys(){
+    $stmt = $db->prepare("SELECT * FROM addons_api_keys WHERE status='enabled';");
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+
+}
+
+
 function enable_api_extra(){
     // Open the database connection
     $db = db_open();
@@ -32,6 +42,7 @@ function enable_api_extra(){
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(30) NOT NULL,
             value VARCHAR(50) NOT NULL,
+            status VARCHAR(10) NOT NULL,
             creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             );");
         $stmt->execute();

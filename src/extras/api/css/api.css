@@ -10,3 +10,11 @@
     padding-top: 5;
     padding-bottom: 15;
 }
+
+.sheader{
+    color: black;
+    align-content: left;
+    text-align: left;
+    font-weight: bold;
+    font-size: +2;
+}
