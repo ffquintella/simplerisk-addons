@@ -34,7 +34,9 @@ if($_SESSION["validation-error"] == true){
     foreach($keys as $key){
         if($key["status"] == 'enabled') $img = "on-button.png";
         else $img = "off-button.png";
-        echo "<tr><td>".$key["name"]."</td> <td><img class='btimg' src='/extras/api/imgs/".$img."' /></td> <td> delete </td></tr>";
+        echo "<tr><td>".$key["name"]."</td> 
+        <td> <a href='/extras/api/disable.php?id=".$key["id"]."'><img class='btimg' src='/extras/api/imgs/".$img."' /></a></td> 
+        <td> <a href='/extras/api/delete.php?id=".$key["id"]."'><img class='btimg2' src='/extras/api/imgs/delete.png' /></a> </td></tr>";
     }
 
 ?>
