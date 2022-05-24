@@ -25,7 +25,7 @@ function get_api_keys_cvs(){
     $result = "";
 
     foreach($keys as $key) {
-        $result = $result.$key["name"].":".$key["value"];
+        $result = $result.",".$key["name"].":".$key["value"];
     }
 
     return $result;

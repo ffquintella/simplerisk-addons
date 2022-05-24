@@ -26,6 +26,9 @@ if($_SESSION["validation-error"] == true){
 
 
     <div class="sheader">API KEYS</div>
+
+    API Keys should be placed on a header called X-API-Key with the following format |name|:|value|
+
     <table>
         <tr> <th> Name </th></tr>
 <?php

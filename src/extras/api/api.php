@@ -4,7 +4,7 @@ require_once __DIR__.'/vendor/analog/analog/lib/Analog.php';
 require_once __DIR__.'/vendor/mevdschee/php-crud-api/api.include.php';
 require_once __DIR__.'/../../includes/functions.php';
 require_once __DIR__.'/../../includes/config.php';
-require_once __DIR__.'/includes/functions.php';
+require_once __DIR__.'/functions.php';
 
 use Tqdev\PhpCrudApi\Api;
 use Tqdev\PhpCrudApi\Config;
