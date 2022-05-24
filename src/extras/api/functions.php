@@ -14,6 +14,23 @@ Analog::handler (\Analog\Handler\FirePHP::init ());
 
 Analog::log ('SimpleRisk API Addon Activated', Analog::INFO);
 
+function get_api_keys_cvs(){
+    $db = db_open();
+    $stmt = $db->prepare("SELECT * FROM addons_api_keys WHERE status='enabled';");
+    $stmt->execute();
+
+    $keys = $stmt->fetchAll();
+    db_close($db);
+
+    $result = "";
+
+    foreach($keys as $key) {
+        $result = $result.$key["name"].":".$key["value"];
+    }
+
+    return $result;
+}
+
 
 function list_api_keys(){
     $db = db_open();
