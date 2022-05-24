@@ -13,6 +13,13 @@ function display_api(){
 
     <div class="hinfo">INFORMATION</div>
 
+    <div class="info-text"> To use this addon you should use the 
+        URL: https://yoursite/extras/api/api.php/records/endpoint. 
+        All endpoints can be listet at https://yoursite/extras/api/api.php/openapi </div>
+
+    
+
+
     <form name="api_settings" method="post" action="">
     <input type="submit" name="deactivate" value="<?php echo $escaper->escapeHtml($lang['Deactivate']); ?>" name="deactivate" />
     </form>
