@@ -21,6 +21,14 @@ function display_api(){
     <div class="sheader">API KEYS</div>
     <table>
         <tr> <th> Name </th> <th> Value </th></tr>
+<?php
+    $keys = list_api_keys();
+
+    foreach($keys as $key){
+        echo "<tr><td>".$key["name"]."</td><td> disable delete </td></tr>";
+    }
+
+?>
     </table>
 
     <form name="api_settings" method="post" action="">
