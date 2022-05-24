@@ -66,3 +66,14 @@ function disable_api_extra(){
 
     return;
 }
+
+// So far we will ignore this. 
+function check_encryption_level(){
+    return true;
+}
+
+// we will have to implement this on the future
+function authenticate_key(){
+    Analog::log ('Checking authentication key', Analog::DEBUG);
+    return false;
+}
