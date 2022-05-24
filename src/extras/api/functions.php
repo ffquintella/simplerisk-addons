@@ -35,6 +35,10 @@ function enable_api_extra(){
 
     // Close the database connection
     db_close($db);
+
+    //refresh the page
+    header("Refresh:0");
+
     return;
 }
 
@@ -54,9 +58,11 @@ function disable_api_extra(){
         $stmt->execute();
     }
 
-
-
     // Close the database connection
     db_close($db);
+
+    //refresh the page
+    header("Refresh:0");
+
     return;
 }
