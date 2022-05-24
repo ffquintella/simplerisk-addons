@@ -26,6 +26,25 @@ function list_api_keys(){
     return $result;
 }
 
+function delete_api_key($id){
+    Analog::log ('Deleting api with ID:'.$id, Analog::DEBUG);
+    $db = db_open();
+
+    $stmt = $db->prepare("SELECT count(*) as count_values FROM  addons_api_keys WHERE id=:id ;");
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+    $stmt->execute();
+    // Store the list in the array
+    $result = $stmt->fetch();
+
+    if($result["count_values"] > 0){
+        $stmt = $db->prepare("DELETE FROM addons_api_keys WHERE id=:id;");
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute(); 
+    }
+
+    db_close($db);
+}
+
 function disable_api_key($id){
     Analog::log ('Disabling api with ID:'.$id, Analog::DEBUG);
     $db = db_open();
