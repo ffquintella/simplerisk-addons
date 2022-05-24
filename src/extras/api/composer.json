@@ -1,5 +1,6 @@
 {
     "require": {
-        "mevdschee/php-crud-api": "^2.14"
+        "mevdschee/php-crud-api": "^2.14",
+        "analog/analog": "^1.0"
     }
 }

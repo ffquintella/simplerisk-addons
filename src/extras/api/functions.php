@@ -11,7 +11,7 @@ Analog::handler (\Analog\Handler\FirePHP::init ());
 
 Analog::log ('SimpleRisk API Addon Activated', Analog::INFO);
 
-function enable_authentication_extra(){
+function enable_api_extra(){
     // Open the database connection
     $db = db_open();
 
