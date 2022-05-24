@@ -10,11 +10,12 @@ function display_api(){
 
 ?>
    <link rel="stylesheet" href="/extras/api/css/api.css">
-    <form name="api_settings" method="post" action="">
-        
 
-        <input type="submit" name="deactivate" value="<?php echo $escaper->escapeHtml($lang['Deactivate']); ?>" name="deactivate" />
-        </form>
+    <div class="hinfo">INFORMATION</div>
+
+    <form name="api_settings" method="post" action="">
+    <input type="submit" name="deactivate" value="<?php echo $escaper->escapeHtml($lang['Deactivate']); ?>" name="deactivate" />
+    </form>
 
 <?php
 }
