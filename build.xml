@@ -25,9 +25,14 @@
     <!-- ============================================  -->
     <target name="update">
         <composer command="install" composer="/usr/local/bin/composer">
-        <arg value="--working-dir=./src/extras/authentication"/>
-        <arg value="--no-dev"/>
-        <arg value="--no-interaction"/>
+            <arg value="--working-dir=./src/extras/authentication"/>
+            <arg value="--no-dev"/>
+            <arg value="--no-interaction"/>
+        </composer>
+        <composer command="install" composer="/usr/local/bin/composer">
+            <arg value="--working-dir=./src/extras/api"/>
+            <arg value="--no-dev"/>
+            <arg value="--no-interaction"/>
         </composer>
     </target>
 
@@ -61,9 +66,11 @@
         </composer>
 
         <echo msg="Making directory ${appdir}/simplerisk/extras" />
-        <mkdir dir="${appdir}/simplerisk/extrass" />
+        <mkdir dir="${appdir}/simplerisk/extras" />
         <echo msg="Making directory ${appdir}/simplerisk/extras/authentication" />
         <mkdir dir="${appdir}/simplerisk/extras/authentication" />
+        <echo msg="Making directory ${appdir}/simplerisk/extras/api" />
+        <mkdir dir="${appdir}/simplerisk/extras/api" />
     </target>
 
     <!-- ============================================  -->
@@ -82,6 +89,12 @@
 
         <copy todir="${appdir}/simplerisk/extras/authentication" overwrite="true" >
             <fileset dir="./src/extras/authentication">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
+        <copy todir="${appdir}/simplerisk/extras/api" overwrite="true" >
+            <fileset dir="./src/extras/api">
                 <include name="**/*" />
             </fileset>
         </copy>
