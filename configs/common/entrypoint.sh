@@ -15,7 +15,7 @@ run_sql_command() {
 set_db_password(){
 	echo "$(generate_random_password)" >> /passwords/pass_mysql_root.txt
 	echo "$(generate_random_password)" >> /passwords/pass_simplerisk.txt
-	sed -i "s/\('DB_PASSWORD', '\).*\(');\)/\1$(cat /passwords/pass_simplerisk.txt)\2/g" "$CONFIG_PATH"
+	sed -i "s/\('DB_PASSWORD', '\).*\(');\)/\1$(cat /passwords/pass_simplerisk.txt)\2/g" "$CONFIG_TMP_PATH"
 }
 
 set_config(){
@@ -39,7 +39,7 @@ set_config(){
 		[ "$(cat /tmp/version)" == "testing" ] && sed -i "s|//\(define('.*_URL\)|\1|g" $CONFIG_TMP_PATH || true
 
 		cp -f $CONFIG_TMP_PATH $CONFIG_PATH
-		
+
 		# Create a file so this doesn't run again
 		touch /configurations/simplerisk-config-configured
 	fi
