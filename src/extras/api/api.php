@@ -18,8 +18,57 @@ $config = new Config([
     'username' => DB_USERNAME,
     'password' => DB_PASSWORD,
     'database' => DB_DATABASE,
-    'middlewares' => 'apiKeyAuth',
+    'middlewares' => 'apiKeyAuth,authorization',
     'apiKeyAuth.keys' => get_api_keys_cvs(),
+    'authorization.tableHandler' => function ($operation, $tableName) {
+        switch ($tableName) {
+            case 'addons_api_keys':
+                return false;
+                break;
+            case 'user':
+                return false;
+                break;
+            case 'user_pass_history':
+                return false;
+                break;
+            case 'user_pass_reuse_history':
+                return false;
+                break; 
+            case 'user_to_team':
+                return false;
+                break;
+            case 'permissions':
+                return false;
+                break;
+            case 'password_reset':
+                return false;
+                break;
+            case 'permission_to_user':
+                return false;
+                break;
+            case 'permission_to_permission_groups':
+                return false;
+                break;
+            case 'permission_groups':
+                return false;
+                break;                     
+            case 'role':
+                return false;
+                break;
+            case 'role_resposibilities':
+                return false;
+                break;
+            case 'settings':
+                return false;
+                break;
+            case 'sessions':
+                return false;
+                break;
+            default:
+                return true;
+        }
+    },
+
     // 'debug' => false
 ]);
 $request = RequestFactory::fromGlobals();
