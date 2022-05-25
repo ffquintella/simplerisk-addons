@@ -5,15 +5,19 @@ define('AUTHENTICATION_EXTRA_VERSION', '1.0.1');
 
 function display_authentication(){
 
+$base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
     
 if (!empty(get_setting('custom_auth_sp_entity_id'))){
     $custom_auth_sp_entity_id = get_setting('custom_auth_sp_entity_id');
+    if(is_null($custom_auth_sp_entity_id) || empty($custom_auth_sp_entity_id)) $custom_auth_sp_entity_id = $base_url;
 }
 if (!empty(get_setting('custom_auth_sp_assertion_consumer_service_url'))){
     $custom_auth_sp_assertion_consumer_service_url = get_setting('custom_auth_sp_assertion_consumer_service_url');
+    if(is_null($custom_auth_sp_assertion_consumer_service_url) || empty($custom_auth_sp_assertion_consumer_service_url)) $custom_auth_sp_assertion_consumer_service_url = $base_url."/extras/authentication/login.php";
 }
 if (!empty(get_setting('custom_auth_sp_single_logout_service_url'))){
     $custom_auth_sp_single_logout_service_url = get_setting('custom_auth_sp_single_logout_service_url');
+    if(is_null($custom_auth_sp_single_logout_service_url) || empty($custom_auth_sp_single_logout_service_url)) $custom_auth_sp_single_logout_service_url = $base_url."/extras/authentication/logout.php";
 }
 if (!empty(get_setting('custom_auth_ip_entity_id'))){
     $custom_auth_ip_entity_id = get_setting('custom_auth_ip_entity_id');
