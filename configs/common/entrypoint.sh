@@ -22,19 +22,23 @@ set_config(){
 	# If the config.php hasn't already been configured
 	if [ ! -f /configurations/simplerisk-config-configured ]; then
 		CONFIG_PATH='/var/www/simplerisk/includes/config.php'
+		CONFIG_TMP_PATH='/tmp/config.php'
 
-		SIMPLERISK_DB_HOSTNAME=localhost && sed -i "s/\('DB_HOSTNAME', '\).*\(');\)/\1$SIMPLERISK_DB_HOSTNAME\2/g" $CONFIG_PATH
-		SIMPLERISK_DB_PORT=3306 && sed -i "s/\('DB_PORT', '\).*\(');\)/\1$SIMPLERISK_DB_PORT\2/g" $CONFIG_PATH
-		SIMPLERISK_DB_USERNAME=simplerisk && sed -i "s/\('DB_USERNAME', '\).*\(');\)/\1$SIMPLERISK_DB_USERNAME\2/g" $CONFIG_PATH
+		cp $CONFIG_PATH $CONFIG_TMP_PATH
+
+		SIMPLERISK_DB_HOSTNAME=localhost && sed -i "s/\('DB_HOSTNAME', '\).*\(');\)/\1$SIMPLERISK_DB_HOSTNAME\2/g" $CONFIG_TMP_PATH
+		SIMPLERISK_DB_PORT=3306 && sed -i "s/\('DB_PORT', '\).*\(');\)/\1$SIMPLERISK_DB_PORT\2/g" $CONFIG_TMP_PATH
+		SIMPLERISK_DB_USERNAME=simplerisk && sed -i "s/\('DB_USERNAME', '\).*\(');\)/\1$SIMPLERISK_DB_USERNAME\2/g" $CONFIG_TMP_PATH
 		set_db_password
-		SIMPLERISK_DB_DATABASE=simplerisk && sed -i "s/\('DB_DATABASE', '\).*\(');\)/\1$SIMPLERISK_DB_DATABASE\2/g" $CONFIG_PATH
-		
+		SIMPLERISK_DB_DATABASE=simplerisk && sed -i "s/\('DB_DATABASE', '\).*\(');\)/\1$SIMPLERISK_DB_DATABASE\2/g" $CONFIG_TMP_PATH
+
 		# Update the SIMPLERISK_INSTALLED value
-		sed -i "s/\('SIMPLERISK_INSTALLED', 'false'\)/'SIMPLERISK_INSTALLED', 'true'/g" $CONFIG_PATH
+		sed -i "s/\('SIMPLERISK_INSTALLED', 'false'\)/'SIMPLERISK_INSTALLED', 'true'/g" $CONFIG_TMP_PATH
 
 		# shellcheck disable=SC2015
-		[ "$(cat /tmp/version)" == "testing" ] && sed -i "s|//\(define('.*_URL\)|\1|g" $CONFIG_PATH || true
-	
+		[ "$(cat /tmp/version)" == "testing" ] && sed -i "s|//\(define('.*_URL\)|\1|g" $CONFIG_TMP_PATH || true
+
+		cp -f $CONFIG_TMP_PATH $CONFIG_PATH
 		# Create a file so this doesn't run again
 		touch /configurations/simplerisk-config-configured
 	fi
