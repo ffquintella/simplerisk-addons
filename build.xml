@@ -77,6 +77,7 @@
     <!-- Target: build                                 -->
     <!-- ============================================  -->
     <target name="build" depends="prepare-build">
+    <input propertyname="dblanguage" defaultValue="en"> Enter Simple Risk db language (en|pb):</input>
         <delete dir="${builddir}" />
         <mkdir dir="${builddir}" />
         <mkdir dir="${appdir}" />
@@ -112,7 +113,7 @@
         <copy todir="${builddir}" file="configs/sr-apache-site.conf" /> 
         <copy todir="${builddir}" file="scripts/docker/build.sh" /> 
         <copy todir="${builddir}" file="scripts/docker/docker-test.sh" /> 
-        <copy tofile="${builddir}/simplerisk.sql" file="scripts/db/simplerisk-${version}.sql" /> 
+        <copy tofile="${builddir}/simplerisk.sql" file="scripts/db/simplerisk-${version}-${dblanguage}.sql" /> 
     </target>
 
     <!-- ============================================  -->
