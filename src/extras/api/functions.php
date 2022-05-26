@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__.'/vendor/autoload.php';
 require_once __DIR__.'/vendor/analog/analog/lib/Analog.php';
 require_once __DIR__.'/../../includes/functions.php';
 
@@ -25,10 +26,47 @@ function get_api_keys_cvs(){
     $result = "";
 
     foreach($keys as $key) {
-        $result = $result.",".$key["name"].":".$key["value"];
+        $result = $result.",".$key["name"].":".decrypt($key["value"]);
     }
 
     return $result;
+}
+
+function UniqueMachineID($salt = "") {
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        $temp = sys_get_temp_dir().DIRECTORY_SEPARATOR."diskpartscript.txt";
+        if(!file_exists($temp) && !is_file($temp)) file_put_contents($temp, "select disk 0\ndetail disk");
+        $output = shell_exec("diskpart /s ".$temp);
+        $lines = explode("\n",$output);
+        $result = array_filter($lines,function($line) {
+            return stripos($line,"ID:")!==false;
+        });
+        if(count($result)>0) {
+            $result = array_shift(array_values($result));
+            $result = explode(":",$result);
+            $result = trim(end($result));
+        } else $result = $output;
+    } else {
+        $result = shell_exec("blkid -o value -s UUID");
+        if(stripos($result,"blkid")!==false) {
+            $result = $_SERVER['HTTP_HOST'];
+        }
+    }
+    return md5($salt.md5($result));
+}
+
+function encrypt($plaintext = "") {
+    $key=UniqueMachineID("kjhsdfD387sdft");
+
+    $encrypted_string=openssl_encrypt($plaintext,"aes-192-cbc",$key);
+
+    return $encrypted_string;
+}
+
+function decrypt($ciphertext = ""){
+    $key=UniqueMachineID("kjhsdfD387sdft");
+    $decrypted_string=openssl_decrypt($ciphertext,"aes-192-cbc",$key);
+    return $decrypted_string;
 }
 
 
@@ -113,12 +151,12 @@ function update_api_key($name, $value){
     if($result["count_values"] > 0){
         $stmt = $db->prepare("UPDATE addons_api_keys SET VALUE=:api_value WHERE NAME=:api_name;");
         $stmt->bindParam(":api_name", $name, PDO::PARAM_STR, 30);
-        $stmt->bindParam(":api_value", $value, PDO::PARAM_STR, 50);
+        $stmt->bindParam(":api_value", encrypt($value), PDO::PARAM_STR, 50);
         $stmt->execute(); 
     }else{
         $stmt = $db->prepare("INSERT INTO addons_api_keys(name, value, status) VALUES(:api_name,:api_value,'enabled');");
         $stmt->bindParam(":api_name", $name, PDO::PARAM_STR, 30);
-        $stmt->bindParam(":api_value", $value, PDO::PARAM_STR, 50);
+        $stmt->bindParam(":api_value", encrypt($value), PDO::PARAM_STR, 50);
         $stmt->execute(); 
     }
 
