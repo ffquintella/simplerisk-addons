@@ -30,13 +30,13 @@ function notification_language_file($force_default=false)
     if (!isset($_SESSION) && PHP_SAPI !== 'cli' && !$force_default)
     {
         // Return an empty language file
-        return realpath(__DIR__ . '/languages/empty.php');
+        return __DIR__ . '/languages/empty.php';
     }
     // If the language is set for the user
     elseif (isset($_SESSION['lang']) && $_SESSION['lang'] != "")
     {
         // Use the users language
-        return realpath(__DIR__ . '/languages/' . $_SESSION['lang'] . '/lang.' . $_SESSION['lang'] . '.php');
+        return __DIR__ . '/languages/' . $_SESSION['lang'] . '/lang.' . $_SESSION['lang'] . '.php';
     }
     else
     {
@@ -65,10 +65,10 @@ function notification_language_file($force_default=false)
         if ($default_language != false)
         {
             // Use the default language
-            return realpath(__DIR__ . '/languages/' . $default_language . '/lang.' . $default_language . '.php');
+            return __DIR__ . '/languages/' . $default_language . '/lang.' . $default_language . '.php';
         }
         // Otherwise, use english
-        else return realpath(__DIR__ . '/languages/en/lang.en.php');
+        else return __DIR__ . '/languages/en/lang.en.php';
     }
 }
 
