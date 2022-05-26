@@ -5,7 +5,7 @@ require_once "functions.php";
 define('NOTIFICATION_EXTRA_VERSION', '1.0.1');
 
 function display_notification(){
-    global $escaper, $lang;
+    global $escaper, $lang, $lang_not;
 ?>
 <link rel="stylesheet" href="/extras/notification/css/notification.css">
 
