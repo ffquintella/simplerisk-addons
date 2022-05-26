@@ -65,21 +65,37 @@
             <arg value="--no-interaction"/>
         </composer>
 
+        <composer command="install" composer="/usr/local/bin/composer">
+            <arg value="--working-dir=./src/extras/notification"/>
+            <arg value="--no-dev"/>
+            <arg value="--no-interaction"/>
+        </composer>
+
+        <composer command="update" composer="/usr/local/bin/composer">
+            <arg value="--working-dir=./src/extras/notification"/>
+            <arg value="--no-dev"/>
+            <arg value="--no-interaction"/>
+        </composer>
+
+        <delete dir="${builddir}" />
+        <mkdir dir="${builddir}" />
+
         <echo msg="Making directory ${appdir}/simplerisk/extras" />
         <mkdir dir="${appdir}/simplerisk/extras" />
         <echo msg="Making directory ${appdir}/simplerisk/extras/authentication" />
         <mkdir dir="${appdir}/simplerisk/extras/authentication" />
         <echo msg="Making directory ${appdir}/simplerisk/extras/api" />
         <mkdir dir="${appdir}/simplerisk/extras/api" />
+        <echo msg="Making directory ${appdir}/simplerisk/extras/notification" />
+        <mkdir dir="${appdir}/simplerisk/extras/notification" />
     </target>
 
     <!-- ============================================  -->
     <!-- Target: build                                 -->
     <!-- ============================================  -->
     <target name="build" depends="prepare-build">
-    <input propertyname="dblanguage" defaultValue="en"> Enter Simple Risk db language (en|pb):</input>
-        <delete dir="${builddir}" />
-        <mkdir dir="${builddir}" />
+        <input propertyname="dblanguage" defaultValue="en"> Enter Simple Risk db language (en|pb):</input>
+
         <mkdir dir="${appdir}" />
         <httpget url="https://github.com/ffquintella/simplerisk/archive/refs/tags/${version}.tar.gz" 
             dir="${appdir}" followRedirects="true" />
