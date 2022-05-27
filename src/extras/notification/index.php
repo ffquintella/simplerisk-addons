@@ -30,7 +30,12 @@ function display_notification(){
 <form name="notification_settings" method="post" action="">
     <table class="not_table">
         <tr>
-        <td><?php echo $escaper->escapeHtml($lang_not['New risk']); ?></td><td><img class='btimg' src='/extras/notification/imgs/off-button.png' /></td>
+            <?php 
+            if(get_notification_message_status("new_risk") != "enabled"){
+                $bt_img = "off-button.png";
+            }else $bt_img = "on-button.png";
+            ?>
+        <td><?php echo $escaper->escapeHtml($lang_not['New risk']); ?></td><td><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></td>
         </tr>
         <tr>
         <td><textarea class="not_text" id="newrisk" name="newrisk" rows="4"  width="100%"><?php echo get_notification_message("new_risk");?></textarea></td>
