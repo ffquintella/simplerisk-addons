@@ -116,7 +116,7 @@ function enable_notification_extra(){
         $stmt->execute();
         Analog::log ('Table addons_notification_messages created', Analog::DEBUG);
 
-        $stmt = $db->prepare("INSERT INTO settings VALUES('new_risk','A new risk named %risk_name% was created.');");
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value) VALUES('new_risk','A new risk named %risk_name% was created.');");
         $stmt->execute();
 
     }
