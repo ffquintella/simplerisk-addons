@@ -93,6 +93,69 @@ function run_notification_crons(){
     return;
 }
 
+function get_notification_message($name){
+    // Open the database connection
+    $db = db_open();
+
+
+    // Check if the notifications message table exists
+    $stmt = $db->prepare("SELECT value FROM addons_notification_messages WHERE name = :name ;");
+    $stmt->bindParam(":name", $name, PDO::PARAM_STR, 50);
+    $stmt->execute();
+    // Store the list in the array
+    $result = $stmt->fetch();
+
+    db_close($db);
+
+    if(!empty($result)) return $result['value'];
+    return "";
+}
+
+function get_notification_message_status($name){
+    // Open the database connection
+    $db = db_open();
+
+
+    // Check if the notifications message table exists
+    $stmt = $db->prepare("SELECT status FROM addons_notification_messages WHERE name = :name ;");
+    $stmt->bindParam(":name", $name, PDO::PARAM_STR, 50);
+    $stmt->execute();
+    // Store the list in the array
+    $result = $stmt->fetch();
+
+    db_close($db);
+
+    if(!empty($result)) return $result['status'];
+    return "";
+}
+
+function set_notification_message($name, $value){
+    // Open the database connection
+    $db = db_open();
+
+    $stmt = $db->prepare("SELECT count(*) as count_values FROM  addons_notification_messages WHERE name=:name ;");
+    $stmt->bindParam(":name", $name, PDO::PARAM_STR, 50);
+    $stmt->execute();
+    // Store the list in the array
+    $result = $stmt->fetch();
+
+    if($result["count_values"] > 0){
+        $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE NAME=:name;");
+        $stmt->bindParam(":name", $name, PDO::PARAM_STR, 50);
+        $stmt->bindParam(":value", $value, PDO::PARAM_STR, 1000);
+        $stmt->execute(); 
+    }else{
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages(name, value, status) VALUES(:name,:value,'enabled');");
+        $stmt->bindParam(":name", $name, PDO::PARAM_STR, 50);
+        $stmt->bindParam(":value", $value, PDO::PARAM_STR, 1000);
+        $stmt->execute(); 
+    }
+
+    db_close($db);
+
+    return;
+}
+
 function enable_notification_extra(){
     // Open the database connection
     $db = db_open();

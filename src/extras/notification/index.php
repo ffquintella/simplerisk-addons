@@ -33,10 +33,7 @@ function display_notification(){
         <td><?php echo $escaper->escapeHtml($lang_not['New risk']); ?></td><td><img class='btimg' src='/extras/notification/imgs/off-button.png' /></td>
         </tr>
         <tr>
-        <td><textarea class="not_text" id="newrisk" name="newrisk" rows="4"  width="100%">
-            lore ipsum dolor
-            </textarea>
-        </td>
+        <td><textarea class="not_text" id="newrisk" name="newrisk" rows="4"  width="100%"><?php echo get_notification_message("new_risk");?></textarea></td>
         <td><input class="uptdate_bt" type="submit" name="update_newrisk" value="<?php echo $escaper->escapeHtml($lang['Update']); ?>" name="update_newrisk" /></td>
         </tr>
 
