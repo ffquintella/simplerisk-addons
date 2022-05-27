@@ -97,6 +97,32 @@ function enable_notification_extra(){
     // Open the database connection
     $db = db_open();
 
+
+    // Check if the notifications message table exists
+    $stmt = $db->prepare("SELECT count(*) as tables FROM information_schema.TABLES WHERE TABLE_NAME = 'addons_notification_messages' AND TABLE_SCHEMA in (SELECT DATABASE());");
+    $stmt->execute();
+    // Store the list in the array
+    $result = $stmt->fetch();
+
+    Analog::log ('Notification Message database '.strval($result["tables"]), Analog::DEBUG);
+
+    if($result["tables"] == 0) {
+        $stmt = $db->prepare("CREATE TABLE addons_notification_messages (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
+            value VARCHAR(32766) NOT NULL,
+            status VARCHAR(10) NOT NULL
+            );");
+        $stmt->execute();
+        Analog::log ('Table addons_notification_messages created', Analog::DEBUG);
+
+        $stmt = $db->prepare("INSERT INTO settings VALUES('new_risk','A new risk named %risk_name% was created.');");
+        $stmt->execute();
+
+    }
+
+
+
     if (!empty(get_setting('notifications'))){
         // Store the file in the database
         $stmt = $db->prepare("UPDATE settings SET VALUE='true' WHERE NAME='notifications';");
