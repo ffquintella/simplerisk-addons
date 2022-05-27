@@ -9,4 +9,10 @@ ini_set('default_charset', 'utf-8');
 
 $lang_not = array(
     'Notifications'=>'Notificações',
+    'Notification_Explain_Text'=>'Aqui você pode ativar ou desativar diferentes tipos de notificação e definir seu texto base.',
+    'Variable_Table'=>'A seguinte tabela contêm algumas variáveis que você pode usar nas mensagens de notificação.',
+    'Variable'=>'Variável',
+    'Description'=>'Descrição',
+    'Risk name description'=>'Nome do risco envolvido na notificação',
+    'Risk responsible description'=>'Nome do responsável por receber a notificação'
 );
