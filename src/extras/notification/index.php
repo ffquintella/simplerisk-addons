@@ -28,7 +28,7 @@ function display_notification(){
 </table>
 
 <form name="notification_settings" method="post" action="">
-    <table class="not_table" width="100%">
+    <table class="not_table" width="400">
         <tr>
             <?php 
             if(get_notification_message_status("new_risk") != "enabled"){
