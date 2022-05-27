@@ -19,7 +19,18 @@ Analog::handler (\Analog\Handler\FirePHP::init ());
 Analog::log ('SimpleRisk Notification Addon Activated', Analog::INFO);
 
 function update_notification_config(){
-    //TODO IMPLEMENT
+
+    //Analog::log ('POST Variables:'.var_export($_POST, true), Analog::DEBUG);
+
+    $db = db_open();
+
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=1;");
+    $stmt->bindParam(":value", $_POST['newrisk'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+    db_close($db);
+    
+
+
     return;
 }
 

@@ -28,7 +28,7 @@ function display_notification(){
 </table>
 
 <form name="notification_settings" method="post" action="">
-    <table class="not_table">
+    <table class="not_table" width="100%">
         <tr>
             <?php 
             if(get_notification_message_status("new_risk") != "enabled"){
@@ -39,15 +39,15 @@ function display_notification(){
                 $action = "disable.php";
             }
             ?>
-        <td><?php echo $escaper->escapeHtml($lang_not['New risk']); ?></td><td><a href='/extras/notification/<?php echo $action; ?>?id=1'><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></a></td>
+        <td><?php echo $escaper->escapeHtml($lang_not['New risk']); ?><a href='/extras/notification/<?php echo $action; ?>?id=1'><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></a></td>
         </tr>
         <tr>
         <td><textarea class="not_text" id="newrisk" name="newrisk" rows="4"  width="100%"><?php echo get_notification_message("new_risk");?></textarea></td>
-        <td><input class="uptdate_bt" type="submit" name="update_newrisk" value="<?php echo $escaper->escapeHtml($lang['Update']); ?>" name="update_newrisk" /></td>
+        
         </tr>
 
     </table>
-
+    <input class="uptdate_bt" type="submit" name="submit" value="<?php echo $escaper->escapeHtml($lang['Update']); ?>" />
     <input type="submit" name="deactivate" value="<?php echo $escaper->escapeHtml($lang['Deactivate']); ?>" name="deactivate" />
 </form>
 <?php
