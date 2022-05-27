@@ -111,6 +111,27 @@ function get_notification_message($name){
     return "";
 }
 
+function enable_notification($id){
+    $db = db_open();
+
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET STATUS='enabled' WHERE ID=:id;");
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+    $stmt->execute(); 
+    db_close($db);
+
+}
+
+function disable_notification($id){
+    $db = db_open();
+
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET STATUS='disabled' WHERE ID=:id;");
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+    $stmt->execute(); 
+    db_close($db);
+
+}
+
+
 function get_notification_message_status($name){
     // Open the database connection
     $db = db_open();

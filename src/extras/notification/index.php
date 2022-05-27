@@ -33,9 +33,13 @@ function display_notification(){
             <?php 
             if(get_notification_message_status("new_risk") != "enabled"){
                 $bt_img = "off-button.png";
-            }else $bt_img = "on-button.png";
+                $action = "enable.php";
+            }else {
+                $bt_img = "on-button.png";
+                $action = "disable.php";
+            }
             ?>
-        <td><?php echo $escaper->escapeHtml($lang_not['New risk']); ?></td><td><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></td>
+        <td><?php echo $escaper->escapeHtml($lang_not['New risk']); ?></td><td><a href='/extras/notification/<?php echo $action; ?>?id=1'><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></a></td>
         </tr>
         <tr>
         <td><textarea class="not_text" id="newrisk" name="newrisk" rows="4"  width="100%"><?php echo get_notification_message("new_risk");?></textarea></td>
