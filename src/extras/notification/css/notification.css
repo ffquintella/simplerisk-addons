@@ -22,3 +22,26 @@ table.var_table th, table.var_table td {
 	padding: 3px;
 	border-color: brown;
 }
+
+.btimg{
+    height: 30px;
+}
+
+.uptdate_bt{
+    padding-left: 20px;
+}
+
+table.not_table th, table.not_table td{
+    padding: 10px;
+}
+
+.not_text{
+    max-width: 400px;
+}
+
+table.not_table td {
+    width: 400px;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+}
