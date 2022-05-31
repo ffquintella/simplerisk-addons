@@ -213,6 +213,29 @@ function enable_notification_extra(){
 
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_risk','A new risk named %risk_name% was created.', 'enabled');");
         $stmt->execute();
+    }
+    
+    // Check if the notifications control table exists
+    $stmt = $db->prepare("SELECT count(*) as tables FROM information_schema.TABLES WHERE TABLE_NAME = 'addons_notification_control' AND TABLE_SCHEMA in (SELECT DATABASE());");
+    $stmt->execute();
+    // Store the list in the array
+    $result = $stmt->fetch();
+
+    Analog::log ('Notification Message database '.strval($result["tables"]), Analog::DEBUG);
+    
+    if($result["tables"] == 0) {
+        $stmt = $db->prepare("CREATE TABLE addons_notification_control (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            risk_id INT NOT NULL,
+            notified_id INT NOT NULL,
+            sent_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX rsk_ind (risk_id),
+            INDEX ntf_ind (notified_id),
+            FOREIGN KEY (risk_id) REFERENCES risks(id) ON DELETE CASCADE,
+            FOREIGN KEY (notified_id) REFERENCES user(value) ON DELETE CASCADE
+            );");
+        $stmt->execute();
+        Analog::log ('Table addons_notification_control created', Analog::DEBUG);
 
     }
 
