@@ -3,6 +3,7 @@
 require_once __DIR__.'/vendor/autoload.php';
 require_once __DIR__.'/vendor/analog/analog/lib/Analog.php';
 require_once __DIR__.'/../../includes/functions.php';
+require_once __DIR__.'/../../includes/mail.php';
 
 // Include the SimpleRisk language file
 require_once(language_file());
@@ -100,8 +101,76 @@ function process_run_now_notification(){
 }
 
 function run_notification_crons(){
-    //TODO IMPLEMENT
+
+    // TODO IMPLEMENT
     return;
+}
+
+function notify_new_risk($risk_id, $risk_name){
+    global $escaper ;
+
+    if(get_notification_message_status("new_risk") == "enabled"){
+
+        $risk = get_risk_by_id($risk_id + 1000)[0];
+
+        Analog::log ('Sending notification for risk:'.$risk_id + 1000, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] New risk - ".$escaper->escapeHtml($risk_name);
+        $email = get_risk_notified_emails($risk);
+        $subject = "[SR] New risk - ".$escaper->escapeHtml($risk_name);
+        $full_message = replace_notification_variables(get_notification_message("new_risk"), $risk);
+
+        // Send the e-mail
+        send_email($name, $email, $subject, $full_message);
+
+    }
+    return;
+}
+
+function get_risk_notified_emails($risk){
+
+    $owner_id = $risk["owner"];
+    $owner = get_user_by_id($owner_id);
+    $manager_id = $risk["manager"];
+    $manager = get_user_by_id($manager_id);
+    return $owner["email"].",".$manager["email"];
+}
+
+function replace_notification_variables($message, $risk){
+
+    foreach(get_notification_variables() as $key => $value){
+        if(str_contains($message, $key)){
+            $message = str_replace($key, get_notification_risk_variable_value($key, $risk), $message);
+        }
+    }
+
+    return $message;
+}
+
+function get_notification_risk_variable_value($variable, $risk){
+    switch($variable){
+        case "%risk_name%":
+            return $risk["subject"];
+            break;
+        case "%risk_responsible%":
+            $owner = get_user_by_id($risk["owner"]);
+            return $owner["name"];
+            break;
+        default:
+           echo "";
+    }
+}
+
+function get_notification_variables(){
+    global $lang, $lang_not;
+
+    $variables = [
+        "%risk_name%" => $lang_not['Risk name description'],
+        "%risk_responsible%" => $lang_not['Risk responsible description'],
+    ];
+
+    return $variables;
 }
 
 function get_notification_message($name){

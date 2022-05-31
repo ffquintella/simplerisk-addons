@@ -19,12 +19,15 @@ function display_notification(){
     <tr>
     <th><?php echo $escaper->escapeHtml($lang_not['Variable']); ?> </th><th><?php echo $escaper->escapeHtml($lang_not['Description']); ?> </th>
     </tr>
+<?php
+foreach (get_notification_variables() as $key => $value){ ?>
     <tr>
-    <td class="not_enfasis">%risk_name%</td><td><?php echo $escaper->escapeHtml($lang_not['Risk name description']); ?> </td>
+    <td class="not_enfasis"><?php echo $key; ?></td><td><?php echo $escaper->escapeHtml($value); ?> </td>
     </tr>
-    <tr>
-    <td class="not_enfasis">%risk_responsible%</td><td><?php echo $escaper->escapeHtml($lang_not['Risk responsible description']); ?> </td>
-    </tr>
+<?php
+}
+?>
+
 </table>
 
 <form name="notification_settings" method="post" action="">
