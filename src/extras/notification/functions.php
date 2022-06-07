@@ -33,6 +33,10 @@ function update_notification_config(){
     $stmt->bindParam(":value", $_POST['riskupdate'], PDO::PARAM_STR, 1000);
     $stmt->execute(); 
 
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=3;");
+    $stmt->bindParam(":value", $_POST['newreview'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+    
 
     db_close($db);
     
@@ -106,11 +110,75 @@ function process_run_now_notification(){
 
 }
 
+function notify_new_review($risk_id){
+    global $escaper ;
+
+    if(get_notification_message_status("new_review") == "enabled"){
+
+        $risk = get_risk_by_id($risk_id + 1000)[0];
+
+        Analog::log ('Sending notification for new review at risk:'.$risk_id + 1000, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] New review on risk - ".$escaper->escapeHtml($risk_name);
+        
+        $subject = "[SR] New review on risk - ".$escaper->escapeHtml($risk_name);
+        $full_message = replace_notification_variables(get_notification_message("new_review"), $risk);
+
+
+        $emails = get_risk_notified_emails($risk);
+
+        foreach($emails as $email){
+            // Send the e-mail
+            send_email($name, $email, $subject, $full_message);
+        }
+
+    }
+    return;
+}
+
+function notify_new_mitigation($risk_id){
+    // TODO: IMPLEMENT
+    return;
+}
+
+function notify_mitigation_update($id){
+    // TODO IMPLEMENT
+    return;    
+}
+
+function notify_new_document($document_id){
+    // TODO: IMPLEMENT
+    return;
+}
+
+function notify_audit_comment($test_audit_id, $comment){
+    // TODO: IMPLEMENT
+    return; 
+}
+
+function notify_audit_status_change($test_audit_id, $old_status, $status){
+    // TODO: IMPLEMENT
+    return;  
+}
+
 function run_notification_crons(){
 
     // TODO IMPLEMENT
     return;
 }
+
+function notify_risk_close($id){
+    // TODO IMPLEMENT
+    return;
+}
+
+function notify_risk_comment($id, $comment){
+    // TODO IMPLEMENT
+    return;
+}
+
+
 
 function notify_new_risk($risk_id, $risk_name){
     global $escaper ;
@@ -331,6 +399,9 @@ function enable_notification_extra(){
         $stmt->execute();
 
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('risk_update','A risk named %risk_name% was updated.', 'enabled');");
+        $stmt->execute();
+
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_review','A new review was created for the risk: %risk_name%.', 'enabled');");
         $stmt->execute();
 
         
