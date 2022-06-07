@@ -142,7 +142,7 @@
         <!-- build docker image -->
         <exec executable="docker" dir="${builddir}" passthru="true">
             <arg value="build" />
-            <arg line="-t ffquintella/simplerisk-addons-${dblanguage}:${version} ."/>
+            <arg line="-t ffquintella/simplerisk-addons:${version}-${dblanguage} ."/>
         </exec>
     </target>
 
