@@ -48,7 +48,22 @@ foreach (get_notification_variables() as $key => $value){ ?>
         <td><textarea class="not_text" id="newrisk" name="newrisk" rows="4"  width="100%"><?php echo get_notification_message("new_risk");?></textarea></td>
         
         </tr>
-
+        <tr>
+            <?php 
+            if(get_notification_message_status("risk_update") != "enabled"){
+                $bt_img = "off-button.png";
+                $action = "enable.php";
+            }else {
+                $bt_img = "on-button.png";
+                $action = "disable.php";
+            }
+            ?>
+        <td><?php echo $escaper->escapeHtml($lang_not['Risk update']); ?><a href='/extras/notification/<?php echo $action; ?>?id=1'><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></a></td>
+        </tr>
+        <tr>
+        <td><textarea class="not_text" id="riskupdate" name="riskupdate" rows="4"  width="100%"><?php echo get_notification_message("risk_update");?></textarea></td>
+        
+        </tr>
     </table>
     <input class="uptdate_bt" type="submit" name="submit" value="<?php echo $escaper->escapeHtml($lang['Update']); ?>" />
     <input type="submit" name="deactivate" value="<?php echo $escaper->escapeHtml($lang['Deactivate']); ?>" name="deactivate" />

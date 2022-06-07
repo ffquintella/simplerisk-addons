@@ -28,6 +28,12 @@ function update_notification_config(){
     $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=1;");
     $stmt->bindParam(":value", $_POST['newrisk'], PDO::PARAM_STR, 1000);
     $stmt->execute(); 
+
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=2;");
+    $stmt->bindParam(":value", $_POST['riskupdate'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+
+
     db_close($db);
     
 
@@ -113,13 +119,40 @@ function notify_new_risk($risk_id, $risk_name){
 
         $risk = get_risk_by_id($risk_id + 1000)[0];
 
-        Analog::log ('Sending notification for risk:'.$risk_id + 1000, Analog::INFO);
+        Analog::log ('Sending notification for new risk:'.$risk_id + 1000, Analog::INFO);
 
         // Set up the test email
         $name = "[SR] New risk - ".$escaper->escapeHtml($risk_name);
         
         $subject = "[SR] New risk - ".$escaper->escapeHtml($risk_name);
         $full_message = replace_notification_variables(get_notification_message("new_risk"), $risk);
+
+
+        $emails = get_risk_notified_emails($risk);
+
+        foreach($emails as $email){
+            // Send the e-mail
+            send_email($name, $email, $subject, $full_message);
+        }
+
+    }
+    return;
+}
+
+function notify_risk_update($risk_id){
+    global $escaper ;
+
+    if(get_notification_message_status("risk_update") == "enabled"){
+
+        $risk = get_risk_by_id($risk_id + 1000)[0];
+
+        Analog::log ('Sending notification for risk update:'.$risk_id + 1000, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] Risk update - ".$escaper->escapeHtml($risk["subject"]);
+        
+        $subject = "[SR] Risk update - ".$escaper->escapeHtml($risk["subject"]);
+        $full_message = replace_notification_variables(get_notification_message("risk_update"), $risk);
 
 
         $emails = get_risk_notified_emails($risk);
@@ -295,6 +328,11 @@ function enable_notification_extra(){
 
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_risk','A new risk named %risk_name% was created.', 'enabled');");
         $stmt->execute();
+
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('risk_update','A risk named %risk_name% was updated.', 'enabled');");
+        $stmt->execute();
+
+        
     }
     
     // Check if the notifications control table exists
