@@ -16,5 +16,7 @@ $lang_not = array(
     'Risk name description'=>'Risk name related to the notification',
     'Risk responsible description'=>'Name of the responsible for the risk notified',
     'New risk'=>'New risk',
+    'New review'=>'New review',
+    'New mitigation'=>'New mitigation',
     'Risk update'=>'Risk update'
 );

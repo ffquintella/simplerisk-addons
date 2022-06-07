@@ -37,6 +37,9 @@ function update_notification_config(){
     $stmt->bindParam(":value", $_POST['newreview'], PDO::PARAM_STR, 1000);
     $stmt->execute(); 
     
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=4;");
+    $stmt->bindParam(":value", $_POST['newmitigation'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
 
     db_close($db);
     
@@ -120,9 +123,9 @@ function notify_new_review($risk_id){
         Analog::log ('Sending notification for new review at risk:'.$risk_id + 1000, Analog::INFO);
 
         // Set up the test email
-        $name = "[SR] New review on risk - ".$escaper->escapeHtml($risk_name);
+        $name = "[SR] New review on risk - ".$escaper->escapeHtml($risk["subject"]);
         
-        $subject = "[SR] New review on risk - ".$escaper->escapeHtml($risk_name);
+        $subject = "[SR] New review on risk - ".$escaper->escapeHtml($risk["subject"]);
         $full_message = replace_notification_variables(get_notification_message("new_review"), $risk);
 
 
@@ -404,6 +407,8 @@ function enable_notification_extra(){
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_review','A new review was created for the risk: %risk_name%.', 'enabled');");
         $stmt->execute();
 
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_mitigation','A new mitigation plan for the risk: %risk_name% was created.', 'enabled');");
+        $stmt->execute();
         
     }
     
