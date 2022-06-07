@@ -90,11 +90,14 @@
         <mkdir dir="${appdir}/simplerisk/extras/notification" />
     </target>
 
+    <property name="dblanguage" value="en" />
+
+
     <!-- ============================================  -->
     <!-- Target: build                                 -->
     <!-- ============================================  -->
     <target name="build" depends="prepare-build">
-        <input propertyname="dblanguage" defaultValue="en"> Enter Simple Risk db language (en|pb):</input>
+        <input propertyname="dblanguage" defaultValue="en"> Enter Simple Risk db language (en|bp):</input>
 
         <mkdir dir="${appdir}" />
         <httpget url="https://github.com/ffquintella/simplerisk/archive/refs/tags/${version}.tar.gz" 
@@ -139,7 +142,7 @@
         <!-- build docker image -->
         <exec executable="docker" dir="${builddir}" passthru="true">
             <arg value="build" />
-            <arg line="-t ffquintella/simplerisk-addons:${version} ."/>
+            <arg line="-t ffquintella/simplerisk-addons-${dblanguage}:${version} ."/>
         </exec>
     </target>
 
