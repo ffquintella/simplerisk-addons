@@ -169,10 +169,11 @@ function notify_risk_update($risk_id){
 function get_risk_notified_emails($risk){
 
     $emails = array();
-    $owner_id = $risk["owner"];
-    $owner = get_user_by_id($owner_id);
-
-    array_push($emails, $owner["email"]);
+    if(isset($risk["owner"]) && $risk["owner"] > 0){
+        $owner_id = $risk["owner"];
+        $owner = get_user_by_id($owner_id);
+        array_push($emails, $owner["email"]);
+    }
 
     if(isset($risk["manager"]) && $risk["manager"] > 0){
         $manager_id = $risk["manager"];
