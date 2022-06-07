@@ -119,6 +119,12 @@
             </fileset>
         </copy>
 
+        <copy todir="${appdir}/simplerisk/extras/notification" overwrite="true" >
+            <fileset dir="./src/extras/notification">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
         <copy file="./src/extras/authentication/settings-example.php" tofile="${appdir}/simplerisk/extras/authentication/settings.php" overwrite="true" />
 
         <copy todir="${builddir}" file="configs/Dockerfile" /> 
