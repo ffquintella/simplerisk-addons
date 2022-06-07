@@ -55,13 +55,13 @@ function notification_language_file($force_default=false)
     if (!isset($_SESSION) && PHP_SAPI !== 'cli' && !$force_default)
     {
         // Return an empty language file
-        return __DIR__ . '/languages/empty.php';
+        return $_SERVER['DOCUMENT_ROOT']. '/extras/notification/languages/empty.php';
     }
     // If the language is set for the user
     elseif (isset($_SESSION['lang']) && $_SESSION['lang'] != "")
     {
         // Use the users language
-        return __DIR__ . '/languages/' . $_SESSION['lang'] . '/lang.' . $_SESSION['lang'] . '.php';
+        return $_SERVER['DOCUMENT_ROOT'] . '/extras/notification/languages/' . $_SESSION['lang'] . '/lang.' . $_SESSION['lang'] . '.php';
     }
     else
     {
@@ -90,10 +90,10 @@ function notification_language_file($force_default=false)
         if ($default_language != false)
         {
             // Use the default language
-            return __DIR__ . '/languages/' . $default_language . '/lang.' . $default_language . '.php';
+            return $_SERVER['DOCUMENT_ROOT'] . '/extras/notification/languages/' . $default_language . '/lang.' . $default_language . '.php';
         }
         // Otherwise, use english
-        else return __DIR__ . '/languages/en/lang.en.php';
+        else return $_SERVER['DOCUMENT_ROOT'] . '/extras/notification/languages/en/lang.en.php';
     }
 }
 
@@ -141,7 +141,29 @@ function notify_new_review($risk_id){
 }
 
 function notify_new_mitigation($risk_id){
-    // TODO: IMPLEMENT
+    global $escaper ;
+
+    if(get_notification_message_status("new_mitigation") == "enabled"){
+
+        $risk = get_risk_by_id($risk_id + 1000)[0];
+
+        Analog::log ('Sending notification for new mitigation at risk:'.$risk_id + 1000, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] New mitigation plan for risk - ".$escaper->escapeHtml($risk["subject"]);
+        
+        $subject = "[SR] New mitigation plan for risk - ".$escaper->escapeHtml($risk["subject"]);
+        $full_message = replace_notification_variables(get_notification_message("new_mitigation"), $risk);
+
+
+        $emails = get_risk_notified_emails($risk);
+
+        foreach($emails as $email){
+            // Send the e-mail
+            send_email($name, $email, $subject, $full_message);
+        }
+
+    }
     return;
 }
 
@@ -283,10 +305,19 @@ function get_notification_risk_variable_value($variable, $risk){
 function get_notification_variables(){
     global $lang, $lang_not;
 
-    $variables = [
-        "%risk_name%" => $lang_not['Risk name description'],
-        "%risk_responsible%" => $lang_not['Risk responsible description'],
-    ];
+    if(!is_null($lang_not)){
+        $variables = [
+            "%risk_name%" => $lang_not['Risk name description'],
+            "%risk_responsible%" => $lang_not['Risk responsible description'],
+        ];
+    }else{
+        $variables = [
+            "%risk_name%" => '',
+            "%risk_responsible%" => '',
+        ];
+    }
+
+
 
     return $variables;
 }
