@@ -58,7 +58,7 @@ foreach (get_notification_variables() as $key => $value){ ?>
                 $action = "disable.php";
             }
             ?>
-        <td><?php echo $escaper->escapeHtml($lang_not['Risk update']); ?><a href='/extras/notification/<?php echo $action; ?>?id=1'><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></a></td>
+        <td><?php echo $escaper->escapeHtml($lang_not['Risk update']); ?><a href='/extras/notification/<?php echo $action; ?>?id=2'><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></a></td>
         </tr>
         <tr>
         <td><textarea class="not_text" id="riskupdate" name="riskupdate" rows="4"  width="100%"><?php echo get_notification_message("risk_update");?></textarea></td>
