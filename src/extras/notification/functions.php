@@ -3,6 +3,7 @@
 require_once __DIR__.'/vendor/autoload.php';
 require_once __DIR__.'/vendor/analog/analog/lib/Analog.php';
 require_once __DIR__.'/../../includes/functions.php';
+require_once __DIR__.'/../../includes/governance.php';
 require_once __DIR__.'/../../includes/mail.php';
 
 // Include the SimpleRisk language file
@@ -219,11 +220,69 @@ function notify_mitigation_update($id){
 }
 
 function notify_new_document($document_id){
-    // TODO: IMPLEMENT - PP
+
+    global $escaper ;
+
+    if(get_notification_message_status("new_document") == "enabled"){
+
+        $document = get_document_by_id($document_id);
+
+        Analog::log ('Sending notification for update for new document:'.$document_id, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] New document created - ".$escaper->escapeHtml($document["document_name"]);
+        
+        $subject = "[SR] New document created - ".$escaper->escapeHtml($document["document_name"]);
+        $full_message = get_notification_message("new_document");
+
+        $full_message .= "\n==------------------==\n"; 
+        $full_message .= "ID:".$escaper->escapeHtml($document["id"])."\n"; 
+        $full_message .= "NAME:".$escaper->escapeHtml($document["document_name"])."\n"; 
+        $full_message .= "TYPE:".$escaper->escapeHtml($document["document_type"])."\n"; 
+
+        $emails = get_document_notified_emails($document);
+
+        foreach($emails as $email){
+            // Send the e-mail
+            send_email($name, $email, $subject, $full_message);
+        }
+
+    }
+    
     return;
 }
 
 function notify_audit_comment($test_audit_id, $comment){
+    global $escaper ;
+
+    if(get_notification_message_status("new_audit_comment") == "enabled"){
+
+        $test_audit = get_framework_control_test_audit_by_id($test_audit_id);
+        $audit_name = get_test_audit_name($test_audit_id);
+
+        Analog::log ('Sending notification for new audit comment:'.$test_audit_id, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] New comment for audit - ".$escaper->escapeHtml($audit_name);
+        
+        $subject = "[SR] New comment for audit - ".$escaper->escapeHtml($audit_name);
+        $full_message = get_notification_message("new_audit_comment");
+
+        $full_message .= "\n==------------------==\n"; 
+        $full_message .= "Audit ID:".$escaper->escapeHtml($test_audit_id)."\n"; 
+        $full_message .= "Audit NAME:".$escaper->escapeHtml($audit_name)."\n"; 
+        $full_message .= "COMMENT:".$escaper->escapeHtml($comment)."\n"; 
+
+        $emails = get_audit_notified_emails($test_audit);
+
+        foreach($emails as $email){
+            // Send the e-mail
+            send_email($name, $email, $subject, $full_message);
+        }
+
+    }
+
+
     // TODO: IMPLEMENT - PP
     return; 
 }
@@ -303,6 +362,36 @@ function notify_risk_update($risk_id){
 
     }
     return;
+}
+
+function get_document_notified_emails($document){
+
+    $emails = array();
+    if(isset($document["document_owner"]) && $document["document_owner"] > 0){
+        $owner_id = $document["document_owner"];
+        $owner = get_user_by_id($owner_id);
+        array_push($emails, $owner["email"]);
+    }
+
+    if(isset($document["approver"]) && $document["approver"] > 0){
+        $approver_id = $document["approver"];
+        $approver = get_user_by_id($approver_id);
+        array_push($emails, $approver["email"]);
+    }
+
+    return $emails ;
+}
+
+function get_audit_notified_emails($audit){
+    $emails = array();
+    if(isset($audit["tester"]) && $audit["tester"] > 0){
+        $tester_id = $audit["tester"];
+        $tester = get_user_by_id($tester_id);
+        array_push($emails, $tester["email"]);
+    }
+
+
+    return $emails ;   
 }
 
 function get_risk_notified_emails($risk){
