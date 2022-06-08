@@ -282,14 +282,40 @@ function notify_audit_comment($test_audit_id, $comment){
 
     }
 
-
-    // TODO: IMPLEMENT - PP
     return; 
 }
 
 function notify_audit_status_change($test_audit_id, $old_status, $status){
-    // TODO: IMPLEMENT - PP
-    return;  
+    global $escaper ;
+
+    if(get_notification_message_status("new_audit_status_change") == "enabled"){
+
+        $test_audit = get_framework_control_test_audit_by_id($test_audit_id);
+        $audit_name = get_test_audit_name($test_audit_id);
+
+        Analog::log ('Status change for audit id:'.$test_audit_id, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] New status for audit - ".$escaper->escapeHtml($audit_name);
+        
+        $subject = "[SR] New status for audit - ".$escaper->escapeHtml($audit_name);
+        $full_message = get_notification_message("new_audit_status_change");
+
+        $full_message .= "\n==------------------==\n"; 
+        $full_message .= "Audit ID:".$escaper->escapeHtml($test_audit_id)."\n"; 
+        $full_message .= "Old Status:".$escaper->escapeHtml($old_status)."\n"; 
+        $full_message .= "New Status:".$escaper->escapeHtml($status)."\n"; 
+
+        $emails = get_audit_notified_emails($test_audit);
+
+        foreach($emails as $email){
+            // Send the e-mail
+            send_email($name, $email, $subject, $full_message);
+        }
+
+    }
+
+    return; 
 }
 
 function run_notification_crons(){
@@ -298,13 +324,62 @@ function run_notification_crons(){
     return;
 }
 
-function notify_risk_close($id){
-    // TODO IMPLEMENT - PP
+function notify_risk_close($risk_id){
+    global $escaper ;
+
+    if(get_notification_message_status("risk_close") == "enabled"){
+
+        $risk = get_risk_by_id($risk_id + 1000)[0];
+
+        Analog::log ('Risk closed id:'.$risk_id + 1000, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] Risk closed - ".$escaper->escapeHtml($risk["subject"]);
+        
+        $subject = "[SR] Risk closed - ".$escaper->escapeHtml($risk["subject"]);
+        $full_message = replace_notification_variables(get_notification_message("risk_close"), $risk);
+
+
+        $emails = get_risk_notified_emails($risk);
+
+        foreach($emails as $email){
+            // Send the e-mail
+            send_email($name, $email, $subject, $full_message);
+        }
+
+    }
     return;
 }
 
-function notify_risk_comment($id, $comment){
-    // TODO IMPLEMENT - PP
+function notify_risk_comment($risk_id, $comment){
+    global $escaper ;
+
+    if(get_notification_message_status("risk_comment") == "enabled"){
+
+        $risk = get_risk_by_id($risk_id + 1000)[0];
+
+        Analog::log ('New Risk comment:'.$risk_id + 1000, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] New comment for risk - ".$escaper->escapeHtml($risk["subject"]);
+        
+        $subject = "[SR] New comment for risk - ".$escaper->escapeHtml($risk["subject"]);
+        $full_message = replace_notification_variables(get_notification_message("risk_comment"), $risk);
+
+        $full_message .= "\n==------------------==\n"; 
+        $full_message .= "Risk ID:".$escaper->escapeHtml($risk_id)."\n"; 
+        $full_message .= "Risk Subject:".$escaper->escapeHtml($risk["subject"])."\n"; 
+        $full_message .= "Comment:".$escaper->escapeHtml($comment)."\n"; 
+
+
+        $emails = get_risk_notified_emails($risk);
+
+        foreach($emails as $email){
+            // Send the e-mail
+            send_email($name, $email, $subject, $full_message);
+        }
+
+    }
     return;
 }
 
