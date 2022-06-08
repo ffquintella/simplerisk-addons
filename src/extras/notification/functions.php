@@ -41,6 +41,30 @@ function update_notification_config(){
     $stmt->bindParam(":value", $_POST['newmitigation'], PDO::PARAM_STR, 1000);
     $stmt->execute(); 
 
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=5;");
+    $stmt->bindParam(":value", $_POST['mitigationupdate'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=6;");
+    $stmt->bindParam(":value", $_POST['newdocument'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=7;");
+    $stmt->bindParam(":value", $_POST['newauditcomment'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=8;");
+    $stmt->bindParam(":value", $_POST['newauditstatuschange'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=9;");
+    $stmt->bindParam(":value", $_POST['riskclosed'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=9;");
+    $stmt->bindParam(":value", $_POST['riskcomment'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+
     db_close($db);
     
 
@@ -168,22 +192,44 @@ function notify_new_mitigation($risk_id){
 }
 
 function notify_mitigation_update($id){
-    // TODO IMPLEMENT
+    global $escaper ;
+
+    if(get_notification_message_status("mitigation_update") == "enabled"){
+
+        $risk = get_risk_by_id($risk_id + 1000)[0];
+
+        Analog::log ('Sending notification for update for mitigation at risk:'.$risk_id + 1000, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] Update on mitigation plan for risk - ".$escaper->escapeHtml($risk["subject"]);
+        
+        $subject = "[SR] Update on mitigation plan for risk - ".$escaper->escapeHtml($risk["subject"]);
+        $full_message = replace_notification_variables(get_notification_message("mitigation_update"), $risk);
+
+
+        $emails = get_risk_notified_emails($risk);
+
+        foreach($emails as $email){
+            // Send the e-mail
+            send_email($name, $email, $subject, $full_message);
+        }
+
+    }
     return;    
 }
 
 function notify_new_document($document_id){
-    // TODO: IMPLEMENT
+    // TODO: IMPLEMENT - PP
     return;
 }
 
 function notify_audit_comment($test_audit_id, $comment){
-    // TODO: IMPLEMENT
+    // TODO: IMPLEMENT - PP
     return; 
 }
 
 function notify_audit_status_change($test_audit_id, $old_status, $status){
-    // TODO: IMPLEMENT
+    // TODO: IMPLEMENT - PP
     return;  
 }
 
@@ -194,12 +240,12 @@ function run_notification_crons(){
 }
 
 function notify_risk_close($id){
-    // TODO IMPLEMENT
+    // TODO IMPLEMENT - PP
     return;
 }
 
 function notify_risk_comment($id, $comment){
-    // TODO IMPLEMENT
+    // TODO IMPLEMENT - PP
     return;
 }
 
@@ -440,6 +486,26 @@ function enable_notification_extra(){
 
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_mitigation','A new mitigation plan for the risk: %risk_name% was created.', 'enabled');");
         $stmt->execute();
+        
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('mitigation_update','A new mitigation plan for the risk: %risk_name% was updated.', 'enabled');");
+        $stmt->execute();
+
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_document','A new document was uploaded.', 'enabled');");
+        $stmt->execute();
+
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_audit_comment','A new comment was made for one audit.', 'enabled');");
+        $stmt->execute();
+
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_audit_status_change','One audit has changed status.', 'enabled');");
+        $stmt->execute();
+
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('risk_close','The risk %risk_name% was closed', 'enabled');");
+        $stmt->execute();
+
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('risk_comment','The risk %risk_name% has a new comment.', 'enabled');");
+        $stmt->execute();
+        
+
         
     }
     

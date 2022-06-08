@@ -18,5 +18,11 @@ $lang_not = array(
     'New risk'=>'Novo risco',
     'New review'=>'Nova revisão',
     'New mitigation'=>'Nova mitigação',
+    'Mitigation update'=>'Atualização de mitigação',
+    'New document'=>'Novo documento',
+    'New audit comment'=>'Novo comentário em auditoria',
+    'New audit status change'=>'Mudança de estado de auditoria',
+    'Risk closed'=>'Risco fechado',
+    'Risk commented'=>'Risco comentado',
     'Risk update'=>'Atualização de risco'
 );
