@@ -91,6 +91,7 @@
     </target>
 
     <property name="dblanguage" value="en" />
+    <property name="release" value="dev" />
 
 
     <!-- ============================================  -->
@@ -98,6 +99,7 @@
     <!-- ============================================  -->
     <target name="build" depends="prepare-build">
         <input propertyname="dblanguage" defaultValue="en"> Enter Simple Risk db language (en|bp):</input>
+        <input propertyname="release" defaultValue="dev"> Enter the release name (dev):</input>
 
         <mkdir dir="${appdir}" />
         <httpget url="https://github.com/ffquintella/simplerisk/archive/refs/tags/${version}.tar.gz" 
@@ -125,6 +127,20 @@
             </fileset>
         </copy>
 
+        <if>
+            <equals arg1="${release}" arg2="dev" />
+            <then>
+                <echo message="Coping dev scripts" />
+                <copy todir="${appdir}/simplerisk/extras/dev" overwrite="true" >
+                    <fileset dir="./scripts/dev">
+                        <include name="**/*" />
+                    </fileset>
+                </copy>
+            </then>
+            <else>
+            </else>
+        </if>
+
         <copy file="./src/extras/authentication/settings-example.php" tofile="${appdir}/simplerisk/extras/authentication/settings.php" overwrite="true" />
 
         <copy todir="${builddir}" file="configs/Dockerfile" /> 
@@ -148,7 +164,7 @@
         <!-- build docker image -->
         <exec executable="docker" dir="${builddir}" passthru="true">
             <arg value="build" />
-            <arg line="-t ffquintella/simplerisk-addons:${version}-${dblanguage} ."/>
+            <arg line="-t ffquintella/simplerisk-addons:${version}-${dblanguage}-${release} ."/>
         </exec>
     </target>
 
@@ -178,5 +194,18 @@
                 <include name="**/*" />
             </fileset>
         </copy>
+        <if>
+            <equals arg1="${release}" arg2="dev" />
+            <then>
+                <echo message="Coping dev scripts" />
+                <copy todir="${simpleRiskInstallation}/extras/dev">
+                    <fileset dir="./scripts/dev">
+                        <include name="**/*" />
+                    </fileset>
+                </copy>
+            </then>
+            <else>
+            </else>
+        </if>
     </target>
 </project>
