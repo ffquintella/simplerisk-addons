@@ -24,5 +24,6 @@ $lang_not = array(
     'New audit status change'=>'Mudança de estado de auditoria',
     'Risk closed'=>'Risco fechado',
     'Risk commented'=>'Risco comentado',
+    'Event details'=>'Detalhes do evento',
     'Risk update'=>'Atualização de risco'
 );

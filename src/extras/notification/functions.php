@@ -62,7 +62,7 @@ function update_notification_config(){
     $stmt->bindParam(":value", $_POST['riskclosed'], PDO::PARAM_STR, 1000);
     $stmt->execute(); 
 
-    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=9;");
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=10;");
     $stmt->bindParam(":value", $_POST['riskcomment'], PDO::PARAM_STR, 1000);
     $stmt->execute(); 
 
@@ -151,7 +151,8 @@ function notify_new_review($risk_id){
         $name = "[SR] New review on risk - ".$escaper->escapeHtml($risk["subject"]);
         
         $subject = "[SR] New review on risk - ".$escaper->escapeHtml($risk["subject"]);
-        $full_message = replace_notification_variables(get_notification_message("new_review"), $risk);
+
+        $full_message = replace_notification_variables(get_notification_message("new_review"), ["risk"=>$risk]);
 
 
         $emails = get_risk_notified_emails($risk);
@@ -178,7 +179,7 @@ function notify_new_mitigation($risk_id){
         $name = "[SR] New mitigation plan for risk - ".$escaper->escapeHtml($risk["subject"]);
         
         $subject = "[SR] New mitigation plan for risk - ".$escaper->escapeHtml($risk["subject"]);
-        $full_message = replace_notification_variables(get_notification_message("new_mitigation"), $risk);
+        $full_message = replace_notification_variables(get_notification_message("new_mitigation"), ["risk"=>$risk]);
 
 
         $emails = get_risk_notified_emails($risk);
@@ -205,7 +206,7 @@ function notify_mitigation_update($id){
         $name = "[SR] Update on mitigation plan for risk - ".$escaper->escapeHtml($risk["subject"]);
         
         $subject = "[SR] Update on mitigation plan for risk - ".$escaper->escapeHtml($risk["subject"]);
-        $full_message = replace_notification_variables(get_notification_message("mitigation_update"), $risk);
+        $full_message = replace_notification_variables(get_notification_message("mitigation_update"), ["risk"=>$risk]);
 
 
         $emails = get_risk_notified_emails($risk);
@@ -233,12 +234,16 @@ function notify_new_document($document_id){
         $name = "[SR] New document created - ".$escaper->escapeHtml($document["document_name"]);
         
         $subject = "[SR] New document created - ".$escaper->escapeHtml($document["document_name"]);
-        $full_message = get_notification_message("new_document");
+        //$full_message = get_notification_message("new_document");
 
-        $full_message .= "\n==------------------==\n"; 
-        $full_message .= "ID:".$escaper->escapeHtml($document["id"])."\n"; 
-        $full_message .= "NAME:".$escaper->escapeHtml($document["document_name"])."\n"; 
-        $full_message .= "TYPE:".$escaper->escapeHtml($document["document_type"])."\n"; 
+        $details .= "\n==------------------==\n"; 
+        $details .= "ID:".$escaper->escapeHtml($document["id"])."\n"; 
+        $details .= "NAME:".$escaper->escapeHtml($document["document_name"])."\n"; 
+        $details .= "TYPE:".$escaper->escapeHtml($document["document_type"])."\n"; 
+
+
+        $full_message = replace_notification_variables(get_notification_message("new_document"), ["details"=>$details]);
+
 
         $emails = get_document_notified_emails($document);
 
@@ -266,12 +271,15 @@ function notify_audit_comment($test_audit_id, $comment){
         $name = "[SR] New comment for audit - ".$escaper->escapeHtml($audit_name);
         
         $subject = "[SR] New comment for audit - ".$escaper->escapeHtml($audit_name);
-        $full_message = get_notification_message("new_audit_comment");
+        //$full_message = get_notification_message("new_audit_comment");
 
-        $full_message .= "\n==------------------==\n"; 
-        $full_message .= "Audit ID:".$escaper->escapeHtml($test_audit_id)."\n"; 
-        $full_message .= "Audit NAME:".$escaper->escapeHtml($audit_name)."\n"; 
-        $full_message .= "COMMENT:".$escaper->escapeHtml($comment)."\n"; 
+        $details .= "\n==------------------==\n"; 
+        $details .= "Audit ID:".$escaper->escapeHtml($test_audit_id)."\n"; 
+        $details .= "Audit NAME:".$escaper->escapeHtml($audit_name)."\n"; 
+        $details .= "COMMENT:".$escaper->escapeHtml($comment)."\n"; 
+
+        $full_message = replace_notification_variables(get_notification_message("new_audit_comment"), ["details"=>$details]);
+
 
         $emails = get_audit_notified_emails($test_audit);
 
@@ -299,12 +307,15 @@ function notify_audit_status_change($test_audit_id, $old_status, $status){
         $name = "[SR] New status for audit - ".$escaper->escapeHtml($audit_name);
         
         $subject = "[SR] New status for audit - ".$escaper->escapeHtml($audit_name);
-        $full_message = get_notification_message("new_audit_status_change");
+        //$full_message = get_notification_message("new_audit_status_change");
 
-        $full_message .= "\n==------------------==\n"; 
-        $full_message .= "Audit ID:".$escaper->escapeHtml($test_audit_id)."\n"; 
-        $full_message .= "Old Status:".$escaper->escapeHtml($old_status)."\n"; 
-        $full_message .= "New Status:".$escaper->escapeHtml($status)."\n"; 
+        $details .= "\n==------------------==\n"; 
+        $details .= "Audit ID:".$escaper->escapeHtml($test_audit_id)."\n"; 
+        $details .= "Old Status:".$escaper->escapeHtml($old_status)."\n"; 
+        $details .= "New Status:".$escaper->escapeHtml($status)."\n"; 
+
+        $full_message = replace_notification_variables(get_notification_message("new_audit_status_change"), ["details"=>$details]);
+
 
         $emails = get_audit_notified_emails($test_audit);
 
@@ -337,7 +348,7 @@ function notify_risk_close($risk_id){
         $name = "[SR] Risk closed - ".$escaper->escapeHtml($risk["subject"]);
         
         $subject = "[SR] Risk closed - ".$escaper->escapeHtml($risk["subject"]);
-        $full_message = replace_notification_variables(get_notification_message("risk_close"), $risk);
+        $full_message = replace_notification_variables(get_notification_message("risk_close"), ["risk"=>$risk]);
 
 
         $emails = get_risk_notified_emails($risk);
@@ -364,13 +375,14 @@ function notify_risk_comment($risk_id, $comment){
         $name = "[SR] New comment for risk - ".$escaper->escapeHtml($risk["subject"]);
         
         $subject = "[SR] New comment for risk - ".$escaper->escapeHtml($risk["subject"]);
-        $full_message = replace_notification_variables(get_notification_message("risk_comment"), $risk);
+        //$full_message = replace_notification_variables(get_notification_message("risk_comment"), ["risk"=>$risk]);
 
-        $full_message .= "\n==------------------==\n"; 
-        $full_message .= "Risk ID:".$escaper->escapeHtml($risk_id)."\n"; 
-        $full_message .= "Risk Subject:".$escaper->escapeHtml($risk["subject"])."\n"; 
-        $full_message .= "Comment:".$escaper->escapeHtml($comment)."\n"; 
+        $details .= "\n==------------------==\n"; 
+        $details .= "Risk ID:".$escaper->escapeHtml($risk_id)."\n"; 
+        $details .= "Risk Subject:".$escaper->escapeHtml($risk["subject"])."\n"; 
+        $details .= "Comment:".$escaper->escapeHtml($comment)."\n"; 
 
+        $full_message = replace_notification_variables(get_notification_message("risk_comment"), ["risk"=>$risk, "details"=>$details]);
 
         $emails = get_risk_notified_emails($risk);
 
@@ -398,7 +410,7 @@ function notify_new_risk($risk_id, $risk_name){
         $name = "[SR] New risk - ".$escaper->escapeHtml($risk_name);
         
         $subject = "[SR] New risk - ".$escaper->escapeHtml($risk_name);
-        $full_message = replace_notification_variables(get_notification_message("new_risk"), $risk);
+        $full_message = replace_notification_variables(get_notification_message("new_risk"), ["risk"=>$risk]);
 
 
         $emails = get_risk_notified_emails($risk);
@@ -425,7 +437,7 @@ function notify_risk_update($risk_id){
         $name = "[SR] Risk update - ".$escaper->escapeHtml($risk["subject"]);
         
         $subject = "[SR] Risk update - ".$escaper->escapeHtml($risk["subject"]);
-        $full_message = replace_notification_variables(get_notification_message("risk_update"), $risk);
+        $full_message = replace_notification_variables(get_notification_message("risk_update"), ["risk"=>$risk]);
 
 
         $emails = get_risk_notified_emails($risk);
@@ -487,11 +499,23 @@ function get_risk_notified_emails($risk){
     return $emails ;
 }
 
-function replace_notification_variables($message, $risk){
+function replace_notification_variables($message, $variables = array() ){
+
+    if(isset($variables["risk"])) $risk = $variables["risk"];
+    else $risk = null;
+
+    if(isset($variables["details"])) $details = $variables["details"];
+    else $details = null;
+
 
     foreach(get_notification_variables() as $key => $value){
         if(str_contains($message, $key)){
-            $message = str_replace($key, get_notification_risk_variable_value($key, $risk), $message);
+            if(str_starts_with($key, "risk_") && !is_null($risk)){
+                $message = str_replace($key, get_notification_risk_variable_value($key, $risk), $message);
+            }
+            if($key == "event_details" && !is_null($details)){
+                $message = str_replace($key, $details, $message);
+            }
         }
     }
 
@@ -519,11 +543,13 @@ function get_notification_variables(){
         $variables = [
             "%risk_name%" => $lang_not['Risk name description'],
             "%risk_responsible%" => $lang_not['Risk responsible description'],
+            "%event_details%" => $lang_not['Event details'],
         ];
     }else{
         $variables = [
             "%risk_name%" => '',
             "%risk_responsible%" => '',
+            "%event_details%" => '',
         ];
     }
 
@@ -654,19 +680,19 @@ function enable_notification_extra(){
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('mitigation_update','A new mitigation plan for the risk: %risk_name% was updated.', 'enabled');");
         $stmt->execute();
 
-        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_document','A new document was uploaded.', 'enabled');");
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_document','A new document was uploaded. %event_details%', 'enabled');");
         $stmt->execute();
 
-        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_audit_comment','A new comment was made for one audit.', 'enabled');");
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_audit_comment','A new comment was made for one audit. %event_details%', 'enabled');");
         $stmt->execute();
 
-        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_audit_status_change','One audit has changed status.', 'enabled');");
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_audit_status_change','One audit has changed status. %event_details%', 'enabled');");
         $stmt->execute();
 
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('risk_close','The risk %risk_name% was closed', 'enabled');");
         $stmt->execute();
 
-        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('risk_comment','The risk %risk_name% has a new comment.', 'enabled');");
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('risk_comment','The risk %risk_name% has a new comment. %event_details%', 'enabled');");
         $stmt->execute();
         
 
