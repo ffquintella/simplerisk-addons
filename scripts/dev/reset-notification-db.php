@@ -21,6 +21,9 @@ $stmt->execute();
 $stmt = $db->prepare("DROP TABLE addons_notification_messages;");
 $stmt->execute();
 
+$stmt = $db->prepare("DROP TABLE addons_notification_control;");
+$stmt->execute();
+
 echo "Reseting finished. <br\>" ;
 
 db_close($db);

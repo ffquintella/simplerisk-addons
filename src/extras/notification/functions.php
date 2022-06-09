@@ -339,8 +339,26 @@ function notify_audit_status_change($test_audit_id, $old_status, $status){
 
 function run_notification_crons(){
 
-    if(get_notification_message_status("review_mitigation_alert") == "enabled"){
+    $date = date("Y-m-d");
 
+    if(get_notification_message_status("review_mitigation_alert") == "enabled"){
+        $db = db_open();
+
+
+        // Query the database
+        $stmt = $db->prepare("SELECT * FROM mitigations 
+            WHERE planning_date = :current_date 
+            AND mitigation_percent < 100
+            AND current_solution = ''
+        ;");
+        $stmt->bindParam(":current_date", $date, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        // Store the list in the array
+        $array = $stmt->fetchAll();
+
+        db_close($db);
 
     }
     if(get_notification_message_status("review_analysis_alert") == "enabled"){
@@ -730,12 +748,11 @@ function enable_notification_extra(){
     if($result["tables"] == 0) {
         $stmt = $db->prepare("CREATE TABLE addons_notification_control (
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            risk_id INT NOT NULL,
+            notification_hash VARCHAR(50) NOT NULL,
             notified_id INT NOT NULL,
             sent_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            INDEX rsk_ind (risk_id),
+            INDEX hash_ind (notification_hash),
             INDEX ntf_ind (notified_id),
-            FOREIGN KEY (risk_id) REFERENCES risks(id) ON DELETE CASCADE,
             FOREIGN KEY (notified_id) REFERENCES user(value) ON DELETE CASCADE
             );");
         $stmt->execute();
