@@ -236,10 +236,10 @@ function notify_new_document($document_id){
         $subject = "[SR] New document created - ".$escaper->escapeHtml($document["document_name"]);
         //$full_message = get_notification_message("new_document");
 
-        $details .= "\n==------------------==\n"; 
-        $details .= "ID:".$escaper->escapeHtml($document["id"])."\n"; 
-        $details .= "NAME:".$escaper->escapeHtml($document["document_name"])."\n"; 
-        $details .= "TYPE:".$escaper->escapeHtml($document["document_type"])."\n"; 
+        $details = "<br/><hr/>";
+        $details .= "ID:".$escaper->escapeHtml($document["id"])."<br/>"; 
+        $details .= "NAME:".$escaper->escapeHtml($document["document_name"])."<br/>"; 
+        $details .= "TYPE:".$escaper->escapeHtml($document["document_type"])."<br/>"; 
 
 
         $full_message = replace_notification_variables(get_notification_message("new_document"), ["details"=>$details]);
@@ -273,10 +273,10 @@ function notify_audit_comment($test_audit_id, $comment){
         $subject = "[SR] New comment for audit - ".$escaper->escapeHtml($audit_name);
         //$full_message = get_notification_message("new_audit_comment");
 
-        $details .= "\n==------------------==\n"; 
-        $details .= "Audit ID:".$escaper->escapeHtml($test_audit_id)."\n"; 
-        $details .= "Audit NAME:".$escaper->escapeHtml($audit_name)."\n"; 
-        $details .= "COMMENT:".$escaper->escapeHtml($comment)."\n"; 
+        $details = "<br/><hr/>";
+        $details .= "Audit ID:".$escaper->escapeHtml($test_audit_id)."<br/>"; 
+        $details .= "Audit NAME:".$escaper->escapeHtml($audit_name)."<br/>"; 
+        $details .= "COMMENT:".$escaper->escapeHtml($comment)."<br/>"; 
 
         $full_message = replace_notification_variables(get_notification_message("new_audit_comment"), ["details"=>$details]);
 
@@ -309,10 +309,10 @@ function notify_audit_status_change($test_audit_id, $old_status, $status){
         $subject = "[SR] New status for audit - ".$escaper->escapeHtml($audit_name);
         //$full_message = get_notification_message("new_audit_status_change");
 
-        $details .= "\n==------------------==\n"; 
-        $details .= "Audit ID:".$escaper->escapeHtml($test_audit_id)."\n"; 
-        $details .= "Old Status:".$escaper->escapeHtml($old_status)."\n"; 
-        $details .= "New Status:".$escaper->escapeHtml($status)."\n"; 
+        $details = "<br/><hr/>";
+        $details .= "Audit ID:".$escaper->escapeHtml($test_audit_id)."<br/>"; 
+        $details .= "Old Status:".$escaper->escapeHtml($old_status)."<br/>"; 
+        $details .= "New Status:".$escaper->escapeHtml($status)."<br/>"; 
 
         $full_message = replace_notification_variables(get_notification_message("new_audit_status_change"), ["details"=>$details]);
 
@@ -377,10 +377,10 @@ function notify_risk_comment($risk_id, $comment){
         $subject = "[SR] New comment for risk - ".$escaper->escapeHtml($risk["subject"]);
         //$full_message = replace_notification_variables(get_notification_message("risk_comment"), ["risk"=>$risk]);
 
-        $details .= "\n==------------------==\n"; 
-        $details .= "Risk ID:".$escaper->escapeHtml($risk_id)."\n"; 
-        $details .= "Risk Subject:".$escaper->escapeHtml($risk["subject"])."\n"; 
-        $details .= "Comment:".$escaper->escapeHtml($comment)."\n"; 
+        $details = "<br/><hr/>";
+        $details .= "Risk ID:".$escaper->escapeHtml($risk_id)."<br/>"; 
+        $details .= "Risk Subject:".$escaper->escapeHtml($risk["subject"])."<br/>"; 
+        $details .= "Comment:".$escaper->escapeHtml($comment)."<br/>"; 
 
         $full_message = replace_notification_variables(get_notification_message("risk_comment"), ["risk"=>$risk, "details"=>$details]);
 
@@ -510,10 +510,10 @@ function replace_notification_variables($message, $variables = array() ){
 
     foreach(get_notification_variables() as $key => $value){
         if(str_contains($message, $key)){
-            if(str_starts_with($key, "risk_") && !is_null($risk)){
+            if(str_starts_with($key, "%risk_") && !is_null($risk)){
                 $message = str_replace($key, get_notification_risk_variable_value($key, $risk), $message);
             }
-            if($key == "event_details" && !is_null($details)){
+            if($key == "%event_details%" && !is_null($details)){
                 $message = str_replace($key, $details, $message);
             }
         }
