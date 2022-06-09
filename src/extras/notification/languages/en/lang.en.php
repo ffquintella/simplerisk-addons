@@ -25,5 +25,6 @@ $lang_not = array(
     'Risk closed'=>'Risk closed',
     'Risk commented'=>'Risk commented',
     'Event details'=>'Event details',
+    'Alert to review mitigation'=>'Alert to review mitigation',
     'Risk update'=>'Risk update'
 );

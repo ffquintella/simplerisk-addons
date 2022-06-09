@@ -66,6 +66,14 @@ function update_notification_config(){
     $stmt->bindParam(":value", $_POST['riskcomment'], PDO::PARAM_STR, 1000);
     $stmt->execute(); 
 
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=11;");
+    $stmt->bindParam(":value", $_POST['reviewmitigationalert'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=12;");
+    $stmt->bindParam(":value", $_POST['reviewanalysisalert'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+
     db_close($db);
     
 
@@ -331,7 +339,15 @@ function notify_audit_status_change($test_audit_id, $old_status, $status){
 
 function run_notification_crons(){
 
-    // TODO IMPLEMENT
+    if(get_notification_message_status("review_mitigation_alert") == "enabled"){
+
+
+    }
+    if(get_notification_message_status("review_analysis_alert") == "enabled"){
+
+
+    }
+    
     return;
 }
 
@@ -695,7 +711,11 @@ function enable_notification_extra(){
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('risk_comment','The risk %risk_name% has a new comment. %event_details%', 'enabled');");
         $stmt->execute();
         
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('review_mitigation_alert','The mitigation for the %risk_name% is planned to be finished today. %event_details%', 'enabled');");
+        $stmt->execute();
 
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('review_analysis_alert','The analysis for the %risk_name% needs to bew reviwed today.', 'enabled');");
+        $stmt->execute();  
         
     }
     

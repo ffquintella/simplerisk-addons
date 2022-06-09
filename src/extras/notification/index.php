@@ -192,6 +192,38 @@ foreach (get_notification_variables() as $key => $value){ ?>
         <td><textarea class="not_text" id="riskcomment" name="riskcomment" rows="4"  width="100%"><?php echo get_notification_message("risk_comment");?></textarea></td>
         
         </tr>
+        <tr>
+            <?php 
+            if(get_notification_message_status("review_mitigation_alert") != "enabled"){
+                $bt_img = "off-button.png";
+                $action = "enable.php";
+            }else {
+                $bt_img = "on-button.png";
+                $action = "disable.php";
+            }
+            ?>
+        <td><?php echo $escaper->escapeHtml($lang_not['Alert to review mitigation']); ?><a href='/extras/notification/<?php echo $action; ?>?id=11'><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></a></td>
+        </tr>
+        <tr>
+        <td><textarea class="not_text" id="reviewmitigationalert" name="reviewmitigationalert" rows="4"  width="100%"><?php echo get_notification_message("review_mitigation_alert");?></textarea></td>
+        
+        </tr>
+        <tr>
+            <?php 
+            if(get_notification_message_status("review_analysis_alert") != "enabled"){
+                $bt_img = "off-button.png";
+                $action = "enable.php";
+            }else {
+                $bt_img = "on-button.png";
+                $action = "disable.php";
+            }
+            ?>
+        <td><?php echo $escaper->escapeHtml($lang_not['Alert to review mitigation']); ?><a href='/extras/notification/<?php echo $action; ?>?id=12'><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></a></td>
+        </tr>
+        <tr>
+        <td><textarea class="not_text" id="reviewanalysisalert" name="reviewanalysisalert" rows="4"  width="100%"><?php echo get_notification_message("review_analysis_alert");?></textarea></td>
+        
+        </tr>
     </table>
     <input class="uptdate_bt" type="submit" name="submit" value="<?php echo $escaper->escapeHtml($lang['Update']); ?>" />
     <input type="submit" name="deactivate" value="<?php echo $escaper->escapeHtml($lang['Deactivate']); ?>" name="deactivate" />
