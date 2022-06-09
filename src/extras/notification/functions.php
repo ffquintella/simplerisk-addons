@@ -88,13 +88,13 @@ function notification_language_file($force_default=false)
     if (!isset($_SESSION) && PHP_SAPI !== 'cli' && !$force_default)
     {
         // Return an empty language file
-        return $_SERVER['DOCUMENT_ROOT']. '/extras/notification/languages/empty.php';
+        return __DIR__. '/languages/empty.php';
     }
     // If the language is set for the user
     elseif (isset($_SESSION['lang']) && $_SESSION['lang'] != "")
     {
         // Use the users language
-        return $_SERVER['DOCUMENT_ROOT'] . '/extras/notification/languages/' . $_SESSION['lang'] . '/lang.' . $_SESSION['lang'] . '.php';
+        return __DIR__ . '/languages/' . $_SESSION['lang'] . '/lang.' . $_SESSION['lang'] . '.php';
     }
     else
     {
@@ -123,10 +123,10 @@ function notification_language_file($force_default=false)
         if ($default_language != false)
         {
             // Use the default language
-            return $_SERVER['DOCUMENT_ROOT'] . '/extras/notification/languages/' . $default_language . '/lang.' . $default_language . '.php';
+            return __DIR__ . '/languages/' . $default_language . '/lang.' . $default_language . '.php';
         }
         // Otherwise, use english
-        else return $_SERVER['DOCUMENT_ROOT'] . '/extras/notification/languages/en/lang.en.php';
+        else return __DIR__ . '/languages/en/lang.en.php';
     }
 }
 
@@ -340,7 +340,14 @@ function notify_audit_status_change($test_audit_id, $old_status, $status){
 function run_notification_crons(){
 
     $date = date("Y-m-d");
+    notify_mitigation_alert($date);
+    notify_review_analysis_alert($date);
+    
+    return;
+}
 
+function notify_mitigation_alert($date){
+    global $escaper ;
     if(get_notification_message_status("review_mitigation_alert") == "enabled"){
         $db = db_open();
 
@@ -349,6 +356,7 @@ function run_notification_crons(){
         $stmt = $db->prepare("SELECT * FROM mitigations 
             WHERE planning_date = :current_date 
             AND mitigation_percent < 100
+            AND mitigation_owner != 0
             AND current_solution = ''
         ;");
         $stmt->bindParam(":current_date", $date, PDO::PARAM_STR);
@@ -356,16 +364,78 @@ function run_notification_crons(){
         $stmt->execute();
 
         // Store the list in the array
-        $array = $stmt->fetchAll();
+        $mitigations = $stmt->fetchAll();
+
+        foreach ($mitigations as $mitigation){
+            $alert_data = $mitigation["risk_id"];
+            $alert_data .= "-".$mitigation["id"];
+            $alert_data .= "-".$mitigation["mitigation_owner"];
+            $alert_data .= "-".$mitigation["planning_date"];
+            $alert_data .= "-".$mitigation["mitigation_percent"];
+
+            $alert_hash = md5($alert_data);
+
+            // check if we already sent this alert today
+
+            $stmt = $db->prepare("SELECT * FROM addons_notification_control 
+                WHERE notification_hash = :alert_hash
+                AND sent_date = :current_date
+            ;");
+            $stmt->bindParam(":current_date", $date, PDO::PARAM_STR);
+            $stmt->bindParam(":alert_hash", $alert_hash, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            if( $stmt->rowCount() == 0) {
+                // Empty results so we can notify
+                $stmt = $db->prepare("INSERT 
+                INTO addons_notification_control (notification_hash, notified_id, sent_date) 
+                VALUES(:alert_hash, :not_id, :current_date)
+                ;");
+                $stmt->bindParam(":alert_hash", $alert_hash, PDO::PARAM_STR, 50);
+                $stmt->bindParam(":not_id", $mitigation["mitigation_owner"], PDO::PARAM_INT);
+                $stmt->bindParam(":current_date", $date, PDO::PARAM_STR);
+                $stmt->execute();
+        
+                $risk = get_risk_by_id($mitigation["risk_id"] + 1000)[0];
+
+                // Set up the test email
+                $name = "[SR] Mitigation review alert for risk - ".$escaper->escapeHtml($risk["subject"]);
+                
+                $subject = "[SR] Mitigation review alert for risk - ".$escaper->escapeHtml($risk["subject"]);
+
+                $details = "<br/><hr/>";
+                $details .= "Risk ID:".$escaper->escapeHtml($mitigation["risk_id"])."<br/>"; 
+                $details .= "Risk Subject:".$escaper->escapeHtml($risk["subject"])."<br/>"; 
+                $details .= "Mitigation date:".$escaper->escapeHtml($mitigation["submission_date"])."<br/>"; 
+
+                $full_message = replace_notification_variables(get_notification_message("review_mitigation_alert"), ["risk"=>$risk, 'details'=>$details]);
+        
+                $owner = get_user_by_id($mitigation["mitigation_owner"]);
+
+                send_email($name, $owner["email"], $subject, $full_message);
+                
+
+            }
+
+        }
+
+
 
         db_close($db);
-
     }
+
+    return;
+}
+
+function notify_review_analysis_alert($date){
+    global $escaper ;
     if(get_notification_message_status("review_analysis_alert") == "enabled"){
+        $db = db_open();
 
 
+        db_close($db);
     }
-    
     return;
 }
 
