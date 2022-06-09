@@ -432,6 +432,67 @@ function notify_review_analysis_alert($date){
     global $escaper ;
     if(get_notification_message_status("review_analysis_alert") == "enabled"){
         $db = db_open();
+        // Query the database
+        $stmt = $db->prepare("SELECT * FROM mgmt_reviews 
+            WHERE next_review = :current_date 
+        ;");
+        $stmt->bindParam(":current_date", $date, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        // Store the list in the array
+        $reviews = $stmt->fetchAll();
+
+        foreach ($reviews as $review){
+            $alert_data = $review["risk_id"];
+            $alert_data .= "-".$review["id"];
+            $alert_data .= "-".$review["submission_date"];
+            $alert_data .= "-".$review["next_review"];
+
+            $alert_hash = md5($alert_data);
+
+            $stmt = $db->prepare("SELECT * FROM addons_notification_control 
+                WHERE notification_hash = :alert_hash
+                AND sent_date = :current_date
+            ;");
+            $stmt->bindParam(":current_date", $date, PDO::PARAM_STR);
+            $stmt->bindParam(":alert_hash", $alert_hash, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            if( $stmt->rowCount() == 0) {
+                // Empty results so we can notify
+                $stmt = $db->prepare("INSERT 
+                INTO addons_notification_control (notification_hash, notified_id, sent_date) 
+                VALUES(:alert_hash, :not_id, :current_date)
+                ;");
+                $stmt->bindParam(":alert_hash", $alert_hash, PDO::PARAM_STR, 50);
+                $stmt->bindParam(":not_id", $review["reviewer"], PDO::PARAM_INT);
+                $stmt->bindParam(":current_date", $date, PDO::PARAM_STR);
+                $stmt->execute();
+
+                $risk = get_risk_by_id($review["risk_id"] + 1000)[0];
+
+                // Set up the test email
+                $name = "[SR] Analysis review alert for risk - ".$escaper->escapeHtml($risk["subject"]);
+                
+                $subject = "[SR] Analysis review alert for risk - ".$escaper->escapeHtml($risk["subject"]);
+
+                $details = "<br/><hr/>";
+                $details .= "Risk ID:".$escaper->escapeHtml($review["risk_id"])."<br/>"; 
+                $details .= "Risk Subject:".$escaper->escapeHtml($risk["subject"])."<br/>"; 
+                $details .= "Analisys original date:".$escaper->escapeHtml($review["submission_date"])."<br/>"; 
+
+                $full_message = replace_notification_variables(get_notification_message("review_analysis_alert"), ["risk"=>$risk, 'details'=>$details]);
+
+                $owner = get_user_by_id($review["reviewer"]);
+
+                send_email($name, $owner["email"], $subject, $full_message);
+                
+            }
+
+
+        }
 
 
         db_close($db);
