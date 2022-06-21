@@ -17,7 +17,7 @@ function display_api(){
         All endpoints can be listet at https://yoursite/extras/api/api.php/openapi </div>
 <?php
 
-if($_SESSION["validation-error"] == true){
+if(isset($_SESSION["validation-error"]) && $_SESSION["validation-error"]  == true){
     $_SESSION["validation-error"] = false;
     echo "<div class='warning'>" . $escaper->escapeHtml($_SESSION["validation-message"]) . "</div>";
 }
