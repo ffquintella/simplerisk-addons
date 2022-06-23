@@ -59,6 +59,7 @@ COPY common/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 COPY common/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
 #RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 50M/g' /etc/php/8.1/apache2/php.ini
 RUN sed -i 's/\(upload_max_filesize =\) .*\(M\)/\1 50\2/g' /etc/php/8.1/apache2/php.ini
+RUN sed -i 's/\(post_max_size =\) .*\(M\)/\1 50\2/g' /etc/php/8.1/apache2/php.ini
 RUN sed -i 's/\(memory_limit =\) .*\(M\)/\1 256\2/g' /etc/php/8.1/apache2/php.ini
 RUN sed -i '/max_input_vars = 1000/a max_input_vars = 3000' /etc/php/8.1/apache2/php.ini
 
