@@ -527,6 +527,11 @@ function notify_risk_close($risk_id){
     return;
 }
 
+// V2
+function notify_document_update($document_id, $details){
+    return;
+}
+
 function notify_risk_comment($risk_id, $comment){
     global $escaper ;
 
@@ -846,6 +851,10 @@ function enable_notification_extra(){
         $stmt->execute();
 
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_document','A new document was uploaded. %event_details%', 'enabled');");
+        $stmt->execute();
+        
+        // V2
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('document_update','A document was updated. %event_details%', 'enabled');");
         $stmt->execute();
 
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_audit_comment','A new comment was made for one audit. %event_details%', 'enabled');");
