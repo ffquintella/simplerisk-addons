@@ -2,7 +2,7 @@
 
 require_once "functions.php";
 
-define('NOTIFICATION_EXTRA_VERSION', '1.0.1');
+define('NOTIFICATION_EXTRA_VERSION', '1.0.2');
 
 if(checkNeedsUpgrade(NOTIFICATION_EXTRA_VERSION)) doUpgrade(NOTIFICATION_EXTRA_VERSION);
 

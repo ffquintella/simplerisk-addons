@@ -18,6 +18,21 @@ function doUpgrade(string $toVersion){
         $fromVersion = "1.0.1";
     }
 
+    if ($toVersion == $fromVersion) return;
 
+    // taking it to 1.0.2
+    if(version_compare($fromVersion, '1.0.2', '<')){
+        // DO the 1.0.2 updates
+        // Open the database connection
+        $db = db_open();
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('document_update','A document was updated. %event_details%', 'enabled');");
+        $stmt->execute();
+        db_close($db);
+        update_setting("custom_auth_version", '1.0.2');
+    }
+
+    return;
 
 }
+
+
