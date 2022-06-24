@@ -76,6 +76,12 @@ function update_notification_config(){
     $stmt->bindParam(":value", $_POST['reviewanalysisalert'], PDO::PARAM_STR, 1000);
     $stmt->execute(); 
 
+    // V 1.0.2
+    $stmt = $db->prepare("UPDATE addons_notification_messages SET VALUE=:value WHERE ID=13;");
+    $stmt->bindParam(":value", $_POST['documentupdate'], PDO::PARAM_STR, 1000);
+    $stmt->execute(); 
+    
+
     db_close($db);
     
 
@@ -529,7 +535,7 @@ function notify_risk_close($risk_id){
     return;
 }
 
-// V2
+// V1.0.2
 function notify_document_update($document_id, $details){
     return;
 }
@@ -855,10 +861,6 @@ function enable_notification_extra(){
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_document','A new document was uploaded. %event_details%', 'enabled');");
         $stmt->execute();
         
-        // V2
-        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('document_update','A document was updated. %event_details%', 'enabled');");
-        $stmt->execute();
-
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('new_audit_comment','A new comment was made for one audit. %event_details%', 'enabled');");
         $stmt->execute();
 
@@ -876,7 +878,12 @@ function enable_notification_extra(){
 
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('review_analysis_alert','The analysis for the %risk_name% needs to bew reviwed today.', 'enabled');");
         $stmt->execute();  
-        
+
+        // V1.0.2
+        $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('document_update','A document was updated. %event_details%', 'enabled');");
+        $stmt->execute();
+
+        update_setting("custom_auth_version", NOTIFICATION_EXTRA_VERSION);
     }
     
     // Check if the notifications control table exists

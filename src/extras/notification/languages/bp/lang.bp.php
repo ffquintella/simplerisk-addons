@@ -27,5 +27,6 @@ $lang_not = array(
     'Event details'=>'Detalhes do evento',
     'Alert to review mitigation'=>'Alerta para revisar mitigação',
     'Alert to review analysis'=>'Alerta para revisar analise',
+    'Document update'=>'Atualização de documento',
     'Risk update'=>'Atualização de risco'
 );
