@@ -4,6 +4,8 @@ require_once "functions.php";
 
 define('NOTIFICATION_EXTRA_VERSION', '1.0.1');
 
+if(checkNeedsUpgrade(NOTIFICATION_EXTRA_VERSION)) doUpgrade(NOTIFICATION_EXTRA_VERSION);
+
 function display_notification(){
     global $escaper, $lang, $lang_not;
 ?>

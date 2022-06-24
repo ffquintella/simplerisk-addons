@@ -6,6 +6,8 @@ require_once __DIR__.'/../../includes/functions.php';
 require_once __DIR__.'/../../includes/governance.php';
 require_once __DIR__.'/../../includes/mail.php';
 
+require_once __DIR__.'/upgrade.php';
+
 // Include the SimpleRisk language file
 require_once(language_file());
 require_once(notification_language_file());
