@@ -536,7 +536,46 @@ function notify_risk_close($risk_id){
 }
 
 // V1.0.2
-function notify_document_update($document_id, $details){
+function notify_document_update($document_id, $changes){
+    global $escaper ;
+
+    if(get_notification_message_status("document_update") == "enabled"){
+
+        $document = get_document_by_id($document_id);
+
+        Analog::log ('Sending notification for update of document:'.$document_id, Analog::INFO);
+
+        // Set up the test email
+        $name = "[SR] Document updated - ".$escaper->escapeHtml($document["document_name"]);
+        
+        $subject = "[SR] Document updated - ".$escaper->escapeHtml($document["document_name"]);
+        //$full_message = get_notification_message("new_document");
+
+        $details = "<br/><hr/>";
+        $details .= "ID:".$escaper->escapeHtml($document["id"])."<br/>"; 
+        $details .= "NAME:".$escaper->escapeHtml($document["document_name"])."<br/>"; 
+        $details .= "TYPE:".$escaper->escapeHtml($document["document_type"])."<br/>"; 
+        $details = "<br/><hr/>";
+        $details .= "CHANGE:__:<br/>";
+        $i = 0; 
+        foreach($changes["changes"] as $key => $value){
+            $i++;
+            $details .= $i.":".$escaper->escapeHtml($key)." from:".$escaper->escapeHtml($value["from"])." to:".$escaper->escapeHtml($value["to"])."<br/>"; 
+        }
+        
+
+        $full_message = replace_notification_variables(get_notification_message("document_update"), ["details"=>$details]);
+
+
+        $emails = get_document_notified_emails($document);
+
+        foreach($emails as $email){
+            // Send the e-mail
+            send_email($name, $email, $subject, $full_message);
+        }
+
+    }
+   
     return;
 }
 
