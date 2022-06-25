@@ -132,6 +132,22 @@ foreach (get_notification_variables() as $key => $value){ ?>
         </tr>
         <tr>
             <?php 
+            if(get_notification_message_status("document_update") != "enabled"){
+                $bt_img = "off-button.png";
+                $action = "enable.php";
+            }else {
+                $bt_img = "on-button.png";
+                $action = "disable.php";
+            }
+            ?>
+        <td><?php echo $escaper->escapeHtml($lang_not['Document update']); ?><a href='/extras/notification/<?php echo $action; ?>?id=13'><img class='btimg' src='/extras/notification/imgs/<?php echo $bt_img; ?>' /></a></td>
+        </tr>
+        <tr>
+        <td><textarea class="not_text" id="documentupdate" name="documentupdate" rows="4"  width="100%"><?php echo get_notification_message("document_update");?></textarea></td>
+        
+        </tr>
+        <tr>
+            <?php 
             if(get_notification_message_status("new_audit_comment") != "enabled"){
                 $bt_img = "off-button.png";
                 $action = "enable.php";
