@@ -94,6 +94,9 @@ WORKDIR /var/www/
 COPY app/simplerisk /var/www/simplerisk
 COPY simplerisk.sql /scripts/db/simplerisk.sql
 
+RUN mkdir -p /scripts/dbmgmt/ 
+COPY restore_db.sh /scripts/dbmgmt/restore_db.sh
+RUN chmod +x /scripts/dbmgmt/restore_db.sh
 
 # Database PWD
 #RUN mysql < /scripts/db/mysql-init.sql

@@ -144,6 +144,7 @@
         <copy file="./src/extras/authentication/settings-example.php" tofile="${appdir}/simplerisk/extras/authentication/settings.php" overwrite="true" />
 
         <copy todir="${builddir}" file="configs/Dockerfile" /> 
+        
         <copy todir="${builddir}/common">
             <fileset dir="configs/common/">
                 <include name="*.conf" />
@@ -154,6 +155,7 @@
         <copy todir="${builddir}" file="configs/sr-apache-site.conf" /> 
         <copy todir="${builddir}" file="scripts/docker/build.sh" /> 
         <copy todir="${builddir}" file="scripts/docker/docker-test.sh" /> 
+        <copy todir="${builddir}" file="scripts/dbmgmt/restore_db.sh" /> 
         <copy tofile="${builddir}/simplerisk.sql" file="scripts/db/simplerisk-${version}-${dblanguage}.sql" /> 
     </target>
 
