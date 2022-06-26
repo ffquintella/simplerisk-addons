@@ -2,7 +2,7 @@
 
 function checkNeedsUpgrade($version): bool {
 
-    $setting = get_setting('custom_auth_version');
+    $setting = get_setting('notifications_version');
 
     if($setting != false){
         if($version != $setting) return true;
@@ -13,7 +13,7 @@ function checkNeedsUpgrade($version): bool {
 
 function doUpgrade(string $toVersion){
 
-    $fromVersion = get_setting('custom_auth_version');
+    $fromVersion = get_setting('notifications_version');
     if($fromVersion == false){
         $fromVersion = "1.0.1";
     }
@@ -28,7 +28,7 @@ function doUpgrade(string $toVersion){
         $stmt = $db->prepare("INSERT INTO addons_notification_messages (name,value, status) VALUES('document_update','A document was updated. %event_details%', 'enabled');");
         $stmt->execute();
         db_close($db);
-        update_setting("custom_auth_version", '1.0.2');
+        update_setting("notifications_version", '1.0.2');
     }
 
     return;
