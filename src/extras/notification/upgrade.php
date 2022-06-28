@@ -7,7 +7,19 @@ function checkNeedsUpgrade($version): bool {
     if($setting != false){
         if($version != $setting) return true;
         return false;
-    } else return true;
+    } else {
+
+        // Now let's check if the table exists because if it doesn't then it's a new installation not a upgrade
+        $db = db_open();
+        $stmt = $db->prepare("SELECT count(*) as tables FROM information_schema.TABLES WHERE TABLE_NAME = 'addons_notification_messages' AND TABLE_SCHEMA in (SELECT DATABASE());");
+        $stmt->execute();
+        // Store the list in the array
+        $result = $stmt->fetch();
+        db_close($db);
+
+        if($result["tables"] == 0) return false;
+        return true;
+    }
     
 }
 
