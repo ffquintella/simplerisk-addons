@@ -214,9 +214,9 @@ function notify_mitigation_update($id){
 
     if(get_notification_message_status("mitigation_update") == "enabled"){
 
-        $risk = get_risk_by_id($risk_id + 1000)[0];
+        $risk = get_risk_by_id($id + 1000)[0];
 
-        Analog::log ('Sending notification for update for mitigation at risk:'.$risk_id + 1000, Analog::INFO);
+        Analog::log ('Sending notification for update for mitigation at risk:'.$id + 1000, Analog::INFO);
 
         // Set up the test email
         $name = "[SR] Update on mitigation plan for risk - ".$escaper->escapeHtml($risk["subject"]);
