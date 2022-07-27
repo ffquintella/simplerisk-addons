@@ -39,3 +39,5 @@ build/
 src/extras/api/vendor/
 
 src/extras/notification/vendor/
+
+src/net-extras/DAL/obj/
