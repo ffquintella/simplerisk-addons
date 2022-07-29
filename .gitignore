@@ -47,3 +47,7 @@ src/net-extras/DAL/bin/Debug/net6.0/
 src/net-extras/ConsoleTest/bin/Debug/net6.0/
 
 src/net-extras/ConsoleTest/obj/
+
+src/net-extras/API/bin/Debug/net6.0/
+
+src/net-extras/API/obj/
