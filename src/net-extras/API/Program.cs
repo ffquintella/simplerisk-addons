@@ -1,7 +1,15 @@
 using API.Security;
+using DAL;
+using DAL.Context;
 using Microsoft.AspNetCore.Authorization;
 using Saml2.Authentication.Core.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+
+var configuration =  new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddUserSecrets<Program>()
+    .AddJsonFile($"appsettings.json");
+var config = configuration.Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +23,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddSingleton<IAuthorizationHandler, ValidSamlUserRequirementHandler>();
+
+builder.Services.AddSingleton<DALManager>(sp => new DALManager(config));
 
 // Add Saml2.Authentication.Core
 builder.Services.Configure<Saml2Configuration>(builder.Configuration.GetSection("Saml2"));
