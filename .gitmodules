@@ -1,0 +1,3 @@
+[submodule "Saml2.Authentication.Core"]
+	path = Saml2.Authentication.Core
+	url = https://github.com/ffquintella/Saml2.Authentication.Core.git
