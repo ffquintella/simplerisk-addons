@@ -11,7 +11,7 @@ public class DAL
     public DAL(IConfiguration configuration)
     {
         Configuration = configuration;
-        ConnectionString = Configuration["Dabatase:ConnectionString"];
+        ConnectionString = Configuration["Database:ConnectionString"];
 
     }
 }
