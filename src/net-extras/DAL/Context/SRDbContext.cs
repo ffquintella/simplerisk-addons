@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using DAL.Entities;
+using File = DAL.Entities.File;
 
 namespace DAL.Context
 {
