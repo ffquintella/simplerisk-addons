@@ -1,3 +1,5 @@
+using API.Security;
+using Microsoft.AspNetCore.Authorization;
 using Saml2.Authentication.Core.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -11,6 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddSingleton<IAuthorizationHandler, ValidSamlUserRequirementHandler>();
 
 // Add Saml2.Authentication.Core
 builder.Services.Configure<Saml2Configuration>(builder.Configuration.GetSection("Saml2"));
@@ -33,6 +37,16 @@ builder.Services.AddAuthentication(options =>
         options.SignInScheme = "saml2.cookies";
         options.IdentityProviderName = "stubidp.sustainsys";
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminOnly", policy =>
+        policy
+            .RequireAuthenticatedUser()
+            .RequireRole("Administrator")
+            .Requirements.Add(new ValidSamlUserRequirement())
+            );
+});
 
 var app = builder.Build();
 
