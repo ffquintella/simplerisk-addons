@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Saml2.Authentication.Core" Version="3.0.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
@@ -24,6 +24,10 @@
       <Content Include="Certificates\stubidp.sustainsys.com.cer">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Saml2.Authentication.Core\Source\Saml2.Authentication.Core\Saml2.Authentication.Core.csproj" />
     </ItemGroup>
 
 </Project>
