@@ -23,4 +23,14 @@ var dalManager = new DALManager(config);
 
 var dbContext = dalManager.GetContext();
 
+var risks = dbContext.Risks.ToList();
+
+int i = 0;
+foreach (var risk in risks)
+{
+    i++;
+    Console.WriteLine("Database Risks");
+    Console.WriteLine("Risk {0}:{1}", i ,risk.Subject);
+}
+
 Environment.Exit(-1);
