@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using System.Text;
+using DAL;
 using DAL.Context;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -20,11 +21,23 @@ public class ValidSamlUserRequirementHandler: AuthorizationHandler<ValidSamlUser
         var userClaimPrincipal = context.User;
 
         var userName = userClaimPrincipal.Identities.FirstOrDefault().Name;
+        if (userName == null)
+        {
+            context.Fail(new AuthorizationFailureReason(this, "User do not exists"));
+            return Task.CompletedTask;
+        }
+            
+        var user = _dbContext.Users.FirstOrDefault<User>(u => u.Username ==  Encoding.UTF8.GetBytes(userName));
 
-        var user = _dbContext.Users.FirstOrDefault<User>(u => u.Username.ToString() == userName);
-        
-        if(user != null) context.Succeed(requirement);
-        else context.Fail(new AuthorizationFailureReason(this, "User do not exists"));
+        if (user != null)
+        {
+            context.Succeed(requirement);
+            
+        }
+        else
+        {
+            context.Fail(new AuthorizationFailureReason(this, "User do not exists"));
+        }
         
         return Task.CompletedTask;
         

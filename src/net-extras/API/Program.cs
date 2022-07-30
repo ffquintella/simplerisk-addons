@@ -53,7 +53,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireAdminOnly", policy =>
         policy
             .RequireAuthenticatedUser()
-            .RequireRole("Administrator")
+            //.RequireRole("Administrator")
             .Requirements.Add(new ValidSamlUserRequirement())
             );
 });
