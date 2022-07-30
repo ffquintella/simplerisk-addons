@@ -23,6 +23,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddSingleton<IAuthorizationHandler, ValidSamlUserRequirementHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, UserInRoleRequirementHandler>();
 
 builder.Services.AddSingleton<DALManager>(sp => new DALManager(config));
 
@@ -51,11 +52,11 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminOnly", policy =>
-        policy
-            .RequireAuthenticatedUser()
-            //.RequireRole("Administrator")
-            .Requirements.Add(new ValidSamlUserRequirement())
-            );
+    {
+        policy.RequireAuthenticatedUser()
+            .Requirements.Add(new ValidSamlUserRequirement());
+        policy.Requirements.Add(new UserInRoleRequirement("Administrator"));
+    });
 });
 
 var app = builder.Build();
