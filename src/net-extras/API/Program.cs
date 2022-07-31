@@ -52,11 +52,6 @@ builder.Services.AddAuthentication(options =>
         options.IdentityProviderName = "stubidp.sustainsys";
     });
 
-/*
- builder.Services.AddAuthentication("BasicAuthentication")
-                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>
-                ("BasicAuthentication", null);
- */
 
 builder.Services.AddAuthorization(options =>
 {
