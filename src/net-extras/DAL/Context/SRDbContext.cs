@@ -128,7 +128,7 @@ namespace DAL.Context
         public virtual DbSet<TestStatus> TestStatuses { get; set; } = null!;
         public virtual DbSet<ThreatCatalog> ThreatCatalogs { get; set; } = null!;
         public virtual DbSet<ThreatGrouping> ThreatGroupings { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<User?> Users { get; set; } = null!;
         public virtual DbSet<UserPassHistory> UserPassHistories { get; set; } = null!;
         public virtual DbSet<UserPassReuseHistory> UserPassReuseHistories { get; set; } = null!;
         public virtual DbSet<UserToTeam> UserToTeams { get; set; } = null!;

@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.AddSingleton<IAuthorizationHandler, ValidSamlUserRequirementHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, ValidUserRequirementHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserInRoleRequirementHandler>();
 
 builder.Services.AddSingleton<DALManager>(sp => new DALManager(config));
@@ -36,8 +36,23 @@ builder.Services.AddSaml();
 builder.Services.AddAuthentication(options =>
     {
         //options.DefaultScheme = "saml2";
-        options.DefaultScheme = "BasicAuthentication";
-        options.DefaultChallengeScheme = "saml2";
+        options.DefaultScheme = "headerSelector";
+        options.DefaultChallengeScheme = "headerSelector";
+    })
+    .AddPolicyScheme("headerSelector", "this will select SAML or Basic Authentication", options =>
+    {
+        options.ForwardDefaultSelector = (context) =>
+        {
+            if (context.Request.Headers.ContainsKey("Authorization"))
+            {
+                return "BasicAuthentication";
+            }
+            else
+            {
+                return "saml2";
+            }
+        };
+        
     })
     .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null)
     .AddCookie("saml2.cookies", options =>
@@ -58,7 +73,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireAdminOnly", policy =>
     {
         policy.RequireAuthenticatedUser()
-            .Requirements.Add(new ValidSamlUserRequirement());
+            .Requirements.Add(new ValidUserRequirement());
         policy.Requirements.Add(new UserInRoleRequirement("Administrator"));
     });
 });

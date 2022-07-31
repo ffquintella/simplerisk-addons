@@ -28,7 +28,7 @@ public class UserInRoleRequirementHandler: AuthorizationHandler<UserInRoleRequir
             return Task.CompletedTask;
         }
             
-        var user = _dbContext.Users.Where(u => u.Type == "saml")
+        var user = _dbContext.Users
             .FirstOrDefault<User>(u => u.Username ==  Encoding.UTF8.GetBytes(userName));
         
         if (user != null)

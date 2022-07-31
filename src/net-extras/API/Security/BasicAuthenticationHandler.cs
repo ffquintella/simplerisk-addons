@@ -52,7 +52,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
 
                     if (valid)
                     {
-                        var claims = new[] { new Claim("name", credentials[0]) };
+                        var claims = new[] { new Claim(ClaimTypes.Name, credentials[0]) };
                         
                         if (user.Admin)
                         {
@@ -61,6 +61,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
                         
 
                         var identity = new ClaimsIdentity(claims, "Basic");
+                        
                         var claimsPrincipal = new ClaimsPrincipal(identity);
                         return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, Scheme.Name)));
                     }
