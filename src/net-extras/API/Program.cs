@@ -1,6 +1,7 @@
 using API.Security;
 using DAL;
 using DAL.Context;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Saml2.Authentication.Core.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -34,9 +35,11 @@ builder.Services.AddSaml();
 
 builder.Services.AddAuthentication(options =>
     {
-        options.DefaultScheme = "saml2";
+        //options.DefaultScheme = "saml2";
+        options.DefaultScheme = "BasicAuthentication";
         options.DefaultChallengeScheme = "saml2";
     })
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null)
     .AddCookie("saml2.cookies", options =>
     {
         options.Cookie.HttpOnly = true;
@@ -48,6 +51,12 @@ builder.Services.AddAuthentication(options =>
         options.SignInScheme = "saml2.cookies";
         options.IdentityProviderName = "stubidp.sustainsys";
     });
+
+/*
+ builder.Services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>
+                ("BasicAuthentication", null);
+ */
 
 builder.Services.AddAuthorization(options =>
 {
