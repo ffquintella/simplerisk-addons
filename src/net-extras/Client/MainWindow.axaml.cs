@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+
 
 namespace Client
 {
@@ -7,6 +9,13 @@ namespace Client
         public MainWindow()
         {
             InitializeComponent();
+        }
+        public void btn_SettingsOnClick( object? sender, RoutedEventArgs args )
+        {
+            //( sender as Button )!.Content = "Ginger";
+            var dialog = new Settings();
+            dialog.ShowDialog( this );
+            
         }
     }
 }

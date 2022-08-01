@@ -20,7 +20,7 @@
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
         <Panel Margin="40">
-            <Button Margin="40" HorizontalAlignment="Right" VerticalAlignment="Top" >
+            <Button Name="BtnSettings" Click="btn_SettingsOnClick" Margin="40" HorizontalAlignment="Right" VerticalAlignment="Top" >
                 <PathIcon Data="{StaticResource settings_regular}" />
             </Button>
         </Panel>
