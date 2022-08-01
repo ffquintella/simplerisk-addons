@@ -5,6 +5,7 @@
       <map>
         <entry key="Client/App.axaml" value="Client/Client.csproj" />
         <entry key="Client/Icons.axaml" value="Client/Client.csproj" />
+        <entry key="Client/Login.axaml" value="Client/Client.csproj" />
         <entry key="Client/MainWindow.axaml" value="Client/Client.csproj" />
       </map>
     </option>
