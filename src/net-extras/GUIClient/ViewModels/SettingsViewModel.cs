@@ -15,7 +15,9 @@ public class SettingsViewModel: ViewModelBase
        _localizationService = localizationService;
        _localizer = _localizationService.GetLocalizer();
 
-       _strSystem = _localizer.GetString("Settings");
+       var rm = _localizationService.GetResourceManager();
+       
+       _strSystem = rm.GetString("Settings");
 
     }
     public string StrSystem

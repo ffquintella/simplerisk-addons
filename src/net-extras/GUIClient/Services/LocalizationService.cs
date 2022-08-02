@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using System.Resources;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -18,7 +19,7 @@ public class LocalizationService: ILocalizationService
     {
         var options = Options.Create(new LocalizationOptions()
         {
-            ResourcesPath = "Resources/Localization",
+            ResourcesPath = "Resources",
         });
        
         var factory = new ResourceManagerStringLocalizerFactory( options, _loggerFactory);
@@ -26,5 +27,13 @@ public class LocalizationService: ILocalizationService
         var localizer = factory.Create(App.Current.GetType());
 
         return localizer;
+    }
+    
+    public ResourceManager GetResourceManager()
+    {
+        ResourceManager rm = new ResourceManager("GUIClient.Resources.Localization",
+            typeof(LocalizationService).Assembly);
+        
+        return rm;
     }
 }
