@@ -47,40 +47,6 @@ namespace GUIClient
                 mutex.ReleaseMutex();
             }
             
-            /*
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
-
-            using IHost host = Host.CreateDefaultBuilder(args)
-                .ConfigureServices(services =>
-                {
-                    services.AddLocalization(options =>
-                    {
-                        options.ResourcesPath = "Resources";
-                    });
-                    
-                    services.Configure<RequestLocalizationOptions>(options =>
-                    {
-                        var supportedCultures = new[]
-                        {
-                            new CultureInfo("en-US"),
-                            new CultureInfo("pt-BR")
-                        };
-
-                        options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
-                        options.SupportedCultures = supportedCultures;
-                        options.SupportedUICultures = supportedCultures;
-                    });
-                }).Build();
-           
-            IServiceProvider services = host.Services;
-            
-            ILogger logger =
-                services.GetRequiredService<ILoggerFactory>()
-                    .CreateLogger("GUIClient");
-            */
-            
-            //host.Run();
         } 
 
         private static void SubscribeToDomainUnhandledEvents() =>

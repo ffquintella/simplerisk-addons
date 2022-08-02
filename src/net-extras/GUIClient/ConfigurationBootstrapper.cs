@@ -30,4 +30,12 @@ public static  class ConfigurationBootstrapper
         configuration.GetSection("Logging").Bind(config);
         services.RegisterConstant(config);
     }
+    
+    private static void RegisterLanguagesConfiguration(IMutableDependencyResolver services,
+        IConfiguration configuration)
+    {
+        var config = new LanguagesConfiguration();
+        configuration.GetSection("Languages").Bind(config);
+        services.RegisterConstant(config);
+    }
 }
