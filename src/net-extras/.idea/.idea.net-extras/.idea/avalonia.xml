@@ -12,6 +12,7 @@
         <entry key="GUIClient/Icons.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Settings.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/MainWindow.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/Settings.axaml" value="GUIClient/GUIClient.csproj" />
       </map>
     </option>
   </component>

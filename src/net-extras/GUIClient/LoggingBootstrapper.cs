@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using GUIClient.Configuration;
 using GUIClient.Services;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Extensions.Logging;
 using Splat;
@@ -11,18 +12,20 @@ public static class LoggingBootstrapper
 {
     public static void RegisterLogging(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
     {
+        var config = resolver.GetService<LoggingConfiguration>();
+        var logFilePath = GetLogFileName(config, resolver);
+        var logger = new LoggerConfiguration()
+            .MinimumLevel.Override("Default", config.DefaultLogLevel)
+            .MinimumLevel.Override("Microsoft", config.MicrosoftLogLevel)
+            .WriteTo.Console()
+            .WriteTo.RollingFile(logFilePath, fileSizeLimitBytes: config.LimitBytes)
+            .CreateLogger();
+        var factory = new SerilogLoggerFactory(logger);
+        
+        services.RegisterConstant<ILoggerFactory>(factory);
+        
         services.RegisterLazySingleton(() =>
         {
-            var config = resolver.GetService<LoggingConfiguration>();
-            var logFilePath = GetLogFileName(config, resolver);
-            var logger = new LoggerConfiguration()
-                .MinimumLevel.Override("Default", config.DefaultLogLevel)
-                .MinimumLevel.Override("Microsoft", config.MicrosoftLogLevel)
-                .WriteTo.Console()
-                .WriteTo.RollingFile(logFilePath, fileSizeLimitBytes: config.LimitBytes)
-                .CreateLogger();
-            var factory = new SerilogLoggerFactory(logger);
-
             return factory.CreateLogger("Default");
         });
     }

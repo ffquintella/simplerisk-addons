@@ -14,7 +14,7 @@ public static  class ConfigurationBootstrapper
         RegisterLoggingConfiguration(services, configuration);
         //RegisterDefaultThemeConfiguration(services, configuration);
         //RegisterThemesNamesConfiguration(services, configuration);
-        //RegisterLanguagesConfiguration(services, configuration);
+        RegisterLanguagesConfiguration(services, configuration);
 
     }
     
