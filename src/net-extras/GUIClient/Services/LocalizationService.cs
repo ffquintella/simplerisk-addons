@@ -18,7 +18,7 @@ public class LocalizationService: ILocalizationService
     {
         var options = Options.Create(new LocalizationOptions()
         {
-            ResourcesPath = "Resources",
+            ResourcesPath = "Resources/Localization",
         });
        
         var factory = new ResourceManagerStringLocalizerFactory( options, _loggerFactory);

@@ -61,7 +61,7 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings.
+        ///   Looks up a localized string similar to SET.
         /// </summary>
         internal static string Settings {
             get {
