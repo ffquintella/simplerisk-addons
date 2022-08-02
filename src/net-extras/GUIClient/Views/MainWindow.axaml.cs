@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using GUIClient.ViewModels;
 
 namespace GUIClient.Views
 {
@@ -12,9 +13,12 @@ namespace GUIClient.Views
         public void btn_SettingsOnClick( object? sender, RoutedEventArgs args )
         {
             //( sender as Button )!.Content = "Ginger";
-            //var dialog = new Settings();
-            //dialog.ShowDialog( this );
-            
+            var dialog = new Settings()
+            {
+                DataContext = new SettingsViewModel()
+            };
+            dialog.ShowDialog( this );
+
         }
     }
 }
