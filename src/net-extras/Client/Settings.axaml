@@ -7,7 +7,9 @@
         Title="Settings"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
-        Width="1024" Height="800">
+        Width="1024" Height="800"
+        DataContext="SettingsViewModel">
+    
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
@@ -21,7 +23,7 @@
 
         <Panel Margin="40">
             <TabControl>
-                <TabItem Header="General" VerticalContentAlignment="Center">
+                <TabItem Header="{Binding strSystem}"  VerticalContentAlignment="Center">
                     <TextBlock Text="I am in the circle page !" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 </TabItem>
                 <TabItem>

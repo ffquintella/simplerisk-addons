@@ -59,5 +59,14 @@ namespace Client.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        internal static string System {
+            get {
+                return ResourceManager.GetString("System", resourceCulture);
+            }
+        }
     }
 }

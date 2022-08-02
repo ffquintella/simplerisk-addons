@@ -8,6 +8,9 @@
         <entry key="Client/Login.axaml" value="Client/Client.csproj" />
         <entry key="Client/MainWindow.axaml" value="Client/Client.csproj" />
         <entry key="Client/Settings.axaml" value="Client/Client.csproj" />
+        <entry key="GUIClient/App.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Icons.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/MainWindow.axaml" value="GUIClient/GUIClient.csproj" />
       </map>
     </option>
   </component>
