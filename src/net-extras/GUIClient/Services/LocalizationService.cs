@@ -1,4 +1,5 @@
 ﻿using System.Resources;
+using GUIClient.Tools;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -17,14 +18,8 @@ public class LocalizationService: ILocalizationService
     
     public IStringLocalizer GetLocalizer()
     {
-        var options = Options.Create(new LocalizationOptions()
-        {
-            ResourcesPath = "Resources",
-        });
-       
-        var factory = new ResourceManagerStringLocalizerFactory( options, _loggerFactory);
-        
-        var localizer = factory.Create(App.Current.GetType());
+
+        var localizer = new Locator();
 
         return localizer;
     }
