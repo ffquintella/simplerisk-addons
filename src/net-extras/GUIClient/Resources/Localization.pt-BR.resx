@@ -21,4 +21,10 @@
     <data name="Settings" xml:space="preserve">
         <value>Configurações</value>
     </data>
+    <data name="Server" xml:space="preserve">
+        <value>Servidor</value>
+    </data>
+    <data name="Sys" xml:space="preserve">
+        <value>Sistema</value>
+    </data>
 </root>

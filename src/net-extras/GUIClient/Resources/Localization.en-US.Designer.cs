@@ -50,5 +50,17 @@ namespace GUIClient.Resources {
                 return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
+        
+        internal static string Server {
+            get {
+                return ResourceManager.GetString("Server", resourceCulture);
+            }
+        }
+        
+        internal static string Sys {
+            get {
+                return ResourceManager.GetString("Sys", resourceCulture);
+            }
+        }
     }
 }

@@ -10,12 +10,15 @@ public class SettingsViewModel: ViewModelBase
 
     private string _strSystem;
     
+    private string StrServer { get; }
+    
     public SettingsViewModel(ILocalizationService localizationService)
     {
        _localizationService = localizationService;
        _localizer = _localizationService.GetLocalizer();
 
-       _strSystem = _localizer["Settings"];
+       _strSystem = _localizer["Sys"];
+       StrServer = _localizer["Server"];
 
 
     }
