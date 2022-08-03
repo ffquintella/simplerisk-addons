@@ -62,5 +62,17 @@ namespace GUIClient.Resources {
                 return ResourceManager.GetString("Sys", resourceCulture);
             }
         }
+        
+        internal static string OperationalSystem {
+            get {
+                return ResourceManager.GetString("OperationalSystem", resourceCulture);
+            }
+        }
+        
+        internal static string Host {
+            get {
+                return ResourceManager.GetString("Host", resourceCulture);
+            }
+        }
     }
 }

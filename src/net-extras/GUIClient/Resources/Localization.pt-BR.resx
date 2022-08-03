@@ -27,4 +27,10 @@
     <data name="Sys" xml:space="preserve">
         <value>Sistema</value>
     </data>
+    <data name="Host" xml:space="preserve">
+        <value>Computador</value>
+    </data>
+    <data name="OperationalSystem" xml:space="preserve">
+        <value>Sistema Operacional</value>
+    </data>
 </root>

@@ -22,7 +22,10 @@
         <Panel Margin="40">
             <TabControl>
                 <TabItem Header="{Binding StrSystem}"  VerticalContentAlignment="Center">
-                    <TextBlock Text="I am in the circle page !" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <StackPanel>
+                        <TextBlock Name="txtOS" Text="{Binding StrOperarionalSystem}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBlock Name="txtHost" Text="Host" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    </StackPanel>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>

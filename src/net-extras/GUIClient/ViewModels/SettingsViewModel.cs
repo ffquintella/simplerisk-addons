@@ -6,24 +6,22 @@ namespace GUIClient.ViewModels;
 public class SettingsViewModel: ViewModelBase
 {
     private ILocalizationService _localizationService;
-    private IStringLocalizer _localizer;
+    public IStringLocalizer _localizer;
 
-    private string _strSystem;
-    
-    private string StrServer { get; }
+    public string StrServer { get; }
+    public string StrSystem { get; }
+    public string StrOperarionalSystem { get; }
     
     public SettingsViewModel(ILocalizationService localizationService)
     {
        _localizationService = localizationService;
        _localizer = _localizationService.GetLocalizer();
 
-       _strSystem = _localizer["Sys"];
+       StrSystem = _localizer["Sys"];
        StrServer = _localizer["Server"];
+       StrOperarionalSystem = _localizer["OperationalSystem"];
 
 
     }
-    public string StrSystem
-    {
-        get { return _strSystem; }
-    }
+
 }
