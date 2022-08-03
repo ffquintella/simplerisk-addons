@@ -26,7 +26,7 @@
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
-                        <TextBlock VerticalAlignment="Center">Triangle</TextBlock>
+                        <TextBlock VerticalAlignment="Center" >Triangle</TextBlock>
                     </TabItem.Header>
                     <StackPanel>
                         <TextBlock Text="I am in the triangle page ! I'll put a button to show you that each page contains what you want." HorizontalAlignment="Left" VerticalAlignment="Center"/>
