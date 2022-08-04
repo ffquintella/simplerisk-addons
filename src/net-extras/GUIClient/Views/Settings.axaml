@@ -7,7 +7,7 @@
         Title="Settings"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
-        Width="800" Height="600">
+        Width="600" Height="400">
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
@@ -34,13 +34,10 @@
                         
                     </StackPanel>
                 </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <TextBlock VerticalAlignment="Center" Text="{Binding StrServer}"/>
-                    </TabItem.Header>
+                <TabItem VerticalContentAlignment="Center" Header="{Binding StrServer}" Margin="10" >
+
                     <StackPanel>
                         <TextBlock Text="I am in the triangle page ! I'll put a button to show you that each page contains what you want." HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <Button>A button in the triangle page !</Button>
                     </StackPanel>
                 </TabItem>
             </TabControl>
