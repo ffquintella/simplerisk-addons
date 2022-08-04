@@ -18,8 +18,8 @@
                     MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-
-        <Panel Margin="5">
+        
+        <Panel Margin="0 30">
             <TabControl>
                 <TabItem Header="{Binding StrSystem}"  VerticalContentAlignment="Center" Margin="10">
                     <StackPanel Spacing="2">

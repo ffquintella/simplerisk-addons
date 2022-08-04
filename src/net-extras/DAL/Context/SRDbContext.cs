@@ -128,7 +128,7 @@ namespace DAL.Context
         public virtual DbSet<TestStatus> TestStatuses { get; set; } = null!;
         public virtual DbSet<ThreatCatalog> ThreatCatalogs { get; set; } = null!;
         public virtual DbSet<ThreatGrouping> ThreatGroupings { get; set; } = null!;
-        public virtual DbSet<User?> Users { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserPassHistory> UserPassHistories { get; set; } = null!;
         public virtual DbSet<UserPassReuseHistory> UserPassReuseHistories { get; set; } = null!;
         public virtual DbSet<UserToTeam> UserToTeams { get; set; } = null!;
@@ -223,7 +223,7 @@ namespace DAL.Context
                 entity.ToTable("assessments");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -242,7 +242,7 @@ namespace DAL.Context
                 entity.ToTable("assessment_answers");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -278,7 +278,7 @@ namespace DAL.Context
                 entity.ToTable("assessment_answers_to_assets");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.AssessmentAnswerId, e.AssetId }, "assessment_answer_asset_unique")
                     .IsUnique();
@@ -295,7 +295,7 @@ namespace DAL.Context
                 entity.ToTable("assessment_answers_to_asset_groups");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.AssessmentAnswerId, e.AssetGroupId }, "assessment_answer_asset_group_unique")
                     .IsUnique();
@@ -310,7 +310,7 @@ namespace DAL.Context
                 entity.ToTable("assessment_questions");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -330,7 +330,7 @@ namespace DAL.Context
                 entity.ToTable("assessment_scoring");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Id, "id")
                     .IsUnique();
@@ -515,7 +515,7 @@ namespace DAL.Context
                 entity.ToTable("assessment_scoring_contributing_impacts");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -531,7 +531,7 @@ namespace DAL.Context
                 entity.ToTable("assets");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
@@ -571,7 +571,7 @@ namespace DAL.Context
                 entity.ToTable("asset_groups");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "name_unique")
                     .IsUnique();
@@ -588,7 +588,7 @@ namespace DAL.Context
                 entity.ToTable("asset_values");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
@@ -610,7 +610,7 @@ namespace DAL.Context
                 entity.ToTable("assets_asset_groups");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.AssetId, e.AssetGroupId }, "asset_asset_group_unique")
                     .IsUnique();
@@ -627,7 +627,7 @@ namespace DAL.Context
                 entity.ToTable("audit_log");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.LogType)
                     .HasMaxLength(100)
@@ -652,7 +652,7 @@ namespace DAL.Context
                 entity.ToTable("backups");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -682,7 +682,7 @@ namespace DAL.Context
                 entity.ToTable("category");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -699,7 +699,7 @@ namespace DAL.Context
                 entity.ToTable("close_reason");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -713,7 +713,7 @@ namespace DAL.Context
                 entity.ToTable("closures");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -738,7 +738,7 @@ namespace DAL.Context
                 entity.ToTable("comments");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -761,7 +761,7 @@ namespace DAL.Context
                 entity.ToTable("compliance_files");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -805,7 +805,7 @@ namespace DAL.Context
                 entity.ToTable("contributing_risks");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -821,7 +821,7 @@ namespace DAL.Context
                 entity.ToTable("contributing_risks_impact");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.ContributingRisksId, "contributing_risks_id");
 
@@ -843,7 +843,7 @@ namespace DAL.Context
                 entity.ToTable("contributing_risks_likelihood");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Value, "crl_index");
 
@@ -864,7 +864,7 @@ namespace DAL.Context
                 entity.ToTable("control_class");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -881,7 +881,7 @@ namespace DAL.Context
                 entity.ToTable("control_maturity");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .ValueGeneratedNever()
@@ -900,7 +900,7 @@ namespace DAL.Context
                 entity.ToTable("control_phase");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -917,7 +917,7 @@ namespace DAL.Context
                 entity.ToTable("control_priority");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -934,7 +934,7 @@ namespace DAL.Context
                 entity.ToTable("control_type");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -950,7 +950,7 @@ namespace DAL.Context
                 entity.ToTable("custom_risk_model_values");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.Impact, e.Likelihood }, "impact_likelihood_unique")
                     .IsUnique();
@@ -969,7 +969,7 @@ namespace DAL.Context
                 entity.ToTable("CVSS_scoring");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -997,7 +997,7 @@ namespace DAL.Context
                 entity.ToTable("data_classification");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1016,7 +1016,7 @@ namespace DAL.Context
                 entity.ToTable("date_formats");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasMaxLength(20)
@@ -1028,7 +1028,7 @@ namespace DAL.Context
                 entity.ToTable("documents");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1049,7 +1049,7 @@ namespace DAL.Context
                 entity.Property(e => e.DocumentName)
                     .HasColumnType("text")
                     .HasColumnName("document_name")
-                    .UseCollation("utf8_bin");
+                    .UseCollation("utf8mb3_bin");
 
                 entity.Property(e => e.DocumentOwner).HasColumnName("document_owner");
 
@@ -1060,7 +1060,7 @@ namespace DAL.Context
                 entity.Property(e => e.DocumentType)
                     .HasMaxLength(50)
                     .HasColumnName("document_type")
-                    .UseCollation("utf8_bin");
+                    .UseCollation("utf8mb3_bin");
 
                 entity.Property(e => e.FileId).HasColumnName("file_id");
 
@@ -1093,7 +1093,7 @@ namespace DAL.Context
                 entity.ToTable("document_exceptions");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -1156,7 +1156,7 @@ namespace DAL.Context
                 entity.ToTable("document_exceptions_status");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -1173,7 +1173,7 @@ namespace DAL.Context
                 entity.ToTable("document_status");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -1190,7 +1190,7 @@ namespace DAL.Context
                 entity.ToTable("dynamic_saved_selections");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -1222,7 +1222,7 @@ namespace DAL.Context
                 entity.ToTable("failed_login_attempts");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1251,7 +1251,7 @@ namespace DAL.Context
                 entity.ToTable("family");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -1265,7 +1265,7 @@ namespace DAL.Context
                 entity.ToTable("fields");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
@@ -1286,7 +1286,7 @@ namespace DAL.Context
                 entity.ToTable("files");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1330,7 +1330,7 @@ namespace DAL.Context
                 entity.ToTable("file_types");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
@@ -1350,7 +1350,7 @@ namespace DAL.Context
                 entity.ToTable("file_type_extensions");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
@@ -1370,7 +1370,7 @@ namespace DAL.Context
                 entity.ToTable("frameworks");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -1402,7 +1402,7 @@ namespace DAL.Context
                 entity.ToTable("framework_controls");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1469,7 +1469,7 @@ namespace DAL.Context
                 entity.ToTable("framework_control_mappings");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.ControlId, "control_id");
 
@@ -1491,7 +1491,7 @@ namespace DAL.Context
                 entity.ToTable("framework_control_tests");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Id, "id")
                     .IsUnique();
@@ -1544,7 +1544,7 @@ namespace DAL.Context
                 entity.ToTable("framework_control_test_audits");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1594,7 +1594,7 @@ namespace DAL.Context
                 entity.ToTable("framework_control_test_comments");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1617,7 +1617,7 @@ namespace DAL.Context
                 entity.ToTable("framework_control_test_results");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1651,7 +1651,7 @@ namespace DAL.Context
                 entity.ToTable("framework_control_test_results_to_risks");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1669,7 +1669,7 @@ namespace DAL.Context
                 entity.ToTable("framework_control_to_framework");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.FrameworkId, e.ControlId }, "framework_id");
 
@@ -1683,7 +1683,7 @@ namespace DAL.Context
                 entity.ToTable("framework_control_type_mappings");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1700,7 +1700,7 @@ namespace DAL.Context
                 entity.ToTable("graphical_saved_selections");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -1726,7 +1726,7 @@ namespace DAL.Context
                 entity.ToTable("impact");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Value, "impact_index");
 
@@ -1744,7 +1744,7 @@ namespace DAL.Context
                 entity.ToTable("items_to_teams");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.ItemId, e.TeamId, e.Type }, "item_team_unique")
                     .IsUnique();
@@ -1772,7 +1772,7 @@ namespace DAL.Context
                 entity.ToTable("languages");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -1792,7 +1792,7 @@ namespace DAL.Context
                 entity.ToTable("likelihood");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Value, "likelihood_index");
 
@@ -1811,7 +1811,7 @@ namespace DAL.Context
                 entity.ToTable("location");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -1825,7 +1825,7 @@ namespace DAL.Context
                 entity.ToTable("mgmt_reviews");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -1856,7 +1856,7 @@ namespace DAL.Context
                 entity.ToTable("mitigations");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.RiskId, "risk_id");
 
@@ -1910,7 +1910,7 @@ namespace DAL.Context
                 entity.ToTable("mitigation_accept_users");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.RiskId, "risk_id");
 
@@ -1933,7 +1933,7 @@ namespace DAL.Context
                 entity.ToTable("mitigation_effort");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -1951,7 +1951,7 @@ namespace DAL.Context
                 entity.ToTable("mitigation_to_controls");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.ControlId, e.MitigationId }, "control_id");
 
@@ -1981,7 +1981,7 @@ namespace DAL.Context
                 entity.ToTable("mitigation_to_team");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.TeamId, e.MitigationId }, "team_id");
 
@@ -1998,7 +1998,7 @@ namespace DAL.Context
                 entity.ToTable("next_step");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -2014,7 +2014,7 @@ namespace DAL.Context
                 entity.ToTable("password_reset");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Attempts).HasColumnName("attempts");
 
@@ -2037,7 +2037,7 @@ namespace DAL.Context
                 entity.ToTable("pending_risks");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -2072,7 +2072,7 @@ namespace DAL.Context
                 entity.ToTable("permissions");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Key, "key")
                     .IsUnique();
@@ -2099,7 +2099,7 @@ namespace DAL.Context
                 entity.ToTable("permission_groups");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
@@ -2126,7 +2126,7 @@ namespace DAL.Context
                 entity.ToTable("permission_to_permission_group");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.PermissionGroupId, e.PermissionId }, "permission_group_id");
 
@@ -2144,7 +2144,7 @@ namespace DAL.Context
                 entity.ToTable("permission_to_user");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.UserId, e.PermissionId }, "user_id");
 
@@ -2161,7 +2161,7 @@ namespace DAL.Context
                 entity.ToTable("planning_strategy");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -2178,7 +2178,7 @@ namespace DAL.Context
                 entity.ToTable("projects");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -2210,7 +2210,7 @@ namespace DAL.Context
                 entity.ToTable("questionnaire_pending_risks");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -2246,7 +2246,7 @@ namespace DAL.Context
                 entity.ToTable("regulation");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -2260,7 +2260,7 @@ namespace DAL.Context
                 entity.ToTable("residual_risk_scoring_history");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.RiskId, "risk_id");
 
@@ -2283,7 +2283,7 @@ namespace DAL.Context
                 entity.ToTable("review");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -2299,7 +2299,7 @@ namespace DAL.Context
                 entity.ToTable("review_levels");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -2315,7 +2315,7 @@ namespace DAL.Context
                 entity.ToTable("risks");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Category, "category");
 
@@ -2417,7 +2417,7 @@ namespace DAL.Context
                 entity.ToTable("risk_catalog");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -2448,7 +2448,7 @@ namespace DAL.Context
                 entity.ToTable("risk_function");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -2465,7 +2465,7 @@ namespace DAL.Context
                 entity.ToTable("risk_grouping");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -2485,7 +2485,7 @@ namespace DAL.Context
                 entity.ToTable("risk_levels");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Color)
                     .HasMaxLength(20)
@@ -2511,7 +2511,7 @@ namespace DAL.Context
                 entity.ToTable("risk_models");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -2527,7 +2527,7 @@ namespace DAL.Context
                 entity.ToTable("risk_scoring");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.CalculatedRisk, "calculated_risk");
 
@@ -2714,7 +2714,7 @@ namespace DAL.Context
                 entity.ToTable("risk_scoring_contributing_impacts");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.ContributingRiskId, "contributing_risk_id");
 
@@ -2736,7 +2736,7 @@ namespace DAL.Context
                 entity.ToTable("risk_scoring_history");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.RiskId, "risk_id");
 
@@ -2760,7 +2760,7 @@ namespace DAL.Context
                 entity.ToTable("risk_to_additional_stakeholder");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.UserId, e.RiskId }, "user_id");
 
@@ -2778,7 +2778,7 @@ namespace DAL.Context
                 entity.ToTable("risk_to_location");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.LocationId, e.RiskId }, "location_id");
 
@@ -2796,7 +2796,7 @@ namespace DAL.Context
                 entity.ToTable("risk_to_team");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.TeamId, e.RiskId }, "team_id");
 
@@ -2814,7 +2814,7 @@ namespace DAL.Context
                 entity.ToTable("risk_to_technology");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.TechnologyId, e.RiskId }, "technology_id");
 
@@ -2830,7 +2830,7 @@ namespace DAL.Context
                 entity.ToTable("risks_to_assets");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.AssetId, e.RiskId }, "asset_id")
                     .IsUnique();
@@ -2847,7 +2847,7 @@ namespace DAL.Context
                 entity.ToTable("risks_to_asset_groups");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.AssetGroupId, e.RiskId }, "asset_group_id")
                     .IsUnique();
@@ -2865,7 +2865,7 @@ namespace DAL.Context
                 entity.ToTable("role");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Default, "default")
                     .IsUnique();
@@ -2890,7 +2890,7 @@ namespace DAL.Context
                 entity.ToTable("role_responsibilities");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.PermissionId, e.RoleId }, "permission_id");
 
@@ -2907,7 +2907,7 @@ namespace DAL.Context
                 entity.ToTable("scoring_methods");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -2921,7 +2921,7 @@ namespace DAL.Context
                 entity.ToTable("sessions");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasMaxLength(128)
@@ -2942,7 +2942,7 @@ namespace DAL.Context
                 entity.ToTable("settings");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
@@ -2962,7 +2962,7 @@ namespace DAL.Context
                 entity.ToTable("source");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -2979,7 +2979,7 @@ namespace DAL.Context
                 entity.ToTable("status");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -2993,7 +2993,7 @@ namespace DAL.Context
                 entity.ToTable("tags");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Tag1, "tag_unique")
                     .IsUnique();
@@ -3012,7 +3012,7 @@ namespace DAL.Context
                 entity.ToTable("tags_taggees");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.TagId, e.TaggeeId, e.Type }, "tag_taggee_unique")
                     .IsUnique();
@@ -3036,7 +3036,7 @@ namespace DAL.Context
                 entity.ToTable("team");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -3053,7 +3053,7 @@ namespace DAL.Context
                 entity.ToTable("technology");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -3070,7 +3070,7 @@ namespace DAL.Context
                 entity.ToTable("test_results");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "name_unique")
                     .IsUnique();
@@ -3094,7 +3094,7 @@ namespace DAL.Context
                 entity.ToTable("test_status");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -3108,7 +3108,7 @@ namespace DAL.Context
                 entity.ToTable("threat_catalog");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -3137,7 +3137,7 @@ namespace DAL.Context
                 entity.ToTable("threat_grouping");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -3158,7 +3158,7 @@ namespace DAL.Context
                 entity.ToTable("user");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value).HasColumnName("value");
 
@@ -3246,7 +3246,7 @@ namespace DAL.Context
                 entity.ToTable("user_pass_history");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -3272,7 +3272,7 @@ namespace DAL.Context
                 entity.ToTable("user_pass_reuse_history");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -3297,7 +3297,7 @@ namespace DAL.Context
                 entity.ToTable("user_to_team");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.TeamId, e.UserId }, "team_id");
 
@@ -3311,7 +3311,7 @@ namespace DAL.Context
                 entity.ToTable("validation_files");
 
                 entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8_general_ci");
+                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 

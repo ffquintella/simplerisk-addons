@@ -9,9 +9,9 @@ namespace GUIClient.Tools;
 public class Locator: IStringLocalizer
 {
 
-    private CultureInfo _culture;
+    private CultureInfo? _culture;
     
-    public Locator(CultureInfo culture =  null)
+    public Locator(CultureInfo? culture =  null)
     {
         //if (culture == null) culture = new CultureInfo("en-US");
         _culture = culture;
@@ -29,8 +29,24 @@ public class Locator: IStringLocalizer
             
             ResourceManager rm = new ResourceManager("GUIClient.Resources.Localization",
                 typeof(Locator).Assembly);
-            if(_culture == null) return new LocalizedString(name, rm.GetString(name));
-            return new LocalizedString(name, rm.GetString(name, _culture));
+            
+            string? str;
+            
+            if (_culture == null)
+            {
+                str = rm.GetString(name);
+                if (str == null)
+                {
+                    str = "";
+                }
+                return new LocalizedString(name, str);
+            }
+            str = rm.GetString(name, _culture);
+            if (str == null)
+            {
+                str = "";
+            }
+            return new LocalizedString(name, str);
         }
      
     }
