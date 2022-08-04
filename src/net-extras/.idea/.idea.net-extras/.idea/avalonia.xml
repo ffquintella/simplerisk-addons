@@ -11,6 +11,8 @@
         <entry key="GUIClient/App.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Icons.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Settings.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Styles/Icons.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Styles/WindowStyles.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/MainWindow.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/Settings.axaml" value="GUIClient/GUIClient.csproj" />
       </map>
