@@ -1,4 +1,5 @@
-﻿using GUIClient.Services;
+﻿using System.Globalization;
+using GUIClient.Services;
 using GUIClient.Tools;
 using Microsoft.Extensions.Localization;
 
@@ -14,16 +15,21 @@ public class SettingsViewModel: ViewModelBase
     public string StrOperationalSystem { get; }
     public string StrOperationalSystemData { get; }
     
+    public string StrHost { get; }
+    public string StrHostData { get; }
+    
     public SettingsViewModel(ILocalizationService localizationService)
     {
        _localizationService = localizationService;
        _localizer = _localizationService.GetLocalizer();
 
        StrSystem = _localizer["Sys"];
-       StrServer = _localizer["Server"] +':';
+       StrServer = _localizer["Server"] ;
        StrOperationalSystem = _localizer["OperationalSystem"] + ":";
-
+       StrHost = _localizer["Host"] +':';
+       
        StrOperationalSystemData = ComputerInfo.GetOsVersion();
+       StrHostData = ComputerInfo.GetComputerName() ;
 
     }
 

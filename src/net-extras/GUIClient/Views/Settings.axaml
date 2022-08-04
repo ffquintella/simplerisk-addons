@@ -27,8 +27,11 @@
                             <TextBlock Name="txtOS" Text="{Binding StrOperationalSystem}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                             <TextBlock Name="txtOSData" Text="{Binding StrOperationalSystemData}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock Name="txtHost" Text="{Binding StrHost}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBlock Name="txtHostData" Text="{Binding StrHostData}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        </StackPanel>
                         
-                        <TextBlock Name="txtHost" Text="Host" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     </StackPanel>
                 </TabItem>
                 <TabItem>
