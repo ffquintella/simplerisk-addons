@@ -19,6 +19,9 @@ public class SettingsViewModel: ViewModelBase
     public string StrHost { get; }
     public string StrHostData { get; }
     
+    public string StrDescription { get; }
+    
+    public ServerConfiguration ServerConfiguration { get; }
     public string ServerURL { get; }
     
     public SettingsViewModel(ILocalizationService localizationService, ServerConfiguration serverConfiguration)
@@ -30,9 +33,12 @@ public class SettingsViewModel: ViewModelBase
        StrServer = _localizer["Server"] ;
        StrOperationalSystem = _localizer["OperationalSystem"] + ":";
        StrHost = _localizer["Host"] +':';
+       StrDescription = _localizer["Description"] +':';
        
        StrOperationalSystemData = ComputerInfo.GetOsVersion();
        StrHostData = ComputerInfo.GetComputerName() ;
+
+       ServerConfiguration = serverConfiguration;
        
        ServerURL = serverConfiguration.Url;
 

@@ -33,4 +33,7 @@
     <data name="Host" xml:space="preserve">
         <value>Host</value>
     </data>
+    <data name="Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
 </root>

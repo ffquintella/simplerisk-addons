@@ -33,4 +33,7 @@
     <data name="OperationalSystem" xml:space="preserve">
         <value>Sistema Operacional</value>
     </data>
+    <data name="Description" xml:space="preserve">
+        <value>Descrição</value>
+    </data>
 </root>
