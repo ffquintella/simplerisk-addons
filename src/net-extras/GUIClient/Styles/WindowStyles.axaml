@@ -8,6 +8,10 @@
 
     <!-- Add Styles Here -->
     
+    <Style Selector="Window">
+        <Setter Property="Background" Value="#282928"/>
+    </Style>
+    
     <Style Selector="TabControl">
         <Setter Property="Background" Value="#282928"/>
         <!--Setter Property="Height" Value="120"/-->
@@ -19,7 +23,7 @@
     </Style>
 
     <Style Selector="TabItem">
-        <Setter Property="FontSize" Value="12"/>
+        <!--Setter Property="FontSize" Value="12"/-->
         <Setter Property="Height" Value="34"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Background" Value="#8b8c8c"/>
@@ -35,12 +39,12 @@
         <Setter Property="Margin" Value="0 0 0 0"/>
         <Setter Property="Padding" Value="10 0"/>
     </Style-->
-    <Style Selector="TabItem:focus /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="Background" Value="#f0f0f0"/>
-    </Style>
+    <!--Style Selector="TabItem:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#3b3a3a"/>
+    </Style-->
 
     <Style Selector="TabItem:selected">
-        <Setter Property="Foreground" Value="#2B579A"/>
+        <Setter Property="Foreground" Value="#1f1f1f"/>
         <Setter Property="Margin" Value="0 0 0 0"/>
         <Setter Property="Padding" Value="10 0"/>
     </Style>
