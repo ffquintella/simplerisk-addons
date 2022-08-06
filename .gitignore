@@ -51,3 +51,9 @@ src/net-extras/ConsoleTest/obj/
 src/net-extras/API/bin/Debug/net6.0/
 
 src/net-extras/API/obj/
+
+src/net-extras/Model/bin/Debug/net6.0/
+
+src/net-extras/Model/obj/Debug/net6.0/
+
+src/net-extras/Model/obj/

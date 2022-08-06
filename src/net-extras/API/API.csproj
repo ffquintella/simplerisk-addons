@@ -30,6 +30,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DAL\DAL.csproj" />
+      <ProjectReference Include="..\Model\Model.csproj" />
       <ProjectReference Include="..\Saml2.Authentication.Core\Source\Saml2.Authentication.Core\Saml2.Authentication.Core.csproj" />
     </ItemGroup>
 

@@ -4,6 +4,7 @@ using System.Text.Encodings.Web;
 using DAL;
 using DAL.Context;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using static BCrypt.Net.BCrypt;
 
@@ -26,6 +27,12 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
+        var endpoint = Context.GetEndpoint();
+        if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
+        {
+            return Task.FromResult(AuthenticateResult.NoResult());
+        }
+        
         var authHeader = Request.Headers["Authorization"].ToString();
         if (authHeader != null && authHeader.StartsWith("basic", StringComparison.OrdinalIgnoreCase))
         {
