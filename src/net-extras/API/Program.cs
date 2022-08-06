@@ -47,7 +47,7 @@ builder.Services.AddAuthentication(options =>
             {
                 return "BasicAuthentication";
             }
-            else if(config["Saml2:Enabled"] == "true")
+            else if(config["Saml2:Enabled"] == "True")
             {
                 return "saml2";
             }

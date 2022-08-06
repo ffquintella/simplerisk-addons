@@ -31,6 +31,17 @@ public class AuthenticationController : ControllerBase
             Type = "Basic"
             
         };
+        if (_configuration["Saml2:Enabled"] == "True")
+        {
+            var saml = new AuthenticationMethod
+            {
+                Name = "SAML",
+                Description = "SAML Authentication",
+                Type = "SAML"
+            };
+            result.Add(saml);
+
+        }
         
         result.Add(basic);
         
