@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using GUIClient.Configuration;
@@ -13,7 +14,16 @@ namespace GUIClient.Views
         public MainWindow()
         {
             InitializeComponent();
+             
         }
+        
+        
+        
+        private void LoadCheck(object? sender, EventArgs eventArgs)
+        {
+            var authenticationService = GetService<IAuthenticationService>();
+            if(authenticationService.IsAuthenticated == false) authenticationService.TryAuthenticate(this);
+        } 
         public void btn_SettingsOnClick( object? sender, RoutedEventArgs args )
         {
             var localizationService = GetService<ILocalizationService>();
