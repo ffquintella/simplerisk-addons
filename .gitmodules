@@ -1,3 +1,6 @@
 [submodule "src/net-extras/Saml2.Authentication.Core"]
 	path = src/net-extras/Saml2.Authentication.Core
 	url = https://github.com/ffquintella/Saml2.Authentication.Core.git
+[submodule "MessageBox.Avalonia"]
+	path = MessageBox.Avalonia
+	url = https://github.com/AvaloniaCommunity/MessageBox.Avalonia.git
