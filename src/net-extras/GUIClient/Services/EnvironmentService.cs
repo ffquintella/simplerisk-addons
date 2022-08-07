@@ -1,4 +1,5 @@
-﻿using SysEnv = System.Environment;
+﻿using DeviceId;
+using SysEnv = System.Environment;
 
 namespace GUIClient.Services;
 
@@ -13,6 +14,20 @@ public class EnvironmentService: IEnvironmentService
     public string ApplicationDataFolder
     {
         get { return ApplicationData + @"\SRGUIClient"; }
+    }
+
+    public string DeviceID
+    {
+        get
+        {
+            string deviceId = new DeviceIdBuilder()
+                .AddMachineName()
+                .AddMacAddress()
+                .AddUserName()
+                .ToString();
+            
+            return deviceId;
+        }
     }
 
     public string? GetEnvironmentVariable(string variableName) =>

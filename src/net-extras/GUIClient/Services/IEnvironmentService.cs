@@ -9,6 +9,8 @@ public interface IEnvironmentService
     string ApplicationData { get; }
     
     string ApplicationDataFolder { get; }
+    
+    string DeviceID { get; }
 
     string? GetEnvironmentVariable(string variableName);
 }

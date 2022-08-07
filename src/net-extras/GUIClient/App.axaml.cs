@@ -22,6 +22,9 @@ namespace GUIClient
         public override void OnFrameworkInitializationCompleted()
         {
             
+            var mutableConfigurationService = GetService<IMutableConfigurationService>();
+            mutableConfigurationService.Initialize();
+            
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow
@@ -33,6 +36,6 @@ namespace GUIClient
            
             base.OnFrameworkInitializationCompleted();
         }
-        
+        private static T GetService<T>() => Locator.Current.GetService<T>();
     }
 }

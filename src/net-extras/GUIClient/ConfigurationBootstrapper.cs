@@ -29,8 +29,10 @@ public static  class ConfigurationBootstrapper
     private static void RegisterMutableConfiguration(IMutableDependencyResolver services,
         IConfiguration configuration)
     {
-        services.RegisterLazySingleton<IMutableConfigurationService>(() => new MutableConfigurationService());
+        services.RegisterLazySingleton<IMutableConfigurationService>(() => new MutableConfigurationService(GetService<IEnvironmentService>()));
     }
+    
+    private static T GetService<T>() => Locator.Current.GetService<T>();
     
     private static void RegisterConfiguration(IMutableDependencyResolver services,
         IConfiguration configuration)
