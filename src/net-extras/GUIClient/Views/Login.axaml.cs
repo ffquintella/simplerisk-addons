@@ -12,12 +12,14 @@ public partial class Login : Window
 {
     private IRegistrationService _registrationService;
     private ILocalizationService _localizationService;
+    private IEnvironmentService _environmentService;
     private IStringLocalizer _localizer;
 
     public Login()
     {
         _registrationService = GetService<IRegistrationService>();
         _localizationService = GetService<ILocalizationService>();
+        _environmentService = GetService<IEnvironmentService>();
         _localizer = _localizationService.GetLocalizer();
         
         InitializeComponent();
@@ -37,7 +39,8 @@ public partial class Login : Window
         if (!_registrationService.IsRegistered)
         {
             var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["NoRegistrationMSG"]);
+                .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["NoRegistrationMSG"] 
+                                                                    + " " +  _environmentService.DeviceID );
             messageBoxStandardWindow.Show();
         }
     }
