@@ -46,4 +46,16 @@ public class MutableConfigurationService: IMutableConfigurationService
             }
         }
     }
+
+    public string GetConfigurationValue(string name)
+    {
+        if (!IsInitialized) Initialize();
+        using (var db = new LiteDatabase(_configurationConnectionString))
+        {
+            var col = db.GetCollection<MutableConfiguration>("configuration");
+            var config = col.FindOne(x => x.Name == name);
+            if (config == null) return null;
+            return config.Value;
+        }
+    }
 }

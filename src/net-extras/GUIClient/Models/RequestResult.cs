@@ -3,5 +3,6 @@
 public enum RequestResult
 {
     Success,
-    Failure
+    Failure,
+    AlreadyExists
 }

@@ -11,4 +11,9 @@ public static class ComputerInfo
     {
         return System.Environment.OSVersion.ToString();
     }
+    
+    public static string GetLoggedUser()
+    {
+        return System.Environment.UserName;
+    }
 }
