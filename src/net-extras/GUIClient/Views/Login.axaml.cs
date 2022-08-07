@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using GUIClient.Services;
+using Microsoft.Extensions.Localization;
 using Splat;
 
 namespace GUIClient.Views;
@@ -10,9 +11,14 @@ namespace GUIClient.Views;
 public partial class Login : Window
 {
     private IRegistrationService _registrationService;
+    private ILocalizationService _localizationService;
+    private IStringLocalizer _localizer;
+
     public Login()
     {
         _registrationService = GetService<IRegistrationService>();
+        _localizationService = GetService<ILocalizationService>();
+        _localizer = _localizationService.GetLocalizer();
         
         InitializeComponent();
 #if DEBUG
@@ -31,7 +37,7 @@ public partial class Login : Window
         if (!_registrationService.IsRegistered)
         {
             var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                .GetMessageBoxStandardWindow("title", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed...");
+                .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["NoRegistrationMSG"]);
             messageBoxStandardWindow.Show();
         }
     }

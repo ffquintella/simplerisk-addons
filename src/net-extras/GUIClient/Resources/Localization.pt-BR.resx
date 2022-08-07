@@ -36,4 +36,10 @@
     <data name="Description" xml:space="preserve">
         <value>Descrição</value>
     </data>
+    <data name="Warning" xml:space="preserve">
+        <value>Alerta</value>
+    </data>
+    <data name="NoRegistrationMSG" xml:space="preserve">
+        <value>Sua aplicação não foi registrada. Por favor solicite ao administrador que autorize a aplicação com o ID:</value>
+    </data>
 </root>

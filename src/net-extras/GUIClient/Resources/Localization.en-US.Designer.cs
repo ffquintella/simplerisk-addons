@@ -79,6 +79,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your application has not being registred. Pelase ask your administrator to authorize the application with ID:.
+        /// </summary>
+        internal static string NoRegistrationMSG {
+            get {
+                return ResourceManager.GetString("NoRegistrationMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operational System.
         /// </summary>
         internal static string OperationalSystem {
@@ -111,6 +120,15 @@ namespace GUIClient.Resources {
         internal static string Sys {
             get {
                 return ResourceManager.GetString("Sys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        internal static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }
