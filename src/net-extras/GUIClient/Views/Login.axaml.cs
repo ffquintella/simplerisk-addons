@@ -56,7 +56,8 @@ public partial class Login : Window
                         ContentTitle = _localizer["Warning"],
                         //ContentHeader = "header",
                         ContentMessage = _localizer["NoRegistrationMSG"]  + " " +  result.RequestID ,
-                        WindowIcon = new WindowIcon(bitmap)
+                        Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                        //WindowIcon = new WindowIcon(bitmap)
                     });
                         
                 messageBoxStandardWindow.Show();
