@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using GUIClient.Models;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using Splat;
@@ -38,12 +39,28 @@ public partial class Login : Window
     {
         if (!_registrationService.IsRegistered)
         {
-            string hashCode = String.Format("{0:X}", _environmentService.DeviceID.GetHashCode());
-            var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["NoRegistrationMSG"] 
-                                                                    + " " +  hashCode );
-            messageBoxStandardWindow.Show();
+            var result = _registrationService.Register(_environmentService.DeviceID);
+
+            if (result.Result == RequestResult.Success)
+            {
+                var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["NoRegistrationMSG"] 
+                                                                        + " " +  result.RequestID );
+                messageBoxStandardWindow.Show();
+            }
+            else
+            {
+                
+            }
+            
+
+
         }
     }
+
+    private class RegistrationResult
+    {
+    }
+
     private static T GetService<T>() => Locator.Current.GetService<T>();
 }

@@ -1,8 +1,10 @@
-﻿namespace GUIClient.Services;
+﻿using GUIClient.Models;
+
+namespace GUIClient.Services;
 
 public interface IRegistrationService
 {
     bool IsRegistered { get; }
-    void Register(string ID);
+    RegistrationSolicitationResult Register(string ID);
     
 }

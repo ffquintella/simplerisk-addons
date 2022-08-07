@@ -1,4 +1,6 @@
-﻿using System.Resources;
+﻿using System;
+using System.Resources;
+using GUIClient.Models;
 using Microsoft.Extensions.Logging;
 
 namespace GUIClient.Services;
@@ -16,8 +18,17 @@ public class RegistrationService: IRegistrationService
     
     public bool IsRegistered { get; }
     
-    public void Register(string ID)
+    public RegistrationSolicitationResult Register(string ID)
     {
-        throw new System.NotImplementedException();
+        string hashCode = String.Format("{0:X}", ID.GetHashCode());
+
+        var result = new RegistrationSolicitationResult
+        {
+            Result = RequestResult.Success,
+            RequestID = hashCode
+        };
+
+        return result;
+
     }
 }
