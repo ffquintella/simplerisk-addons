@@ -32,8 +32,7 @@ public static  class ConfigurationBootstrapper
         services.RegisterLazySingleton<IMutableConfigurationService>(() => new MutableConfigurationService(GetService<IEnvironmentService>()));
     }
     
-    private static T GetService<T>() => Locator.Current.GetService<T>();
-    
+
     private static void RegisterConfiguration(IMutableDependencyResolver services,
         IConfiguration configuration)
     {
@@ -63,4 +62,7 @@ public static  class ConfigurationBootstrapper
         configuration.GetSection("Languages").Bind(config);
         services.RegisterConstant(config);
     }
+    
+    private static T GetService<T>() => Locator.Current.GetService<T>();
+
 }
