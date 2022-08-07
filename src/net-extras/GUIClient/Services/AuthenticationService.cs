@@ -8,6 +8,15 @@ namespace GUIClient.Services;
 public class AuthenticationService: IAuthenticationService
 {
     public bool IsAuthenticated { get; set; } = false;
+
+    private ILogger<AuthenticationService> _logger;
+    private IRegistrationService _registrationService;
+    public AuthenticationService(ILoggerFactory loggerFactory, IRegistrationService registrationService)
+    {
+        _logger = loggerFactory.CreateLogger<AuthenticationService>();
+        _registrationService = registrationService;
+    }
+    
     public void TryAuthenticate(Window parentWindow)
     {
         var dialog = new Login()
@@ -15,11 +24,5 @@ public class AuthenticationService: IAuthenticationService
             DataContext = new LoginViewModel()
         };
         dialog.ShowDialog( parentWindow );
-    }
-
-    private ILogger<AuthenticationService> _logger;
-    public AuthenticationService(ILoggerFactory loggerFactory)
-    {
-        _logger = loggerFactory.CreateLogger<AuthenticationService>();
     }
 }

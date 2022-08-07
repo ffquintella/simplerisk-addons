@@ -10,9 +10,12 @@ public class GeneralServicesBootstrapper
     public static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
     {
         services.RegisterLazySingleton<ILocalizationService>(() => new LocalizationService(resolver.GetService<ILoggerFactory>()));
-        services.RegisterLazySingleton<IAuthenticationService>(() => new AuthenticationService(GetService<ILoggerFactory>()));
         services.RegisterLazySingleton<IRegistrationService>(() => 
-            new RegistrationService(GetService<ILoggerFactory>(), GetService<IMutableConfigurationService>()));
+            new RegistrationService(GetService<ILoggerFactory>(), 
+                GetService<IMutableConfigurationService>()));
+        services.RegisterLazySingleton<IAuthenticationService>(() => new AuthenticationService(
+            GetService<ILoggerFactory>(),
+            GetService<IRegistrationService>()));
 
     }
     
