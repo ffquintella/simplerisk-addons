@@ -7,7 +7,8 @@
         Title="Login"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
-        Width="400" Height="400">
+        Width="400" Height="400"
+        WindowStartupLocation="CenterOwner">
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
