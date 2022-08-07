@@ -38,9 +38,10 @@ public partial class Login : Window
     {
         if (!_registrationService.IsRegistered)
         {
+            string hashCode = String.Format("{0:X}", _environmentService.DeviceID.GetHashCode());
             var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["NoRegistrationMSG"] 
-                                                                    + " " +  _environmentService.DeviceID );
+                                                                    + " " +  hashCode );
             messageBoxStandardWindow.Show();
         }
     }
