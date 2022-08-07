@@ -1,4 +1,6 @@
-﻿using GUIClient.Services;
+﻿using GUIClient.Configuration;
+using GUIClient.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Splat;
 
@@ -11,14 +13,19 @@ public class GeneralServicesBootstrapper
     {
         services.RegisterLazySingleton<ILocalizationService>(() => new LocalizationService(resolver.GetService<ILoggerFactory>()));
         services.RegisterLazySingleton<IRegistrationService>(() => 
-            new RegistrationService(GetService<ILoggerFactory>(), 
-                GetService<IMutableConfigurationService>()));
+            new RegistrationService(resolver.GetService<ILoggerFactory>(), 
+                resolver.GetService<IMutableConfigurationService>()));
         services.RegisterLazySingleton<IAuthenticationService>(() => new AuthenticationService(
-            GetService<ILoggerFactory>(),
-            GetService<IRegistrationService>()));
+            resolver.GetService<ILoggerFactory>(),
+            resolver.GetService<IRegistrationService>()));
 
+        services.RegisterLazySingleton<IRestService>(() => new RestService(
+            resolver.GetService<ILoggerFactory>(),
+            resolver.GetService<IAuthenticationService>(),
+            resolver.GetService<IMutableConfigurationService>(),
+            resolver.GetService<ServerConfiguration>()
+            ));
+        
     }
-    
-    private static T GetService<T>() => Locator.Current.GetService<T>();
 
 }
