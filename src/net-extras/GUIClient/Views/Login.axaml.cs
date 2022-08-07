@@ -2,8 +2,12 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using GUIClient.Models;
 using GUIClient.Services;
+using MessageBox.Avalonia.DTO;
+using MessageBox.Avalonia.Models;
 using Microsoft.Extensions.Localization;
 using Splat;
 
@@ -43,14 +47,25 @@ public partial class Login : Window
 
             if (result.Result == RequestResult.Success)
             {
+                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+                var bitmap = new Bitmap(assets.Open(new Uri("avares://GUIClient/Assets/Hex-Warning.ico")));
+                
                 var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["NoRegistrationMSG"] 
-                                                                        + " " +  result.RequestID );
+                    .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                    {
+                        ContentTitle = _localizer["Warning"],
+                        //ContentHeader = "header",
+                        ContentMessage = _localizer["NoRegistrationMSG"]  + " " +  result.RequestID ,
+                        WindowIcon = new WindowIcon(bitmap)
+                    });
+                        
                 messageBoxStandardWindow.Show();
             }
             else
             {
-                
+                var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["RegistrationErrorMSG"]);
+                messageBoxStandardWindow.Show();
             }
             
 

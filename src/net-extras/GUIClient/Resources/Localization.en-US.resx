@@ -42,4 +42,7 @@
     <data name="NoRegistrationMSG" xml:space="preserve">
         <value>Your application has not being registred. Pelase ask your administrator to authorize the application with ID:</value>
     </data>
+    <data name="RegistrationErrorMSG" xml:space="preserve">
+        <value>There was an error tring to register your application with the server.</value>
+    </data>
 </root>

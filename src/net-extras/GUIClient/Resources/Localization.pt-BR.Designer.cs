@@ -97,6 +97,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ocorreu um erro tentando registrar a sua aplicação com o servidor..
+        /// </summary>
+        internal static string RegistrationErrorMSG {
+            get {
+                return ResourceManager.GetString("RegistrationErrorMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Servidor.
         /// </summary>
         internal static string Server {

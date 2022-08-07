@@ -42,4 +42,7 @@
     <data name="NoRegistrationMSG" xml:space="preserve">
         <value>Sua aplicação não foi registrada. Por favor solicite ao administrador que autorize a aplicação com o ID:</value>
     </data>
+    <data name="RegistrationErrorMSG" xml:space="preserve">
+        <value>Ocorreu um erro tentando registrar a sua aplicação com o servidor.</value>
+    </data>
 </root>
