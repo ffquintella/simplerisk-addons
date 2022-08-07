@@ -16,6 +16,8 @@ public class RestService: IRestService
     private ILogger<RestService> _logger;
     private ServerConfiguration _serverConfiguration;
     private bool _initialized = false;
+
+    private RestClientOptions _options;
     public RestService(ILoggerFactory loggerFactory, 
         ServerConfiguration serverConfiguration
         )
@@ -29,7 +31,10 @@ public class RestService: IRestService
         if (_initialized) return;
         _initialized = true;
         _authenticationService = Locator.Current.GetService<IAuthenticationService>();
-        ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        _options = new RestClientOptions(_serverConfiguration.Url) {
+            RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+        };
     }
     
     public RestClient GetClient()
@@ -41,7 +46,8 @@ public class RestService: IRestService
         }
         else
         {
-            var client = new RestClient(_serverConfiguration.Url);
+           
+            var client = new RestClient(_options);
             return client;
         }
         

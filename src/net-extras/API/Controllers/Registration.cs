@@ -10,7 +10,7 @@ public class Registration : ControllerBase
 {
     [AllowAnonymous]
     [HttpPost]
-    [Route("/")]
+    [Route("")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status412PreconditionFailed, Type = typeof(string))]
     public ActionResult<string> Register([FromBody] RegistrationRequest request)
