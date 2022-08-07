@@ -25,10 +25,8 @@ public class GeneralServicesBootstrapper
 
         services.RegisterLazySingleton<IRestService>(() => new RestService(
             resolver.GetService<ILoggerFactory>(),
-            resolver.GetService<IAuthenticationService>(),
-            resolver.GetService<IMutableConfigurationService>(),
             resolver.GetService<ServerConfiguration>()
-            ));
+        ));
         
     }
 
