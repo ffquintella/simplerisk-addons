@@ -2,6 +2,7 @@
 using Splat;
 using GUIClient.Configuration;
 using GUIClient.Models;
+using GUIClient.Services;
 
 namespace GUIClient;
 
@@ -16,6 +17,7 @@ public static  class ConfigurationBootstrapper
         RegisterLoggingConfiguration(services, configuration);
         RegisterLanguagesConfiguration(services, configuration);
         RegisterServerConfiguration(services, configuration);
+        RegisterMutableConfiguration(services, configuration);
 
     }
     
@@ -23,7 +25,12 @@ public static  class ConfigurationBootstrapper
         new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
             .Build();
-    
+
+    private static void RegisterMutableConfiguration(IMutableDependencyResolver services,
+        IConfiguration configuration)
+    {
+        services.RegisterLazySingleton<IMutableConfigurationService>(() => new MutableConfigurationService());
+    }
     
     private static void RegisterConfiguration(IMutableDependencyResolver services,
         IConfiguration configuration)
