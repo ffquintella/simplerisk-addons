@@ -1,6 +1,13 @@
-﻿namespace ServerServices;
+﻿using DAL.Entities;
 
-public class ClientRegistrationService
+namespace ServerServices;
+
+public class ClientRegistrationService: IClientRegistrationService
 {
-    
+    public List<AddonsClientRegistration> GetAll()
+    {
+      var result = new List<AddonsClientRegistration>();
+      
+      return result;
+    }
 }

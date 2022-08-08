@@ -5,7 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.Spectre;using Spectre.Cli.Extensions.DependencyInjection;
+using Serilog.Sinks.Spectre;
+using ServerServices;
+using Spectre.Cli.Extensions.DependencyInjection;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -22,7 +24,7 @@ Log.Information("Starting Console Client with debug");
 var services = new ServiceCollection();
 // add extra services to the container here
 //services.AddSingleton<ICoolService, MyCoolService>();
-
+services.AddScoped<IClientRegistrationService, ClientRegistrationService>();
 
 var registrar = new DependencyInjectionRegistrar(services);
 var app = new CommandApp(registrar);
