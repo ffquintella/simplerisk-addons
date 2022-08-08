@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Net;
 using System.Resources;
 using GUIClient.Models;
 using GUIClient.Tools;
@@ -62,14 +63,24 @@ public class RegistrationService: IRegistrationService
         
         var request = new RestRequest("Registration").AddJsonBody(reqData);
         var response = client.Post(request);
-        
-        
-        var result = new RegistrationSolicitationResult
-        {
-            Result = RequestResult.Success,
-            RequestID = hashCode
-        };
 
+        RegistrationSolicitationResult result = null;
+        
+        if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
+        {
+            result = new RegistrationSolicitationResult
+            {
+                Result = RequestResult.Success,
+                RequestID = response.Content
+            };
+            return result;
+        }
+
+        result = new RegistrationSolicitationResult
+        {
+            Result = RequestResult.Failure,
+            RequestID = ""
+        };
         return result;
 
     }
