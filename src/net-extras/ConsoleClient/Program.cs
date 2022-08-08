@@ -1,10 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using ConsoleClient.Commands;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.Spectre;
+using Serilog.Sinks.Spectre;using Spectre.Cli.Extensions.DependencyInjection;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -15,13 +16,16 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
     
 #if DEBUG
-var debug = true;
 Log.Information("Starting Console Client with debug");
-#else
-var debug = false;
 #endif
 
-var app = new CommandApp();
+var services = new ServiceCollection();
+// add extra services to the container here
+//services.AddSingleton<ICoolService, MyCoolService>();
+
+
+var registrar = new DependencyInjectionRegistrar(services);
+var app = new CommandApp(registrar);
 
 app.Configure(config =>
 {
@@ -32,6 +36,7 @@ app.Configure(config =>
 
 
     config.AddCommand<SelfTestCommand>("selfTest");
+    config.AddCommand<RegistrationCommand>("registration");
 
 });
 
