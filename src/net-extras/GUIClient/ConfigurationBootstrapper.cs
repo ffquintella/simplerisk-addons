@@ -23,7 +23,9 @@ public static  class ConfigurationBootstrapper
     
     private static IConfiguration BuildConfiguration() =>
         new ConfigurationBuilder()
+            
             .AddJsonFile("appsettings.json")
+            .AddUserSecrets<Program>()
             .Build();
 
     private static void RegisterMutableConfiguration(IMutableDependencyResolver services,

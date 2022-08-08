@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using ConsoleClient.Commands;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog;
@@ -16,7 +17,14 @@ Log.Logger = new LoggerConfiguration()
     //.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
     .MinimumLevel.Verbose()
     .CreateLogger();
-    
+
+var configuration =  new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddUserSecrets<Program>()
+    .AddJsonFile($"appsettings.json");
+var config = configuration.Build();
+
+
 #if DEBUG
 Log.Information("Starting Console Client with debug");
 #endif
