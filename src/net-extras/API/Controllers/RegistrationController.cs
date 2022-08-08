@@ -6,7 +6,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class Registration : ControllerBase
+public class RegistrationController : ControllerBase
 {
     [AllowAnonymous]
     [HttpPost]
