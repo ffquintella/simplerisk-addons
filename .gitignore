@@ -63,3 +63,9 @@ src/net-extras/ConsoleClient/bin/Debug/net6.0/
 src/net-extras/ConsoleClient/obj/Debug/net6.0/
 
 src/net-extras/ConsoleClient/obj/
+
+src/net-extras/ServerServices/bin/Debug/net6.0/
+
+src/net-extras/ServerServices/obj/Debug/net6.0/
+
+src/net-extras/ServerServices/obj/
