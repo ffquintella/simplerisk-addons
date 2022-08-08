@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using ConsoleClient.Commands;
+using DAL;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -31,8 +32,9 @@ Log.Information("Starting Console Client with debug");
 
 var services = new ServiceCollection();
 // add extra services to the container here
-//services.AddSingleton<ICoolService, MyCoolService>();
+services.AddSingleton<IConfiguration>(config);
 services.AddScoped<IClientRegistrationService, ClientRegistrationService>();
+services.AddSingleton<DALManager>();
 
 var registrar = new DependencyInjectionRegistrar(services);
 var app = new CommandApp(registrar);
