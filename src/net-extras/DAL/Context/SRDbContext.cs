@@ -19,6 +19,7 @@ namespace DAL.Context
         }
 
         public virtual DbSet<AddonsApiKey> AddonsApiKeys { get; set; } = null!;
+        public virtual DbSet<AddonsClientRegistration> AddonsClientRegistrations { get; set; } = null!;
         public virtual DbSet<AddonsNotificationControl> AddonsNotificationControls { get; set; } = null!;
         public virtual DbSet<AddonsNotificationMessage> AddonsNotificationMessages { get; set; } = null!;
         public virtual DbSet<Assessment> Assessments { get; set; } = null!;
@@ -169,6 +170,33 @@ namespace DAL.Context
                 entity.Property(e => e.Value)
                     .HasMaxLength(50)
                     .HasColumnName("value");
+            });
+
+            modelBuilder.Entity<AddonsClientRegistration>(entity =>
+            {
+                entity.ToTable("addons_client_registration");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.ExternalId).HasMaxLength(255);
+
+                entity.Property(e => e.Hostname).HasMaxLength(255);
+
+                entity.Property(e => e.LastVerificationDate)
+                    .HasColumnType("datetime")
+                    .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.LoggedAccount).HasMaxLength(255);
+
+                entity.Property(e => e.Name).HasMaxLength(255);
+
+                entity.Property(e => e.RegistrationDate)
+                    .HasColumnType("datetime")
+                    .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(255)
+                    .HasDefaultValueSql("'requested'");
             });
 
             modelBuilder.Entity<AddonsNotificationControl>(entity =>
