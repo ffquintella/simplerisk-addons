@@ -10,7 +10,7 @@ public class RegistrationSettings: CommandSettings
     [CommandArgument(0, "<operation>")]
     public string Operation { get; set; }
     
-    public override ValidationResult Validate()
+    /*public override ValidationResult Validate()
     {
         switch (Operation)
         {
@@ -26,5 +26,5 @@ public class RegistrationSettings: CommandSettings
                 return  ValidationResult.Error("Invalid operation.");
         }
  
-    }
+    }*/
 }

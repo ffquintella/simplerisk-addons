@@ -14,6 +14,28 @@ public class RegistrationCommand: Command<RegistrationSettings>
     }
     public override int Execute(CommandContext context, RegistrationSettings settings)
     {
+        switch (settings.Operation)
+        {
+            case "list":
+                ExecuteList(context);
+                return 0;
+            case "approve":
+                return 0;
+            case "reject":
+                return 0;
+            case "delete":
+                return 0;
+            default:
+                AnsiConsole.MarkupLine("[red]*** Invalid operation selected ***[/]");
+                AnsiConsole.MarkupLine("[white] valid options are: list, approve, reject or delete [/]");
+                return -1;
+        }
+
+        return 0;
+    }
+
+    public void ExecuteList(CommandContext context)
+    {
         var registrations = _registrationService.GetAll();
 
         AnsiConsole.MarkupLine("[blue]**********************[/]");
@@ -26,7 +48,5 @@ public class RegistrationCommand: Command<RegistrationSettings>
         }
         
         AnsiConsole.MarkupLine("[white]======================[/]");
-        
-        return 0;
     }
 }
