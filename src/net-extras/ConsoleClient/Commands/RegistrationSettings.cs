@@ -10,6 +10,9 @@ public class RegistrationSettings: CommandSettings
     [CommandArgument(0, "<operation>")]
     public string Operation { get; set; }
     
+    [CommandOption("-i|--id")]
+    public int? Id { get; set; }
+    
     /*public override ValidationResult Validate()
     {
         switch (Operation)

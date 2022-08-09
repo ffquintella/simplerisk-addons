@@ -20,6 +20,7 @@ public class RegistrationCommand: Command<RegistrationSettings>
                 ExecuteList(context);
                 return 0;
             case "approve":
+                ExecuteApprove(context, settings);
                 return 0;
             case "reject":
                 return 0;
@@ -34,12 +35,39 @@ public class RegistrationCommand: Command<RegistrationSettings>
         return 0;
     }
 
+    public void ExecuteApprove(CommandContext context, RegistrationSettings settings)
+    {
+        
+        var registrations = _registrationService.GetAll();
+
+        AnsiConsole.MarkupLine("[blue]**********************[/]");
+        AnsiConsole.MarkupLine("[bold]Loading registrations requests[/]");
+        AnsiConsole.MarkupLine("[blue]----------------------[/]");
+        
+        foreach (var registration in registrations)
+        {
+            AnsiConsole.WriteLine("{0}. {1} - {2} : {3} ", registration.Id, registration.RegistrationDate, registration.ExternalId, registration.Status);
+        }
+        
+        AnsiConsole.MarkupLine("[white]======================[/]");
+        
+        int id;
+        if (settings.Id == null)
+        {
+            id = AnsiConsole.Ask<int>("Choose the id you want to [green]approve[/]?");
+        }
+        else
+        {
+            id = (int)settings.Id;
+        }
+    }
+
     public void ExecuteList(CommandContext context)
     {
         var registrations = _registrationService.GetAll();
 
         AnsiConsole.MarkupLine("[blue]**********************[/]");
-        AnsiConsole.MarkupLine("[bold]Loading registrations[/]");
+        AnsiConsole.MarkupLine("[bold]Loading registrations requests[/]");
         AnsiConsole.MarkupLine("[blue]----------------------[/]");
         
         foreach (var registration in registrations)

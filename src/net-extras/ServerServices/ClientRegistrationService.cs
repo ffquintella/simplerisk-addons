@@ -22,4 +22,15 @@ public class ClientRegistrationService: IClientRegistrationService
       
       return result;
     }
+    
+    public List<AddonsClientRegistration> GetRequested()
+    {
+        var result = new List<AddonsClientRegistration>();
+      
+        var context = _dalManager.GetContext();
+        var registrations = context.AddonsClientRegistrations.Where(ad => ad.Status == "requested").ToList();
+        if (registrations != null) result = registrations;
+      
+        return result;
+    }
 }
