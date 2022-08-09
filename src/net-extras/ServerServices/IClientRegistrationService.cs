@@ -7,4 +7,8 @@ public interface IClientRegistrationService
 {
     List<AddonsClientRegistration> GetAll();
     List<AddonsClientRegistration> GetRequested();
+
+    AddonsClientRegistration? GetRegistrationById(int id);
+
+    void Save(AddonsClientRegistration addonsClientRegistration);
 }

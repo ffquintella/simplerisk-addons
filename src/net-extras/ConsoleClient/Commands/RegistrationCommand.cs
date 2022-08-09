@@ -60,6 +60,20 @@ public class RegistrationCommand: Command<RegistrationSettings>
         {
             id = (int)settings.Id;
         }
+
+
+        var regReq = _registrationService.GetRegistrationById(id);
+        if (regReq == null)
+        {
+            AnsiConsole.MarkupLine("[Red]*** Invalid ID ***[/]");
+            return;
+        }
+
+        regReq.Status = "approved";
+        
+        _registrationService.Save(regReq);
+
+
     }
 
     public void ExecuteList(CommandContext context)

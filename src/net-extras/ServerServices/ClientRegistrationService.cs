@@ -33,4 +33,19 @@ public class ClientRegistrationService: IClientRegistrationService
       
         return result;
     }
+    
+    public void Save(AddonsClientRegistration addonsClientRegistration)
+    {
+        var context = _dalManager.GetContext();
+        context.AddonsClientRegistrations.Update(addonsClientRegistration);
+        context.SaveChanges();
+    }
+
+    public AddonsClientRegistration? GetRegistrationById(int id)
+    {
+        var context = _dalManager.GetContext();
+        var request = context.AddonsClientRegistrations.Where(cr => cr.Id == id).FirstOrDefault();
+        return request;
+    }
+    
 }
