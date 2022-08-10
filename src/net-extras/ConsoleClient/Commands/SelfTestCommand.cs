@@ -8,7 +8,6 @@ public class SelfTestCommand : Command<SelfTestSettings>
 {
     public override int Execute(CommandContext context, SelfTestSettings settings)
     {
-        //AnsiConsole.Markup("[underline blue]Starting [/] the self test routines! \n\n");
 
         AnsiConsole.Status()
             .Start("[underline blue]SelfTesting... [/]", ctx =>

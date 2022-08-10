@@ -5,12 +5,10 @@ using DAL;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Spectre;
 using ServerServices;
 using Spectre.Cli.Extensions.DependencyInjection;
-using Spectre.Console;
 using Spectre.Console.Cli;
 using System.IO;
 
@@ -30,8 +28,7 @@ var logPath = logDir + "/logs";
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Spectre("{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}", LogEventLevel.Warning)
-    .WriteTo.RollingFile(logPath, outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}", restrictedToMinimumLevel: LogEventLevel.Debug)
-    //.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.RollingFile(logPath, outputTemplate: "{Timestamp:dd/MM/yy HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}", restrictedToMinimumLevel: LogEventLevel.Debug)
     .MinimumLevel.Verbose()
     .CreateLogger();
 

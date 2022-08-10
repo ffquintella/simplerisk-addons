@@ -1,4 +1,5 @@
-﻿using ServerServices;
+﻿using Serilog;
+using ServerServices;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -31,8 +32,7 @@ public class RegistrationCommand: Command<RegistrationSettings>
                 AnsiConsole.MarkupLine("[white] valid options are: list, approve, reject or delete [/]");
                 return -1;
         }
-
-        return 0;
+        
     }
 
     public void ExecuteApprove(CommandContext context, RegistrationSettings settings)
@@ -73,6 +73,8 @@ public class RegistrationCommand: Command<RegistrationSettings>
         
         _registrationService.Save(regReq);
 
+        var loggedUser = Environment.UserName;
+        Log.Information("Registration: {0} approved by {1}", id, loggedUser);
 
     }
 
