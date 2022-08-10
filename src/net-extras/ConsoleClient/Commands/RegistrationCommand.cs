@@ -130,9 +130,11 @@ public class RegistrationCommand: Command<RegistrationSettings>
         if(settings.All != null && settings.All == true) registrations = _registrationService.GetAll();
         else registrations = _registrationService.GetRequested();
 
-        AnsiConsole.MarkupLine("[blue]**********************[/]");
-        AnsiConsole.MarkupLine("[bold]Loading registrations requests[/]");
-        AnsiConsole.MarkupLine("[blue]----------------------[/]");
+        
+        AnsiConsole.MarkupLine("[blue]**********************************[/]");
+        if(settings.All != null && settings.All == true) AnsiConsole.MarkupLine("Loading [bold]all[/] registrations");
+        else AnsiConsole.MarkupLine("Loading registrations [bold]requests[/]");
+        AnsiConsole.MarkupLine("[blue]----------------------------------[/]");
         
         foreach (var registration in registrations)
         {
@@ -157,4 +159,6 @@ public class RegistrationCommand: Command<RegistrationSettings>
         
         AnsiConsole.MarkupLine("[white]======================[/]");
     }
+    
+    
 }
