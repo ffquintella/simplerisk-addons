@@ -20,7 +20,7 @@ var configuration =  new ConfigurationBuilder()
 var config = configuration.Build();
 
 
-var logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/SRConsoleClient";
+var logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/SRServer";
 
 Directory.CreateDirectory(logDir);
 
