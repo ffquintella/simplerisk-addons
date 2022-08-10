@@ -12,12 +12,8 @@ using ServerServices;
 using Spectre.Cli.Extensions.DependencyInjection;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using System.IO;
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Spectre("{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}", LogEventLevel.Debug)
-    //.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
-    .MinimumLevel.Verbose()
-    .CreateLogger();
 
 var configuration =  new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -25,6 +21,19 @@ var configuration =  new ConfigurationBuilder()
     .AddJsonFile($"appsettings.json");
 var config = configuration.Build();
 
+
+var logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/SRConsoleClient";
+
+Directory.CreateDirectory(logDir);
+
+var logPath = logDir + "/logs";
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Spectre("{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}", LogEventLevel.Warning)
+    .WriteTo.RollingFile(logPath, outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}", restrictedToMinimumLevel: LogEventLevel.Debug)
+    //.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .MinimumLevel.Verbose()
+    .CreateLogger();
 
 #if DEBUG
 Log.Information("Starting Console Client with debug");
