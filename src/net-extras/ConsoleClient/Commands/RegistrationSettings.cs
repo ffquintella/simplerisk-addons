@@ -13,6 +13,9 @@ public class RegistrationSettings: CommandSettings
     [CommandOption("-i|--id")]
     public int? Id { get; set; }
     
+    [CommandOption("--all")]
+    public bool? All { get; set; } 
+    
     /*public override ValidationResult Validate()
     {
         switch (Operation)
