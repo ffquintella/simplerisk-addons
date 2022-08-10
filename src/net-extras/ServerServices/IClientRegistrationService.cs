@@ -10,7 +10,9 @@ public interface IClientRegistrationService
 
     AddonsClientRegistration? GetRegistrationById(int id);
     
-    void Delete(AddonsClientRegistration addonsClientRegistration);
+    int Delete(AddonsClientRegistration addonsClientRegistration);
 
-    void Save(AddonsClientRegistration addonsClientRegistration);
+    int Update(AddonsClientRegistration addonsClientRegistration);
+    
+    int Add(AddonsClientRegistration addonsClientRegistration);
 }

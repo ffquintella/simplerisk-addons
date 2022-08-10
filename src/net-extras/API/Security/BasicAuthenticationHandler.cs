@@ -13,7 +13,7 @@ namespace API.Security;
 
 public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    private SRDbContext _dbContext = null;
+    private SRDbContext? _dbContext = null;
     
     public BasicAuthenticationHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options, 
@@ -43,7 +43,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
             
             if (credentials[0] != "" && credentials[1] != "")
             {
-                var user = _dbContext.Users
+                var user = _dbContext?.Users?
                     .Where(u => u.Type == "simplerisk" && u.Username == Encoding.UTF8.GetBytes(credentials[0]))
                     .FirstOrDefault();
 

@@ -9,7 +9,7 @@ namespace API.Security;
 public class ValidUserRequirementHandler: AuthorizationHandler<ValidUserRequirement>
 {
     
-    private SRDbContext _dbContext = null;
+    private SRDbContext? _dbContext = null;
 
     public ValidUserRequirementHandler(DALManager dalManager)
     {
@@ -20,7 +20,7 @@ public class ValidUserRequirementHandler: AuthorizationHandler<ValidUserRequirem
     {
         var userClaimPrincipal = context.User;
 
-        var userName = userClaimPrincipal.Identities.FirstOrDefault().Name;
+        string? userName = userClaimPrincipal.Identities.FirstOrDefault()?.Name;
         if (userName == null)
         {
             context.Fail(new AuthorizationFailureReason(this, "User do not exists"));
@@ -32,15 +32,15 @@ public class ValidUserRequirementHandler: AuthorizationHandler<ValidUserRequirem
         switch (requirement.UserType)
         {
             case UserType.SAML:
-                user = _dbContext.Users.Where(u => u.Type == "saml")
+                user = _dbContext?.Users.Where(u => u.Type == "saml")
                     .FirstOrDefault<User>(u => u.Username ==  Encoding.UTF8.GetBytes(userName));
                 break;
             case UserType.Simplerisk:
-                user = _dbContext.Users.Where(u => u.Type == "simplerisk")
+                user = _dbContext?.Users.Where(u => u.Type == "simplerisk")
                     .FirstOrDefault<User>(u => u.Username ==  Encoding.UTF8.GetBytes(userName));
                 break;
             default:
-                user = _dbContext.Users!.FirstOrDefault<User>(u => u.Username ==  Encoding.UTF8.GetBytes(userName));
+                user = _dbContext?.Users.FirstOrDefault<User>(u => u.Username ==  Encoding.UTF8.GetBytes(userName));
                 break;
         }
 

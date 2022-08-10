@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Saml2.Authentication.Core.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Serilog;
+using Serilog.Events;
+using ServerServices;
 
 var configuration =  new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -14,6 +17,15 @@ var config = configuration.Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
+var logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/SRConsoleClient";
+Directory.CreateDirectory(logDir);
+var logPath = logDir + "/logs";
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.RollingFile(logPath, outputTemplate: "{Timestamp:dd/MM/yy HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}", restrictedToMinimumLevel: LogEventLevel.Debug)
+    .MinimumLevel.Verbose()
+    .CreateLogger();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -22,6 +34,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddSingleton<IClientRegistrationService, ClientRegistrationService>();
 
 builder.Services.AddSingleton<IAuthorizationHandler, ValidUserRequirementHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserInRoleRequirementHandler>();

@@ -1,5 +1,7 @@
 ﻿using DAL;
 using DAL.Entities;
+using Serilog;
+using Serilog.Core;
 
 namespace ServerServices;
 
@@ -33,12 +35,25 @@ public class ClientRegistrationService: IClientRegistrationService
       
         return result;
     }
-    
-    public void Save(AddonsClientRegistration addonsClientRegistration)
+    /// <summary>
+    /// Updates a client registration data
+    /// </summary>
+    /// <param name="addonsClientRegistration"></param>
+    /// <returns>0 if success; -1 if failure</returns>
+    public int Update(AddonsClientRegistration addonsClientRegistration)
     {
-        var context = _dalManager.GetContext();
-        context.AddonsClientRegistrations.Update(addonsClientRegistration);
-        context.SaveChanges();
+        var result = 0;
+        try
+        {
+            var context = _dalManager.GetContext();
+            context.AddonsClientRegistrations.Update(addonsClientRegistration);
+            context.SaveChanges();
+        }catch (Exception ex)
+        {
+            Log.Error("Error updating a registration ex: {0}", ex.Message);
+            result = -1;
+        }
+        return result;
     }
 
     public AddonsClientRegistration? GetRegistrationById(int id)
@@ -48,10 +63,57 @@ public class ClientRegistrationService: IClientRegistrationService
         return request;
     }
 
-    public void Delete(AddonsClientRegistration addonsClientRegistration)
+    /// <summary>
+    /// Deletes a client registration from db
+    /// </summary>
+    /// <param name="addonsClientRegistration"></param>
+    /// <returns>0 if success; -1 if failure</returns>
+    public int Delete(AddonsClientRegistration addonsClientRegistration)
     {
-        var context = _dalManager.GetContext();
-        context.AddonsClientRegistrations.Remove(addonsClientRegistration);
-        context.SaveChanges();
+        var result = 0;
+        try
+        {
+            var context = _dalManager.GetContext();
+            context.AddonsClientRegistrations.Remove(addonsClientRegistration);
+            context.SaveChanges();
+        }catch (Exception ex)
+        {
+            Log.Error("Error deleting a registration ex: {0}", ex.Message);
+            result = -1;
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// Adds a new Client Registration
+    /// </summary>
+    /// <param name="addonsClientRegistration"></param>
+    /// <returns>0 if success; 1 if client already exists; -1 if failure</returns>
+    public int Add(AddonsClientRegistration addonsClientRegistration)
+    {
+        var result = 0;
+        try
+        {
+            var context = _dalManager.GetContext();
+
+            var nfound = context.AddonsClientRegistrations
+                .Count(cr => cr.ExternalId == addonsClientRegistration.ExternalId 
+                             || cr.Name == addonsClientRegistration.Name);
+
+            if (nfound > 0)
+            {
+                Log.Warning("Trying to add an already existing client");
+                return 1;
+            }
+            
+            context.AddonsClientRegistrations.Add(addonsClientRegistration);
+            context.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Error adding new client registration ex: {0}", ex.Message);
+            result = -1;
+        }
+        return result;
     }
 }

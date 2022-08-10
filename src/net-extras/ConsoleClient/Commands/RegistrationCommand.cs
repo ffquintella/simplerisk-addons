@@ -75,7 +75,7 @@ public class RegistrationCommand: Command<RegistrationSettings>
 
         regReq.Status = "approved";
         
-        _registrationService.Save(regReq);
+        _registrationService.Update(regReq);
 
         var loggedUser = Environment.UserName;
         Log.Information("Registration: {0} approved by {1}", id, loggedUser);
@@ -118,7 +118,7 @@ public class RegistrationCommand: Command<RegistrationSettings>
 
         regReq.Status = "rejected";
         
-        _registrationService.Save(regReq);
+        _registrationService.Update(regReq);
 
         var loggedUser = Environment.UserName;
         Log.Information("Registration: {0} rejected by {1}", id, loggedUser);

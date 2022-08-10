@@ -9,7 +9,7 @@ namespace API.Security;
 
 public class UserInRoleRequirementHandler: AuthorizationHandler<UserInRoleRequirement>
 {
-    private SRDbContext _dbContext = null;
+    private SRDbContext? _dbContext = null;
 
     public UserInRoleRequirementHandler(DALManager dalManager)
     {
@@ -21,20 +21,20 @@ public class UserInRoleRequirementHandler: AuthorizationHandler<UserInRoleRequir
     {
         var userClaimPrincipal = context.User;
         
-        var userName = userClaimPrincipal.Identities.FirstOrDefault().Name;
+        string? userName = userClaimPrincipal.Identities.FirstOrDefault()?.Name;
         if (userName == null)
         {
             context.Fail(new AuthorizationFailureReason(this, "User do not exists"));
             return Task.CompletedTask;
         }
             
-        var user = _dbContext.Users
+        var user = _dbContext?.Users
             .FirstOrDefault<User>(u => u.Username ==  Encoding.UTF8.GetBytes(userName));
         
         if (user != null)
         {
 
-            var role = _dbContext.Roles.FirstOrDefault(r => r.Name == requirement.Role);
+            var role = _dbContext?.Roles.FirstOrDefault(r => r.Name == requirement.Role);
 
             if (role == null) throw new RoleNotFoundException();
                 
