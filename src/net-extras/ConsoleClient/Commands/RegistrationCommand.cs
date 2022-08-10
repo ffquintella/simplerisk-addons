@@ -31,6 +31,7 @@ public class RegistrationCommand: Command<RegistrationSettings>
                 ExecuteReject(context, settings);
                 return 0;
             case "delete":
+                ExecuteDelete(context, settings);
                 return 0;
             default:
                 AnsiConsole.MarkupLine("[red]*** Invalid operation selected ***[/]");
@@ -38,7 +39,7 @@ public class RegistrationCommand: Command<RegistrationSettings>
                 return -1;
         }
     }
-    public void ExecuteApprove(CommandContext context, RegistrationSettings settings)
+    private void ExecuteApprove(CommandContext context, RegistrationSettings settings)
     {
         
         var registrations = _registrationService.GetRequested();
@@ -81,7 +82,7 @@ public class RegistrationCommand: Command<RegistrationSettings>
 
     }
     
-    public void ExecuteReject(CommandContext context, RegistrationSettings settings)
+    private void ExecuteReject(CommandContext context, RegistrationSettings settings)
     {
         
         var registrations = _registrationService.GetRequested();
@@ -124,7 +125,49 @@ public class RegistrationCommand: Command<RegistrationSettings>
 
     }
 
-    public void ExecuteList(CommandContext context, RegistrationSettings settings)
+    private void ExecuteDelete(CommandContext context, RegistrationSettings settings)
+    {
+        
+        var registrations = _registrationService.GetAll();
+
+        AnsiConsole.MarkupLine("[blue]************************[/]");
+        AnsiConsole.MarkupLine("Loading [bold]all[/] requests");
+        AnsiConsole.MarkupLine("[blue]------------------------[/]");
+        
+        foreach (var registration in registrations)
+        {
+            AnsiConsole.WriteLine("{0}. {1} - {2} : {3} ", registration.Id, registration.RegistrationDate, registration.ExternalId, registration.Status);
+        }
+        
+        AnsiConsole.MarkupLine("[white]========================[/]");
+        
+        int id;
+        if (settings.Id == null)
+        {
+            id = AnsiConsole.Ask<int>("Choose the id you want to [red]delete[/]?");
+        }
+        else
+        {
+            id = (int)settings.Id;
+        }
+
+
+        var regReq = _registrationService.GetRegistrationById(id);
+        if (regReq == null)
+        {
+            AnsiConsole.MarkupLine("[Red]*** Invalid ID ***[/]");
+            return;
+        }
+        
+        _registrationService.Delete(regReq);
+
+        var loggedUser = Environment.UserName;
+        Log.Information("Registration: {0} deleted by {1}", id, loggedUser);
+
+    }
+
+    
+    private void ExecuteList(CommandContext context, RegistrationSettings settings)
     {
         List<AddonsClientRegistration> registrations;
         if(settings.All != null && settings.All == true) registrations = _registrationService.GetAll();

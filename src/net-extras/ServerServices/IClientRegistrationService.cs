@@ -9,6 +9,8 @@ public interface IClientRegistrationService
     List<AddonsClientRegistration> GetRequested();
 
     AddonsClientRegistration? GetRegistrationById(int id);
+    
+    void Delete(AddonsClientRegistration addonsClientRegistration);
 
     void Save(AddonsClientRegistration addonsClientRegistration);
 }

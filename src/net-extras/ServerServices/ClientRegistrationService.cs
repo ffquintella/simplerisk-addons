@@ -47,5 +47,11 @@ public class ClientRegistrationService: IClientRegistrationService
         var request = context.AddonsClientRegistrations.Where(cr => cr.Id == id).FirstOrDefault();
         return request;
     }
-    
+
+    public void Delete(AddonsClientRegistration addonsClientRegistration)
+    {
+        var context = _dalManager.GetContext();
+        context.AddonsClientRegistrations.Remove(addonsClientRegistration);
+        context.SaveChanges();
+    }
 }
