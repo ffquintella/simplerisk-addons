@@ -1,4 +1,5 @@
 using API.Security;
+using API.Tools;
 using DAL;
 using DAL.Context;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +18,7 @@ var config = configuration.Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
-var logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/SRConsoleClient";
+var logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/SRAPIServer";
 Directory.CreateDirectory(logDir);
 var logPath = logDir + "/logs";
 
@@ -34,6 +35,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
+//builder.Services.AddSingleton<SelfTest>();
+builder.Services.AddHostedService<SelfTest>();
 
 builder.Services.AddSingleton<IClientRegistrationService, ClientRegistrationService>();
 
@@ -112,5 +117,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Lifetime.ApplicationStarted.Register(() =>
+    {
+        Log.Information("Application started");
+    }
+);
 
 app.Run();
