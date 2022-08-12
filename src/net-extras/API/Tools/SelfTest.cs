@@ -15,6 +15,7 @@ public  class SelfTest: IHostedService
     
     public  void ExecuteAllTests()
     {
+        Log.Information("Executing self tests");
         this.ExecuteDBTests();
     }
 
@@ -25,6 +26,10 @@ public  class SelfTest: IHostedService
         if (!context.Database.CanConnect())
         {
             Log.Error("Error in self test: database connection failed");
+        }
+        else
+        {
+            Log.Information("DB connection successful");
         }
 
     }
