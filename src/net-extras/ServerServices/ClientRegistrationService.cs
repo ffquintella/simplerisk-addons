@@ -56,6 +56,26 @@ public class ClientRegistrationService: IClientRegistrationService
         return result;
     }
 
+    /// <summary>
+    /// Checks if a cliente is registred and authorized
+    /// </summary>
+    /// <param name="externalId"></param>
+    /// <returns>-1 if client not found, 0 if not authorized, 1 if authorized</returns>
+    public int IsAccepted(string externalId)
+    {
+        var clientRegistration = GetByExternalId(externalId);
+        if (clientRegistration == null) return -1;
+        
+        return clientRegistration.Status != "accepted" ? 0 : 1;
+    }
+    
+    private AddonsClientRegistration? GetByExternalId(string externalId)
+    {
+        var context = _dalManager.GetContext();
+        var request = context.AddonsClientRegistrations.Where(cr => cr.ExternalId == externalId).FirstOrDefault();
+        return request;
+    }
+
     public AddonsClientRegistration? GetRegistrationById(int id)
     {
         var context = _dalManager.GetContext();

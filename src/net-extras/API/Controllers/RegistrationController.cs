@@ -23,11 +23,23 @@ public class RegistrationController : ControllerBase
     
     [AllowAnonymous]
     [HttpGet]
-    [Route("IsAutorized")]
+    [Route("IsAccepted")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(bool))]
-    public ActionResult<bool> IsAutorized([FromQuery] string clientId)
+    public ActionResult<bool> IsAccepted([FromQuery] string clientId)
     {
+        try
+        {
+            var result = _clientRegistrationService.IsAccepted(clientId);
+            if (result == 1) return Ok(true);
+            if (result == 0) return Ok(false);
+            if (result == -1) return NotFound(false);
+        }
+        catch (Exception ex)
+        {
+            StatusCode(StatusCodes.Status503ServiceUnavailable, "Internal Error msg: " + ex.Message);
+        }
+
         return NotFound(false);
     }
     
