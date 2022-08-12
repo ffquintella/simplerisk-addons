@@ -19,6 +19,17 @@ public class RegistrationController : ControllerBase
     {
         _clientRegistrationService = clientRegistrationService;
     }
+
+    
+    [AllowAnonymous]
+    [HttpGet]
+    [Route("IsAutorized")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(bool))]
+    public ActionResult<bool> IsAutorized([FromQuery] string clientId)
+    {
+        return NotFound(false);
+    }
     
     
     [AllowAnonymous]
