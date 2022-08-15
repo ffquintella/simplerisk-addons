@@ -35,14 +35,22 @@ public class EnvironmentService: IEnvironmentService
     {
         get
         {
+            Directory.CreateDirectory(ApplicationDataFolder);
             
-            string deviceId = new DeviceIdBuilder()
-                .AddMachineName()
-                .AddOsVersion()
-                .AddMacAddress()
-                .ToString();
+            if(!File.Exists(ApplicationDataFolder + @"\device_id.txt"))
+            {
+                string deviceId = new DeviceIdBuilder()
+                    .AddMachineName()
+                    .AddOsVersion()
+                    .AddMacAddress()
+                    .ToString();
+                
+                File.WriteAllText(ApplicationDataFolder + @"\device_id.txt", deviceId  );
+            }
+
+            return File.ReadAllText(ApplicationDataFolder + @"\device_id.txt");
             
-            return deviceId;
+            
         }
     }
 
