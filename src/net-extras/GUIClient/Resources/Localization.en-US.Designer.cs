@@ -106,6 +106,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your app registration was not yet accepted by an administrator. ID: .
+        /// </summary>
+        internal static string RegistrationNotAcceptedMSG {
+            get {
+                return ResourceManager.GetString("RegistrationNotAcceptedMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server.
         /// </summary>
         internal static string Server {

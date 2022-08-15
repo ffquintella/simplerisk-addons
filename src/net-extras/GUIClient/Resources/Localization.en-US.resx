@@ -45,4 +45,7 @@
     <data name="RegistrationErrorMSG" xml:space="preserve">
         <value>There was an error tring to register your application with the server.</value>
     </data>
+    <data name="RegistrationNotAcceptedMSG" xml:space="preserve">
+        <value>Your app registration was not yet accepted by an administrator. ID: </value>
+    </data>
 </root>

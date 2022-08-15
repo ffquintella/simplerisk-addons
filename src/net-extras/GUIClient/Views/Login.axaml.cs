@@ -19,12 +19,14 @@ public partial class Login : Window
     private ILocalizationService _localizationService;
     private IEnvironmentService _environmentService;
     private IStringLocalizer _localizer;
+    private IMutableConfigurationService _mutableConfigurationService;
 
     public Login()
     {
         _registrationService = GetService<IRegistrationService>();
         _localizationService = GetService<ILocalizationService>();
         _environmentService = GetService<IEnvironmentService>();
+        _mutableConfigurationService = GetService<IMutableConfigurationService>();
         _localizer = _localizationService.GetLocalizer();
         
         InitializeComponent();
@@ -41,6 +43,7 @@ public partial class Login : Window
 
     private void OnOpened(object? sender, EventArgs eventArgs)
     {
+        //Checking if registration was donne
         if (!_registrationService.IsRegistered)
         {
             var result = _registrationService.Register(_environmentService.DeviceID);
@@ -68,9 +71,17 @@ public partial class Login : Window
                     .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["RegistrationErrorMSG"]);
                 messageBoxStandardWindow.Show();
             }
-            
-
-
+        }
+        else
+        {
+            // checking if registration was accepted
+            if (!_registrationService.IsAccepted)
+            {
+                var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["RegistrationNotAcceptedMSG"] 
+                    + " " + _mutableConfigurationService.GetConfigurationValue("RegistrationID"));
+                messageBoxStandardWindow.Show();
+            }
         }
     }
 

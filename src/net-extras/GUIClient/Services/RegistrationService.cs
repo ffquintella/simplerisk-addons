@@ -39,6 +39,27 @@ public class RegistrationService: IRegistrationService
         }
     }
 
+    public bool IsAccepted
+    {
+        get
+        {
+            var isRegistredVal = _mutableConfigurationService.GetConfigurationValue("IsAccepted");
+            return isRegistredVal == "true";
+        }
+    }
+
+    public bool CheckAcceptance(string Id, bool force = false)
+    {
+        if (!force)
+        {
+            if (IsAccepted) return true;
+        }
+        var client = _restService.GetClient();
+
+
+        return false;
+
+    }
 
     public RegistrationSolicitationResult Register(string Id, bool force = false)
     {
@@ -78,6 +99,7 @@ public class RegistrationService: IRegistrationService
                 };
                 
                 _mutableConfigurationService.SetConfigurationValue("IsRegistered", "true");
+                _mutableConfigurationService.SetConfigurationValue("RegistrationID", result.RequestID);
                 
                 return result;
             }
