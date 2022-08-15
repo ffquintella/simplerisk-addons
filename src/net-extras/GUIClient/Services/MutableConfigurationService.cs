@@ -14,7 +14,7 @@ public class MutableConfigurationService: IMutableConfigurationService
     {
         _environmentService = environmentService;
         _configurationFilePath = _environmentService.ApplicationDataFolder + @"\configuration.db";
-        _configurationConnectionString = "Filename=" + _configurationFilePath + ";Upgrade=true;Password="+_environmentService.DeviceID;
+        _configurationConnectionString = "Filename=" + _configurationFilePath + ";Upgrade=true;Password="+_environmentService.DeviceToken + "-" + _environmentService.DeviceID;
     }
 
     public bool IsInitialized

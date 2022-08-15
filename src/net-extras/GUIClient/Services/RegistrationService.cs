@@ -7,6 +7,8 @@ using GUIClient.Tools;
 using Microsoft.Extensions.Logging;
 using Model.Registration;
 using RestSharp;
+using Splat;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace GUIClient.Services;
 
@@ -61,19 +63,34 @@ public class RegistrationService: IRegistrationService
             
         };
         
-        var request = new RestRequest("Registration").AddJsonBody(reqData);
-        var response = client.Post(request);
-
         RegistrationSolicitationResult result = null;
-        
-        if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
+        var request = new RestRequest("Registration").AddJsonBody(reqData);
+        try
         {
+            var response = client.Post(request);
+            
+            if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
+            {
+                result = new RegistrationSolicitationResult
+                {
+                    Result = RequestResult.Success,
+                    RequestID = response.Content
+                };
+                return result;
+            }
+
             result = new RegistrationSolicitationResult
             {
-                Result = RequestResult.Success,
-                RequestID = response.Content
+                Result = RequestResult.Failure,
+                RequestID = ""
             };
             return result;
+        }
+        catch (Exception ex)
+        {
+            var logger = Splat.Locator.Current.GetService<ILogger>();
+            
+            logger.LogCritical($"Unhandled application error: {ex}");
         }
 
         result = new RegistrationSolicitationResult
@@ -82,6 +99,7 @@ public class RegistrationService: IRegistrationService
             RequestID = ""
         };
         return result;
+
 
     }
 }

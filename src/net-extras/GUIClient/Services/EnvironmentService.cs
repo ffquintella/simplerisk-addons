@@ -1,4 +1,6 @@
-﻿using DeviceId;
+﻿using System.IO;
+using DeviceId;
+using GUIClient.Tools;
 using SysEnv = System.Environment;
 
 namespace GUIClient.Services;
@@ -11,19 +13,33 @@ public class EnvironmentService: IEnvironmentService
     
     public string ApplicationData => SysEnv.GetFolderPath(SysEnv.SpecialFolder.ApplicationData);
 
-    public string ApplicationDataFolder
-    {
-        get { return ApplicationData + @"\SRGUIClient"; }
-    }
+    public string ApplicationDataFolder => ApplicationData + @"\SRGUIClient";
 
+
+    public string DeviceToken
+    {
+        get
+        {
+            Directory.CreateDirectory(ApplicationDataFolder);
+            if(!File.Exists(ApplicationDataFolder + @"\device_token.txt"))
+            {
+                var token = RandomGenerator.RandomString(20);
+                File.WriteAllText(ApplicationDataFolder + @"\device_token.txt", token  );
+            }
+            
+            return File.ReadAllText(ApplicationDataFolder + @"\device_token.txt");
+        }
+    }
+    
     public string DeviceID
     {
         get
         {
+            
             string deviceId = new DeviceIdBuilder()
                 .AddMachineName()
+                .AddOsVersion()
                 .AddMacAddress()
-                .AddUserName()
                 .ToString();
             
             return deviceId;
