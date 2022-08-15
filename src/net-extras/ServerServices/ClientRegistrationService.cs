@@ -117,8 +117,7 @@ public class ClientRegistrationService: IClientRegistrationService
             var context = _dalManager.GetContext();
 
             var nfound = context.AddonsClientRegistrations
-                .Count(cr => cr.ExternalId == addonsClientRegistration.ExternalId 
-                             || cr.Name == addonsClientRegistration.Name);
+                .Count(cr => cr.ExternalId == addonsClientRegistration.ExternalId);
 
             if (nfound > 0)
             {
