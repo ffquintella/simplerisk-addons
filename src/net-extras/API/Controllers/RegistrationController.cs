@@ -26,7 +26,7 @@ public class RegistrationController : ControllerBase
     [Route("IsAccepted")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(bool))]
-    public ActionResult<bool> IsAccepted([FromQuery] string clientId)
+    public ActionResult<bool> IsAccepted([FromHeader] string clientId)
     {
         try
         {
@@ -42,6 +42,7 @@ public class RegistrationController : ControllerBase
 
         return NotFound(false);
     }
+    
     
     
     [AllowAnonymous]
@@ -80,4 +81,8 @@ public class RegistrationController : ControllerBase
         
         
     }
+    
+  
+    
+    
 }
