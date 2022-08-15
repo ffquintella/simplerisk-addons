@@ -58,4 +58,18 @@ public class MutableConfigurationService: IMutableConfigurationService
             return config.Value;
         }
     }
+
+    public void SetConfigurationValue(string name, string value)
+    {
+        if (!IsInitialized) Initialize();
+        using (var db = new LiteDatabase(_configurationConnectionString))
+        {
+            var col = db.GetCollection<MutableConfiguration>("configuration");
+            col.Insert(new MutableConfiguration
+            {
+                Name = name,
+                Value = value
+            });
+        }
+    }
 }

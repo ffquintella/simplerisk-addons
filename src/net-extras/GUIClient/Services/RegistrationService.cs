@@ -76,6 +76,9 @@ public class RegistrationService: IRegistrationService
                     Result = RequestResult.Success,
                     RequestID = response.Content
                 };
+                
+                _mutableConfigurationService.SetConfigurationValue("IsRegistered", "true");
+                
                 return result;
             }
 

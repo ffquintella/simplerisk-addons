@@ -127,6 +127,8 @@ public class ClientRegistrationService: IClientRegistrationService
             
             context.AddonsClientRegistrations.Add(addonsClientRegistration);
             context.SaveChanges();
+            Log.Information("Adding a client Registration request with name {0}", addonsClientRegistration.Name);
+            
         }
         catch (Exception ex)
         {

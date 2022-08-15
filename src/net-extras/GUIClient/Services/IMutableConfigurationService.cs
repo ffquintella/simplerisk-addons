@@ -7,4 +7,6 @@ public interface IMutableConfigurationService
     void Initialize();
 
     string GetConfigurationValue(string name);
+    
+    void SetConfigurationValue(string name, string value);
 }
