@@ -19,10 +19,7 @@ public class AuthenticationService: IAuthenticationService
     
     public void TryAuthenticate(Window parentWindow)
     {
-        var dialog = new Login()
-        {
-            DataContext = new LoginViewModel()
-        };
+        var dialog = new Login();
         dialog.ShowDialog( parentWindow );
     }
 }

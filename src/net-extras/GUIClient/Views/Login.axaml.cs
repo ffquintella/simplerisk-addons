@@ -6,6 +6,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using GUIClient.Models;
 using GUIClient.Services;
+using GUIClient.ViewModels;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Models;
 using Microsoft.Extensions.Localization;
@@ -23,6 +24,7 @@ public partial class Login : Window
 
     public Login()
     {
+        DataContext = new LoginViewModel(GetService<ILocalizationService>());
         _registrationService = GetService<IRegistrationService>();
         _localizationService = GetService<ILocalizationService>();
         _environmentService = GetService<IEnvironmentService>();
@@ -81,6 +83,10 @@ public partial class Login : Window
                     .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["RegistrationNotAcceptedMSG"] 
                     + " " + _mutableConfigurationService.GetConfigurationValue("RegistrationID"));
                 messageBoxStandardWindow.Show();
+            }
+            else
+            {
+                ((LoginViewModel) DataContext!).IsAccepted = true;
             }
         }
     }

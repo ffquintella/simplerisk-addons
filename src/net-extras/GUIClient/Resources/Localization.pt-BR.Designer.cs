@@ -88,6 +88,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seu registro não foi aceito.
+        /// </summary>
+        internal static string NotAccepted {
+            get {
+                return ResourceManager.GetString("NotAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sistema Operacional.
         /// </summary>
         internal static string OperationalSystem {

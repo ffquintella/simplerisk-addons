@@ -52,6 +52,10 @@
         <Setter Property="Background" Value="#f0f0f0"/>
     </Style-->
 
-    
+    <Style Selector="TextBlock.warning">
+        <Setter Property="Margin" Value="30 5 0 0"/>
+        <Setter Property="Foreground" Value="#bbbbbb"/>
+        <Setter Property="Background" Value="#880000"/>
+    </Style>
     
 </Styles>

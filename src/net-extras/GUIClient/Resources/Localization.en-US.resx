@@ -48,4 +48,7 @@
     <data name="RegistrationNotAcceptedMSG" xml:space="preserve">
         <value>Your app registration was not yet accepted by an administrator. ID: </value>
     </data>
+    <data name="NotAccepted" xml:space="preserve">
+        <value>Your registratin is not accepted</value>
+    </data>
 </root>

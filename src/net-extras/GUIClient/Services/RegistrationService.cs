@@ -50,11 +50,39 @@ public class RegistrationService: IRegistrationService
 
     public bool CheckAcceptance(string Id, bool force = false)
     {
+        if (!IsRegistered) return false;
+        
         if (!force)
         {
             if (IsAccepted) return true;
         }
         var client = _restService.GetClient();
+
+        client.AddDefaultHeader("clientId", Id);
+        
+        var request = new RestRequest("/Registration/IsAccepted");
+        try
+        {
+            var response = client.Get(request);
+            
+            if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
+            {
+                
+                _mutableConfigurationService.SetConfigurationValue("IsAccepted", "true");
+                
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            var logger = Splat.Locator.Current.GetService<ILogger>();
+            
+            logger.LogCritical($"Unhandled application error: {ex}");
+        }
 
 
         return false;

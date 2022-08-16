@@ -48,4 +48,7 @@
     <data name="RegistrationNotAcceptedMSG" xml:space="preserve">
         <value>O registro do seu aplicativo ainda não foi aceito por um administrador. ID:</value>
     </data>
+    <data name="NotAccepted" xml:space="preserve">
+        <value>Seu registro não foi aceito</value>
+    </data>
 </root>
