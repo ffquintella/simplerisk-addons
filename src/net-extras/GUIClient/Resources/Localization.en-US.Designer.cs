@@ -79,6 +79,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        internal static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your application has not being registred. Pelase ask your administrator to authorize the application with ID:.
         /// </summary>
         internal static string NoRegistrationMSG {
@@ -102,6 +111,15 @@ namespace GUIClient.Resources {
         internal static string OperationalSystem {
             get {
                 return ResourceManager.GetString("OperationalSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        internal static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
@@ -147,6 +165,15 @@ namespace GUIClient.Resources {
         internal static string Sys {
             get {
                 return ResourceManager.GetString("Sys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        internal static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
         

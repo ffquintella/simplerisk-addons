@@ -51,4 +51,13 @@
     <data name="NotAccepted" xml:space="preserve">
         <value>Seu registro não foi aceito</value>
     </data>
+    <data name="Login" xml:space="preserve">
+        <value>Entrar</value>
+    </data>
+    <data name="Username" xml:space="preserve">
+        <value>Conta</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Senha</value>
+    </data>
 </root>

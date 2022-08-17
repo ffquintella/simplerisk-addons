@@ -34,12 +34,15 @@
                 <Rectangle  Height="30" DockPanel.Dock="Bottom"/>
                 <Rectangle  Width="30" DockPanel.Dock="Right"/>
                 <StackPanel IsEnabled="False">
-                    <TextBlock Text="Login" Margin="10" />
-                    <!--TextBox Text="{Binding Username}" Margin="10" />
-                    <TextBox Password="{Binding Password}" Margin="10" />
                     <TextBlock Text="{Binding StrLogin}" Margin="10" />
-                    <TextBlock Text="{Binding StrRegister}" Margin="10" />
-                    <TextBlock Text="{Binding StrForgotPassword}" Margin="10" /-->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding StrUsername}" Margin="10" />
+                        <TextBox Text="{Binding Username}" Margin="10" Width="200" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding StrPassword}" Margin="10" />
+                        <TextBox Text="{Binding Password}" Margin="10" PasswordChar="*" Width="200" />
+                    </StackPanel>
                 </StackPanel>
             </DockPanel>
         </Panel>
