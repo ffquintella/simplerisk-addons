@@ -63,4 +63,7 @@
     <data name="Exit" xml:space="preserve">
         <value>Sair</value>
     </data>
+    <data name="Environment" xml:space="preserve">
+        <value>Ambiente</value>
+    </data>
 </root>

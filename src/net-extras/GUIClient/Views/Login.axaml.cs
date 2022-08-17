@@ -25,11 +25,10 @@ public partial class Login : Window
     private IMutableConfigurationService _mutableConfigurationService;
     private IAuthenticationService _authenticationService;
 
-    private List<AuthenticationMethod> _authenticationMethods;
-
+    
     public Login()
     {
-        DataContext = new LoginViewModel(GetService<ILocalizationService>());
+        DataContext = new LoginViewModel(GetService<ILocalizationService>(), GetService<IAuthenticationService>());
   
         _registrationService = GetService<IRegistrationService>();
         _localizationService = GetService<ILocalizationService>();

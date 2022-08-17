@@ -41,7 +41,17 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding StrPassword}" Margin="10" VerticalAlignment="Center" />
-                        <TextBox IsEnabled="{Binding IsAccepted}" Text="{Binding Password}" Margin="10" PasswordChar="*" Width="250" />
+                        <TextBox IsEnabled="{Binding IsAccepted}" Text="{Binding Password}" Margin="10" PasswordChar="*" Width="250"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding StrEnvironment}" Margin="10" VerticalAlignment="Center" />
+                        <ComboBox IsEnabled="{Binding IsAccepted}" Items="{Binding AuthenticationMethods}" Width="220" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button IsEnabled="{Binding IsAccepted}" Name="btLogin" Command="{Binding OnLoginClickCommand}"><TextBlock Text="{Binding StrLogin}" /></Button>

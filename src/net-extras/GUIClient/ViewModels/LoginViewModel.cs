@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;using GUIClient.Services;
 using Microsoft.Extensions.Localization;
+using Model.Authentication;
 
 namespace GUIClient.ViewModels;
 
 public class LoginViewModel : ViewModelBase
 {
     private ILocalizationService _localizationService;
+    private IAuthenticationService _authenticationService;
     public IStringLocalizer _localizer;
 
     public string StrNotAccepted { get; }
@@ -14,9 +17,13 @@ public class LoginViewModel : ViewModelBase
     public string StrUsername { get; }
     public string StrPassword { get; }
     public string StrExit { get; }
+    public string StrEnvironment { get; }
 
-    public LoginViewModel(ILocalizationService localizationService)
+    public List<AuthenticationMethod> AuthenticationMethods => _authenticationService.GetAuthenticationMethods();
+
+    public LoginViewModel(ILocalizationService localizationService, IAuthenticationService authenticationService)
     {
+        _authenticationService = authenticationService;
         _localizationService = localizationService;
         _localizer = _localizationService.GetLocalizer();
         StrNotAccepted = _localizer["NotAccepted"];
@@ -24,6 +31,7 @@ public class LoginViewModel : ViewModelBase
         StrPassword = _localizer["Password"];
         StrUsername = _localizer["Username"];
         StrExit = _localizer["Exit"];
+        StrEnvironment = _localizer["Environment"];
     }
 
     public bool IsAccepted { get; set; }
