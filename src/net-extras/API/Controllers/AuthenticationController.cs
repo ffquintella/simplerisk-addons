@@ -19,7 +19,7 @@ public class AuthenticationController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet]
-    [Route("authenticationmethods")]
+    [Route("AuthenticationMethods")]
     public IEnumerable<AuthenticationMethod> GetAllAuthenticationMethods()
     {
         var result = new List<AuthenticationMethod>();

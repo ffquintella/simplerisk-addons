@@ -1,5 +1,7 @@
-﻿using Avalonia.Controls;
+﻿using System.Collections.Generic;
+using Avalonia.Controls;
 using GUIClient.Models;
+using Model.Authentication;
 
 namespace GUIClient.Services;
 
@@ -10,5 +12,7 @@ public interface IAuthenticationService
     AuthenticationCredential AuthenticationCredential { get; set; }
 
     void TryAuthenticate(Window parentWindow);
+    
+    List<AuthenticationMethod> GetAuthenticationMethods();
 
 }

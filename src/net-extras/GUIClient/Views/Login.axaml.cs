@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -10,6 +11,7 @@ using GUIClient.ViewModels;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Models;
 using Microsoft.Extensions.Localization;
+using Model.Authentication;
 using Splat;
 
 namespace GUIClient.Views;
@@ -23,6 +25,7 @@ public partial class Login : Window
     private IMutableConfigurationService _mutableConfigurationService;
     private IAuthenticationService _authenticationService;
 
+    private List<AuthenticationMethod> _authenticationMethods;
 
     public Login()
     {
