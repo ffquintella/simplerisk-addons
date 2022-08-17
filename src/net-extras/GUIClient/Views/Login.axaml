@@ -33,18 +33,19 @@
                 <Rectangle  Width="30" DockPanel.Dock="Left"/>
                 <Rectangle  Height="30" DockPanel.Dock="Bottom"/>
                 <Rectangle  Width="30" DockPanel.Dock="Right"/>
-                <StackPanel IsEnabled="False">
+                <StackPanel>
                     <TextBlock Text="{Binding StrLogin}" Margin="10" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding StrUsername}" Margin="10" />
-                        <TextBox Text="{Binding Username}" Margin="10" Width="250" />
+                        <TextBlock Text="{Binding StrUsername}" Margin="10" VerticalAlignment="Center"/>
+                        <TextBox IsEnabled="{Binding IsAccepted}" Text="{Binding Username}" Margin="10" Width="250" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding StrPassword}" Margin="10" />
-                        <TextBox Text="{Binding Password}" Margin="10" PasswordChar="*" Width="250" />
+                        <TextBlock Text="{Binding StrPassword}" Margin="10" VerticalAlignment="Center" />
+                        <TextBox IsEnabled="{Binding IsAccepted}" Text="{Binding Password}" Margin="10" PasswordChar="*" Width="250" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Name="btLogin" ><TextBlock Text="{Binding StrLogin}" /></Button>
+                        <Button IsEnabled="{Binding IsAccepted}" Name="btLogin" Command="{Binding OnLoginClickCommand}"><TextBlock Text="{Binding StrLogin}" /></Button>
+                        <Button Name="btExit" Command="{Binding OnExitClickCommand}"><TextBlock Text="{Binding StrExit}" /></Button>
                     </StackPanel>
                 </StackPanel>
             </DockPanel>

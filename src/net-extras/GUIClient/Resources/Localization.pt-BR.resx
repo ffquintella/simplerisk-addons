@@ -60,4 +60,7 @@
     <data name="Password" xml:space="preserve">
         <value>Senha</value>
     </data>
+    <data name="Exit" xml:space="preserve">
+        <value>Sair</value>
+    </data>
 </root>

@@ -21,15 +21,19 @@ public partial class Login : Window
     private IEnvironmentService _environmentService;
     private IStringLocalizer _localizer;
     private IMutableConfigurationService _mutableConfigurationService;
+    private IAuthenticationService _authenticationService;
+
 
     public Login()
     {
         DataContext = new LoginViewModel(GetService<ILocalizationService>());
+  
         _registrationService = GetService<IRegistrationService>();
         _localizationService = GetService<ILocalizationService>();
         _environmentService = GetService<IEnvironmentService>();
         _mutableConfigurationService = GetService<IMutableConfigurationService>();
         _localizer = _localizationService.GetLocalizer();
+        _authenticationService = GetService<IAuthenticationService>();
         
         InitializeComponent();
 #if DEBUG
