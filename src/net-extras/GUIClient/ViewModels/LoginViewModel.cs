@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using Model.Authentication;
+using ReactiveUI;
 
 namespace GUIClient.ViewModels;
 
@@ -34,7 +35,20 @@ public class LoginViewModel : ViewModelBase
         StrEnvironment = _localizer["Environment"];
     }
 
-    public bool IsAccepted { get; set; }
+    private bool _isAccepted;
+
+    public bool IsAccepted
+    {
+        get
+        {
+            return _isAccepted;
+        }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _isAccepted, value);
+        }
+    }
+
 
     public string Username { get; set;}
     public string Password { get; set; }

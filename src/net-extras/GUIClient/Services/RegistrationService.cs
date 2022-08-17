@@ -44,6 +44,7 @@ public class RegistrationService: IRegistrationService
         get
         {
             var isRegistredVal = _mutableConfigurationService.GetConfigurationValue("IsAccepted");
+
             return isRegistredVal == "true";
         }
     }

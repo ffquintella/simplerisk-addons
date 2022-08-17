@@ -82,17 +82,22 @@ public partial class Login : Window
         }
         else
         {
+            
             // checking if registration was accepted
             if (!_registrationService.IsAccepted)
             {
-                var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["RegistrationNotAcceptedMSG"] 
-                    + " " + _mutableConfigurationService.GetConfigurationValue("RegistrationID"));
-                messageBoxStandardWindow.Show();
+                if (!_registrationService.CheckAcceptance(_environmentService.DeviceID))
+                {
+                    var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                        .GetMessageBoxStandardWindow(_localizer["Warning"], _localizer["RegistrationNotAcceptedMSG"] 
+                                                                            + " " + _mutableConfigurationService.GetConfigurationValue("RegistrationID"));
+                    messageBoxStandardWindow.Show();
+                }
             }
             else
             {
                 ((LoginViewModel) DataContext!).IsAccepted = true;
+                
             }
         }
     }
