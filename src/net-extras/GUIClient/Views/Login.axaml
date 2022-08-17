@@ -54,8 +54,8 @@
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button IsEnabled="{Binding IsAccepted}" Name="btLogin" Command="{Binding OnLoginClickCommand}"><TextBlock Text="{Binding StrLogin}" /></Button>
-                        <Button Name="btExit" Command="{Binding OnExitClickCommand}"><TextBlock Text="{Binding StrExit}" /></Button>
+                        <Button IsEnabled="{Binding IsAccepted}" Name="BtLogin" Command="{Binding OnLoginClickCommand}"><TextBlock Text="{Binding StrLogin}" /></Button>
+                        <Button Name="BtExit" Command="{Binding OnExitClickCommand}"><TextBlock Text="{Binding StrExit}" /></Button>
                     </StackPanel>
                 </StackPanel>
             </DockPanel>
