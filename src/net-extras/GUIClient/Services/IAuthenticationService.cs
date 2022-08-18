@@ -15,4 +15,6 @@ public interface IAuthenticationService
     
     List<AuthenticationMethod> GetAuthenticationMethods();
 
+    int DoServerAuthentication(string user, string password);
+
 }

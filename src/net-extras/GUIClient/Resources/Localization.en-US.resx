@@ -66,4 +66,7 @@
     <data name="Environment" xml:space="preserve">
         <value>Environment</value>
     </data>
+    <data name="LoginError" xml:space="preserve">
+        <value>You login process failed.</value>
+    </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;using GUIClient.Services;
+using MessageBox.Avalonia.DTO;
 using Microsoft.Extensions.Localization;
 using Model.Authentication;
 using ReactiveUI;
@@ -55,7 +56,21 @@ public class LoginViewModel : ViewModelBase
 
     public void OnLoginClickCommand()
     {
-        // do something
+        var result = _authenticationService.DoServerAuthentication(Username, Password);
+
+        if (result != 0)
+        {
+            var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = _localizer["Warning"],
+                    ContentMessage = _localizer["LoginError"]  ,
+                    Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                });
+                        
+            messageBoxStandardWindow.Show(); 
+        }
+
     }
     
     public void OnExitClickCommand()
