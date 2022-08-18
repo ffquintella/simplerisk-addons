@@ -25,25 +25,25 @@ public static class LoggingBootstrapper
         
         services.RegisterConstant<ILoggerFactory>(factory);
         
-        services.RegisterLazySingleton(() =>
+        /*services.RegisterLazySingleton(() =>
         {
             return factory.CreateLogger("Default");
-        });
+        });*/
     }
 
     private static string GetLogFileName(LoggingConfiguration config,
         IReadonlyDependencyResolver resolver)
     {
         
-        var logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/SRGUIClient";
+        var logDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SRGUIClient");
         Directory.CreateDirectory(logDir);
-        var logPath = logDir + "/logs";
+        var logPath = Path.Combine( logDir, "logs");
 
         if (!Directory.Exists(logPath))
         {
             Directory.CreateDirectory(logPath);
         }
 
-        return Path.Combine(logPath, config.LogFileName);
+        return logPath;
     }
 }
