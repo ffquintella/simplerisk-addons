@@ -33,6 +33,7 @@
                 <Rectangle  Width="30" DockPanel.Dock="Left"/>
                 <Rectangle  Height="30" DockPanel.Dock="Bottom"/>
                 <Rectangle  Width="30" DockPanel.Dock="Right"/>
+                
                 <StackPanel>
                     <TextBlock Text="{Binding StrLogin}" Margin="10" />
                     <StackPanel Orientation="Horizontal">
