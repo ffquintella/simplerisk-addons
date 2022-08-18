@@ -144,20 +144,22 @@ namespace DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.UseCollation("utf8mb4_0900_ai_ci")
+            modelBuilder.UseCollation("utf8mb4_general_ci")
                 .HasCharSet("utf8mb4");
 
             modelBuilder.Entity<AddonsApiKey>(entity =>
             {
                 entity.ToTable("addons_api_keys");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(6) unsigned")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnType("timestamp")
                     .ValueGeneratedOnAddOrUpdate()
                     .HasColumnName("creation_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(30)
@@ -176,15 +178,16 @@ namespace DAL.Context
             {
                 entity.ToTable("addons_client_registration");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasIndex(e => e.ExternalId, "Ind_ExternalID");
 
-                entity.Property(e => e.ExternalId).HasMaxLength(255);
+                entity.Property(e => e.Id).HasColumnType("int(11)");
 
                 entity.Property(e => e.Hostname).HasMaxLength(255);
 
                 entity.Property(e => e.LastVerificationDate)
                     .HasColumnType("datetime")
-                    .ValueGeneratedOnAddOrUpdate();
+                    .ValueGeneratedOnAddOrUpdate()
+                    .HasDefaultValueSql("'0000-00-00 00:00:00'");
 
                 entity.Property(e => e.LoggedAccount).HasMaxLength(255);
 
@@ -192,7 +195,8 @@ namespace DAL.Context
 
                 entity.Property(e => e.RegistrationDate)
                     .HasColumnType("datetime")
-                    .ValueGeneratedOnAddOrUpdate();
+                    .ValueGeneratedOnAddOrUpdate()
+                    .HasDefaultValueSql("'0000-00-00 00:00:00'");
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(255)
@@ -207,19 +211,23 @@ namespace DAL.Context
 
                 entity.HasIndex(e => e.NotifiedId, "ntf_ind");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(6) unsigned")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.NotificationHash)
                     .HasMaxLength(50)
                     .HasColumnName("notification_hash");
 
-                entity.Property(e => e.NotifiedId).HasColumnName("notified_id");
+                entity.Property(e => e.NotifiedId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("notified_id");
 
                 entity.Property(e => e.SentDate)
                     .HasColumnType("datetime")
                     .ValueGeneratedOnAddOrUpdate()
                     .HasColumnName("sent_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.HasOne(d => d.Notified)
                     .WithMany(p => p.AddonsNotificationControls)
@@ -231,7 +239,9 @@ namespace DAL.Context
             {
                 entity.ToTable("addons_notification_messages");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(6) unsigned")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -253,12 +263,14 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Created)
                     .HasColumnType("timestamp")
                     .HasColumnName("created")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(200)
@@ -272,23 +284,34 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Answer)
                     .HasMaxLength(200)
                     .HasColumnName("answer");
 
-                entity.Property(e => e.AssessmentId).HasColumnName("assessment_id");
+                entity.Property(e => e.AssessmentId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("assessment_id");
 
-                entity.Property(e => e.AssessmentScoringId).HasColumnName("assessment_scoring_id");
+                entity.Property(e => e.AssessmentScoringId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("assessment_scoring_id");
 
                 entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
                     .HasColumnName("order")
                     .HasDefaultValueSql("'999999'");
 
-                entity.Property(e => e.QuestionId).HasColumnName("question_id");
+                entity.Property(e => e.QuestionId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("question_id");
 
-                entity.Property(e => e.RiskOwner).HasColumnName("risk_owner");
+                entity.Property(e => e.RiskOwner)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_owner");
 
                 entity.Property(e => e.RiskScore).HasColumnName("risk_score");
 
@@ -311,9 +334,13 @@ namespace DAL.Context
                 entity.HasIndex(e => new { e.AssessmentAnswerId, e.AssetId }, "assessment_answer_asset_unique")
                     .IsUnique();
 
-                entity.Property(e => e.AssessmentAnswerId).HasColumnName("assessment_answer_id");
+                entity.Property(e => e.AssessmentAnswerId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("assessment_answer_id");
 
-                entity.Property(e => e.AssetId).HasColumnName("asset_id");
+                entity.Property(e => e.AssetId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("asset_id");
             });
 
             modelBuilder.Entity<AssessmentAnswersToAssetGroup>(entity =>
@@ -328,9 +355,13 @@ namespace DAL.Context
                 entity.HasIndex(e => new { e.AssessmentAnswerId, e.AssetGroupId }, "assessment_answer_asset_group_unique")
                     .IsUnique();
 
-                entity.Property(e => e.AssessmentAnswerId).HasColumnName("assessment_answer_id");
+                entity.Property(e => e.AssessmentAnswerId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("assessment_answer_id");
 
-                entity.Property(e => e.AssetGroupId).HasColumnName("asset_group_id");
+                entity.Property(e => e.AssetGroupId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("asset_group_id");
             });
 
             modelBuilder.Entity<AssessmentQuestion>(entity =>
@@ -340,11 +371,16 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
-                entity.Property(e => e.AssessmentId).HasColumnName("assessment_id");
+                entity.Property(e => e.AssessmentId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("assessment_id");
 
                 entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
                     .HasColumnName("order")
                     .HasDefaultValueSql("'999999'");
 
@@ -363,7 +399,9 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Id, "id")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.CalculatedRisk).HasColumnName("calculated_risk");
 
@@ -376,6 +414,7 @@ namespace DAL.Context
                     .HasDefaultValueSql("'5'");
 
                 entity.Property(e => e.ContributingLikelihood)
+                    .HasColumnType("int(11)")
                     .HasColumnName("Contributing_Likelihood")
                     .HasDefaultValueSql("'0'");
 
@@ -452,90 +491,113 @@ namespace DAL.Context
                     .HasDefaultValueSql("'ND'");
 
                 entity.Property(e => e.DreadAffectedUsers)
+                    .HasColumnType("int(11)")
                     .HasColumnName("DREAD_AffectedUsers")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.DreadDamagePotential)
+                    .HasColumnType("int(11)")
                     .HasColumnName("DREAD_DamagePotential")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.DreadDiscoverability)
+                    .HasColumnType("int(11)")
                     .HasColumnName("DREAD_Discoverability")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.DreadExploitability)
+                    .HasColumnType("int(11)")
                     .HasColumnName("DREAD_Exploitability")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.DreadReproducibility)
+                    .HasColumnType("int(11)")
                     .HasColumnName("DREAD_Reproducibility")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspAwareness)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_Awareness")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspEaseOfDiscovery)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_EaseOfDiscovery")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspEaseOfExploit)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_EaseOfExploit")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspFinancialDamage)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_FinancialDamage")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspIntrusionDetection)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_IntrusionDetection")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspLossOfAccountability)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_LossOfAccountability")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspLossOfAvailability)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_LossOfAvailability")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspLossOfConfidentiality)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_LossOfConfidentiality")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspLossOfIntegrity)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_LossOfIntegrity")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspMotive)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_Motive")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspNonCompliance)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_NonCompliance")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspOpportunity)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_Opportunity")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspPrivacyViolation)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_PrivacyViolation")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspReputationDamage)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_ReputationDamage")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspSize)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_Size")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspSkillLevel)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_SkillLevel")
                     .HasDefaultValueSql("'10'");
 
-                entity.Property(e => e.ScoringMethod).HasColumnName("scoring_method");
+                entity.Property(e => e.ScoringMethod)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("scoring_method");
             });
 
             modelBuilder.Entity<AssessmentScoringContributingImpact>(entity =>
@@ -545,13 +607,21 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
-                entity.Property(e => e.AssessmentScoringId).HasColumnName("assessment_scoring_id");
+                entity.Property(e => e.AssessmentScoringId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("assessment_scoring_id");
 
-                entity.Property(e => e.ContributingRiskId).HasColumnName("contributing_risk_id");
+                entity.Property(e => e.ContributingRiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("contributing_risk_id");
 
-                entity.Property(e => e.Impact).HasColumnName("impact");
+                entity.Property(e => e.Impact)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("impact");
             });
 
             modelBuilder.Entity<Asset>(entity =>
@@ -564,12 +634,14 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Created)
                     .HasColumnType("timestamp")
                     .HasColumnName("created")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Details).HasColumnName("details");
 
@@ -577,7 +649,9 @@ namespace DAL.Context
                     .HasMaxLength(15)
                     .HasColumnName("ip");
 
-                entity.Property(e => e.Location).HasColumnName("location");
+                entity.Property(e => e.Location)
+                    .HasMaxLength(1000)
+                    .HasColumnName("location");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(200)
@@ -588,10 +662,13 @@ namespace DAL.Context
                     .HasColumnName("teams");
 
                 entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
                     .HasColumnName("value")
                     .HasDefaultValueSql("'5'");
 
-                entity.Property(e => e.Verified).HasColumnName("verified");
+                entity.Property(e => e.Verified)
+                    .HasColumnType("tinyint(4)")
+                    .HasColumnName("verified");
             });
 
             modelBuilder.Entity<AssetGroup>(entity =>
@@ -604,7 +681,9 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Name, "name_unique")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
@@ -619,12 +698,17 @@ namespace DAL.Context
                     .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
                     .ValueGeneratedNever()
                     .HasColumnName("id");
 
-                entity.Property(e => e.MaxValue).HasColumnName("max_value");
+                entity.Property(e => e.MaxValue)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("max_value");
 
-                entity.Property(e => e.MinValue).HasColumnName("min_value");
+                entity.Property(e => e.MinValue)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("min_value");
 
                 entity.Property(e => e.ValuationLevelName)
                     .HasMaxLength(100)
@@ -643,9 +727,13 @@ namespace DAL.Context
                 entity.HasIndex(e => new { e.AssetId, e.AssetGroupId }, "asset_asset_group_unique")
                     .IsUnique();
 
-                entity.Property(e => e.AssetGroupId).HasColumnName("asset_group_id");
+                entity.Property(e => e.AssetGroupId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("asset_group_id");
 
-                entity.Property(e => e.AssetId).HasColumnName("asset_id");
+                entity.Property(e => e.AssetId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("asset_id");
             });
 
             modelBuilder.Entity<AuditLog>(entity =>
@@ -665,14 +753,18 @@ namespace DAL.Context
                     .HasColumnType("text")
                     .HasColumnName("message");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
                 entity.Property(e => e.Timestamp)
                     .HasColumnType("timestamp")
                     .HasColumnName("timestamp")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<Backup>(entity =>
@@ -682,7 +774,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.AppZipFileName)
                     .HasColumnType("text")
@@ -699,7 +793,7 @@ namespace DAL.Context
                 entity.Property(e => e.Timestamp)
                     .HasColumnType("timestamp")
                     .HasColumnName("timestamp")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
             });
 
             modelBuilder.Entity<Category>(entity =>
@@ -712,7 +806,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -729,7 +825,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -743,22 +841,34 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.HasIndex(e => e.CloseReason, "closures_close_reason_idx");
 
-                entity.Property(e => e.CloseReason).HasColumnName("close_reason");
+                entity.HasIndex(e => e.UserId, "closures_user_id_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.CloseReason)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("close_reason");
 
                 entity.Property(e => e.ClosureDate)
                     .HasColumnType("timestamp")
                     .HasColumnName("closure_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Note)
                     .HasColumnType("text")
                     .HasColumnName("note");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<Comment>(entity =>
@@ -768,7 +878,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Comment1)
                     .HasColumnType("text")
@@ -777,11 +889,15 @@ namespace DAL.Context
                 entity.Property(e => e.Date)
                     .HasColumnType("timestamp")
                     .HasColumnName("date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
-                entity.Property(e => e.User).HasColumnName("user");
+                entity.Property(e => e.User)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user");
             });
 
             modelBuilder.Entity<ComplianceFile>(entity =>
@@ -791,7 +907,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Content).HasColumnName("content");
 
@@ -800,6 +918,7 @@ namespace DAL.Context
                     .HasColumnName("name");
 
                 entity.Property(e => e.RefId)
+                    .HasColumnType("int(11)")
                     .HasColumnName("ref_id")
                     .HasDefaultValueSql("'0'");
 
@@ -808,12 +927,14 @@ namespace DAL.Context
                     .HasColumnName("ref_type")
                     .HasDefaultValueSql("''");
 
-                entity.Property(e => e.Size).HasColumnName("size");
+                entity.Property(e => e.Size)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("size");
 
                 entity.Property(e => e.Timestamp)
                     .HasColumnType("timestamp")
                     .HasColumnName("timestamp")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Type)
                     .HasMaxLength(128)
@@ -823,9 +944,13 @@ namespace DAL.Context
                     .HasMaxLength(30)
                     .HasColumnName("unique_name");
 
-                entity.Property(e => e.User).HasColumnName("user");
+                entity.Property(e => e.User)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user");
 
-                entity.Property(e => e.Version).HasColumnName("version");
+                entity.Property(e => e.Version)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("version");
             });
 
             modelBuilder.Entity<ContributingRisk>(entity =>
@@ -835,7 +960,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Subject)
                     .HasMaxLength(1000)
@@ -855,15 +982,23 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.ContributingRisksId, e.Value }, "cri_index");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.HasIndex(e => e.Value, "cri_value_idx");
 
-                entity.Property(e => e.ContributingRisksId).HasColumnName("contributing_risks_id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.ContributingRisksId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("contributing_risks_id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
             });
 
             modelBuilder.Entity<ContributingRisksLikelihood>(entity =>
@@ -875,13 +1010,17 @@ namespace DAL.Context
 
                 entity.HasIndex(e => e.Value, "crl_index");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
             });
 
             modelBuilder.Entity<ControlClass>(entity =>
@@ -894,7 +1033,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasColumnType("mediumtext")
@@ -912,6 +1053,7 @@ namespace DAL.Context
                     .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
                     .ValueGeneratedNever()
                     .HasColumnName("value");
 
@@ -930,7 +1072,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasColumnType("mediumtext")
@@ -947,7 +1091,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasColumnType("mediumtext")
@@ -964,7 +1110,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasColumnType("mediumtext")
@@ -983,9 +1131,13 @@ namespace DAL.Context
                 entity.HasIndex(e => new { e.Impact, e.Likelihood }, "impact_likelihood_unique")
                     .IsUnique();
 
-                entity.Property(e => e.Impact).HasColumnName("impact");
+                entity.Property(e => e.Impact)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("impact");
 
-                entity.Property(e => e.Likelihood).HasColumnName("likelihood");
+                entity.Property(e => e.Likelihood)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("likelihood");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("double(3,1)")
@@ -999,7 +1151,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.AbrvMetricName)
                     .HasMaxLength(3)
@@ -1027,13 +1181,17 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .HasColumnType("mediumtext")
                     .HasColumnName("name");
 
-                entity.Property(e => e.Order).HasColumnName("order");
+                entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("order");
             });
 
             modelBuilder.Entity<DateFormat>(entity =>
@@ -1058,7 +1216,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.AdditionalStakeholders)
                     .HasMaxLength(500)
@@ -1066,7 +1226,9 @@ namespace DAL.Context
 
                 entity.Property(e => e.ApprovalDate).HasColumnName("approval_date");
 
-                entity.Property(e => e.Approver).HasColumnName("approver");
+                entity.Property(e => e.Approver)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("approver");
 
                 entity.Property(e => e.ControlIds)
                     .HasMaxLength(500)
@@ -1079,9 +1241,12 @@ namespace DAL.Context
                     .HasColumnName("document_name")
                     .UseCollation("utf8mb3_bin");
 
-                entity.Property(e => e.DocumentOwner).HasColumnName("document_owner");
+                entity.Property(e => e.DocumentOwner)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("document_owner");
 
                 entity.Property(e => e.DocumentStatus)
+                    .HasColumnType("int(11)")
                     .HasColumnName("document_status")
                     .HasDefaultValueSql("'1'");
 
@@ -1090,7 +1255,9 @@ namespace DAL.Context
                     .HasColumnName("document_type")
                     .UseCollation("utf8mb3_bin");
 
-                entity.Property(e => e.FileId).HasColumnName("file_id");
+                entity.Property(e => e.FileId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("file_id");
 
                 entity.Property(e => e.FrameworkIds)
                     .HasMaxLength(500)
@@ -1100,17 +1267,25 @@ namespace DAL.Context
 
                 entity.Property(e => e.NextReviewDate).HasColumnName("next_review_date");
 
-                entity.Property(e => e.Parent).HasColumnName("parent");
+                entity.Property(e => e.Parent)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("parent");
 
-                entity.Property(e => e.ReviewFrequency).HasColumnName("review_frequency");
+                entity.Property(e => e.ReviewFrequency)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("review_frequency");
 
-                entity.Property(e => e.SubmittedBy).HasColumnName("submitted_by");
+                entity.Property(e => e.SubmittedBy)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("submitted_by");
 
                 entity.Property(e => e.TeamIds)
                     .HasMaxLength(500)
                     .HasColumnName("team_ids");
 
-                entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+                entity.Property(e => e.UpdatedBy)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("updated_by");
             });
 
             modelBuilder.Entity<DocumentException>(entity =>
@@ -1123,7 +1298,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.AdditionalStakeholders)
                     .HasMaxLength(500)
@@ -1135,13 +1312,17 @@ namespace DAL.Context
 
                 entity.Property(e => e.Approved).HasColumnName("approved");
 
-                entity.Property(e => e.Approver).HasColumnName("approver");
+                entity.Property(e => e.Approver)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("approver");
 
                 entity.Property(e => e.AssociatedRisks)
                     .HasColumnType("text")
                     .HasColumnName("associated_risks");
 
-                entity.Property(e => e.ControlFrameworkId).HasColumnName("control_framework_id");
+                entity.Property(e => e.ControlFrameworkId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_framework_id");
 
                 entity.Property(e => e.CreationDate)
                     .HasColumnName("creation_date")
@@ -1151,7 +1332,9 @@ namespace DAL.Context
                     .HasColumnType("blob")
                     .HasColumnName("description");
 
-                entity.Property(e => e.FileId).HasColumnName("file_id");
+                entity.Property(e => e.FileId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("file_id");
 
                 entity.Property(e => e.Justification)
                     .HasColumnType("blob")
@@ -1165,13 +1348,20 @@ namespace DAL.Context
                     .HasColumnName("next_review_date")
                     .HasDefaultValueSql("'0000-00-00'");
 
-                entity.Property(e => e.Owner).HasColumnName("owner");
+                entity.Property(e => e.Owner)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("owner");
 
-                entity.Property(e => e.PolicyDocumentId).HasColumnName("policy_document_id");
+                entity.Property(e => e.PolicyDocumentId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("policy_document_id");
 
-                entity.Property(e => e.ReviewFrequency).HasColumnName("review_frequency");
+                entity.Property(e => e.ReviewFrequency)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("review_frequency");
 
                 entity.Property(e => e.Status)
+                    .HasColumnType("int(11)")
                     .HasColumnName("status")
                     .HasDefaultValueSql("'1'");
             });
@@ -1186,7 +1376,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
@@ -1203,7 +1395,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
@@ -1220,7 +1414,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.CustomColumnFilters)
                     .HasColumnType("text")
@@ -1242,7 +1438,9 @@ namespace DAL.Context
                     .HasColumnType("enum('private','public')")
                     .HasColumnName("type");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<FailedLoginAttempt>(entity =>
@@ -1252,14 +1450,17 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Date)
                     .HasColumnType("timestamp")
                     .HasColumnName("date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Expired)
+                    .HasColumnType("tinyint(4)")
                     .HasColumnName("expired")
                     .HasDefaultValueSql("'0'");
 
@@ -1268,7 +1469,9 @@ namespace DAL.Context
                     .HasColumnName("ip")
                     .HasDefaultValueSql("'0.0.0.0'");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<Family>(entity =>
@@ -1281,7 +1484,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
@@ -1298,7 +1503,9 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
@@ -1316,7 +1523,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Content).HasColumnName("content");
 
@@ -1325,15 +1534,18 @@ namespace DAL.Context
                     .HasColumnName("name");
 
                 entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
                     .HasColumnName("risk_id")
                     .HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.Size).HasColumnName("size");
+                entity.Property(e => e.Size)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("size");
 
                 entity.Property(e => e.Timestamp)
                     .HasColumnType("timestamp")
                     .HasColumnName("timestamp")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Type)
                     .HasMaxLength(128)
@@ -1343,9 +1555,12 @@ namespace DAL.Context
                     .HasMaxLength(30)
                     .HasColumnName("unique_name");
 
-                entity.Property(e => e.User).HasColumnName("user");
+                entity.Property(e => e.User)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user");
 
                 entity.Property(e => e.ViewType)
+                    .HasColumnType("int(11)")
                     .HasColumnName("view_type")
                     .HasDefaultValueSql("'1'");
             });
@@ -1363,7 +1578,9 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(250)
@@ -1383,7 +1600,9 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(10)
@@ -1400,13 +1619,17 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("blob")
                     .HasColumnName("description");
 
-                entity.Property(e => e.DesiredFrequency).HasColumnName("desired_frequency");
+                entity.Property(e => e.DesiredFrequency)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("desired_frequency");
 
                 entity.Property(e => e.LastAuditDate).HasColumnName("last_audit_date");
 
@@ -1416,11 +1639,16 @@ namespace DAL.Context
 
                 entity.Property(e => e.NextAuditDate).HasColumnName("next_audit_date");
 
-                entity.Property(e => e.Order).HasColumnName("order");
+                entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("order");
 
-                entity.Property(e => e.Parent).HasColumnName("parent");
+                entity.Property(e => e.Parent)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("parent");
 
                 entity.Property(e => e.Status)
+                    .HasColumnType("int(11)")
                     .HasColumnName("status")
                     .HasDefaultValueSql("'1'");
             });
@@ -1432,37 +1660,59 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.HasIndex(e => e.Deleted, "framework_controls_deleted_idx");
 
-                entity.Property(e => e.ControlClass).HasColumnName("control_class");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
-                entity.Property(e => e.ControlMaturity).HasColumnName("control_maturity");
+                entity.Property(e => e.ControlClass)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_class");
+
+                entity.Property(e => e.ControlMaturity)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_maturity");
 
                 entity.Property(e => e.ControlNumber)
                     .HasMaxLength(100)
                     .HasColumnName("control_number");
 
-                entity.Property(e => e.ControlOwner).HasColumnName("control_owner");
+                entity.Property(e => e.ControlOwner)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_owner");
 
-                entity.Property(e => e.ControlPhase).HasColumnName("control_phase");
+                entity.Property(e => e.ControlPhase)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_phase");
 
-                entity.Property(e => e.ControlPriority).HasColumnName("control_priority");
+                entity.Property(e => e.ControlPriority)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_priority");
 
                 entity.Property(e => e.ControlStatus)
                     .HasColumnName("control_status")
                     .HasDefaultValueSql("'1'");
 
-                entity.Property(e => e.Deleted).HasColumnName("deleted");
+                entity.Property(e => e.Deleted)
+                    .HasColumnType("tinyint(4)")
+                    .HasColumnName("deleted");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("blob")
                     .HasColumnName("description");
 
-                entity.Property(e => e.DesiredFrequency).HasColumnName("desired_frequency");
+                entity.Property(e => e.DesiredFrequency)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("desired_frequency");
 
-                entity.Property(e => e.DesiredMaturity).HasColumnName("desired_maturity");
+                entity.Property(e => e.DesiredMaturity)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("desired_maturity");
 
-                entity.Property(e => e.Family).HasColumnName("family");
+                entity.Property(e => e.Family)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("family");
 
                 entity.Property(e => e.LastAuditDate).HasColumnName("last_audit_date");
 
@@ -1470,7 +1720,9 @@ namespace DAL.Context
                     .HasColumnType("blob")
                     .HasColumnName("long_name");
 
-                entity.Property(e => e.MitigationPercent).HasColumnName("mitigation_percent");
+                entity.Property(e => e.MitigationPercent)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("mitigation_percent");
 
                 entity.Property(e => e.NextAuditDate).HasColumnName("next_audit_date");
 
@@ -1479,13 +1731,14 @@ namespace DAL.Context
                     .HasColumnName("short_name");
 
                 entity.Property(e => e.Status)
+                    .HasColumnType("int(11)")
                     .HasColumnName("status")
                     .HasDefaultValueSql("'1'");
 
                 entity.Property(e => e.SubmissionDate)
                     .HasColumnType("timestamp")
                     .HasColumnName("submission_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.SupplementalGuidance)
                     .HasColumnType("blob")
@@ -1503,11 +1756,17 @@ namespace DAL.Context
 
                 entity.HasIndex(e => e.Framework, "framework");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
-                entity.Property(e => e.ControlId).HasColumnName("control_id");
+                entity.Property(e => e.ControlId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_id");
 
-                entity.Property(e => e.Framework).HasColumnName("framework");
+                entity.Property(e => e.Framework)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("framework");
 
                 entity.Property(e => e.ReferenceName)
                     .HasMaxLength(200)
@@ -1524,23 +1783,31 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Id, "id")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.AdditionalStakeholders)
                     .HasMaxLength(500)
                     .HasColumnName("additional_stakeholders");
 
-                entity.Property(e => e.ApproximateTime).HasColumnName("approximate_time");
+                entity.Property(e => e.ApproximateTime)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("approximate_time");
 
                 entity.Property(e => e.CreatedAt).HasColumnName("created_at");
 
-                entity.Property(e => e.DesiredFrequency).HasColumnName("desired_frequency");
+                entity.Property(e => e.DesiredFrequency)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("desired_frequency");
 
                 entity.Property(e => e.ExpectedResults)
                     .HasColumnType("mediumtext")
                     .HasColumnName("expected_results");
 
-                entity.Property(e => e.FrameworkControlId).HasColumnName("framework_control_id");
+                entity.Property(e => e.FrameworkControlId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("framework_control_id");
 
                 entity.Property(e => e.LastDate).HasColumnName("last_date");
 
@@ -1555,16 +1822,21 @@ namespace DAL.Context
                     .HasColumnName("objective");
 
                 entity.Property(e => e.Status)
+                    .HasColumnType("int(11)")
                     .HasColumnName("status")
                     .HasDefaultValueSql("'1'");
 
-                entity.Property(e => e.TestFrequency).HasColumnName("test_frequency");
+                entity.Property(e => e.TestFrequency)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("test_frequency");
 
                 entity.Property(e => e.TestSteps)
                     .HasColumnType("mediumtext")
                     .HasColumnName("test_steps");
 
-                entity.Property(e => e.Tester).HasColumnName("tester");
+                entity.Property(e => e.Tester)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("tester");
             });
 
             modelBuilder.Entity<FrameworkControlTestAudit>(entity =>
@@ -1574,21 +1846,29 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
-                entity.Property(e => e.ApproximateTime).HasColumnName("approximate_time");
+                entity.Property(e => e.ApproximateTime)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("approximate_time");
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("created_at");
 
-                entity.Property(e => e.DesiredFrequency).HasColumnName("desired_frequency");
+                entity.Property(e => e.DesiredFrequency)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("desired_frequency");
 
                 entity.Property(e => e.ExpectedResults)
                     .HasColumnType("mediumtext")
                     .HasColumnName("expected_results");
 
-                entity.Property(e => e.FrameworkControlId).HasColumnName("framework_control_id");
+                entity.Property(e => e.FrameworkControlId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("framework_control_id");
 
                 entity.Property(e => e.LastDate).HasColumnName("last_date");
 
@@ -1603,18 +1883,25 @@ namespace DAL.Context
                     .HasColumnName("objective");
 
                 entity.Property(e => e.Status)
+                    .HasColumnType("int(11)")
                     .HasColumnName("status")
                     .HasDefaultValueSql("'1'");
 
-                entity.Property(e => e.TestFrequency).HasColumnName("test_frequency");
+                entity.Property(e => e.TestFrequency)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("test_frequency");
 
-                entity.Property(e => e.TestId).HasColumnName("test_id");
+                entity.Property(e => e.TestId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("test_id");
 
                 entity.Property(e => e.TestSteps)
                     .HasColumnType("mediumtext")
                     .HasColumnName("test_steps");
 
-                entity.Property(e => e.Tester).HasColumnName("tester");
+                entity.Property(e => e.Tester)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("tester");
             });
 
             modelBuilder.Entity<FrameworkControlTestComment>(entity =>
@@ -1624,7 +1911,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Comment)
                     .HasColumnType("mediumtext")
@@ -1633,11 +1922,15 @@ namespace DAL.Context
                 entity.Property(e => e.Date)
                     .HasColumnType("timestamp")
                     .HasColumnName("date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
-                entity.Property(e => e.TestAuditId).HasColumnName("test_audit_id");
+                entity.Property(e => e.TestAuditId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("test_audit_id");
 
-                entity.Property(e => e.User).HasColumnName("user");
+                entity.Property(e => e.User)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user");
             });
 
             modelBuilder.Entity<FrameworkControlTestResult>(entity =>
@@ -1647,25 +1940,31 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.LastUpdated)
                     .HasColumnType("timestamp")
                     .ValueGeneratedOnAddOrUpdate()
                     .HasColumnName("last_updated")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.SubmissionDate)
                     .HasColumnType("datetime")
                     .HasColumnName("submission_date");
 
-                entity.Property(e => e.SubmittedBy).HasColumnName("submitted_by");
+                entity.Property(e => e.SubmittedBy)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("submitted_by");
 
                 entity.Property(e => e.Summary)
                     .HasColumnType("text")
                     .HasColumnName("summary");
 
-                entity.Property(e => e.TestAuditId).HasColumnName("test_audit_id");
+                entity.Property(e => e.TestAuditId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("test_audit_id");
 
                 entity.Property(e => e.TestDate).HasColumnName("test_date");
 
@@ -1681,11 +1980,17 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
-                entity.Property(e => e.TestResultsId).HasColumnName("test_results_id");
+                entity.Property(e => e.TestResultsId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("test_results_id");
             });
 
             modelBuilder.Entity<FrameworkControlToFramework>(entity =>
@@ -1701,9 +2006,13 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.FrameworkId, e.ControlId }, "framework_id");
 
-                entity.Property(e => e.ControlId).HasColumnName("control_id");
+                entity.Property(e => e.ControlId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_id");
 
-                entity.Property(e => e.FrameworkId).HasColumnName("framework_id");
+                entity.Property(e => e.FrameworkId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("framework_id");
             });
 
             modelBuilder.Entity<FrameworkControlTypeMapping>(entity =>
@@ -1713,11 +2022,17 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
-                entity.Property(e => e.ControlId).HasColumnName("control_id");
+                entity.Property(e => e.ControlId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_id");
 
-                entity.Property(e => e.ControlTypeId).HasColumnName("control_type_id");
+                entity.Property(e => e.ControlTypeId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_type_id");
             });
 
             modelBuilder.Entity<GraphicalSavedSelection>(entity =>
@@ -1730,7 +2045,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.GraphicalDisplaySettings)
                     .HasMaxLength(1000)
@@ -1744,7 +2061,9 @@ namespace DAL.Context
                     .HasColumnType("enum('private','public')")
                     .HasColumnName("type");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<Impact>(entity =>
@@ -1762,7 +2081,9 @@ namespace DAL.Context
                     .HasMaxLength(50)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
             });
 
             modelBuilder.Entity<ItemsToTeam>(entity =>
@@ -1783,9 +2104,13 @@ namespace DAL.Context
 
                 entity.HasIndex(e => e.Type, "type");
 
-                entity.Property(e => e.ItemId).HasColumnName("item_id");
+                entity.Property(e => e.ItemId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("item_id");
 
-                entity.Property(e => e.TeamId).HasColumnName("team_id");
+                entity.Property(e => e.TeamId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("team_id");
 
                 entity.Property(e => e.Type)
                     .HasMaxLength(20)
@@ -1802,7 +2127,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Full)
                     .HasMaxLength(50)
@@ -1828,7 +2155,9 @@ namespace DAL.Context
                     .HasMaxLength(50)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -1841,7 +2170,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
@@ -1855,7 +2186,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Comments)
                     .HasColumnType("text")
@@ -1865,18 +2198,26 @@ namespace DAL.Context
                     .HasColumnName("next_review")
                     .HasDefaultValueSql("'0000-00-00'");
 
-                entity.Property(e => e.NextStep).HasColumnName("next_step");
+                entity.Property(e => e.NextStep)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("next_step");
 
-                entity.Property(e => e.Review).HasColumnName("review");
+                entity.Property(e => e.Review)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("review");
 
-                entity.Property(e => e.Reviewer).HasColumnName("reviewer");
+                entity.Property(e => e.Reviewer)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("reviewer");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
                 entity.Property(e => e.SubmissionDate)
                     .HasColumnType("timestamp")
                     .HasColumnName("submission_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
             });
 
             modelBuilder.Entity<Mitigation>(entity =>
@@ -1888,7 +2229,9 @@ namespace DAL.Context
 
                 entity.HasIndex(e => e.RiskId, "risk_id");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.CurrentSolution)
                     .HasColumnType("text")
@@ -1900,20 +2243,31 @@ namespace DAL.Context
                     .HasDefaultValueSql("'0000-00-00 00:00:00'");
 
                 entity.Property(e => e.MitigationCost)
+                    .HasColumnType("int(11)")
                     .HasColumnName("mitigation_cost")
                     .HasDefaultValueSql("'1'");
 
-                entity.Property(e => e.MitigationEffort).HasColumnName("mitigation_effort");
+                entity.Property(e => e.MitigationEffort)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("mitigation_effort");
 
-                entity.Property(e => e.MitigationOwner).HasColumnName("mitigation_owner");
+                entity.Property(e => e.MitigationOwner)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("mitigation_owner");
 
-                entity.Property(e => e.MitigationPercent).HasColumnName("mitigation_percent");
+                entity.Property(e => e.MitigationPercent)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("mitigation_percent");
 
                 entity.Property(e => e.PlanningDate).HasColumnName("planning_date");
 
-                entity.Property(e => e.PlanningStrategy).HasColumnName("planning_strategy");
+                entity.Property(e => e.PlanningStrategy)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("planning_strategy");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
                 entity.Property(e => e.SecurityRecommendations)
                     .HasColumnType("text")
@@ -1926,9 +2280,10 @@ namespace DAL.Context
                 entity.Property(e => e.SubmissionDate)
                     .HasColumnType("timestamp")
                     .HasColumnName("submission_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.SubmittedBy)
+                    .HasColumnType("int(11)")
                     .HasColumnName("submitted_by")
                     .HasDefaultValueSql("'1'");
             });
@@ -1940,17 +2295,27 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.HasIndex(e => e.RiskId, "risk_id");
+                entity.HasIndex(e => e.RiskId, "mau_risk_id_idx");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.HasIndex(e => new { e.RiskId, e.UserId }, "mau_risk_user_idx");
+
+                entity.HasIndex(e => e.UserId, "mau_user_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("created_at");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<MitigationEffort>(entity =>
@@ -1963,7 +2328,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(20)
@@ -1983,19 +2350,29 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.ControlId, e.MitigationId }, "control_id");
 
-                entity.Property(e => e.MitigationId).HasColumnName("mitigation_id");
+                entity.HasIndex(e => e.ControlId, "mtg2ctrl_control_idx");
 
-                entity.Property(e => e.ControlId).HasColumnName("control_id");
+                entity.HasIndex(e => e.MitigationId, "mtg2ctrl_mtg_idx");
+
+                entity.Property(e => e.MitigationId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("mitigation_id");
+
+                entity.Property(e => e.ControlId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_id");
 
                 entity.Property(e => e.ValidationDetails)
                     .HasColumnType("mediumtext")
                     .HasColumnName("validation_details");
 
                 entity.Property(e => e.ValidationMitigationPercent)
+                    .HasColumnType("int(11)")
                     .HasColumnName("validation_mitigation_percent")
                     .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.ValidationOwner)
+                    .HasColumnType("int(11)")
                     .HasColumnName("validation_owner")
                     .HasDefaultValueSql("'0'");
             });
@@ -2011,11 +2388,19 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
+                entity.HasIndex(e => e.MitigationId, "mtg2team_mtg_id");
+
+                entity.HasIndex(e => e.TeamId, "mtg2team_team_id");
+
                 entity.HasIndex(e => new { e.TeamId, e.MitigationId }, "team_id");
 
-                entity.Property(e => e.MitigationId).HasColumnName("mitigation_id");
+                entity.Property(e => e.MitigationId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("mitigation_id");
 
-                entity.Property(e => e.TeamId).HasColumnName("team_id");
+                entity.Property(e => e.TeamId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("team_id");
             });
 
             modelBuilder.Entity<NextStep>(entity =>
@@ -2028,7 +2413,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -2044,12 +2431,14 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Attempts).HasColumnName("attempts");
+                entity.Property(e => e.Attempts)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("attempts");
 
                 entity.Property(e => e.Timestamp)
                     .HasColumnType("timestamp")
                     .HasColumnName("timestamp")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Token)
                     .HasMaxLength(20)
@@ -2067,21 +2456,29 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.AffectedAssets)
                     .HasColumnType("text")
                     .HasColumnName("affected_assets");
 
-                entity.Property(e => e.AssessmentAnswerId).HasColumnName("assessment_answer_id");
+                entity.Property(e => e.AssessmentAnswerId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("assessment_answer_id");
 
-                entity.Property(e => e.AssessmentId).HasColumnName("assessment_id");
+                entity.Property(e => e.AssessmentId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("assessment_id");
 
                 entity.Property(e => e.Comment)
                     .HasMaxLength(500)
                     .HasColumnName("comment");
 
-                entity.Property(e => e.Owner).HasColumnName("owner");
+                entity.Property(e => e.Owner)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("owner");
 
                 entity.Property(e => e.Score).HasColumnName("score");
 
@@ -2092,7 +2489,7 @@ namespace DAL.Context
                 entity.Property(e => e.SubmissionDate)
                     .HasColumnType("timestamp")
                     .HasColumnName("submission_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
             });
 
             modelBuilder.Entity<Permission>(entity =>
@@ -2105,7 +2502,9 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Key, "key")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("blob")
@@ -2119,7 +2518,9 @@ namespace DAL.Context
                     .HasMaxLength(200)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Order).HasColumnName("order");
+                entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("order");
             });
 
             modelBuilder.Entity<PermissionGroup>(entity =>
@@ -2132,7 +2533,9 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("blob")
@@ -2142,7 +2545,9 @@ namespace DAL.Context
                     .HasMaxLength(200)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Order).HasColumnName("order");
+                entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("order");
             });
 
             modelBuilder.Entity<PermissionToPermissionGroup>(entity =>
@@ -2158,9 +2563,13 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.PermissionGroupId, e.PermissionId }, "permission_group_id");
 
-                entity.Property(e => e.PermissionId).HasColumnName("permission_id");
+                entity.Property(e => e.PermissionId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("permission_id");
 
-                entity.Property(e => e.PermissionGroupId).HasColumnName("permission_group_id");
+                entity.Property(e => e.PermissionGroupId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("permission_group_id");
             });
 
             modelBuilder.Entity<PermissionToUser>(entity =>
@@ -2176,9 +2585,13 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.UserId, e.PermissionId }, "user_id");
 
-                entity.Property(e => e.PermissionId).HasColumnName("permission_id");
+                entity.Property(e => e.PermissionId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("permission_id");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<PlanningStrategy>(entity =>
@@ -2191,7 +2604,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(20)
@@ -2208,13 +2623,21 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
-                entity.Property(e => e.BusinessOwner).HasColumnName("business_owner");
+                entity.Property(e => e.BusinessOwner)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("business_owner");
 
-                entity.Property(e => e.Consultant).HasColumnName("consultant");
+                entity.Property(e => e.Consultant)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("consultant");
 
-                entity.Property(e => e.DataClassification).HasColumnName("data_classification");
+                entity.Property(e => e.DataClassification)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("data_classification");
 
                 entity.Property(e => e.DueDate)
                     .HasColumnType("timestamp")
@@ -2225,10 +2648,12 @@ namespace DAL.Context
                     .HasColumnName("name");
 
                 entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
                     .HasColumnName("order")
                     .HasDefaultValueSql("'999999'");
 
                 entity.Property(e => e.Status)
+                    .HasColumnType("int(11)")
                     .HasColumnName("status")
                     .HasDefaultValueSql("'1'");
             });
@@ -2240,7 +2665,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Asset)
                     .HasMaxLength(200)
@@ -2250,11 +2677,17 @@ namespace DAL.Context
                     .HasMaxLength(500)
                     .HasColumnName("comment");
 
-                entity.Property(e => e.Owner).HasColumnName("owner");
+                entity.Property(e => e.Owner)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("owner");
 
-                entity.Property(e => e.QuestionnaireScoringId).HasColumnName("questionnaire_scoring_id");
+                entity.Property(e => e.QuestionnaireScoringId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("questionnaire_scoring_id");
 
-                entity.Property(e => e.QuestionnaireTrackingId).HasColumnName("questionnaire_tracking_id");
+                entity.Property(e => e.QuestionnaireTrackingId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("questionnaire_tracking_id");
 
                 entity.Property(e => e.Subject)
                     .HasColumnType("blob")
@@ -2263,7 +2696,7 @@ namespace DAL.Context
                 entity.Property(e => e.SubmissionDate)
                     .HasColumnType("timestamp")
                     .HasColumnName("submission_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
             });
 
             modelBuilder.Entity<Regulation>(entity =>
@@ -2276,7 +2709,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -2292,7 +2727,11 @@ namespace DAL.Context
 
                 entity.HasIndex(e => e.RiskId, "risk_id");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.HasIndex(e => e.LastUpdate, "rrsh_last_update_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.LastUpdate)
                     .HasColumnType("datetime")
@@ -2300,7 +2739,9 @@ namespace DAL.Context
 
                 entity.Property(e => e.ResidualRisk).HasColumnName("residual_risk");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
             });
 
             modelBuilder.Entity<Review>(entity =>
@@ -2313,7 +2754,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -2329,13 +2772,17 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(20)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
             });
 
             modelBuilder.Entity<Risk>(entity =>
@@ -2365,13 +2812,19 @@ namespace DAL.Context
 
                 entity.HasIndex(e => e.SubmittedBy, "submitted_by");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Assessment).HasColumnName("assessment");
 
-                entity.Property(e => e.Category).HasColumnName("category");
+                entity.Property(e => e.Category)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("category");
 
-                entity.Property(e => e.CloseId).HasColumnName("close_id");
+                entity.Property(e => e.CloseId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("close_id");
 
                 entity.Property(e => e.ControlNumber)
                     .HasMaxLength(20)
@@ -2382,28 +2835,38 @@ namespace DAL.Context
                     .HasColumnName("last_update")
                     .HasDefaultValueSql("'0000-00-00 00:00:00'");
 
-                entity.Property(e => e.Manager).HasColumnName("manager");
+                entity.Property(e => e.Manager)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("manager");
 
                 entity.Property(e => e.MgmtReview)
+                    .HasColumnType("int(11)")
                     .HasColumnName("mgmt_review")
                     .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.MitigationId)
+                    .HasColumnType("int(11)")
                     .HasColumnName("mitigation_id")
                     .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.Notes).HasColumnName("notes");
 
-                entity.Property(e => e.Owner).HasColumnName("owner");
+                entity.Property(e => e.Owner)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("owner");
 
-                entity.Property(e => e.ProjectId).HasColumnName("project_id");
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("project_id");
 
                 entity.Property(e => e.ReferenceId)
                     .HasMaxLength(20)
                     .HasColumnName("reference_id")
                     .HasDefaultValueSql("''");
 
-                entity.Property(e => e.Regulation).HasColumnName("regulation");
+                entity.Property(e => e.Regulation)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("regulation");
 
                 entity.Property(e => e.ReviewDate)
                     .HasColumnType("timestamp")
@@ -2414,7 +2877,9 @@ namespace DAL.Context
                     .HasMaxLength(255)
                     .HasColumnName("risk_catalog_mapping");
 
-                entity.Property(e => e.Source).HasColumnName("source");
+                entity.Property(e => e.Source)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("source");
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(20)
@@ -2425,13 +2890,15 @@ namespace DAL.Context
                 entity.Property(e => e.SubmissionDate)
                     .HasColumnType("timestamp")
                     .HasColumnName("submission_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.SubmittedBy)
+                    .HasColumnType("int(11)")
                     .HasColumnName("submitted_by")
                     .HasDefaultValueSql("'1'");
 
                 entity.Property(e => e.TemplateGroupId)
+                    .HasColumnType("int(11)")
                     .HasColumnName("template_group_id")
                     .HasDefaultValueSql("'1'");
 
@@ -2447,15 +2914,21 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("text")
                     .HasColumnName("description");
 
-                entity.Property(e => e.Function).HasColumnName("function");
+                entity.Property(e => e.Function)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("function");
 
-                entity.Property(e => e.Grouping).HasColumnName("grouping");
+                entity.Property(e => e.Grouping)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("grouping");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(1000)
@@ -2465,7 +2938,9 @@ namespace DAL.Context
                     .HasMaxLength(20)
                     .HasColumnName("number");
 
-                entity.Property(e => e.Order).HasColumnName("order");
+                entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("order");
             });
 
             modelBuilder.Entity<RiskFunction>(entity =>
@@ -2478,7 +2953,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -2495,7 +2972,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Default).HasColumnName("default");
 
@@ -2503,7 +2982,9 @@ namespace DAL.Context
                     .HasMaxLength(50)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Order).HasColumnName("order");
+                entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("order");
             });
 
             modelBuilder.Entity<RiskLevel>(entity =>
@@ -2514,6 +2995,10 @@ namespace DAL.Context
 
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
+
+                entity.HasIndex(e => e.Name, "risk_levels_name_idx");
+
+                entity.HasIndex(e => e.Value, "risk_levels_value_idx");
 
                 entity.Property(e => e.Color)
                     .HasMaxLength(20)
@@ -2545,7 +3030,9 @@ namespace DAL.Context
                     .HasMaxLength(50)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
             });
 
             modelBuilder.Entity<RiskScoring>(entity =>
@@ -2573,6 +3060,7 @@ namespace DAL.Context
                     .HasDefaultValueSql("'5'");
 
                 entity.Property(e => e.ContributingLikelihood)
+                    .HasColumnType("int(11)")
                     .HasColumnName("Contributing_Likelihood")
                     .HasDefaultValueSql("'0'");
 
@@ -2649,92 +3137,117 @@ namespace DAL.Context
                     .HasDefaultValueSql("'ND'");
 
                 entity.Property(e => e.DreadAffectedUsers)
+                    .HasColumnType("int(11)")
                     .HasColumnName("DREAD_AffectedUsers")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.DreadDamagePotential)
+                    .HasColumnType("int(11)")
                     .HasColumnName("DREAD_DamagePotential")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.DreadDiscoverability)
+                    .HasColumnType("int(11)")
                     .HasColumnName("DREAD_Discoverability")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.DreadExploitability)
+                    .HasColumnType("int(11)")
                     .HasColumnName("DREAD_Exploitability")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.DreadReproducibility)
+                    .HasColumnType("int(11)")
                     .HasColumnName("DREAD_Reproducibility")
                     .HasDefaultValueSql("'10'");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.OwaspAwareness)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_Awareness")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspEaseOfDiscovery)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_EaseOfDiscovery")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspEaseOfExploit)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_EaseOfExploit")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspFinancialDamage)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_FinancialDamage")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspIntrusionDetection)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_IntrusionDetection")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspLossOfAccountability)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_LossOfAccountability")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspLossOfAvailability)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_LossOfAvailability")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspLossOfConfidentiality)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_LossOfConfidentiality")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspLossOfIntegrity)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_LossOfIntegrity")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspMotive)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_Motive")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspNonCompliance)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_NonCompliance")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspOpportunity)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_Opportunity")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspPrivacyViolation)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_PrivacyViolation")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspReputationDamage)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_ReputationDamage")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspSize)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_Size")
                     .HasDefaultValueSql("'10'");
 
                 entity.Property(e => e.OwaspSkillLevel)
+                    .HasColumnType("int(11)")
                     .HasColumnName("OWASP_SkillLevel")
                     .HasDefaultValueSql("'10'");
 
-                entity.Property(e => e.ScoringMethod).HasColumnName("scoring_method");
+                entity.Property(e => e.ScoringMethod)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("scoring_method");
             });
 
             modelBuilder.Entity<RiskScoringContributingImpact>(entity =>
@@ -2748,15 +3261,25 @@ namespace DAL.Context
 
                 entity.HasIndex(e => e.RiskScoringId, "risk_scoring_id");
 
+                entity.HasIndex(e => e.Impact, "rsci_impact_idx");
+
                 entity.HasIndex(e => new { e.RiskScoringId, e.ContributingRiskId }, "rsci_index");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
-                entity.Property(e => e.ContributingRiskId).HasColumnName("contributing_risk_id");
+                entity.Property(e => e.ContributingRiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("contributing_risk_id");
 
-                entity.Property(e => e.Impact).HasColumnName("impact");
+                entity.Property(e => e.Impact)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("impact");
 
-                entity.Property(e => e.RiskScoringId).HasColumnName("risk_scoring_id");
+                entity.Property(e => e.RiskScoringId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_scoring_id");
             });
 
             modelBuilder.Entity<RiskScoringHistory>(entity =>
@@ -2768,7 +3291,11 @@ namespace DAL.Context
 
                 entity.HasIndex(e => e.RiskId, "risk_id");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.HasIndex(e => e.LastUpdate, "rsh_last_update_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.CalculatedRisk).HasColumnName("calculated_risk");
 
@@ -2776,7 +3303,9 @@ namespace DAL.Context
                     .HasColumnType("datetime")
                     .HasColumnName("last_update");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
             });
 
             modelBuilder.Entity<RiskToAdditionalStakeholder>(entity =>
@@ -2792,9 +3321,13 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.UserId, e.RiskId }, "user_id");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<RiskToLocation>(entity =>
@@ -2810,9 +3343,13 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.LocationId, e.RiskId }, "location_id");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
-                entity.Property(e => e.LocationId).HasColumnName("location_id");
+                entity.Property(e => e.LocationId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("location_id");
             });
 
             modelBuilder.Entity<RiskToTeam>(entity =>
@@ -2826,11 +3363,19 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
+                entity.HasIndex(e => e.RiskId, "risk2team_risk_id");
+
+                entity.HasIndex(e => e.TeamId, "risk2team_team_id");
+
                 entity.HasIndex(e => new { e.TeamId, e.RiskId }, "team_id");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
-                entity.Property(e => e.TeamId).HasColumnName("team_id");
+                entity.Property(e => e.TeamId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("team_id");
             });
 
             modelBuilder.Entity<RiskToTechnology>(entity =>
@@ -2846,9 +3391,13 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.TechnologyId, e.RiskId }, "technology_id");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
 
-                entity.Property(e => e.TechnologyId).HasColumnName("technology_id");
+                entity.Property(e => e.TechnologyId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("technology_id");
             });
 
             modelBuilder.Entity<RisksToAsset>(entity =>
@@ -2863,9 +3412,13 @@ namespace DAL.Context
                 entity.HasIndex(e => new { e.AssetId, e.RiskId }, "asset_id")
                     .IsUnique();
 
-                entity.Property(e => e.AssetId).HasColumnName("asset_id");
+                entity.Property(e => e.AssetId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("asset_id");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
             });
 
             modelBuilder.Entity<RisksToAssetGroup>(entity =>
@@ -2880,9 +3433,13 @@ namespace DAL.Context
                 entity.HasIndex(e => new { e.AssetGroupId, e.RiskId }, "asset_group_id")
                     .IsUnique();
 
-                entity.Property(e => e.AssetGroupId).HasColumnName("asset_group_id");
+                entity.Property(e => e.AssetGroupId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("asset_group_id");
 
-                entity.Property(e => e.RiskId).HasColumnName("risk_id");
+                entity.Property(e => e.RiskId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("risk_id");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -2898,7 +3455,9 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Default, "default")
                     .IsUnique();
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Admin).HasColumnName("admin");
 
@@ -2922,9 +3481,13 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.PermissionId, e.RoleId }, "permission_id");
 
-                entity.Property(e => e.RoleId).HasColumnName("role_id");
+                entity.Property(e => e.RoleId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("role_id");
 
-                entity.Property(e => e.PermissionId).HasColumnName("permission_id");
+                entity.Property(e => e.PermissionId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("permission_id");
             });
 
             modelBuilder.Entity<ScoringMethod>(entity =>
@@ -2937,7 +3500,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(20)
@@ -2955,7 +3520,9 @@ namespace DAL.Context
                     .HasMaxLength(128)
                     .HasColumnName("id");
 
-                entity.Property(e => e.Access).HasColumnName("access");
+                entity.Property(e => e.Access)
+                    .HasColumnType("int(10) unsigned")
+                    .HasColumnName("access");
 
                 entity.Property(e => e.Data)
                     .HasColumnType("blob")
@@ -2992,7 +3559,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -3009,7 +3578,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -3026,7 +3597,9 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Tag1, "tag_unique")
                     .IsUnique();
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Tag1)
                     .HasMaxLength(500)
@@ -3047,9 +3620,13 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.TaggeeId, e.Type }, "taggee_type");
 
-                entity.Property(e => e.TagId).HasColumnName("tag_id");
+                entity.Property(e => e.TagId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("tag_id");
 
-                entity.Property(e => e.TaggeeId).HasColumnName("taggee_id");
+                entity.Property(e => e.TaggeeId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("taggee_id");
 
                 entity.Property(e => e.Type)
                     .HasMaxLength(40)
@@ -3066,7 +3643,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -3083,7 +3662,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -3103,7 +3684,9 @@ namespace DAL.Context
                 entity.HasIndex(e => e.Name, "name_unique")
                     .IsUnique();
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.BackgroundClass)
                     .HasMaxLength(100)
@@ -3124,7 +3707,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
@@ -3138,13 +3723,17 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("text")
                     .HasColumnName("description");
 
-                entity.Property(e => e.Grouping).HasColumnName("grouping");
+                entity.Property(e => e.Grouping)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("grouping");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(1000)
@@ -3154,7 +3743,9 @@ namespace DAL.Context
                     .HasMaxLength(20)
                     .HasColumnName("number");
 
-                entity.Property(e => e.Order).HasColumnName("order");
+                entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("order");
             });
 
             modelBuilder.Entity<ThreatGrouping>(entity =>
@@ -3167,7 +3758,9 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Default).HasColumnName("default");
 
@@ -3175,7 +3768,9 @@ namespace DAL.Context
                     .HasMaxLength(50)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Order).HasColumnName("order");
+                entity.Property(e => e.Order)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("order");
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -3188,11 +3783,15 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
 
                 entity.Property(e => e.Admin).HasColumnName("admin");
 
-                entity.Property(e => e.ChangePassword).HasColumnName("change_password");
+                entity.Property(e => e.ChangePassword)
+                    .HasColumnType("tinyint(4)")
+                    .HasColumnName("change_password");
 
                 entity.Property(e => e.CustomDisplaySettings)
                     .HasMaxLength(1000)
@@ -3202,17 +3801,21 @@ namespace DAL.Context
                 entity.Property(e => e.CustomPerformReviewsDisplaySettings)
                     .HasMaxLength(2000)
                     .HasColumnName("custom_perform_reviews_display_settings")
-                    .HasDefaultValueSql("'{\"risk_colums\":[[\"id\",\"1\"],[\"risk_status\",\"1\"],[\"subject\",\"1\"],[\"calculated_risk\",\"1\"],[\"submission_date\",\"1\"]],\"mitigation_colums\":[[\"mitigation_planned\",\"1\"]],\"review_colums\":[[\"management_review\",\"1\"]]}\n'");
+                    .HasDefaultValueSql("'{\"risk_colums\":[[\"id\",\"1\"],[\"risk_status\",\"1\"],[\"subject\",\"1\"],[\"calculated_risk\",\"1\"],[\"submission_date\",\"1\"]],\"mitigation_colums\":[[\"mitigation_planned\",\"1\"]],\"review_colums\":[[\"management_review\",\"1\"]]}\\\\n'");
 
                 entity.Property(e => e.CustomPlanMitigationDisplaySettings)
                     .HasMaxLength(2000)
                     .HasColumnName("custom_plan_mitigation_display_settings")
-                    .HasDefaultValueSql("'{\"risk_colums\":[[\"id\",\"1\"],[\"risk_status\",\"1\"],[\"subject\",\"1\"],[\"calculated_risk\",\"1\"],[\"submission_date\",\"1\"]],\"mitigation_colums\":[[\"mitigation_planned\",\"1\"]],\"review_colums\":[[\"management_review\",\"1\"]]}\n'");
+                    .HasDefaultValueSql("'{\"risk_colums\":[[\"id\",\"1\"],[\"risk_status\",\"1\"],[\"subject\",\"1\"],[\"calculated_risk\",\"1\"],[\"submission_date\",\"1\"]],\"mitigation_colums\":[[\"mitigation_planned\",\"1\"]],\"review_colums\":[[\"management_review\",\"1\"]]}\\\\n'");
 
                 entity.Property(e => e.CustomReviewregularlyDisplaySettings)
                     .HasMaxLength(2000)
                     .HasColumnName("custom_reviewregularly_display_settings")
                     .HasDefaultValueSql("'{\"risk_colums\":[[\"id\",\"1\"],[\"risk_status\",\"1\"],[\"subject\",\"1\"],[\"calculated_risk\",\"1\"],[\"days_open\",\"1\"]],\"review_colums\":[[\"management_review\",\"0\"],[\"review_date\",\"0\"],[\"next_step\",\"0\"],[\"next_review_date\",\"1\"],[\"comments\",\"0\"]]}'");
+
+                entity.Property(e => e.CustomRisksAndIssuesSettings)
+                    .HasMaxLength(2000)
+                    .HasColumnName("custom_risks_and_issues_settings");
 
                 entity.Property(e => e.Email)
                     .HasColumnType("blob")
@@ -3234,13 +3837,18 @@ namespace DAL.Context
                 entity.Property(e => e.LastPasswordChangeDate)
                     .HasColumnType("timestamp")
                     .HasColumnName("last_password_change_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
-                entity.Property(e => e.Lockout).HasColumnName("lockout");
+                entity.Property(e => e.Lockout)
+                    .HasColumnType("tinyint(4)")
+                    .HasColumnName("lockout");
 
-                entity.Property(e => e.Manager).HasColumnName("manager");
+                entity.Property(e => e.Manager)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("manager");
 
                 entity.Property(e => e.MultiFactor)
+                    .HasColumnType("int(11)")
                     .HasColumnName("multi_factor")
                     .HasDefaultValueSql("'1'");
 
@@ -3253,7 +3861,9 @@ namespace DAL.Context
                     .HasColumnName("password")
                     .IsFixedLength();
 
-                entity.Property(e => e.RoleId).HasColumnName("role_id");
+                entity.Property(e => e.RoleId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("role_id");
 
                 entity.Property(e => e.Salt)
                     .HasMaxLength(20)
@@ -3276,12 +3886,14 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.AddDate)
                     .HasColumnType("timestamp")
                     .HasColumnName("add_date")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(60)
@@ -3292,7 +3904,9 @@ namespace DAL.Context
                     .HasMaxLength(20)
                     .HasColumnName("salt");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<UserPassReuseHistory>(entity =>
@@ -3302,9 +3916,12 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Counts)
+                    .HasColumnType("int(11)")
                     .HasColumnName("counts")
                     .HasDefaultValueSql("'1'");
 
@@ -3313,7 +3930,9 @@ namespace DAL.Context
                     .HasColumnName("password")
                     .IsFixedLength();
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<UserToTeam>(entity =>
@@ -3329,9 +3948,13 @@ namespace DAL.Context
 
                 entity.HasIndex(e => new { e.TeamId, e.UserId }, "team_id");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
 
-                entity.Property(e => e.TeamId).HasColumnName("team_id");
+                entity.Property(e => e.TeamId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("team_id");
             });
 
             modelBuilder.Entity<ValidationFile>(entity =>
@@ -3341,30 +3964,40 @@ namespace DAL.Context
                 entity.HasCharSet("utf8mb3")
                     .UseCollation("utf8mb3_general_ci");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Content).HasColumnName("content");
 
-                entity.Property(e => e.ControlId).HasColumnName("control_id");
+                entity.Property(e => e.ControlId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("control_id");
 
-                entity.Property(e => e.MitigationId).HasColumnName("mitigation_id");
+                entity.Property(e => e.MitigationId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("mitigation_id");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Size).HasColumnName("size");
+                entity.Property(e => e.Size)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("size");
 
                 entity.Property(e => e.Timestamp)
                     .HasColumnType("timestamp")
                     .HasColumnName("timestamp")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Type)
                     .HasMaxLength(30)
                     .HasColumnName("type");
 
-                entity.Property(e => e.User).HasColumnName("user");
+                entity.Property(e => e.User)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user");
             });
 
             OnModelCreatingPartial(modelBuilder);
