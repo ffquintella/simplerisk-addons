@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using DeviceId;
-using GUIClient.Tools;
+using Tools;
 using SysEnv = System.Environment;
 
 namespace GUIClient.Services;

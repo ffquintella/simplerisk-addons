@@ -4,6 +4,7 @@ using Model.Authentication;
 
 namespace API.Controllers;
 
+[Authorize(Policy = "RequireValidUser")]
 [ApiController]
 [Route("[controller]")]
 public class AuthenticationController : ControllerBase
@@ -15,6 +16,13 @@ public class AuthenticationController : ControllerBase
     {
         _logger = logger;
         _configuration = configuration;
+    }
+
+    [HttpGet]
+    [Route("GetToken")]
+    public ActionResult<string> GetToken()
+    {
+        return "123";
     }
 
     [AllowAnonymous]

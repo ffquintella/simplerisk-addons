@@ -1,0 +1,12 @@
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/bin/Debug/net6.0/Tools.deps.json
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/bin/Debug/net6.0/Tools.dll
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/bin/Debug/net6.0/Tools.pdb
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/obj/Debug/net6.0/Tools.csproj.AssemblyReference.cache
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/obj/Debug/net6.0/Tools.GeneratedMSBuildEditorConfig.editorconfig
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/obj/Debug/net6.0/Tools.AssemblyInfoInputs.cache
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/obj/Debug/net6.0/Tools.AssemblyInfo.cs
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/obj/Debug/net6.0/Tools.csproj.CoreCompileInputs.cache
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/obj/Debug/net6.0/Tools.dll
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/obj/Debug/net6.0/refint/Tools.dll
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/obj/Debug/net6.0/Tools.pdb
+/home/felipe/Dev/simplerisk-addons/src/net-extras/Tools/obj/Debug/net6.0/ref/Tools.dll

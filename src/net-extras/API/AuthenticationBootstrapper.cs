@@ -54,6 +54,11 @@ public static class AuthenticationBootstrapper
         
         services.AddAuthorization(options =>
         {
+            options.AddPolicy("RequireValidUser", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+            });
             options.AddPolicy("RequireAdminOnly", policy =>
             {
                 policy.RequireAuthenticatedUser()

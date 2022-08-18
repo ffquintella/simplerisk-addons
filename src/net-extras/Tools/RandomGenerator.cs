@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace GUIClient.Tools;
+namespace Tools;
 
 public static class RandomGenerator
 {
