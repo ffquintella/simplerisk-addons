@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using GUIClient.Configuration;
 using GUIClient.Services;
 using Microsoft.Extensions.Logging;
@@ -33,25 +34,16 @@ public static class LoggingBootstrapper
     private static string GetLogFileName(LoggingConfiguration config,
         IReadonlyDependencyResolver resolver)
     {
-        var platformService = resolver.GetService<IPlatformService>();
+        
+        var logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/SRGUIClient";
+        Directory.CreateDirectory(logDir);
+        var logPath = logDir + "/logs";
 
-        string logDirectory;
-        if (platformService.GetPlatform() == Platform.Linux)
+        if (!Directory.Exists(logPath))
         {
-            var environmentService = resolver.GetService<IEnvironmentService>();
-
-            logDirectory = $"{environmentService.GetEnvironmentVariable("HOME")}/.config/SRGUIClient/logs";
-        }
-        else
-        {
-            logDirectory = Directory.GetCurrentDirectory();
+            Directory.CreateDirectory(logPath);
         }
 
-        if (!Directory.Exists(logDirectory))
-        {
-            Directory.CreateDirectory(logDirectory);
-        }
-
-        return Path.Combine(logDirectory, config.LogFileName);
+        return Path.Combine(logPath, config.LogFileName);
     }
 }
