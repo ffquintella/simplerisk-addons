@@ -100,6 +100,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
 
                 var identity = new ClaimsIdentity(claims, "Jwt");
                 var user = new ClaimsPrincipal(identity);
+                _log.LogInformation("User {0} authenticated using token", username);
                 return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(user, Scheme.Name)));
                 
             }
