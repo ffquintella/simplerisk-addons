@@ -13,7 +13,7 @@ public class EnvironmentService: IEnvironmentService
     
     public string ApplicationData => SysEnv.GetFolderPath(SysEnv.SpecialFolder.ApplicationData);
 
-    public string ApplicationDataFolder => ApplicationData + @"\SRGUIClient";
+    public string ApplicationDataFolder => ApplicationData + @"/SRGUIClient";
 
 
     public string DeviceToken
@@ -21,13 +21,13 @@ public class EnvironmentService: IEnvironmentService
         get
         {
             Directory.CreateDirectory(ApplicationDataFolder);
-            if(!File.Exists(ApplicationDataFolder + @"\device_token.txt"))
+            if(!File.Exists(ApplicationDataFolder + @"/device_token.txt"))
             {
                 var token = RandomGenerator.RandomString(20);
-                File.WriteAllText(ApplicationDataFolder + @"\device_token.txt", token  );
+                File.WriteAllText(ApplicationDataFolder + @"/device_token.txt", token  );
             }
             
-            return File.ReadAllText(ApplicationDataFolder + @"\device_token.txt");
+            return File.ReadAllText(ApplicationDataFolder + @"/device_token.txt");
         }
     }
     
@@ -37,7 +37,7 @@ public class EnvironmentService: IEnvironmentService
         {
             Directory.CreateDirectory(ApplicationDataFolder);
             
-            if(!File.Exists(ApplicationDataFolder + @"\device_id.txt"))
+            if(!File.Exists(ApplicationDataFolder + @"/device_id.txt"))
             {
                 string deviceId = new DeviceIdBuilder()
                     .AddMachineName()
@@ -45,10 +45,10 @@ public class EnvironmentService: IEnvironmentService
                     .AddMacAddress()
                     .ToString();
                 
-                File.WriteAllText(ApplicationDataFolder + @"\device_id.txt", deviceId  );
+                File.WriteAllText(ApplicationDataFolder + @"/device_id.txt", deviceId  );
             }
 
-            return File.ReadAllText(ApplicationDataFolder + @"\device_id.txt");
+            return File.ReadAllText(ApplicationDataFolder + @"/device_id.txt");
             
             
         }

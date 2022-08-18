@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using Tools;
 using SysEnv = System.Environment;
 
@@ -7,20 +9,24 @@ public class EnvironmentService: IEnvironmentService
 {
     private string ApplicationData => SysEnv.GetFolderPath(SysEnv.SpecialFolder.ApplicationData);
 
-    public string ApplicationDataFolder => ApplicationData + @"\SRServer";
+    public string ApplicationDataFolder => ApplicationData + @"/SRServer";
     
     public string ServerSecretToken
     {
         get
         {
             Directory.CreateDirectory(ApplicationDataFolder);
-            if(!File.Exists(ApplicationDataFolder + @"\secret_token.txt"))
+            if(!File.Exists(ApplicationDataFolder + @"/secret_token.txt"))
             {
                 var token = RandomGenerator.RandomString(37);
-                File.WriteAllText(ApplicationDataFolder + @"\secret_token.txt", token  );
+                
+                var hmac = new HMACSHA256(Encoding.ASCII.GetBytes(token));
+                var key = Convert.ToBase64String(hmac.Key);
+                
+                File.WriteAllText(ApplicationDataFolder + @"/secret_token.txt", key  );
             }
             
-            return File.ReadAllText(ApplicationDataFolder + @"\secret_token.txt");
+            return File.ReadAllText(ApplicationDataFolder + @"/secret_token.txt");
         }
     }
     

@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Model.Authentication;
+using ServerServices;
 
 namespace API.Controllers;
 
@@ -11,18 +15,46 @@ public class AuthenticationController : ControllerBase
 {
     private readonly ILogger<AuthenticationController> _logger;
     private readonly IConfiguration _configuration;
+    private readonly IEnvironmentService _environmentService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     
-    public AuthenticationController(ILogger<AuthenticationController> logger, IConfiguration configuration)
+    public AuthenticationController(ILogger<AuthenticationController> logger, 
+        IConfiguration configuration,
+        IEnvironmentService environmentService,
+        IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _configuration = configuration;
+        _environmentService = environmentService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpGet]
     [Route("GetToken")]
     public ActionResult<string> GetToken()
     {
-        return "123";
+        var symmetricKey = Convert.FromBase64String(_environmentService.ServerSecretToken);
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        var now = DateTime.UtcNow;
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Name, _httpContextAccessor.HttpContext!.User!.Identity!.Name!)
+            }),
+
+            Expires = now.AddMinutes(Convert.ToInt32(_configuration["JWT:Timeout"])),
+        
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(symmetricKey), 
+                SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var stoken = tokenHandler.CreateToken(tokenDescriptor);
+        var token = tokenHandler.WriteToken(stoken);
+
+        return token;
     }
 
     [AllowAnonymous]
