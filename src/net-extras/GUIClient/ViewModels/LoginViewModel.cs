@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;using GUIClient.Services;
+using System.Dynamic;
+using Avalonia.Controls;
+using GUIClient.Services;
 using MessageBox.Avalonia.DTO;
 using Microsoft.Extensions.Localization;
 using Model.Authentication;
@@ -54,7 +56,7 @@ public class LoginViewModel : ViewModelBase
     public string? Username { get; set;}
     public string? Password { get; set; }
 
-    public void OnLoginClickCommand()
+    public void OnLoginClickCommand(Window? loginWindow)
     {
         var result = _authenticationService.DoServerAuthentication(Username, Password);
 
@@ -69,6 +71,13 @@ public class LoginViewModel : ViewModelBase
                 });
                         
             messageBoxStandardWindow.Show(); 
+        }
+        else
+        {
+            if (loginWindow != null)
+            {
+                loginWindow.Close();
+            } 
         }
 
     }

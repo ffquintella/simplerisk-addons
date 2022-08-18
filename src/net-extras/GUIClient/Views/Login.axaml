@@ -10,6 +10,7 @@
         ExtendClientAreaToDecorationsHint="True"
         Width="400" Height="400"
         WindowStartupLocation="CenterOwner"
+        Name="LoginWindow"
         Opened="OnOpened">
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
@@ -55,7 +56,9 @@
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button IsEnabled="{Binding IsAccepted , Mode=TwoWay}" Name="BtLogin" Command="{Binding OnLoginClickCommand}"><TextBlock Text="{Binding StrLogin}" /></Button>
+                        <Button IsEnabled="{Binding IsAccepted , Mode=TwoWay}" Name="BtLogin" 
+                                Command="{Binding OnLoginClickCommand}"
+                                CommandParameter="{Binding ElementName=LoginWindow}"><TextBlock Text="{Binding StrLogin}" /></Button>
                         <Button  Name="BtExit" Command="{Binding OnExitClickCommand}"><TextBlock Text="{Binding StrExit}" /></Button>
                     </StackPanel>
                 </StackPanel>
