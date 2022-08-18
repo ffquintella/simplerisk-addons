@@ -31,6 +31,7 @@ namespace DAL.Entities
         public string? CustomPlanMitigationDisplaySettings { get; set; }
         public string? CustomPerformReviewsDisplaySettings { get; set; }
         public string? CustomReviewregularlyDisplaySettings { get; set; }
+        public string? CustomRisksAndIssuesSettings { get; set; }
 
         public virtual ICollection<AddonsNotificationControl> AddonsNotificationControls { get; set; }
     }

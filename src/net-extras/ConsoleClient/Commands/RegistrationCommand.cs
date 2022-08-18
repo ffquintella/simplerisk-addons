@@ -50,7 +50,8 @@ public class RegistrationCommand: Command<RegistrationSettings>
         
         foreach (var registration in registrations)
         {
-            AnsiConsole.WriteLine("{0}. {1} - {2} : {3} ", registration.Id, registration.RegistrationDate, registration.ExternalId, registration.Status);
+            //AnsiConsole.WriteLine("{0}. {1} - {2} : {3} ", registration.Id, registration.RegistrationDate, registration.ExternalId, registration.Status);
+            AnsiConsole.MarkupLine("{0}. {1} - {2} | {3} : {4} ", registration.Id, registration.RegistrationDate, registration.Name, registration.ExternalId, registration.Status);
         }
         
         AnsiConsole.MarkupLine("[white]======================[/]");
@@ -93,7 +94,8 @@ public class RegistrationCommand: Command<RegistrationSettings>
         
         foreach (var registration in registrations)
         {
-            AnsiConsole.WriteLine("{0}. {1} - {2} : {3} ", registration.Id, registration.RegistrationDate, registration.ExternalId, registration.Status);
+            //AnsiConsole.WriteLine("{0}. {1} - {2} : {3} ", registration.Id, registration.RegistrationDate, registration.ExternalId, registration.Status);
+            AnsiConsole.MarkupLine("{0}. {1} - {2} | {3} : {4} ", registration.Id, registration.RegistrationDate, registration.Name, registration.ExternalId, registration.Status);
         }
         
         AnsiConsole.MarkupLine("[white]======================[/]");
@@ -136,7 +138,8 @@ public class RegistrationCommand: Command<RegistrationSettings>
         
         foreach (var registration in registrations)
         {
-            AnsiConsole.WriteLine("{0}. {1} - {2} : {3} ", registration.Id, registration.RegistrationDate, registration.ExternalId, registration.Status);
+            //AnsiConsole.WriteLine("{0}. {1} - {2} : {3} ", registration.Id, registration.RegistrationDate, registration.ExternalId, registration.Status);
+            AnsiConsole.MarkupLine("{0}. {1} - {2} | {3} : {4}[/] ", registration.Id, registration.RegistrationDate, registration.Name, registration.ExternalId, registration.Status);
         }
         
         AnsiConsole.MarkupLine("[white]========================[/]");
@@ -197,7 +200,7 @@ public class RegistrationCommand: Command<RegistrationSettings>
                     color = "white";
                     break;
             }
-            AnsiConsole.MarkupLine("{0}. {1} - {2} : [{4}]{3}[/] ", registration.Id, registration.RegistrationDate, registration.ExternalId, registration.Status, color);
+            AnsiConsole.MarkupLine("{0}. {1} - {2} | {3} : [{5}]{4}[/] ", registration.Id, registration.RegistrationDate, registration.Name, registration.ExternalId, registration.Status, color);
         }
         
         AnsiConsole.MarkupLine("[white]======================[/]");
