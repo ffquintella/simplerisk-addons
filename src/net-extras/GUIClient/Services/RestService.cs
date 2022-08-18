@@ -12,12 +12,12 @@ namespace GUIClient.Services;
 
 public class RestService: IRestService
 {
-    private IAuthenticationService _authenticationService;
+    private IAuthenticationService? _authenticationService;
     private ILogger<RestService> _logger;
     private ServerConfiguration _serverConfiguration;
     private bool _initialized = false;
 
-    private RestClientOptions _options;
+    private RestClientOptions? _options;
     public RestService(ILoggerFactory loggerFactory, 
         ServerConfiguration serverConfiguration
         )
@@ -40,14 +40,14 @@ public class RestService: IRestService
     public RestClient GetClient()
     {
         Initialize();
-        if (_authenticationService.IsAuthenticated)
+        if (_authenticationService!.IsAuthenticated)
         {
             throw new NotImplementedException();
         }
         else
         {
            
-            var client = new RestClient(_options);
+            var client = new RestClient(_options!);
             return client;
         }
         

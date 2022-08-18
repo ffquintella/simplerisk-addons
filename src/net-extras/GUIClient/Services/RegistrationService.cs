@@ -113,7 +113,7 @@ public class RegistrationService: IRegistrationService
             
         };
         
-        RegistrationSolicitationResult result = null;
+        RegistrationSolicitationResult? result = null;
         var request = new RestRequest("Registration").AddJsonBody(reqData);
         try
         {
@@ -128,7 +128,7 @@ public class RegistrationService: IRegistrationService
                 };
                 
                 _mutableConfigurationService.SetConfigurationValue("IsRegistered", "true");
-                _mutableConfigurationService.SetConfigurationValue("RegistrationID", result.RequestID);
+                _mutableConfigurationService.SetConfigurationValue("RegistrationID", result!.RequestID!);
                 
                 return result;
             }

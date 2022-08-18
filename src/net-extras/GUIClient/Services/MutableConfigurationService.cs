@@ -47,7 +47,7 @@ public class MutableConfigurationService: IMutableConfigurationService
         }
     }
 
-    public string GetConfigurationValue(string name)
+    public string? GetConfigurationValue(string name)
     {
         if (!IsInitialized) Initialize();
         using (var db = new LiteDatabase(_configurationConnectionString))

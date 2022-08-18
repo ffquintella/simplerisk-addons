@@ -2,7 +2,13 @@
 
 public class RegistrationSolicitationResult
 {
-    public RequestResult Result { get; set; }
-    public string RequestID { get; set; }
-    
+    private RequestResult result;
+
+    public RequestResult Result
+    {
+        get => result;
+        set => result = value;
+    }
+
+    public string? RequestID { get; set; }
 }

@@ -2,16 +2,20 @@
 
 public class LanguageModel
 {
-    public string Name { get; }
+    private readonly string name;
+    private readonly string nativeName;
+    private readonly string code;
 
-    public string NativeName { get; }
+    public string Name => name;
 
-    public string Code { get; }
+    public string NativeName => nativeName;
+
+    public string Code => code;
 
     public LanguageModel(string name, string nativeName, string code)
     {
-        Name = name;
-        NativeName = nativeName;
-        Code = code;
+        this.name = name;
+        this.nativeName = nativeName;
+        this.code = code;
     }
 }

@@ -2,8 +2,32 @@
 
 public class AuthenticationCredential
 {
-    public string UserName { get; set; }
-    public string Password { get; set; }
-    public string SAMLCookie { get; set; }
-    public AuthenticationType AuthenticationType { get; set; }
+    private string? userName;
+    private string? password;
+    private string? samlCookie;
+    private AuthenticationType authenticationType;
+
+    public string? UserName
+    {
+        get => userName;
+        set => userName = value;
+    }
+
+    public string? Password
+    {
+        get => password;
+        set => password = value;
+    }
+
+    public string? SAMLCookie
+    {
+        get => samlCookie;
+        set => samlCookie = value;
+    }
+
+    public AuthenticationType AuthenticationType
+    {
+        get => authenticationType;
+        set => authenticationType = value;
+    }
 }
