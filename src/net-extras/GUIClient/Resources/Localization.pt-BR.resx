@@ -69,4 +69,10 @@
     <data name="LoginError" xml:space="preserve">
         <value>Seu processo de entrada falhou.</value>
     </data>
+    <data name="NotImplementedMSG" xml:space="preserve">
+        <value>Este método ainda não foi implementado.</value>
+    </data>
+    <data name="SelectAuthenticationMSG" xml:space="preserve">
+        <value>Por favor selecione o seu método de autenticação.</value>
+    </data>
 </root>

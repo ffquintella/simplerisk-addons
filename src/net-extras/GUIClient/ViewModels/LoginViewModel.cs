@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using Avalonia.Controls;
+using GUIClient.Models;
 using GUIClient.Services;
 using MessageBox.Avalonia.DTO;
 using Microsoft.Extensions.Localization;
@@ -22,6 +23,8 @@ public class LoginViewModel : ViewModelBase
     public string StrPassword { get; }
     public string StrExit { get; }
     public string StrEnvironment { get; }
+    
+    public AuthenticationMethod? AuthenticationMethod { get; set; }
 
     public List<AuthenticationMethod> AuthenticationMethods => _authenticationService.GetAuthenticationMethods();
 
@@ -58,15 +61,13 @@ public class LoginViewModel : ViewModelBase
 
     public void OnLoginClickCommand(Window? loginWindow)
     {
-        var result = _authenticationService.DoServerAuthentication(Username, Password);
-
-        if (result != 0)
+        if (AuthenticationMethod == null)
         {
             var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                 {
                     ContentTitle = _localizer["Warning"],
-                    ContentMessage = _localizer["LoginError"]  ,
+                    ContentMessage = _localizer["SelectAuthenticationMSG"]  ,
                     Icon = MessageBox.Avalonia.Enums.Icon.Warning,
                 });
                         
@@ -74,12 +75,45 @@ public class LoginViewModel : ViewModelBase
         }
         else
         {
-            if (loginWindow != null)
+            if ( AuthenticationMethod.Type == "SAML")
             {
-                loginWindow.Close();
-            } 
-        }
+                var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                    {
+                        ContentTitle = _localizer["Warning"],
+                        ContentMessage = _localizer["NotImplementedMSG"]  ,
+                        Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                    });
+                            
+                messageBoxStandardWindow.Show(); 
+            }
+            else
+            {
+                
+                var result = _authenticationService.DoServerAuthentication(Username, Password);
 
+                if (result != 0)
+                {
+                    var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                        .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                        {
+                            ContentTitle = _localizer["Warning"],
+                            ContentMessage = _localizer["LoginError"]  ,
+                            Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                        });
+                            
+                    messageBoxStandardWindow.Show(); 
+                }
+                else
+                {
+                    if (loginWindow != null)
+                    {
+                        loginWindow.Close();
+                    } 
+                }
+            }
+            
+        }
     }
     
     public void OnExitClickCommand()

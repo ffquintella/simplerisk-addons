@@ -69,4 +69,10 @@
     <data name="LoginError" xml:space="preserve">
         <value>You login process failed.</value>
     </data>
+    <data name="NotImplementedMSG" xml:space="preserve">
+        <value>This method is not implemented yet.</value>
+    </data>
+    <data name="SelectAuthenticationMSG" xml:space="preserve">
+        <value>Please select your authentication method.</value>
+    </data>
 </root>

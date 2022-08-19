@@ -132,6 +132,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This method is not implemented yet..
+        /// </summary>
+        internal static string NotImplementedMSG {
+            get {
+                return ResourceManager.GetString("NotImplementedMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operational System.
         /// </summary>
         internal static string OperationalSystem {
@@ -164,6 +173,15 @@ namespace GUIClient.Resources {
         internal static string RegistrationNotAcceptedMSG {
             get {
                 return ResourceManager.GetString("RegistrationNotAcceptedMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select your authentication method..
+        /// </summary>
+        internal static string SelectAuthenticationMSG {
+            get {
+                return ResourceManager.GetString("SelectAuthenticationMSG", resourceCulture);
             }
         }
         
