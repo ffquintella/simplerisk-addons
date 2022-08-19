@@ -1,5 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
+using API.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -17,16 +19,19 @@ public class AuthenticationController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly IEnvironmentService _environmentService;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IUserManagementService _userManagementService;
     
     public AuthenticationController(ILogger<AuthenticationController> logger, 
         IConfiguration configuration,
         IEnvironmentService environmentService,
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        IUserManagementService userManagementService)
     {
         _logger = logger;
         _configuration = configuration;
         _environmentService = environmentService;
         _httpContextAccessor = httpContextAccessor;
+        _userManagementService = userManagementService;
     }
 
     [HttpGet]
@@ -62,9 +67,26 @@ public class AuthenticationController : ControllerBase
     [Route("AuthenticatedUserInfo")]
     public AuthenticatedUserInfo GetAuthenticatedUserInfo()
     {
-        var info = new AuthenticatedUserInfo
+        var userAccount = _httpContextAccessor.HttpContext!.User!.Identity!.Name!;
+        
+        if (userAccount == null)
         {
+            _logger.LogError("Authenticated userAccount not found");
+            throw new UserNotFoundException();
+        }
 
+        var user = _userManagementService.GetUser(userAccount);
+        if (user == null)
+        {
+            _logger.LogError("Authenticated user not found");
+            throw new UserNotFoundException();
+        }
+        
+        var info = new AuthenticatedUserInfo
+        {  
+            UserAccount = userAccount,
+            UserName = user.Name,
+            UserEmail = Encoding.UTF8.GetString(user.Email)
         };
 
         return info;
