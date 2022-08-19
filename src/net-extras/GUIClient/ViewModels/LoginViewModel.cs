@@ -27,6 +27,8 @@ public class LoginViewModel : ViewModelBase
     public AuthenticationMethod? AuthenticationMethod { get; set; }
 
     public bool ProgressBarVisibility { get; set; } = false;
+    public int ProgressBarValue { get; set; } = 0;
+    public int ProgressBarMaxValue { get; set; } = 100;
 
     public List<AuthenticationMethod> AuthenticationMethods => _authenticationService.GetAuthenticationMethods();
 
@@ -91,7 +93,7 @@ public class LoginViewModel : ViewModelBase
             }
             else
             {
-                
+                ProgressBarVisibility = true;
                 var result = _authenticationService.DoServerAuthentication(Username, Password);
 
                 if (result != 0)

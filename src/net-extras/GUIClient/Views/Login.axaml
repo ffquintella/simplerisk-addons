@@ -61,7 +61,7 @@
                                 CommandParameter="{Binding ElementName=LoginWindow}"><TextBlock Text="{Binding StrLogin}" /></Button>
                         <Button  Name="BtExit" Command="{Binding OnExitClickCommand}"><TextBlock Text="{Binding StrExit}" /></Button>
                     </StackPanel>
-                    <ProgressBar Name="Progress" Margin="10" IsVisible="{Binding ProgressBarVisibility}" />
+                    <ProgressBar Name="Progress" Margin="10" IsVisible="{Binding ProgressBarVisibility}" Maximum="{Binding ProgressBarMaxValue}" Value="{Binding ProgressBarValue}"/>
                 </StackPanel>
             </DockPanel>
         </Panel>
