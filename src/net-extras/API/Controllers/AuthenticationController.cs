@@ -57,6 +57,19 @@ public class AuthenticationController : ControllerBase
         return token;
     }
 
+
+    [HttpGet]
+    [Route("AuthenticatedUserInfo")]
+    public AuthenticatedUserInfo GetAuthenticatedUserInfo()
+    {
+        var info = new AuthenticatedUserInfo
+        {
+
+        };
+
+        return info;
+    }
+
     [AllowAnonymous]
     [HttpGet]
     [Route("AuthenticationMethods")]
