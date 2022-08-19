@@ -85,7 +85,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
         // JWT Authentication 
         else if (authHeader != null && authHeader.StartsWith("jwt", StringComparison.OrdinalIgnoreCase))
         {
-            string username;
+            string? username;
             var token = authHeader.Substring("Jwt ".Length).Trim();
             
             if (ValidateToken(token, out username))
@@ -94,7 +94,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
                 // in order to build local identity
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, username)
+                    new Claim(ClaimTypes.Name, username!)
                     // Add more claims if needed: Roles, ...
                 };
 
@@ -117,7 +117,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
         }
     }
     
-    private ClaimsPrincipal GetPrincipalFromJWT(string token)
+    private ClaimsPrincipal? GetPrincipalFromJWT(string token)
     {
         try
         {
@@ -149,11 +149,13 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
         }
     }
     
-    private bool ValidateToken(string token, out string username)
+    private bool ValidateToken(string token, out string? username)
     {
         username = null;
 
         var simplePrinciple = GetPrincipalFromJWT(token);
+        if (simplePrinciple == null) return false;
+        
         var identity = simplePrinciple.Identity as ClaimsIdentity;
 
         if (identity == null || !identity.IsAuthenticated)
