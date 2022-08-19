@@ -26,6 +26,8 @@ public class LoginViewModel : ViewModelBase
     
     public AuthenticationMethod? AuthenticationMethod { get; set; }
 
+    public bool ProgressBarVisibility { get; set; } = false;
+
     public List<AuthenticationMethod> AuthenticationMethods => _authenticationService.GetAuthenticationMethods();
 
     public LoginViewModel(ILocalizationService localizationService, IAuthenticationService authenticationService)

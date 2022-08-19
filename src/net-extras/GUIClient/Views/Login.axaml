@@ -8,7 +8,7 @@
         Title="Login"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
-        Width="400" Height="400"
+        Width="400" Height="300"
         WindowStartupLocation="CenterOwner"
         Name="LoginWindow"
         Opened="OnOpened">
@@ -61,6 +61,7 @@
                                 CommandParameter="{Binding ElementName=LoginWindow}"><TextBlock Text="{Binding StrLogin}" /></Button>
                         <Button  Name="BtExit" Command="{Binding OnExitClickCommand}"><TextBlock Text="{Binding StrExit}" /></Button>
                     </StackPanel>
+                    <ProgressBar Name="Progress" Margin="10" IsVisible="{Binding ProgressBarVisibility}" />
                 </StackPanel>
             </DockPanel>
         </Panel>
