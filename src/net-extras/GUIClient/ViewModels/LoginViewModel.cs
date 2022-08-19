@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using GUIClient.Models;
 using GUIClient.Services;
@@ -26,8 +28,24 @@ public class LoginViewModel : ViewModelBase
     
     public AuthenticationMethod? AuthenticationMethod { get; set; }
 
-    public bool ProgressBarVisibility { get; set; } = false;
-    public int ProgressBarValue { get; set; } = 0;
+    public bool ProgressBarVisibility
+    {
+        get => _progressBarVisibility;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _progressBarVisibility, value);
+        }
+    }
+
+    public int ProgressBarValue
+    {
+        get => _progressBarValue;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _progressBarValue, value);
+        }
+    }
+
     public int ProgressBarMaxValue { get; set; } = 100;
 
     public List<AuthenticationMethod> AuthenticationMethods => _authenticationService.GetAuthenticationMethods();
@@ -46,6 +64,8 @@ public class LoginViewModel : ViewModelBase
     }
 
     private bool _isAccepted;
+    private bool _progressBarVisibility = false;
+    private int _progressBarValue = 0;
 
     public bool IsAccepted
     {
@@ -63,8 +83,9 @@ public class LoginViewModel : ViewModelBase
     public string? Username { get; set;}
     public string? Password { get; set; }
 
-    public void OnLoginClickCommand(Window? loginWindow)
+    public async void OnLoginClickCommand(Window? loginWindow)
     {
+        ProgressBarValue = 0;
         if (AuthenticationMethod == null)
         {
             var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
@@ -94,7 +115,24 @@ public class LoginViewModel : ViewModelBase
             else
             {
                 ProgressBarVisibility = true;
-                var result = _authenticationService.DoServerAuthentication(Username, Password);
+
+                var task = Task.Run(() => _authenticationService.DoServerAuthentication(Username, Password));
+
+                int i = 1;
+                while(!task.IsCompleted && i < 100)
+                {
+                    ProgressBarValue = i;
+                    i++;
+                    this.RaisePropertyChanged("Progress");
+                    await Task.Delay(TimeSpan.FromMilliseconds(20));
+                }
+
+                ProgressBarValue = 100;
+                ProgressBarVisibility = false;
+                
+                var result =  task.Result;
+                
+                //var result = _authenticationService.DoServerAuthentication(Username, Password);
 
                 if (result != 0)
                 {
