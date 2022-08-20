@@ -85,7 +85,7 @@ public class AuthenticationController : ControllerBase
         }
 
         string userRole = null;
-        if (user.RoleId != null)
+        if (user.RoleId != null && user.RoleId > 0)
         {
             userRole = _roleManagementService.GetRole(user.RoleId).Name;
         }
