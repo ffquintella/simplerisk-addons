@@ -1,4 +1,4 @@
-﻿namespace API.Exceptions;
+﻿namespace Model.Exceptions;
 
 public class RoleNotFoundException: Exception
 {

@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using API.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Model.Authentication;
+using Model.Exceptions;
 using ServerServices;
 
 namespace API.Controllers;
@@ -20,18 +20,20 @@ public class AuthenticationController : ControllerBase
     private readonly IEnvironmentService _environmentService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUserManagementService _userManagementService;
-    
+    private readonly IRoleManagementService _roleManagementService;
     public AuthenticationController(ILogger<AuthenticationController> logger, 
         IConfiguration configuration,
         IEnvironmentService environmentService,
         IHttpContextAccessor httpContextAccessor,
-        IUserManagementService userManagementService)
+        IUserManagementService userManagementService,
+        IRoleManagementService roleManagementService)
     {
         _logger = logger;
         _configuration = configuration;
         _environmentService = environmentService;
         _httpContextAccessor = httpContextAccessor;
         _userManagementService = userManagementService;
+        _roleManagementService = roleManagementService;
     }
 
     [HttpGet]
@@ -81,14 +83,26 @@ public class AuthenticationController : ControllerBase
             _logger.LogError("Authenticated user not found");
             throw new UserNotFoundException();
         }
+
+        string userRole = null;
+        if (user.RoleId != null)
+        {
+            userRole = _roleManagementService.GetRole(user.RoleId).Name;
+        }
+        
+        var permissions = _userManagementService.GetUserPermissions(user.Value);
         
         var info = new AuthenticatedUserInfo
         {  
             UserAccount = userAccount,
             UserName = user.Name,
-            UserEmail = Encoding.UTF8.GetString(user.Email)
+            UserEmail = Encoding.UTF8.GetString(user.Email),
+            UserRole = userRole,
+            UserPermissions = permissions
         };
 
+        
+        
         return info;
     }
 

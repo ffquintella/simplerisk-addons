@@ -1,9 +1,9 @@
 ﻿using System.Text;
-using API.Exceptions;
 using DAL;
 using DAL.Context;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Model.Exceptions;
 
 namespace API.Security;
 

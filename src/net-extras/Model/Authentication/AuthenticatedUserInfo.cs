@@ -19,7 +19,13 @@ public class AuthenticatedUserInfo
         set;
     }
     
-    public List<string>? UserRoles
+    public string? UserRole
+    {
+        get;
+        set;
+    }
+    
+    public List<string>? UserPermissions
     {
         get;
         set;
