@@ -54,11 +54,16 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
             if (credentials[0] != "" && credentials[1] != "")
             {
                 var user = _dbContext?.Users?
-                    .Where(u => u.Type == "simplerisk" && u.Username == Encoding.UTF8.GetBytes(credentials[0]))
+                    .Where(u => u.Type == "simplerisk" && u.Enabled == true && u.Username == Encoding.UTF8.GetBytes(credentials[0]))
                     .FirstOrDefault();
 
                 if (user != null)
                 {
+                    if (user.Lockout == 1)
+                    {
+                        return Task.FromResult(AuthenticateResult.Fail("User is locked out"));
+                    }
+
                     // Check the password
                     var valid = Verify(credentials[1], Encoding.UTF8.GetString(user.Password));
                     if (valid)
@@ -171,7 +176,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
         var usu = username;
         
         var user = _dbContext?.Users?
-            .Where(u => u.Type == "simplerisk" && u.Username == Encoding.UTF8.GetBytes(usu))
+            .Where(u => u.Type == "simplerisk" && u.Enabled == true && u.Lockout == 0 && u.Username == Encoding.UTF8.GetBytes(usu))
             .FirstOrDefault();
 
         if (user == null) return false;
