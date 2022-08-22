@@ -10,6 +10,7 @@ using Model.Authentication;
 using RestSharp;
 using RestSharp.Authenticators;
 using Serilog;
+using System.Text.Json;
 
 namespace GUIClient.Services;
 
@@ -23,6 +24,7 @@ public class AuthenticationService: IAuthenticationService
     private IMutableConfigurationService _mutableConfigurationService;
     
     public AuthenticationCredential AuthenticationCredential { get; set; }
+    public AuthenticatedUserInfo AuthenticatedUserInfo { get; set; }
 
     public AuthenticationService(ILoggerFactory loggerFactory, 
         IRegistrationService registrationService,
@@ -46,6 +48,13 @@ public class AuthenticationService: IAuthenticationService
         dialog.ShowDialog( parentWindow );
     }
 
+    
+    /// <summary>
+    /// Executes authentication against the server.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="password"></param>
+    /// <returns> 0 if success; -1 if unkown error; 1 if authentication error</returns>
     public int DoServerAuthentication(string user, string password)
     {
         var client = _restService.GetClient();
@@ -58,11 +67,15 @@ public class AuthenticationService: IAuthenticationService
 
             if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
             {
-                var token = response.Content;
+                var token = JsonSerializer.Deserialize<string>(response.Content);
+                //var token = response.Content;
                 _mutableConfigurationService.SetConfigurationValue("AuthUser", user);
                 _mutableConfigurationService.SetConfigurationValue("AuthToken", token);
                 _mutableConfigurationService.SetConfigurationValue("AuthTokenTime", DateTime.Now.Ticks.ToString());
+                AuthenticationCredential.AuthenticationType = AuthenticationType.JWT;
+                AuthenticationCredential.JWTToken = token;
                 IsAuthenticated = true;
+                GetAuthenticatedUserInfo();
                 return 0;
             }
 
@@ -77,6 +90,32 @@ public class AuthenticationService: IAuthenticationService
         {
             _logger.LogError(ex.Message);
             
+        }
+        
+        return -1;
+    }
+
+    public int GetAuthenticatedUserInfo()
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest("/Authentication/AuthenticatedUserInfo");
+        
+        try
+        {
+            var response = client.Get<AuthenticatedUserInfo>(request);
+
+            if (response != null)
+            {
+                AuthenticatedUserInfo = response;
+                return 0;
+            }
+
+            return 1;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Error getting user info {ExMessage}", ex.Message);
         }
         
         return -1;

@@ -2,23 +2,13 @@
 
 public class AuthenticationCredential
 {
-    private string? userName;
-    private string? password;
+
     private string? samlCookie;
     private AuthenticationType authenticationType;
 
-    public string? UserName
-    {
-        get => userName;
-        set => userName = value;
-    }
 
-    public string? Password
-    {
-        get => password;
-        set => password = value;
-    }
-
+    public string? JWTToken { get; set; }
+    
     public string? SAMLCookie
     {
         get => samlCookie;

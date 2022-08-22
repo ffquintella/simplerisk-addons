@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using GUIClient.Configuration;
+using GUIClient.Models;
 using GUIClient.Tools;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ public class RestService: IRestService
     private RestClientOptions? _options;
     public RestService(ILoggerFactory loggerFactory, 
         ServerConfiguration serverConfiguration
-        )
+    )
     {
         _logger = loggerFactory.CreateLogger<RestService>();
         _serverConfiguration = serverConfiguration;
@@ -42,6 +43,12 @@ public class RestService: IRestService
         Initialize();
         if (_authenticationService!.IsAuthenticated)
         {
+            if (_authenticationService.AuthenticationCredential.AuthenticationType == AuthenticationType.JWT)
+            {
+                var client = new RestClient(_options!);
+                client.AddDefaultHeader("Authorization", $"Jwt {_authenticationService.AuthenticationCredential.JWTToken}");
+                return client;
+            }
             throw new NotImplementedException();
         }
         else

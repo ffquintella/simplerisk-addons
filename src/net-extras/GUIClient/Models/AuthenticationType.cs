@@ -4,5 +4,6 @@ public enum AuthenticationType
 {
     None,
     Basic,
-    SAML
+    SAML,
+    JWT
 }
