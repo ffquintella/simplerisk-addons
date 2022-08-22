@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using GUIClient.Configuration;
 using LiteDB;
+using Model.Authentication;
 
 namespace GUIClient.Services;
 
@@ -71,5 +72,22 @@ public class MutableConfigurationService: IMutableConfigurationService
                 Value = value
             });
         }
+    }
+
+    public void SaveAuthenticatedUser(AuthenticatedUserInfo user)
+    {
+        if (!IsInitialized) Initialize();
+        using var db = new LiteDatabase(_configurationConnectionString);
+        var col = db.GetCollection<AuthenticatedUserInfo>("authenticatedUser");
+        col.Insert(user);
+    }
+    
+    public AuthenticatedUserInfo? GetAuthenticatedUser()
+    {
+        if (!IsInitialized) Initialize();
+        using var db = new LiteDatabase(_configurationConnectionString);
+        var col = db.GetCollection<AuthenticatedUserInfo>("authenticatedUser");
+        var user = col.FindOne(u => true);
+        return user ?? null;
     }
 }

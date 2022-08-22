@@ -36,4 +36,13 @@ public interface IAuthenticationService
     /// <returns>0 if success; -1 if internal error; 1 if communication error;</returns>
     int GetAuthenticatedUserInfo();
 
+    /// <summary>
+    /// Checks if the auntetication token is still valid
+    /// </summary>
+    /// <param name="token">the value of the token</param>
+    /// <param name="minutesToExpire">add times to check if it will be valid in the futre</param>
+    /// <returns>true of false</returns>
+    bool CheckTokenValidTime(string token, int minutesToExpire = 0);
+
+    int RefreshToken();
 }

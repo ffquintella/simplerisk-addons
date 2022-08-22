@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using Avalonia.Controls;
 using GUIClient.Models;
@@ -44,11 +45,74 @@ public class AuthenticationService: IAuthenticationService
     
     public void TryAuthenticate(Window parentWindow)
     {
-        var dialog = new Login();
-        dialog.ShowDialog( parentWindow );
+        var isauth = _mutableConfigurationService.GetConfigurationValue("IsAuthenticate");
+        var token = _mutableConfigurationService.GetConfigurationValue("AuthToken");
+        
+        if (isauth == "true" && CheckTokenValidTime(token))
+        {
+            AuthenticationCredential.AuthenticationType = AuthenticationType.JWT;
+            AuthenticationCredential.JWTToken = token;
+            IsAuthenticated = true;
+            AuthenticatedUserInfo = _mutableConfigurationService.GetAuthenticatedUser()!;
+        }
+        else
+        {
+            var dialog = new Login();
+            dialog.ShowDialog( parentWindow );
+        }
     }
 
-    
+    public bool CheckTokenValidTime(string token, int minutesToExpire = 0)
+    {
+        
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+
+        if (jwtToken.ValidTo > DateTime.UtcNow.AddMinutes(minutesToExpire)) return true;
+
+        return false;
+    }
+
+    public int RefreshToken()
+    {
+        var client = _restService.GetClient();
+        var request = new RestRequest("/Authentication/GetToken");
+
+        try
+        {
+            var response = client.Get(request);
+
+            if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
+            {
+                var token = JsonSerializer.Deserialize<string>(response.Content);
+                //var token = response.Content;
+                _mutableConfigurationService.SetConfigurationValue("IsAuthenticate", "true");
+                _mutableConfigurationService.SetConfigurationValue("AuthToken", token);
+                _mutableConfigurationService.SetConfigurationValue("AuthTokenTime", DateTime.Now.Ticks.ToString());
+                AuthenticationCredential.AuthenticationType = AuthenticationType.JWT;
+                AuthenticationCredential.JWTToken = token;
+                IsAuthenticated = true;
+                GetAuthenticatedUserInfo();
+                return 0;
+            }
+
+            if (response.StatusCode == HttpStatusCode.Forbidden || response.StatusCode == HttpStatusCode.NotFound)
+            {
+                Log.Error("Authentication Error response code: {0}", response.StatusCode);
+                return 1;
+            }
+            
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            
+        }
+        
+        return -1;
+    }
+
+
     /// <summary>
     /// Executes authentication against the server.
     /// </summary>
@@ -69,7 +133,7 @@ public class AuthenticationService: IAuthenticationService
             {
                 var token = JsonSerializer.Deserialize<string>(response.Content);
                 //var token = response.Content;
-                _mutableConfigurationService.SetConfigurationValue("AuthUser", user);
+                _mutableConfigurationService.SetConfigurationValue("IsAuthenticate", "true");
                 _mutableConfigurationService.SetConfigurationValue("AuthToken", token);
                 _mutableConfigurationService.SetConfigurationValue("AuthTokenTime", DateTime.Now.Ticks.ToString());
                 AuthenticationCredential.AuthenticationType = AuthenticationType.JWT;
@@ -108,6 +172,7 @@ public class AuthenticationService: IAuthenticationService
             if (response != null)
             {
                 AuthenticatedUserInfo = response;
+                _mutableConfigurationService.SaveAuthenticatedUser(AuthenticatedUserInfo);
                 return 0;
             }
 

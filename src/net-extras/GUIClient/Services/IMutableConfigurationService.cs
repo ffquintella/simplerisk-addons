@@ -1,4 +1,6 @@
-﻿namespace GUIClient.Services;
+﻿using Model.Authentication;
+
+namespace GUIClient.Services;
 
 public interface IMutableConfigurationService
 {
@@ -9,4 +11,8 @@ public interface IMutableConfigurationService
     string? GetConfigurationValue(string name);
     
     void SetConfigurationValue(string name, string value);
+    
+    void SaveAuthenticatedUser(AuthenticatedUserInfo user);
+    
+    AuthenticatedUserInfo? GetAuthenticatedUser();
 }

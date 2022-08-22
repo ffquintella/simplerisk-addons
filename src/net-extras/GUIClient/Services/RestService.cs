@@ -6,6 +6,7 @@ using GUIClient.Tools;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RestSharp;
+using RestSharp.Authenticators;
 using Splat;
 using Locator = Splat.Locator;
 
@@ -45,8 +46,17 @@ public class RestService: IRestService
         {
             if (_authenticationService.AuthenticationCredential.AuthenticationType == AuthenticationType.JWT)
             {
+                if(!_authenticationService.CheckTokenValidTime(_authenticationService.AuthenticationCredential.JWTToken,
+                   60 * 5))
+                   {
+                       
+                   }
+                
                 var client = new RestClient(_options!);
-                client.AddDefaultHeader("Authorization", $"Jwt {_authenticationService.AuthenticationCredential.JWTToken}");
+                client.Authenticator = new JwtAuthenticator(_authenticationService.AuthenticationCredential.JWTToken!);
+                //client.AddDefaultHeader("Authorization", $"Jwt {_authenticationService.AuthenticationCredential.JWTToken}");
+                
+                
                 return client;
             }
             throw new NotImplementedException();
