@@ -1,6 +1,9 @@
+using System.Text;
 using API.Security;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
 using Saml2.Authentication.Core.Configuration;
+using ServerServices;
 
 namespace API;
 
@@ -8,6 +11,10 @@ public static class AuthenticationBootstrapper
 {
     public static void RegisterAuthentication(IServiceCollection services, IConfiguration config)
     {
+        var envService = new EnvironmentService();
+        var key = Convert.FromBase64String(envService.ServerSecretToken);
+        //var key = Encoding.ASCII.GetBytes(Settings.Secret);
+        
         // Add Saml2.Authentication.Core
         services.Configure<Saml2Configuration>(config.GetSection("Saml2"));
         services.AddSaml();
@@ -24,6 +31,11 @@ public static class AuthenticationBootstrapper
                 {
                     if (context.Request.Headers.ContainsKey("Authorization"))
                     {
+                        if(context.Request.Headers["Authorization"].ToString().StartsWith("Bearer "))
+                        {
+                            return "Bearer";
+                        }
+
                         return "BasicAuthentication";
                     }
                     else if(config["Saml2:Enabled"] == "True")
@@ -39,6 +51,18 @@ public static class AuthenticationBootstrapper
                 
             })
             .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null)
+            .AddJwtBearer("Bearer",x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            })
             .AddCookie("saml2.cookies", options =>
             {
                 options.Cookie.HttpOnly = true;
