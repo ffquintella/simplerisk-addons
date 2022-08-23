@@ -1,4 +1,5 @@
-﻿using GUIClient.Configuration;
+﻿using System;
+using GUIClient.Configuration;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 
@@ -10,14 +11,21 @@ namespace GUIClient.ViewModels
         public IStringLocalizer _localizer;
         
         public string StrApplicationMN { get; }
+        public string StrExitMN { get; }
         public MainWindowViewModel(ILocalizationService localizationService)
         {
             _localizationService = localizationService;
             _localizer = _localizationService.GetLocalizer();
 
             StrApplicationMN = _localizer["ApplicationMN"];
+            StrExitMN = _localizer["ExitMN"];
         }
 
+        public void OnMenuExitCommand()
+        {
+            Environment.Exit(0);
+        }
+        
         public string Greeting => "Welcome to Avalonia!";
     }
 }

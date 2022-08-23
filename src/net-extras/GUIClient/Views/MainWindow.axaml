@@ -31,7 +31,8 @@
                 <MenuItem Header="{Binding StrApplicationMN}">
                     <MenuItem Header="_Open..."/>
                     <Separator/>
-                    <MenuItem Header="_Exit"/>
+                    <MenuItem Header="{Binding StrExitMN}" 
+                              Command="{Binding OnMenuExitCommand}"/>
                 </MenuItem>
                 <MenuItem Header="_Edit">
                     <MenuItem Header="Copy"/>

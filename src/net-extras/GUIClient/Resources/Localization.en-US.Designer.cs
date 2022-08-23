@@ -96,6 +96,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Exit.
+        /// </summary>
+        internal static string ExitMN {
+            get {
+                return ResourceManager.GetString("ExitMN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Host.
         /// </summary>
         internal static string Host {

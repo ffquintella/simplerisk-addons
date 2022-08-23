@@ -96,6 +96,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Sair.
+        /// </summary>
+        internal static string ExitMN {
+            get {
+                return ResourceManager.GetString("ExitMN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Computador.
         /// </summary>
         internal static string Host {

@@ -78,4 +78,7 @@
     <data name="ApplicationMN" xml:space="preserve">
         <value>_Aplicação</value>
     </data>
+    <data name="ExitMN" xml:space="preserve">
+        <value>_Sair</value>
+    </data>
 </root>
