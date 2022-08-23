@@ -61,7 +61,7 @@ public class AuthenticationController : ControllerBase
         var stoken = tokenHandler.CreateToken(tokenDescriptor);
         var token = tokenHandler.WriteToken(stoken);
 
-        _logger.LogInformation("Authentication token created for user: {0} ip: {1}", 
+        _logger.LogInformation("Authentication token created for user: {0} fromip: {1}", 
             _httpContextAccessor.HttpContext!.User!.Identity!.Name!,
             _httpContextAccessor.HttpContext!.Connection.RemoteIpAddress);
         
@@ -104,8 +104,11 @@ public class AuthenticationController : ControllerBase
             UserRole = userRole,
             UserPermissions = permissions
         };
-
         
+        _logger.LogDebug("User info requested for user: {0} fromip: {1}", 
+            _httpContextAccessor.HttpContext!.User!.Identity!.Name!,
+            _httpContextAccessor.HttpContext!.Connection.RemoteIpAddress);
+
         
         return info;
     }
@@ -137,6 +140,10 @@ public class AuthenticationController : ControllerBase
         }
         
         result.Add(basic);
+        
+        _logger.LogDebug("User methods requested fromip: {0}",
+            _httpContextAccessor.HttpContext!.Connection.RemoteIpAddress);
+
         
         return result;
     }
