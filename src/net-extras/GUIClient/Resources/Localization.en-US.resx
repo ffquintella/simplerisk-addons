@@ -75,4 +75,7 @@
     <data name="SelectAuthenticationMSG" xml:space="preserve">
         <value>Please select your authentication method.</value>
     </data>
+    <data name="ApplicationMN" xml:space="preserve">
+        <value>_Application</value>
+    </data>
 </root>

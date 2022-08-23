@@ -27,6 +27,17 @@
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
         <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="{Binding StrApplicationMN}">
+                    <MenuItem Header="_Open..."/>
+                    <Separator/>
+                    <MenuItem Header="_Exit"/>
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="Copy"/>
+                    <MenuItem Header="Paste"/>
+                </MenuItem>
+            </Menu>
             <Button Name="BtnSettings" Click="btn_SettingsOnClick" DockPanel.Dock="Top"
                     Margin="30" HorizontalAlignment="Right" VerticalAlignment="Top" >
                 <PathIcon Data="{StaticResource settings_regular}" />

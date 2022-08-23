@@ -60,6 +60,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Aplicação.
+        /// </summary>
+        internal static string ApplicationMN {
+            get {
+                return ResourceManager.GetString("ApplicationMN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Descrição.
         /// </summary>
         internal static string Description {
