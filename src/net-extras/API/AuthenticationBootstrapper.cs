@@ -3,6 +3,7 @@ using API.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using Saml2.Authentication.Core.Configuration;
+using Serilog;
 using ServerServices;
 
 namespace API;
@@ -33,13 +34,15 @@ public static class AuthenticationBootstrapper
                     {
                         if(context.Request.Headers["Authorization"].ToString().StartsWith("Bearer "))
                         {
+                            Log.Information("Authenticating using Jwt");
                             return "Bearer";
                         }
-
+                        Log.Information("Authenticating using Basic");
                         return "BasicAuthentication";
                     }
                     else if(config["Saml2:Enabled"] == "True")
                     {
+                        Log.Information("Authenticating using SAML");
                         return "saml2";
                     }
                     else

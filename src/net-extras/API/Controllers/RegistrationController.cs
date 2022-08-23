@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Model.Registration;
 using Serilog;
 using ServerServices;
+using ILogger = Serilog.ILogger;
 
 namespace API.Controllers;
 
@@ -13,11 +14,12 @@ namespace API.Controllers;
 public class RegistrationController : ControllerBase
 {
     private IClientRegistrationService _clientRegistrationService;
-
+    private ILogger _logger;
     
-    public RegistrationController(IClientRegistrationService clientRegistrationService)
+    public RegistrationController(IClientRegistrationService clientRegistrationService, ILogger logger)
     {
         _clientRegistrationService = clientRegistrationService;
+        _logger = logger;
     }
 
     
@@ -32,7 +34,11 @@ public class RegistrationController : ControllerBase
         {
             var result = _clientRegistrationService.IsAccepted(clientId);
             if (result == 1) return Ok(true);
-            if (result == 0) return Ok(false);
+            if (result == 0)
+            {
+                _logger.Information("Registration verified for {ClientId}", clientId);
+                return Ok(false);
+            }
             if (result == -1) return NotFound(false);
         }
         catch (Exception ex)

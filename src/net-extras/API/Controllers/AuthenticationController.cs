@@ -61,6 +61,10 @@ public class AuthenticationController : ControllerBase
         var stoken = tokenHandler.CreateToken(tokenDescriptor);
         var token = tokenHandler.WriteToken(stoken);
 
+        _logger.LogInformation("Authentication token created for user: {0} ip: {1}", 
+            _httpContextAccessor.HttpContext!.User!.Identity!.Name!,
+            _httpContextAccessor.HttpContext!.Connection.RemoteIpAddress);
+        
         return token;
     }
 

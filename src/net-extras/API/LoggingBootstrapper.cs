@@ -3,6 +3,7 @@ using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
 namespace API;
 
@@ -84,10 +85,7 @@ public static class LoggingBootstrapper
         
         services.AddSingleton<ILoggerFactory>(factory);
         
-        services.AddSingleton(() =>
-        {
-            return factory.CreateLogger("Default");
-        });
+        services.AddSingleton<Serilog.ILogger>(logger);
         
 
     }
