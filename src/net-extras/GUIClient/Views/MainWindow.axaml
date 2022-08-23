@@ -26,11 +26,12 @@
                     MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-        <Panel Margin="40">
-            <Button Name="BtnSettings" Click="btn_SettingsOnClick" Margin="40" HorizontalAlignment="Right" VerticalAlignment="Top" >
+        <DockPanel>
+            <Button Name="BtnSettings" Click="btn_SettingsOnClick" DockPanel.Dock="Top"
+                    Margin="30" HorizontalAlignment="Right" VerticalAlignment="Top" >
                 <PathIcon Data="{StaticResource settings_regular}" />
             </Button>
-        </Panel>
+        </DockPanel>
         <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Panel>
     
