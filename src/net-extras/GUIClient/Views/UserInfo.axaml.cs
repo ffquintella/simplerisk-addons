@@ -10,7 +10,7 @@ public partial class UserInfo : Window
     public UserInfo()
     {
 
-        DataContext = new UserInfoViewModel();
+        //DataContext = new UserInfoViewModel();
         
         InitializeComponent();
 #if DEBUG

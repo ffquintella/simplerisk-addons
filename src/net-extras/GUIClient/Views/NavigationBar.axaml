@@ -21,9 +21,8 @@
             <material:MaterialIcon Kind="Settings"/>
         </Button>
         <Button Name="BtnAccount" 
-                
                 IsEnabled="{Binding IsEnabled}"
-                Command="{Binding OnSettingsCommand}"
+                Command="{Binding OnAccountCommand}"
                 CommandParameter="{Binding ElementName=NavigationUserControl}"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5 0" >
             <StackPanel Orientation="Horizontal">

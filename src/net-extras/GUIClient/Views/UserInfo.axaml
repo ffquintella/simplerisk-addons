@@ -5,16 +5,33 @@
         xmlns:vm="using:GUIClient.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GUIClient.Views.UserInfo"
-        Title="UserInfo">
+        Title="UserInfo"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True"
+        Width="600" Height="400">
 
         <Design.DataContext>
-                <vm:MainWindowViewModel/>
+                <vm:UserInfoViewModel/>
         </Design.DataContext>
-        
-        <DockPanel>
-                <StackPanel Orientation="Horizontal">
-                        
-                </StackPanel>
-        </DockPanel>
+        <Panel>
+                <ExperimentalAcrylicBorder IsHitTestVisible="False">
+                        <ExperimentalAcrylicBorder.Material>
+                                <ExperimentalAcrylicMaterial
+                                        BackgroundSource="Digger"
+                                        TintColor="Black"
+                                        TintOpacity="1"
+                                        MaterialOpacity="0.65" />
+                        </ExperimentalAcrylicBorder.Material>
+                </ExperimentalAcrylicBorder>   
+                
+                <DockPanel Margin="30">
+                        <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding StrUserName}"/>
+                                <TextBlock Text=": "/>
+                                <TextBlock Text="{Binding UserInfo.UserAccount}"/>
+                        </StackPanel>
+                </DockPanel>
+                
+        </Panel>
         
 </Window>

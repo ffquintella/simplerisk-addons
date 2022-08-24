@@ -65,4 +65,19 @@ public class NavigationBarViewModel: ViewModelBase
         dialog.ShowDialog( parentControl.ParentWindow );
 
     }
+    
+    public void OnAccountCommand(NavigationBar? parentControl)
+    {
+        if (_authenticationService == null)
+        {
+            _authenticationService!.GetAuthenticatedUserInfo();
+        }
+
+        var dialog = new UserInfo()
+        {
+            DataContext = new UserInfoViewModel(_authenticationService.AuthenticatedUserInfo!)
+        };
+        dialog.ShowDialog( parentControl.ParentWindow );
+
+    }
 }
