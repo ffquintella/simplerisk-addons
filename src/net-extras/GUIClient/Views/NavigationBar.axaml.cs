@@ -21,9 +21,11 @@ public partial class NavigationBar : UserControl
     }
     public NavigationBar()
     {
-        var localizationService = GetService<ILocalizationService>();
-        var serverConfiguration = GetService<ServerConfiguration>();
-        DataContext = new NavigationBarViewModel(localizationService,serverConfiguration);
+        DataContext = new NavigationBarViewModel(
+            GetService<ILocalizationService>(),
+            GetService<ServerConfiguration>(),
+            GetService<IAuthenticationService>());
+        
         InitializeComponent();
     }
 
