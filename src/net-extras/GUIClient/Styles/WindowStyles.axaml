@@ -58,4 +58,8 @@
         <Setter Property="Background" Value="#880000"/>
     </Style>
     
+    <Style Selector="Button:is:disabled">
+        <Setter Property="Background" Value="#787878"/>
+    </Style>
+    
 </Styles>

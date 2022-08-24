@@ -15,8 +15,18 @@ public class NavigationBarViewModel: ViewModelBase
     private ServerConfiguration _configuration;
     private IAuthenticationService _authenticationService;
     private bool _isEnabled = false;
+    private bool _isAdmin = false;
     public string? _loggedUser;
 
+    public Boolean IsAdmin
+    {
+        get
+        {
+            if (_isEnabled) return _isAdmin;
+            return false;
+        }
+        set => this.RaiseAndSetIfChanged(ref _isAdmin, value);
+    }
     public Boolean IsEnabled
     {
         get => _isEnabled;
