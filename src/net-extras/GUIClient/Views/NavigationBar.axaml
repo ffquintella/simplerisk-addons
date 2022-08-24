@@ -10,7 +10,7 @@
         <Button Name="BtnSettings" DockPanel.Dock="Top"
                 Command="{Binding OnSettingsCommand}"
                 CommandParameter="{Binding ElementName=NavigationUserControl}"
-                HorizontalAlignment="Right" VerticalAlignment="Top" >
+                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5 0" >
             <PathIcon Data="{StaticResource settings_regular}" />
         </Button>
     </StackPanel>
