@@ -87,4 +87,7 @@
     <data name="Account" xml:space="preserve">
         <value>Conta</value>
     </data>
+    <data name="Role" xml:space="preserve">
+        <value>Perfil</value>
+    </data>
 </root>
