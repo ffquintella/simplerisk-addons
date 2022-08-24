@@ -84,4 +84,7 @@
     <data name="WelcomeMSG" xml:space="preserve">
         <value>Welcome to the SRGUI Client.</value>
     </data>
+    <data name="Account" xml:space="preserve">
+        <value>Account</value>
+    </data>
 </root>

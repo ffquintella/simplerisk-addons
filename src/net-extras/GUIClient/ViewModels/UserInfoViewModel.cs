@@ -12,11 +12,13 @@ public class UserInfoViewModel: ViewModelBase
     private IStringLocalizer _localizer; 
     
     private string StrUserName { get; set; }
+    private string StrUserAccount { get; set; }
     public UserInfoViewModel(AuthenticatedUserInfo userInfo)
     {
         UserInfo = userInfo;
         _localizer = GetService<ILocalizationService>().GetLocalizer();
         StrUserName = _localizer["Username"];
+        StrUserAccount = _localizer["Account"];
     }
 
     public AuthenticatedUserInfo UserInfo

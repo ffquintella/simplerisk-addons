@@ -55,7 +55,7 @@
         <value>Entrar</value>
     </data>
     <data name="Username" xml:space="preserve">
-        <value>Conta</value>
+        <value>Usuário</value>
     </data>
     <data name="Password" xml:space="preserve">
         <value>Senha</value>
@@ -83,5 +83,8 @@
     </data>
     <data name="WelcomeMSG" xml:space="preserve">
         <value>Bem-vindo ao SRGUI Client.</value>
+    </data>
+    <data name="Account" xml:space="preserve">
+        <value>Conta</value>
     </data>
 </root>

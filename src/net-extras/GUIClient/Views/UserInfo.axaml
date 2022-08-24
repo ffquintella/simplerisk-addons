@@ -24,13 +24,23 @@
                         </ExperimentalAcrylicBorder.Material>
                 </ExperimentalAcrylicBorder>   
                 
-                <DockPanel Margin="30">
+                <StackPanel Margin="30">
                         <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding StrUserName}"/>
+                                <TextBlock Text="{Binding StrUserAccount}"/>
                                 <TextBlock Text=": "/>
                                 <TextBlock Text="{Binding UserInfo.UserAccount}"/>
                         </StackPanel>
-                </DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Email"/>
+                                <TextBlock Text=": "/>
+                                <TextBlock Text="{Binding UserInfo.UserEmail}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding StrUserName}"/>
+                                <TextBlock Text=": "/>
+                                <TextBlock Text="{Binding UserInfo.UserName}"/>
+                        </StackPanel>
+                </StackPanel>
                 
         </Panel>
         

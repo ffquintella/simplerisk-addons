@@ -60,6 +60,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conta.
+        /// </summary>
+        internal static string Account {
+            get {
+                return ResourceManager.GetString("Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Aplicação.
         /// </summary>
         internal static string ApplicationMN {
@@ -231,7 +240,7 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Conta.
+        ///   Looks up a localized string similar to Usuário.
         /// </summary>
         internal static string Username {
             get {
