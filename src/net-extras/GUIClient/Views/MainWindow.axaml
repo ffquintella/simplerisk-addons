@@ -42,7 +42,8 @@
                 </MenuItem-->
             </Menu>
             <views:NavigationBar DockPanel.Dock="Top" ParentWindow="{Binding ElementName=MainWindowName}"/>
-            <views:Dashboard Margin="10" />
+            <views:DashboardView Margin="10" IsVisible="{Binding $parent.DataContext.ViewDashboardIsVisible}" />
+            <views:DeviceView Margin="10" IsVisible="{Binding $parent.DataContext.ViewDeviceIsVisible}" />
         </DockPanel>
     </Panel>
     

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using GUIClient.Configuration;
+using GUIClient.Models;
 using GUIClient.Services;
 using GUIClient.Views;
 using ReactiveUI;
@@ -63,6 +64,7 @@ public class NavigationBarViewModel: ViewModelBase
         IsEnabled = true;
         if (_authenticationService!.AuthenticatedUserInfo == null) _authenticationService.GetAuthenticatedUserInfo();
         LoggedUser = _authenticationService!.AuthenticatedUserInfo!.UserName!;
+        if (_authenticationService.AuthenticatedUserInfo.UserRole == "Administrator") IsAdmin = true;
     }
     
     public void OnSettingsCommand(NavigationBar? parentControl)
@@ -89,5 +91,12 @@ public class NavigationBarViewModel: ViewModelBase
         };
         dialog.ShowDialog( parentControl.ParentWindow );
 
+    }
+    
+    public void OnDeviceCommand(NavigationBar? parentControl)
+    {
+        ((MainWindowViewModel)parentControl.ParentWindow.DataContext)
+            .NavigateTo(AvaliableViews.Devices);
+        
     }
 }

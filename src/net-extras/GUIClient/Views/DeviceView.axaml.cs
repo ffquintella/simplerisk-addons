@@ -2,14 +2,16 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using GUIClient.ViewModels;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GUIClient.Views;
 
-public partial class Dashboard : UserControl
+public partial class DeviceView : UserControl
 {
-    public Dashboard()
+    
+    public DeviceView()
     {
-        DataContext = new DashboardViewModel();
+        DataContext = new DeviceViewModel();
         InitializeComponent();
     }
 
