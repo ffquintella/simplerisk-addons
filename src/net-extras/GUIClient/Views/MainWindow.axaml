@@ -42,9 +42,8 @@
                 </MenuItem-->
             </Menu>
             <views:NavigationBar DockPanel.Dock="Top" ParentWindow="{Binding ElementName=MainWindowName}"/>
-
+            <views:Dashboard Margin="10" />
         </DockPanel>
-        <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Panel>
     
     
