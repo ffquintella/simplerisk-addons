@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:material="using:Material.Icons.Avalonia"
              xmlns:vm="using:GUIClient.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.NavigationBar"
@@ -12,12 +13,21 @@
     </Design.DataContext>
     
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-        <Button Name="BtnSettings" DockPanel.Dock="Top"
+        <Button Name="BtnSettings" 
                 IsEnabled="{Binding IsEnabled}"
                 Command="{Binding OnSettingsCommand}"
                 CommandParameter="{Binding ElementName=NavigationUserControl}"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5 0" >
-            <PathIcon Data="{StaticResource settings_regular}" />
+            <material:MaterialIcon Kind="Settings"/>
         </Button>
+        <Button Name="BtnAccount" 
+                IsEnabled="{Binding IsEnabled}"
+                Command="{Binding OnSettingsCommand}"
+                CommandParameter="{Binding ElementName=NavigationUserControl}"
+                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5 0" >
+            <material:MaterialIcon Kind="AccountCircle"/>
+        </Button>
+        
+
     </StackPanel>
 </UserControl>
