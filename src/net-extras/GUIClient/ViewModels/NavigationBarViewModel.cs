@@ -99,4 +99,11 @@ public class NavigationBarViewModel: ViewModelBase
             .NavigateTo(AvaliableViews.Devices);
         
     }
+    
+    public void OnDashboardCommand(NavigationBar? parentControl)
+    {
+        ((MainWindowViewModel)parentControl.ParentWindow.DataContext)
+            .NavigateTo(AvaliableViews.Dashboard);
+        
+    }
 }
