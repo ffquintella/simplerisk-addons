@@ -9,5 +9,7 @@
         <vm:DashboardViewModel/>
     </Design.DataContext>
     
-    Welcome to Avalonia!
+    <StackPanel>
+        <TextBlock Text="{Binding StrWelcome}"/>
+    </StackPanel>
 </UserControl>

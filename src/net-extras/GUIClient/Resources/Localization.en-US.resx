@@ -81,4 +81,7 @@
     <data name="ExitMN" xml:space="preserve">
         <value>_Exit</value>
     </data>
+    <data name="WelcomeMSG" xml:space="preserve">
+        <value>Welcome to the SRGUI Client.</value>
+    </data>
 </root>

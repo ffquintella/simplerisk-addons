@@ -247,5 +247,14 @@ namespace GUIClient.Resources {
                 return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to the SRGUI Client..
+        /// </summary>
+        internal static string WelcomeMSG {
+            get {
+                return ResourceManager.GetString("WelcomeMSG", resourceCulture);
+            }
+        }
     }
 }
