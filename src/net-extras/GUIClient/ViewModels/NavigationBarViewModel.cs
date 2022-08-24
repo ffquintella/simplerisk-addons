@@ -15,14 +15,18 @@ public class NavigationBarViewModel: ViewModelBase
     private ServerConfiguration _configuration;
     private IAuthenticationService _authenticationService;
     private bool _isEnabled = false;
+    public string? _loggedUser;
 
     public Boolean IsEnabled
     {
-        get { return _isEnabled; }
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _isEnabled, value);
-        }
+        get => _isEnabled;
+        set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
+    }
+
+    public String LoggedUser
+    {
+        get => _loggedUser;
+        set => this.RaiseAndSetIfChanged(ref _loggedUser, value);
     }
 
     public NavigationBarViewModel(
@@ -47,6 +51,8 @@ public class NavigationBarViewModel: ViewModelBase
         }
 
         IsEnabled = true;
+        if (_authenticationService!.AuthenticatedUserInfo == null) _authenticationService.GetAuthenticatedUserInfo();
+        LoggedUser = _authenticationService!.AuthenticatedUserInfo!.UserName!;
     }
     
     public void OnSettingsCommand(NavigationBar? parentControl)

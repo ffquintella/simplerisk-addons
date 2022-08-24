@@ -21,11 +21,14 @@
             <material:MaterialIcon Kind="Settings"/>
         </Button>
         <Button Name="BtnAccount" 
+                
                 IsEnabled="{Binding IsEnabled}"
                 Command="{Binding OnSettingsCommand}"
                 CommandParameter="{Binding ElementName=NavigationUserControl}"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5 0" >
-            <material:MaterialIcon Kind="AccountCircle"/>
+            <StackPanel Orientation="Horizontal">
+                <material:MaterialIcon Kind="AccountCircle"/><TextBlock Text="{Binding LoggedUser}" Margin="5 0" />
+            </StackPanel>
         </Button>
         
 

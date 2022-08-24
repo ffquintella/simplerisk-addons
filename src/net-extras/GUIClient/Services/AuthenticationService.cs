@@ -25,7 +25,7 @@ public class AuthenticationService: IAuthenticationService
     private IMutableConfigurationService _mutableConfigurationService;
     
     public AuthenticationCredential AuthenticationCredential { get; set; }
-    public AuthenticatedUserInfo AuthenticatedUserInfo { get; set; }
+    public AuthenticatedUserInfo? AuthenticatedUserInfo { get; set; }
 
     public AuthenticationService(ILoggerFactory loggerFactory, 
         IRegistrationService registrationService,

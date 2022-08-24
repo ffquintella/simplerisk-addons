@@ -13,7 +13,7 @@ public interface IAuthenticationService
     bool IsAuthenticated { get; set; }
     
     AuthenticationCredential AuthenticationCredential { get; set; }
-
+    AuthenticatedUserInfo? AuthenticatedUserInfo { get; set; }
     void TryAuthenticate(Window parentWindow);
     
     /// <summary>
