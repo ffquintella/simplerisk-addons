@@ -13,4 +13,11 @@ public interface IClientService
     /// <param name="id"></param>
     /// <returns>-1 if error; 0 if ok;</returns>
     int Approve(int id);
+    
+    /// <summary>
+    /// Rejects the client with Id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>-1 if error; 0 if ok;</returns>
+    int Reject(int id);
 }

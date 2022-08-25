@@ -96,6 +96,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ocorreu um erro na tentativa de processar a rejeição do cliente.
+        /// </summary>
+        internal static string ClientRejectErrorMSG {
+            get {
+                return ResourceManager.GetString("ClientRejectErrorMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Computador.
         /// </summary>
         internal static string Computer {

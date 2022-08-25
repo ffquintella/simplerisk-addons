@@ -30,6 +30,7 @@ public class DeviceViewModel: ViewModelBase
     private string StrActions { get;  }
     
     public ReactiveCommand<int, Unit> BtApproveClicked { get; }
+    public ReactiveCommand<int, Unit> BtRejectClicked { get; }
     public DeviceViewModel(
         ILocalizationService localizationService,
         IClientService clientService)
@@ -43,6 +44,7 @@ public class DeviceViewModel: ViewModelBase
         StrActions= _localizer["Actions"];
         
         BtApproveClicked = ReactiveCommand.Create<int>(ExecuteAproveOrder);
+        BtRejectClicked = ReactiveCommand.Create<int>(ExecuteRejectOrder);
         
     }
 
@@ -56,6 +58,27 @@ public class DeviceViewModel: ViewModelBase
                 {
                     ContentTitle = _localizer["Warning"],
                     ContentMessage = _localizer["ClientApproveErrorMSG"]  ,
+                    Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                });
+                        
+            messageBoxStandardWindow.Show(); 
+        }
+        else
+        {
+            Clients = _clientService.GetAll();
+        }
+    }
+    
+    void ExecuteRejectOrder(int id)
+    {
+        var result = _clientService.Reject(id);
+        if (result != 0)
+        {
+            var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = _localizer["Warning"],
+                    ContentMessage = _localizer["ClientRejectErrorMSG"]  ,
                     Icon = MessageBox.Avalonia.Enums.Icon.Warning,
                 });
                         

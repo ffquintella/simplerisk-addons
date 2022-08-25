@@ -108,4 +108,7 @@
     <data name="ClientApproveErrorMSG" xml:space="preserve">
         <value>Ocorreu um erro na tentativa de aprovar o cliente.</value>
     </data>
+    <data name="ClientRejectErrorMSG" xml:space="preserve">
+        <value>Ocorreu um erro na tentativa de processar a rejeição do cliente</value>
+    </data>
 </root>

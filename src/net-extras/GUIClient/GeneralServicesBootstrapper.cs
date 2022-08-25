@@ -28,7 +28,6 @@ public class GeneralServicesBootstrapper
             ));
 
         services.RegisterLazySingleton<IClientService>(() => new ClientService(
-            resolver.GetService<ILogger>(),
             resolver.GetService<IRestService>()
         ));
         

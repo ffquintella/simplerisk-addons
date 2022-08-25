@@ -52,7 +52,10 @@
                                 <Button Name="btReprove"
                                         IsEnabled="{Binding Status, 
                                     Converter={StaticResource stringComparerConverter},
-                                    ConverterParameter=approved}">
+                                    ConverterParameter=requested}"
+                                    Command="{Binding #DeviceViewName.DataContext.BtRejectClicked}"
+                                    CommandParameter="{Binding Id}"
+                                        >
                                     <material:MaterialIcon Kind="Cancel"/>
                                 </Button>
                                 <Button Name="btDelete">

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using Model;
 using Model.Exceptions;
@@ -16,10 +17,10 @@ public class ClientService: IClientService
     
     private ILogger _logger;
     private IRestService _restService;
-    public ClientService(ILogger logger,
+    public ClientService(
         IRestService restService)
     {
-        _logger = logger;
+        _logger = Log.Logger;
         _restService = restService;
     }
 
@@ -62,6 +63,35 @@ public class ClientService: IClientService
         catch (Exception ex)
         {
             _logger.Error("Error approving client {ExMessage}", ex.Message);
+            throw new RestComunicationException(ex.Message);
+        }
+    }
+    public int Reject(int id)
+    {
+        var restClient = _restService.GetClient();
+        var request = new RestRequest($"/Clients/{id}/reject");
+        
+        try
+        {
+            var response = restClient.Get(request);
+
+            if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
+            {
+                return 0;
+            }
+
+            return -1;
+
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Forbidden)
+            {
+                _logger.Error("Tring to reject already rejected client");
+                return -1;
+            }
+                
+            _logger.Error("Error rejecting client {ExMessage}", ex.Message);
             throw new RestComunicationException(ex.Message);
         }
     }
