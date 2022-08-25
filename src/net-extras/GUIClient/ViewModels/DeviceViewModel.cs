@@ -22,9 +22,10 @@ public class DeviceViewModel: ViewModelBase
     private IClientService _clientService;
     private IStringLocalizer _localizer;
     
-    private string StrName { get; set; }
-    private string StrComputer { get; set; }
-    private string StrLoggedAccount { get; set; }
+    private string StrName { get;  }
+    private string StrComputer { get;  }
+    private string StrLoggedAccount { get;  }
+    private string StrActions { get;  }
     
     public DeviceViewModel(
         ILocalizationService localizationService,
@@ -36,6 +37,7 @@ public class DeviceViewModel: ViewModelBase
         StrName = _localizer["Name"];
         StrComputer = _localizer["Computer"];
         StrLoggedAccount= _localizer["LoggedAccount"];
+        StrActions= _localizer["Actions"];
     }
 
     public void Initialize()

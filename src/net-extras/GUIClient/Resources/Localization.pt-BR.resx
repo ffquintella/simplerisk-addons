@@ -102,4 +102,7 @@
     <data name="LoggedAccount" xml:space="preserve">
         <value>Conta Usada</value>
     </data>
+    <data name="Actions" xml:space="preserve">
+        <value>Ações</value>
+    </data>
 </root>

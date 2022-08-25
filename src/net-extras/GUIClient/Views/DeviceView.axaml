@@ -4,13 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="using:GUIClient.ViewModels"
-             x:Class="GUIClient.Views.DeviceView">
+             xmlns:model="using:Model"
+             xmlns:convertes="clr-namespace:GUIClient.Converters"
+             xmlns:material="using:Material.Icons.Avalonia"
+             x:Class="GUIClient.Views.DeviceView"
+             x:DataType="vm:DeviceViewModel">
+             
     <Design.DataContext>
         <vm:DeviceViewModel/>
     </Design.DataContext>
+    
+    <UserControl.Resources>
+        <convertes:StringComparerConverter x:Key="stringComparerConverter"/>
+    </UserControl.Resources>
+    
     <Grid>
         <DataGrid Name="DevicesDataGrid" 
-                  Items="{Binding Clients}" 
+                  Items="{CompiledBinding  Clients}" 
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" 
@@ -25,7 +35,29 @@
                 <DataGridTextColumn IsReadOnly="True" 
                                     Header="{Binding StrLoggedAccount}"
                                     Binding="{Binding LoggedAccount}" />
-
+                <DataGridTemplateColumn Header="{Binding StrActions}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="model:Client">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="btApprove"
+                                    IsEnabled="{Binding Status, 
+                                    Converter={StaticResource stringComparerConverter},
+                                    ConverterParameter=requested}">
+                                    <material:MaterialIcon Kind="CheckCircle"/>
+                                </Button>
+                                <Button Name="btReprove"
+                                        IsEnabled="{Binding Status, 
+                                    Converter={StaticResource stringComparerConverter},
+                                    ConverterParameter=approved}">
+                                    <material:MaterialIcon Kind="Cancel"/>
+                                </Button>
+                                <Button Name="btDelete">
+                                    <material:MaterialIcon Kind="Delete"/>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

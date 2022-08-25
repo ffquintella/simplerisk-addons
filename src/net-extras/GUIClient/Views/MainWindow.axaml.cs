@@ -1,6 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
 using GUIClient.Configuration;
 using GUIClient.Services;
 using GUIClient.ViewModels;
@@ -19,7 +20,10 @@ namespace GUIClient.Views
              
         }
         
-        
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
         
         private void LoadCheck(object? sender, EventArgs eventArgs)
         {
