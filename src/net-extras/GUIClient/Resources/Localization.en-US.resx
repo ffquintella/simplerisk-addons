@@ -105,4 +105,8 @@
     <data name="Actions" xml:space="preserve">
         <value>Actions</value>
     </data>
+    <data name="ClientApproveErrorMSG" xml:space="preserve">
+        <value>There was an error trying to approve the client.</value>
+    </data>
+
 </root>

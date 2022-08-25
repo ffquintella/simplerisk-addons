@@ -87,6 +87,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ocorreu um erro na tentativa de aprovar o cliente..
+        /// </summary>
+        internal static string ClientApproveErrorMSG {
+            get {
+                return ResourceManager.GetString("ClientApproveErrorMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Computador.
         /// </summary>
         internal static string Computer {

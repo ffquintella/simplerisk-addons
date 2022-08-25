@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using GUIClient.Services;
+using MessageBox.Avalonia.DTO;
 using Microsoft.Extensions.Localization;
 using Model;
 using ReactiveUI;
@@ -47,7 +48,23 @@ public class DeviceViewModel: ViewModelBase
 
     void ExecuteAproveOrder(int id)
     {
-        var a = 1;
+        var result = _clientService.Approve(id);
+        if (result != 0)
+        {
+            var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = _localizer["Warning"],
+                    ContentMessage = _localizer["ClientApproveErrorMSG"]  ,
+                    Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                });
+                        
+            messageBoxStandardWindow.Show(); 
+        }
+        else
+        {
+            Clients = _clientService.GetAll();
+        }
     }
     
     public void Initialize()

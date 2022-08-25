@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Microsoft.Extensions.Logging;
 using Model;
 using Model.Exceptions;
@@ -37,6 +38,30 @@ public class ClientService: IClientService
         catch (Exception ex)
         {
             _logger.Error("Error listing clients {ExMessage}", ex.Message);
+            throw new RestComunicationException(ex.Message);
+        }
+    }
+
+    public int Approve(int id)
+    {
+        var restClient = _restService.GetClient();
+        var request = new RestRequest($"/Clients/{id}/approve");
+        
+        try
+        {
+            var response = restClient.Get(request);
+
+            if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
+            {
+                return 0;
+            }
+
+            return -1;
+
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error approving client {ExMessage}", ex.Message);
             throw new RestComunicationException(ex.Message);
         }
     }
