@@ -7,9 +7,9 @@
              xmlns:model="using:Model"
              xmlns:convertes="clr-namespace:GUIClient.Converters"
              xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              x:Class="GUIClient.Views.DeviceView"
-             
-             >
+             Name="DeviceViewName">
              
     <Design.DataContext>
         <vm:DeviceViewModel/>
@@ -43,7 +43,10 @@
                                 <Button Name="btApprove"
                                     IsEnabled="{Binding Status, 
                                     Converter={StaticResource stringComparerConverter},
-                                    ConverterParameter=requested}">
+                                    ConverterParameter=requested}"
+                                    Command="{Binding #DeviceViewName.DataContext.BtApproveClicked}"
+                                    CommandParameter="{Binding Id}"
+                                    >
                                     <material:MaterialIcon Kind="CheckCircle"/>
                                 </Button>
                                 <Button Name="btReprove"

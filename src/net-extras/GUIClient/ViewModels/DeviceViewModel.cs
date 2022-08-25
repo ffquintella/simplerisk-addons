@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using Model;
@@ -27,6 +28,7 @@ public class DeviceViewModel: ViewModelBase
     private string StrLoggedAccount { get;  }
     private string StrActions { get;  }
     
+    public ReactiveCommand<int, Unit> BtApproveClicked { get; }
     public DeviceViewModel(
         ILocalizationService localizationService,
         IClientService clientService)
@@ -38,8 +40,16 @@ public class DeviceViewModel: ViewModelBase
         StrComputer = _localizer["Computer"];
         StrLoggedAccount= _localizer["LoggedAccount"];
         StrActions= _localizer["Actions"];
+        
+        BtApproveClicked = ReactiveCommand.Create<int>(ExecuteAproveOrder);
+        
     }
 
+    void ExecuteAproveOrder(int id)
+    {
+        var a = 1;
+    }
+    
     public void Initialize()
     {
         if (!_initialized)
