@@ -1,3 +1,4 @@
+using API.ClassMapping;
 using API.Security;
 using API.Tools;
 using DAL;
@@ -22,6 +23,7 @@ public class ServicesBootstrapper
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+        services.AddAutoMapper(typeof(ClientProfile));
     }
 
     private static void RegisterDIClasses(IServiceCollection services, IConfiguration config)

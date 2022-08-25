@@ -85,7 +85,7 @@ public static class LoggingBootstrapper
         
         services.AddSingleton<ILoggerFactory>(factory);
         
-        services.AddSingleton<Serilog.ILogger>(logger);
+        services.AddSingleton<ILogger>(logger);
         
 
     }

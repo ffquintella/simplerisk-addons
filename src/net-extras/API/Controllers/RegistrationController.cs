@@ -9,6 +9,7 @@ using ILogger = Serilog.ILogger;
 
 namespace API.Controllers;
 
+
 [ApiController]
 [Route("[controller]")]
 public class RegistrationController : ControllerBase
@@ -48,6 +49,7 @@ public class RegistrationController : ControllerBase
 
         return NotFound(false);
     }
+    
     
     
     
