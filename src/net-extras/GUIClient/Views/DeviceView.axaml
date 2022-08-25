@@ -8,5 +8,8 @@
     <Design.DataContext>
         <vm:DeviceViewModel/>
     </Design.DataContext>
-    Device View
+    <Grid>
+        <DataGrid Name="MyDataGrid" Items="{Binding TestData}" >
+        </DataGrid>
+    </Grid>
 </UserControl>
