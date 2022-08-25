@@ -13,6 +13,7 @@ public class ClientRegistrationService: IClientRegistrationService
     private ILogger _logger;
     public ClientRegistrationService(ILogger logger, DALManager dalManager)
     {
+        _logger = logger;
         _dalManager = dalManager;
     }
     
