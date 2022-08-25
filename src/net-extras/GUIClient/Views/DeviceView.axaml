@@ -13,9 +13,11 @@
                   Items="{Binding Clients}" 
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn IsReadOnly="True" Header="ID" 
+                <DataGridTextColumn IsReadOnly="True" 
+                                    Header="ID" 
                                     Binding="{Binding Id}"/>
                 <DataGridTextColumn IsReadOnly="True" 
+                                    Header="{Binding StrName}"
                                     Binding="{Binding Name}" />
             </DataGrid.Columns>
         </DataGrid>

@@ -141,6 +141,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nome.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sua aplicação não foi registrada. Por favor solicite ao administrador que autorize a aplicação com o ID:.
         /// </summary>
         internal static string NoRegistrationMSG {

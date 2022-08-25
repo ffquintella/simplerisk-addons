@@ -13,7 +13,7 @@ public partial class DeviceView : UserControl
     
     public DeviceView()
     {
-        DataContext = new DeviceViewModel(GetService<IClientService>());
+        //DataContext = new DeviceViewModel(GetService<IClientService>());
         //((DeviceViewModel)DataContext).Initialize();
         InitializeComponent();
     }

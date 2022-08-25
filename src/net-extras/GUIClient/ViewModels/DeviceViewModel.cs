@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GUIClient.Services;
+using Microsoft.Extensions.Localization;
 using Model;
 using ReactiveUI;
 
@@ -19,10 +20,18 @@ public class DeviceViewModel: ViewModelBase
     }
 
     private IClientService _clientService;
+    private IStringLocalizer _localizer;
     
-    public DeviceViewModel(IClientService clientService)
+    private string StrName { get; set; }
+    
+    public DeviceViewModel(
+        ILocalizationService localizationService,
+        IClientService clientService)
     {
+        _localizer = localizationService.GetLocalizer();
         _clientService = clientService;
+
+        StrName = _localizer["Name"];
     }
 
     public void Initialize()

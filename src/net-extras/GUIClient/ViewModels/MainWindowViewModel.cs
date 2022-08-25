@@ -30,7 +30,9 @@ namespace GUIClient.ViewModels
             get => _viewDeviceIsVisible;
             set => this.RaiseAndSetIfChanged(ref _viewDeviceIsVisible, value);
         }
-        private DeviceViewModel _deviceViewModel = new DeviceViewModel(GetService<IClientService>());
+        private DeviceViewModel _deviceViewModel = 
+            new DeviceViewModel(GetService<ILocalizationService>(), 
+                GetService<IClientService>());
 
         public DeviceViewModel DeviceViewModel
         {
