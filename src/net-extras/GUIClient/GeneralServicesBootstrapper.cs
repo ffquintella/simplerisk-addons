@@ -3,6 +3,7 @@ using GUIClient.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Splat;
+using ILogger = Serilog.ILogger;
 
 namespace GUIClient;
 
@@ -26,6 +27,11 @@ public class GeneralServicesBootstrapper
             resolver.GetService<IMutableConfigurationService>()
             ));
 
+        services.RegisterLazySingleton<IClientService>(() => new ClientService(
+            resolver.GetService<ILogger>(),
+            resolver.GetService<IRestService>()
+        ));
+        
         services.RegisterLazySingleton<IRestService>(() => new RestService(
             resolver.GetService<ILoggerFactory>(),
             resolver.GetService<ServerConfiguration>()

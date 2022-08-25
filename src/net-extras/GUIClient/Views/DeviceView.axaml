@@ -9,7 +9,15 @@
         <vm:DeviceViewModel/>
     </Design.DataContext>
     <Grid>
-        <DataGrid Name="MyDataGrid" Items="{Binding TestData}" >
+        <DataGrid Name="DevicesDataGrid" 
+                  Items="{Binding Clients}" 
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn IsReadOnly="True" Header="ID" 
+                                    Binding="{Binding Id}"/>
+                <DataGridTextColumn IsReadOnly="True" 
+                                    Binding="{Binding Name}" />
+            </DataGrid.Columns>
         </DataGrid>
     </Grid>
 </UserControl>

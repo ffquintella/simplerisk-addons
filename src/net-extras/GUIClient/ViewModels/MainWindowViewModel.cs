@@ -4,6 +4,7 @@ using GUIClient.Models;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using ReactiveUI;
+using Splat;
 
 namespace GUIClient.ViewModels
 {
@@ -14,7 +15,7 @@ namespace GUIClient.ViewModels
         
         private bool _viewDashboardIsVisible = true;
         private bool _viewDeviceIsVisible = false;
-
+        
         public string StrApplicationMN { get; }
         public string StrExitMN { get; }
 
@@ -27,11 +28,15 @@ namespace GUIClient.ViewModels
         public bool ViewDeviceIsVisible
         {
             get => _viewDeviceIsVisible;
-            set {
-                this.RaiseAndSetIfChanged(ref _viewDeviceIsVisible, value);
-                
-            }
-    }
+            set => this.RaiseAndSetIfChanged(ref _viewDeviceIsVisible, value);
+        }
+        private DeviceViewModel _deviceViewModel = new DeviceViewModel(GetService<IClientService>());
+
+        public DeviceViewModel DeviceViewModel
+        {
+            get => _deviceViewModel;
+            set =>  this.RaiseAndSetIfChanged(ref _deviceViewModel, value);
+        }
 
         public MainWindowViewModel(ILocalizationService localizationService)
         {
@@ -56,6 +61,7 @@ namespace GUIClient.ViewModels
                     ViewDashboardIsVisible = true;
                     break;
                 case AvaliableViews.Devices:
+                    DeviceViewModel.Initialize();
                     ViewDeviceIsVisible = true;
                     break;
             }
@@ -66,6 +72,8 @@ namespace GUIClient.ViewModels
             ViewDashboardIsVisible = false;
             ViewDeviceIsVisible = false;
         }
+        
+        private static T GetService<T>() => Locator.Current.GetService<T>();
         
     }
 }
