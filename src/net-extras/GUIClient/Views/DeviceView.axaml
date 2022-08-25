@@ -8,7 +8,8 @@
              xmlns:convertes="clr-namespace:GUIClient.Converters"
              xmlns:material="using:Material.Icons.Avalonia"
              x:Class="GUIClient.Views.DeviceView"
-             x:DataType="vm:DeviceViewModel">
+             
+             >
              
     <Design.DataContext>
         <vm:DeviceViewModel/>
@@ -20,7 +21,7 @@
     
     <Grid>
         <DataGrid Name="DevicesDataGrid" 
-                  Items="{CompiledBinding  Clients}" 
+                  Items="{Binding  Clients}" 
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" 

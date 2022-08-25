@@ -66,11 +66,23 @@ public class MutableConfigurationService: IMutableConfigurationService
         using (var db = new LiteDatabase(_configurationConnectionString))
         {
             var col = db.GetCollection<MutableConfiguration>("configuration");
-            col.Insert(new MutableConfiguration
+
+            MutableConfiguration conf = col.FindOne(mo => mo.Name == name);
+
+            if (conf == null)
             {
-                Name = name,
-                Value = value
-            });
+                col.Insert(new MutableConfiguration
+                {
+                    Name = name,
+                    Value = value
+                });
+            }
+            else
+            {
+                conf.Value = value;
+                col.Update(conf);
+            }
+
         }
     }
 
@@ -79,7 +91,12 @@ public class MutableConfigurationService: IMutableConfigurationService
         if (!IsInitialized) Initialize();
         using var db = new LiteDatabase(_configurationConnectionString);
         var col = db.GetCollection<AuthenticatedUserInfo>("authenticatedUser");
-        col.Insert(user);
+
+        if (!col.Update(user))
+        {
+            col.Insert(user);
+        }
+        
     }
     
     public AuthenticatedUserInfo? GetAuthenticatedUser()
