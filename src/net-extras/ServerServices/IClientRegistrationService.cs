@@ -16,4 +16,6 @@ public interface IClientRegistrationService
     
     int Add(AddonsClientRegistration addonsClientRegistration);
     int IsAccepted(string externalId);
+
+    int Approve(int id);
 }

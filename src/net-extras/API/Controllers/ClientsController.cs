@@ -30,7 +30,7 @@ public class ClientsController : ControllerBase
 
     [HttpGet]
     [Route("")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AddonsClientRegistration>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Client>))]
     public ActionResult<List<Client>> GetAll()
     {
         var clientsRegs = _clientRegistrationService.GetAll();
@@ -40,4 +40,17 @@ public class ClientsController : ControllerBase
         return clients;
     }
 
+    [HttpGet]
+    [Route("{id}/approve")]
+    [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(string))]
+    public ActionResult<string> Approve(int id)
+    {
+        var result = _clientRegistrationService.Approve(id);
+        if (result == 0) return Ok("Approved OK");
+        if (result == 1) return NotFound("Client not found");
+        if(result == 2) return StatusCode(403, "Already approved");
+        if (result == -1) return StatusCode(500, "Internal error");
+        return StatusCode(500, "Internal error");
+    }
 }

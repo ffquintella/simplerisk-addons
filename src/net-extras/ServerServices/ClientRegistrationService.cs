@@ -1,5 +1,6 @@
 ﻿using DAL;
 using DAL.Entities;
+using Model.Exceptions;
 using Serilog;
 using Serilog.Core;
 
@@ -9,7 +10,8 @@ public class ClientRegistrationService: IClientRegistrationService
 {
 
     private DALManager _dalManager;
-    public ClientRegistrationService(DALManager dalManager)
+    private ILogger _logger;
+    public ClientRegistrationService(ILogger logger, DALManager dalManager)
     {
         _dalManager = dalManager;
     }
@@ -24,6 +26,42 @@ public class ClientRegistrationService: IClientRegistrationService
       
       return result;
     }
+
+    /// <summary>
+    /// Approves a request with specific ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>-1 if error; 0 if ok; 1 if not found; 2 if already approved;</returns>
+    public int Approve(int id)
+    {
+        var context = _dalManager.GetContext();
+        try
+        {
+            var client = context.AddonsClientRegistrations.Find(id);
+            if (client == null)
+            {
+                _logger.Warning("Not found user id: {0}", id);
+                return 1;
+            }
+
+            if (client.Status == "approved")
+            {
+                _logger.Warning("Tryng to approve already approved client id:{0}", id);
+                return 2;
+            }
+
+            client.Status = "approved";
+            context.AddonsClientRegistrations.Update(client);
+            context.SaveChanges();
+
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            throw new DatabaseException(ex.Message);
+            return -1;
+        }
+    }
     
     public List<AddonsClientRegistration> GetRequested()
     {
@@ -31,8 +69,12 @@ public class ClientRegistrationService: IClientRegistrationService
       
         var context = _dalManager.GetContext();
         var registrations = context.AddonsClientRegistrations.Where(ad => ad.Status == "requested").ToList();
-        if (registrations != null) result = registrations;
-      
+        if (registrations != null)
+        {
+            _logger.Debug("Loading all registrations rg.02");
+            result = registrations;
+        }
+        _logger.Warning("No registrations found");
         return result;
     }
     /// <summary>
@@ -50,7 +92,7 @@ public class ClientRegistrationService: IClientRegistrationService
             context.SaveChanges();
         }catch (Exception ex)
         {
-            Log.Error("Error updating a registration ex: {0}", ex.Message);
+            _logger.Error("Error updating a registration ex: {0}", ex.Message);
             result = -1;
         }
         return result;
@@ -64,7 +106,11 @@ public class ClientRegistrationService: IClientRegistrationService
     public int IsAccepted(string externalId)
     {
         var clientRegistration = GetByExternalId(externalId);
-        if (clientRegistration == null) return -1;
+        if (clientRegistration == null)
+        {
+            _logger.Information("Client not found externalID: {0}", externalId);
+            return -1;
+        }
         
         return clientRegistration.Status != "accepted" ? 0 : 1;
     }
