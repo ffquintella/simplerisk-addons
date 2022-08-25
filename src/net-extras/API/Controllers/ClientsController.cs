@@ -53,4 +53,18 @@ public class ClientsController : ControllerBase
         if (result == -1) return StatusCode(500, "Internal error");
         return StatusCode(500, "Internal error");
     }
+    
+    [HttpGet]
+    [Route("{id}/reject")]
+    [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(string))]
+    public ActionResult<string> Reject(int id)
+    {
+        var result = _clientRegistrationService.Reject(id);
+        if (result == 0) return Ok("Rejected OK");
+        if (result == 1) return NotFound("Client not found");
+        if(result == 2) return StatusCode(403, "Already rejected");
+        if (result == -1) return StatusCode(500, "Internal error");
+        return StatusCode(500, "Internal error");
+    }
 }

@@ -18,4 +18,6 @@ public interface IClientRegistrationService
     int IsAccepted(string externalId);
 
     int Approve(int id);
+
+    int Reject(int id);
 }

@@ -46,11 +46,47 @@ public class ClientRegistrationService: IClientRegistrationService
 
             if (client.Status == "approved")
             {
-                _logger.Warning("Tryng to approve already approved client id:{0}", id);
+                _logger.Warning("Trying to approve already approved client id:{0}", id);
                 return 2;
             }
 
             client.Status = "approved";
+            context.AddonsClientRegistrations.Update(client);
+            context.SaveChanges();
+
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            throw new DatabaseException(ex.Message);
+            return -1;
+        }
+    }
+
+    /// <summary>
+    /// Rejects a request with specific ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>-1 if error; 0 if ok; 1 if not found; 2 if already approved;</returns>
+    public int Reject(int id)
+    {
+        var context = _dalManager.GetContext();
+        try
+        {
+            var client = context.AddonsClientRegistrations.Find(id);
+            if (client == null)
+            {
+                _logger.Warning("Not found user id: {0}", id);
+                return 1;
+            }
+
+            if (client.Status == "rejected")
+            {
+                _logger.Warning("Trying to reject already rejected client id:{0}", id);
+                return 2;
+            }
+
+            client.Status = "rejected";
             context.AddonsClientRegistrations.Update(client);
             context.SaveChanges();
 
