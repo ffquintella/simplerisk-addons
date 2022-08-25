@@ -19,6 +19,13 @@
                 <DataGridTextColumn IsReadOnly="True" 
                                     Header="{Binding StrName}"
                                     Binding="{Binding Name}" />
+                <DataGridTextColumn IsReadOnly="True" 
+                                    Header="{Binding StrComputer}"
+                                    Binding="{Binding Hostname}" />
+                <DataGridTextColumn IsReadOnly="True" 
+                                    Header="{Binding StrLoggedAccount}"
+                                    Binding="{Binding LoggedAccount}" />
+
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
