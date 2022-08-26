@@ -4,10 +4,9 @@ using Avalonia.Markup.Xaml;
 using GUIClient.Services;
 using GUIClient.ViewModels;
 using GUIClient.Views;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Splat;
-
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace GUIClient
 {
@@ -17,6 +16,35 @@ namespace GUIClient
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
+            
+            LiveCharts.Configure(config => 
+                    config 
+                        // registers SkiaSharp as the library backend
+                        // REQUIRED unless you build your own
+                        .AddSkiaSharp() 
+                        
+                        // adds the default supported types
+                        // OPTIONAL but highly recommend
+                        .AddDefaultMappers() 
+
+                        // select a theme, default is Light
+                        // OPTIONAL
+                        .AddDarkTheme()
+                        //.AddLightTheme() 
+
+                        // finally register your own mappers
+                        // you can learn more about mappers at:
+                        // ToDo add website link...
+                        //.HasMap<City>((city, point) =>
+                        //{
+                        //    point.PrimaryValue = city.Population;
+                        //    point.SecondaryValue = point.Context.Index;
+                        //})
+                        // .HasMap<Foo>( .... )
+                        // .HasMap<Bar>( .... )
+            );
+            
+            
         }
 
         public override void OnFrameworkInitializationCompleted()

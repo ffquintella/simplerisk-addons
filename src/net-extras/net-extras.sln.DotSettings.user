@@ -1,4 +1,9 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Felipe Quintella\.nuget\packages\livechartscore.skiasharpview.avalonia\2.0.0-beta.361\lib\netcoreapp2.0\LiveChartsCore.SkiaSharpView.Avalonia.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Felipe Quintella\.nuget\packages\avalonia\0.10.18\lib\netcoreapp2.0\Avalonia.Controls.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Felipe Quintella\.nuget\packages\skiasharp\2.88.1-preview.1\lib\netstandard2.0\SkiaSharp.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Client_002FResources_002FLocalize/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=GUIClient_002FResources_002FLocalization/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>
