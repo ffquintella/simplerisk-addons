@@ -21,7 +21,6 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
     private SRDbContext? _dbContext = null;
     private IEnvironmentService _environmentService;
     private ILogger _log;
-    private JwtBearerOptions _options;
     
     public JwtAuthenticationHandler(
         IOptionsMonitor<JwtBearerOptions> options, 
@@ -31,7 +30,6 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
         IEnvironmentService environmentService,
         DALManager dalManager) : base(options, logger, encoder, clock)
     {
-        _options = options.CurrentValue;
         _dbContext = dalManager.GetContext();
         _environmentService = environmentService;
         _log = Log.Logger;
@@ -50,7 +48,7 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
         // JWT Authentication 
         if (authHeader != null && authHeader.StartsWith("bearer", StringComparison.OrdinalIgnoreCase))
         {
-            if (_options.RequireHttpsMetadata)
+            if (Options.RequireHttpsMetadata)
             {
                 if (!Request.IsHttps)
                 {
@@ -114,7 +112,7 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
             };*/
 
             SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, _options.TokenValidationParameters, out securityToken);
+            var principal = tokenHandler.ValidateToken(token, Options.TokenValidationParameters, out securityToken);
 
             return principal;
         }
