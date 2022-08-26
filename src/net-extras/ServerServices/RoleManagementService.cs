@@ -20,9 +20,9 @@ public class RoleManagementService: IRoleManagementService
 
     public List<string> GetRolePermissions(int roleId)
     {
-        var roles = _dbContext.RoleResponsibilities.Where(rlr => rlr.RoleId == roleId);
+        var roles = _dbContext!.RoleResponsibilities.Where(rlr => rlr.RoleId == roleId);
 
-        var permissions = _dbContext.Permissions.Where(p => roles.Any(r => r.PermissionId == p.Id));
+        var permissions = _dbContext!.Permissions.Where(p => roles.Any(r => r.PermissionId == p.Id));
 
         var result = new List<string>();
 
@@ -34,9 +34,9 @@ public class RoleManagementService: IRoleManagementService
         return result;
     }
 
-    public Role GetRole(int roleId)
+    public Role? GetRole(int roleId)
     {
-        var role = _dbContext.Roles.Find(roleId);
+        var role = _dbContext!.Roles.Find(roleId);
         return role;
     }
 }

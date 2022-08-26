@@ -58,9 +58,12 @@ public class RegistrationController : ControllerBase
     [Route("")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status412PreconditionFailed, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     public ActionResult<string> Register([FromBody] RegistrationRequest request)
     {
-        string hashCode = String.Format("{0:X}", request.Id.GetHashCode());
+        if(request.Id == null) return BadRequest("Request Id is null");
+        
+        string hashCode = String.Format("{0:X}", request.Id!.GetHashCode());
 
         var newRequest = new AddonsClientRegistration
         {

@@ -82,16 +82,23 @@ public class AuthenticationController : ControllerBase
         }
 
         var user = _userManagementService.GetUser(userAccount);
-        if (user == null)
+        if (user == null )
         {
             _logger.LogError("Authenticated user not found");
             throw new UserNotFoundException();
         }
 
         string userRole = null;
-        if (user.RoleId != null && user.RoleId > 0)
+        if (user.RoleId > 0)
         {
-            userRole = _roleManagementService.GetRole(user.RoleId).Name;
+
+            var role = _roleManagementService.GetRole(user.RoleId);
+            if (role == null)
+            {
+                _logger.LogError("Invalid role reference");
+                throw new InvalidReferenceException($"Invalid role reference for id: {user.RoleId}");
+            }
+            userRole = role!.Name;
         }
         
         var permissions = _userManagementService.GetUserPermissions(user.Value);

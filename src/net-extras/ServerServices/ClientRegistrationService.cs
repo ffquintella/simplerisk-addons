@@ -60,7 +60,7 @@ public class ClientRegistrationService: IClientRegistrationService
         catch (Exception ex)
         {
             throw new DatabaseException(ex.Message);
-            return -1;
+            //return -1;
         }
     }
 
@@ -96,7 +96,7 @@ public class ClientRegistrationService: IClientRegistrationService
         catch (Exception ex)
         {
             throw new DatabaseException(ex.Message);
-            return -1;
+            //return -1;
         }
     }
     

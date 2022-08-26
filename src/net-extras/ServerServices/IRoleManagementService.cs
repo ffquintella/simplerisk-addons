@@ -6,5 +6,5 @@ public interface IRoleManagementService
 {
     List<string> GetRolePermissions(int roleId);
     
-    Role GetRole(int roleId);
+    Role? GetRole(int roleId);
 }

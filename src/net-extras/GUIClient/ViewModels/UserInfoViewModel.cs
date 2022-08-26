@@ -8,7 +8,7 @@ namespace GUIClient.ViewModels;
 
 public class UserInfoViewModel: ViewModelBase
 {
-    private AuthenticatedUserInfo _userInfo;
+    private AuthenticatedUserInfo? _userInfo;
     private IStringLocalizer _localizer; 
     
     private string StrUserName { get;  }

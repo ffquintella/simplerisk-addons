@@ -48,7 +48,7 @@ public class AuthenticationService: IAuthenticationService
         var isauth = _mutableConfigurationService.GetConfigurationValue("IsAuthenticate");
         var token = _mutableConfigurationService.GetConfigurationValue("AuthToken");
         
-        if (isauth == "true" && CheckTokenValidTime(token))
+        if (isauth == "true" && CheckTokenValidTime(token!))
         {
             AuthenticationCredential.AuthenticationType = AuthenticationType.JWT;
             AuthenticationCredential.JWTToken = token;

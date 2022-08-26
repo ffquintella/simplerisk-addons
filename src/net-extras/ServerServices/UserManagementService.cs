@@ -50,15 +50,15 @@ public class UserManagementService: IUserManagementService
             
         var permissions = new List<string>();
 
-        if (user.RoleId != null && user.RoleId > 0)
+        if (user.RoleId > 0)
         {
             var rolePermissions = _roleManagementService.GetRolePermissions(user.RoleId);
             permissions = rolePermissions;
         }
         
-        var userPermissionsCon = _dbContext?.PermissionToUsers.Where(pu => pu.UserId == userId).ToList();
+        var userPermissionsCon = _dbContext!.PermissionToUsers.Where(pu => pu.UserId == userId).ToList();
         
-        var userPermissions = _dbContext.Permissions.Where(p => userPermissionsCon.Select(upc=> upc.PermissionId ).Contains(p.Id)).ToList();
+        var userPermissions = _dbContext!.Permissions.Where(p => userPermissionsCon.Select(upc=> upc.PermissionId ).Contains(p.Id)).ToList();
 
         var strUserPermissions = userPermissions.Select(up=>up.Key).ToList();
 
