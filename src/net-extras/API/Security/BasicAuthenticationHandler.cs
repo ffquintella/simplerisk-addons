@@ -69,6 +69,18 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
                     var valid = Verify(credentials[1], Encoding.UTF8.GetString(user.Password));
                     if (valid)
                     {
+                        var clientId = Request.Headers["ClientId"].ToString();
+                        // Let´s check if we have the client registred... 
+                        var client = _dbContext.AddonsClientRegistrations.
+                            Where(cl => cl.ExternalId == clientId && cl.Status == "approved").FirstOrDefault();
+
+                        if (client == null) // We should not allow an unauthorized client to login
+                        {
+                            Response.StatusCode = 401;
+                            Response.Headers.Add("WWW-Authenticate", "Basic realm=\"sr-netextras.net\"");
+                            return Task.FromResult(AuthenticateResult.Fail("Invalid Client"));                    
+                        }
+                        
                         var claims = new[] { new Claim(ClaimTypes.Name, credentials[0]) };
                         
                         if (user.Admin)

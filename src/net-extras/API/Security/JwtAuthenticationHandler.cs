@@ -44,6 +44,7 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
         }
         
         var authHeader = Request.Headers["Authorization"].ToString();
+        var clientId = Request.Headers["ClientId"].ToString();
         
         // JWT Authentication 
         if (authHeader != null && authHeader.StartsWith("bearer", StringComparison.OrdinalIgnoreCase))
@@ -63,6 +64,16 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
             
             if (ValidateToken(token, out username))
             {
+                // Let´s check if we have the client registred... 
+                var client = _dbContext.AddonsClientRegistrations.
+                    Where(cl => cl.ExternalId == clientId && cl.Status == "approved").FirstOrDefault();
+
+                if (client == null) // We should not allow an unauthorized client to login
+                {
+                    Response.StatusCode = 401;
+                    Response.Headers.Add("WWW-Authenticate", "Basic realm=\"sr-netextras.net\"");
+                    return Task.FromResult(AuthenticateResult.Fail("Invalid Client"));                    
+                }
                 // based on username to get more information from database 
                 // in order to build local identity
                 var claims = new List<Claim>
@@ -101,7 +112,7 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
             if (jwtToken == null)
                 return null;
 
-            var symmetricKey = Convert.FromBase64String(_environmentService.ServerSecretToken);
+            //var symmetricKey = Convert.FromBase64String(_environmentService.ServerSecretToken);
 
             /*var validationParameters = new TokenValidationParameters()
             {
