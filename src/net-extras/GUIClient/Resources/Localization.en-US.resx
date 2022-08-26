@@ -111,4 +111,7 @@
     <data name="ClientRejectErrorMSG" xml:space="preserve">
         <value>There was an error trying to process the client rejection.</value>
     </data>
+    <data name="ClientDeleteConfirmationMSG" xml:space="preserve">
+        <value>Are you sure you want to delete that client?.</value>
+    </data>
 </root>

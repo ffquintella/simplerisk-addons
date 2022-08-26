@@ -96,6 +96,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete that client?..
+        /// </summary>
+        internal static string ClientDeleteConfirmationMSG {
+            get {
+                return ResourceManager.GetString("ClientDeleteConfirmationMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There was an error trying to process the client rejection..
         /// </summary>
         internal static string ClientRejectErrorMSG {

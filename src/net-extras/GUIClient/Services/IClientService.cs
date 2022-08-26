@@ -20,4 +20,11 @@ public interface IClientService
     /// <param name="id"></param>
     /// <returns>-1 if error; 0 if ok;</returns>
     int Reject(int id);
+    
+    /// <summary>
+    /// Deletes the client with Id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>-1 if error; 0 if ok;</returns>
+    int Delete(int id);
 }

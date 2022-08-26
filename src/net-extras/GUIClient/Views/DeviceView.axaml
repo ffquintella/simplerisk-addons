@@ -59,7 +59,10 @@
                                         >
                                     <material:MaterialIcon Kind="Cancel"/>
                                 </Button>
-                                <Button Name="btDelete">
+                                <Button Name="btDelete"
+                                        Command="{Binding #DeviceViewName.DataContext.BtDeleteClicked}"
+                                        CommandParameter="{Binding Id}"
+                                        >
                                     <material:MaterialIcon Kind="Delete"/>
                                 </Button>
                             </StackPanel>

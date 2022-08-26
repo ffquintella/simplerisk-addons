@@ -95,4 +95,34 @@ public class ClientService: IClientService
             throw new RestComunicationException(ex.Message);
         }
     }
+    
+    public int Delete(int id)
+    {
+        var restClient = _restService.GetClient();
+        var request = new RestRequest($"/Clients/{id}");
+        
+        try
+        {
+            var response = restClient.Delete(request);
+
+            if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
+            {
+                return 0;
+            }
+
+            return -1;
+
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                _logger.Error("Tring to delete unexistent client");
+                return -1;
+            }
+            
+           _logger.Error("Error deleting client {ExMessage}", ex.Message);
+            throw new RestComunicationException(ex.Message);
+        }
+    }
 }
