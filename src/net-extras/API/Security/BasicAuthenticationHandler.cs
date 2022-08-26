@@ -89,7 +89,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
                             claims = claims.Concat(new[] {new Claim(ClaimTypes.Role, "Admin")}).ToArray();
                         }
                         
-                        _log.Information("User {0} authenticated using basic", user.Name);
+                        _log.Information("User {0} authenticated using basic from client {1}", user.Name, client.Name);
                         var identity = new ClaimsIdentity(claims, "Basic");
                         
                         var claimsPrincipal = new ClaimsPrincipal(identity);

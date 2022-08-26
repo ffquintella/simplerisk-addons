@@ -85,7 +85,7 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
 
                 var identity = new ClaimsIdentity(claims, "Bearer");
                 var user = new ClaimsPrincipal(identity);
-                _log.Information("User {0} authenticated using token", username);
+                _log.Information("User {0} authenticated using token from client {1}", username, client.Name);
                 return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(user, Scheme.Name)));
                 
             }
