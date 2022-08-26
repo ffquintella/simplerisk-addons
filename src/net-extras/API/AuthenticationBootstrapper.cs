@@ -2,6 +2,7 @@ using System.Text;
 using API.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using Saml2.Authentication.Core.Configuration;
 using Serilog;
@@ -100,6 +101,12 @@ public static class AuthenticationBootstrapper
             {
                 policy.RequireAuthenticatedUser()
                     .Requirements.Add(new ValidUserRequirement());
+            });
+            options.AddPolicy("RequireGovernanceAccess", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+                policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"governance"}));
             });
             options.AddPolicy("RequireAdminOnly", policy =>
             {

@@ -21,6 +21,8 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
     private SRDbContext? _dbContext = null;
     private IEnvironmentService _environmentService;
     private ILogger _log;
+    private IUserManagementService _userManagementService;
+    private IRoleManagementService _roleManagementService;
     
     public JwtAuthenticationHandler(
         IOptionsMonitor<JwtBearerOptions> options, 
@@ -28,10 +30,14 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
         UrlEncoder encoder, 
         ISystemClock clock,
         IEnvironmentService environmentService,
+        IUserManagementService userManagementService,
+        IRoleManagementService roleManagementService,
         DALManager dalManager) : base(options, logger, encoder, clock)
     {
         _dbContext = dalManager.GetContext();
         _environmentService = environmentService;
+        _userManagementService = userManagementService;
+        _roleManagementService = roleManagementService;
         _log = Log.Logger;
     }
     
@@ -75,6 +81,11 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
                     Response.Headers.Add("WWW-Authenticate", "Basic realm=\"sr-netextras.net\"");
                     return Task.FromResult(AuthenticateResult.Fail("Invalid Client"));                    
                 }
+
+                var userObj = _userManagementService.GetUser(username);
+                
+                var permissions = _userManagementService.GetUserPermissions(userObj.Value);
+                
                 // based on username to get more information from database 
                 // in order to build local identity
                 var claims = new List<Claim>
@@ -82,6 +93,23 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
                     new Claim(ClaimTypes.Name, username!)
                     // Add more claims if needed: Roles, ...
                 };
+                
+                
+                if (userObj.RoleId == 0)
+                {
+                    claims.Add( new Claim(ClaimTypes.Role, "user"));    
+                }
+                else
+                {
+                    var role = _roleManagementService.GetRole(userObj.RoleId);
+                    claims.Add( new Claim(ClaimTypes.Role, role.Name));
+                }
+
+                foreach (var permission in permissions)
+                {
+                    claims.Add( new Claim("Permission", permission));
+                }
+                
 
                 var identity = new ClaimsIdentity(claims, "Bearer");
                 var user = new ClaimsPrincipal(identity);
