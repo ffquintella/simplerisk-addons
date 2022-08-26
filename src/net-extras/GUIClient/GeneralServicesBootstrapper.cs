@@ -33,7 +33,8 @@ public class GeneralServicesBootstrapper
         
         services.RegisterLazySingleton<IRestService>(() => new RestService(
             resolver.GetService<ILoggerFactory>(),
-            resolver.GetService<ServerConfiguration>()
+            resolver.GetService<ServerConfiguration>(),
+            resolver.GetService<IEnvironmentService>()
         ));
         
     }

@@ -18,14 +18,17 @@ public class RestService: IRestService
     private ILogger<RestService> _logger;
     private ServerConfiguration _serverConfiguration;
     private bool _initialized = false;
+    private IEnvironmentService _environmentService;
 
     private RestClientOptions? _options;
     public RestService(ILoggerFactory loggerFactory, 
-        ServerConfiguration serverConfiguration
+        ServerConfiguration serverConfiguration,
+        IEnvironmentService environmentService
     )
     {
         _logger = loggerFactory.CreateLogger<RestService>();
         _serverConfiguration = serverConfiguration;
+        _environmentService = environmentService;
     }
 
     private void Initialize()
@@ -48,12 +51,13 @@ public class RestService: IRestService
             {
                 if(!_authenticationService.CheckTokenValidTime(_authenticationService.AuthenticationCredential.JWTToken,
                    60 * 5))
-                   {
-                       
-                   }
+                {
+                    _authenticationService.RefreshToken();
+                }
                 
                 var client = new RestClient(_options!);
                 client.Authenticator = new JwtAuthenticator(_authenticationService.AuthenticationCredential.JWTToken!);
+                client.AddDefaultHeader("ClientId", _environmentService.DeviceID);
                 //client.AddDefaultHeader("Authorization", $"Jwt {_authenticationService.AuthenticationCredential.JWTToken}");
                 
                 
