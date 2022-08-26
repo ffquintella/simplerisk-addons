@@ -11,10 +11,10 @@
         <vm:DashboardViewModel/>
     </Design.DataContext>
     
-    <StackPanel>
-        <TextBlock Text="{Binding StrWelcome}"/>
+    <DockPanel>
+        <TextBlock Text="{Binding StrWelcome}" DockPanel.Dock="Top"/>
         <lvc:CartesianChart
             Series="{Binding Series}" Width="300" Height="300"/>
-    </StackPanel>
+    </DockPanel>
     
 </UserControl>
