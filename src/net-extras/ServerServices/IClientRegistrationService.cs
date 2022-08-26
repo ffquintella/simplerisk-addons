@@ -19,5 +19,7 @@ public interface IClientRegistrationService
 
     int Approve(int id);
 
+    int DeleteById(int id);
+    
     int Reject(int id);
 }

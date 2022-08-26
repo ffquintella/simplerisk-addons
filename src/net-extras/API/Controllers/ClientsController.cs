@@ -40,6 +40,19 @@ public class ClientsController : ControllerBase
         return clients;
     }
 
+    [HttpDelete]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(string))]
+    public ActionResult<string> Delete(int id)
+    {
+        var result = _clientRegistrationService.DeleteById(id);
+        if (result == 0) return Ok("Deleted OK");
+        if (result == 1) return NotFound("Client not found");
+        if (result == -1) return StatusCode(500, "Internal error");
+        return StatusCode(500, "Internal error");
+    }
+    
     [HttpGet]
     [Route("{id}/approve")]
     [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(string))]
