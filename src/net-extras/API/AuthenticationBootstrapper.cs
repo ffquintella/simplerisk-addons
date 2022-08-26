@@ -1,6 +1,7 @@
 using System.Text;
 using API.Security;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Saml2.Authentication.Core.Configuration;
 using Serilog;
@@ -54,7 +55,20 @@ public static class AuthenticationBootstrapper
                 
             })
             .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null)
-            .AddJwtBearer("Bearer",x =>
+            .AddScheme<JwtBearerOptions, JwtAuthenticationHandler>("Bearer",
+                x =>
+                {
+                    x.RequireHttpsMetadata = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        RequireExpirationTime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                })
+            /*.AddJwtBearer("Bearer",x =>
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
@@ -66,7 +80,7 @@ public static class AuthenticationBootstrapper
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
-            })
+            })*/
             .AddCookie("saml2.cookies", options =>
             {
                 options.Cookie.HttpOnly = true;
