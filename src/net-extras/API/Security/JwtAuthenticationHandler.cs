@@ -70,6 +70,7 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
 
                 if (client == null) // We should not allow an unauthorized client to login
                 {
+                    _log.Error("Unauthorized client {clientId}", clientId);
                     Response.StatusCode = 401;
                     Response.Headers.Add("WWW-Authenticate", "Basic realm=\"sr-netextras.net\"");
                     return Task.FromResult(AuthenticateResult.Fail("Invalid Client"));                    
