@@ -16,7 +16,8 @@
     </Design.DataContext>
     
     <UserControl.Resources>
-        <convertes:StringComparerConverter x:Key="stringComparerConverter"/>
+        <convertes:StringEqualConverter x:Key="stringEqualConverter"/>
+        <convertes:StringNotEqualConverter x:Key="stringNotEqualConverter"/>
     </UserControl.Resources>
     
     <Grid>
@@ -42,7 +43,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <Button Name="btApprove"
                                     IsEnabled="{Binding Status, 
-                                    Converter={StaticResource stringComparerConverter},
+                                    Converter={StaticResource stringEqualConverter},
                                     ConverterParameter=requested}"
                                     Command="{Binding #DeviceViewName.DataContext.BtApproveClicked}"
                                     CommandParameter="{Binding Id}"
@@ -51,8 +52,8 @@
                                 </Button>
                                 <Button Name="btReprove"
                                         IsEnabled="{Binding Status, 
-                                    Converter={StaticResource stringComparerConverter},
-                                    ConverterParameter=requested}"
+                                    Converter={StaticResource stringNotEqualConverter},
+                                    ConverterParameter=rejected}"
                                     Command="{Binding #DeviceViewName.DataContext.BtRejectClicked}"
                                     CommandParameter="{Binding Id}"
                                         >

@@ -6,9 +6,9 @@ using Microsoft.Extensions.Localization;
 
 namespace GUIClient.Converters;
 
-public class StringComparerConverter: IValueConverter
+public class StringEqualConverter: IValueConverter
 {
-    public static readonly StringComparerConverter Instance = new();
+    public static readonly StringEqualConverter Instance = new();
 
     public object? Convert(
                             object? value, 
