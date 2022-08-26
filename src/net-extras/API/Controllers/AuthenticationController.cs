@@ -88,7 +88,7 @@ public class AuthenticationController : ControllerBase
             throw new UserNotFoundException();
         }
 
-        string userRole = null;
+        string? userRole = null;
         if (user.RoleId > 0)
         {
 
