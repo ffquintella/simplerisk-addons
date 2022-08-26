@@ -66,7 +66,7 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
             {
                 // Let´s check if we have the client registred... 
                 var client = _dbContext.AddonsClientRegistrations.
-                    Where(cl => cl.ExternalId == clientId && cl.Status == "approved").FirstOrDefault();
+                    Where(cl => cl.ExternalId == clientId && cl.Status == "accepted").FirstOrDefault();
 
                 if (client == null) // We should not allow an unauthorized client to login
                 {
