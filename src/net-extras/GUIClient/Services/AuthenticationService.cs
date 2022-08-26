@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using GUIClient.Models;
 using GUIClient.ViewModels;
@@ -15,30 +17,45 @@ using System.Text.Json;
 
 namespace GUIClient.Services;
 
-public class AuthenticationService: IAuthenticationService
+public class AuthenticationService: ServiceBase, IAuthenticationService, INotifyPropertyChanged
 {
-    public bool IsAuthenticated { get; set; } = false;
+    //public bool IsAuthenticated { get; set; } = false;
 
-    private ILogger<AuthenticationService> _logger;
-    private IRegistrationService _registrationService;
-    private IRestService _restService;
-    private IMutableConfigurationService _mutableConfigurationService;
+    private bool _isAuthenticated = false;
+    public bool IsAuthenticated
+    {
+        get
+        {
+            return _isAuthenticated;
+        }
+
+        set
+        {
+            if (value != _isAuthenticated)
+            {
+                _isAuthenticated = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
     
+    
+    private IRegistrationService _registrationService;
+    private IMutableConfigurationService _mutableConfigurationService;
     public AuthenticationCredential AuthenticationCredential { get; set; }
     public AuthenticatedUserInfo? AuthenticatedUserInfo { get; set; }
 
-    public AuthenticationService(ILoggerFactory loggerFactory, 
+    public AuthenticationService( 
         IRegistrationService registrationService,
         IRestService restService,
-        IMutableConfigurationService mutableConfigurationService)
+        IMutableConfigurationService mutableConfigurationService): base(restService)
     {
         AuthenticationCredential = new AuthenticationCredential
         {
             AuthenticationType = AuthenticationType.None
         };
         
-        _restService = restService;
-        _logger = loggerFactory.CreateLogger<AuthenticationService>();
         _registrationService = registrationService;
         _mutableConfigurationService = mutableConfigurationService;
     }
@@ -50,6 +67,7 @@ public class AuthenticationService: IAuthenticationService
         
         if (isauth == "true" && CheckTokenValidTime(token!))
         {
+            _logger.Debug("User is authenticated");
             AuthenticationCredential.AuthenticationType = AuthenticationType.JWT;
             AuthenticationCredential.JWTToken = token;
             IsAuthenticated = true;
@@ -57,6 +75,7 @@ public class AuthenticationService: IAuthenticationService
         }
         else
         {
+            _logger.Debug("Starting authentication");
             var dialog = new Login();
             dialog.ShowDialog( parentWindow );
         }
@@ -68,9 +87,17 @@ public class AuthenticationService: IAuthenticationService
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
-        if (jwtToken.ValidTo > DateTime.UtcNow.AddMinutes(minutesToExpire)) return true;
-
-        return false;
+        if (jwtToken.ValidTo > DateTime.UtcNow.AddMinutes(minutesToExpire))
+        {
+            _logger.Debug("Token is valid");
+            return true;
+        }
+        else
+        {
+            _logger.Debug("Token is expired");
+            return false;
+        }
+        
     }
 
     public int RefreshToken()
@@ -98,15 +125,14 @@ public class AuthenticationService: IAuthenticationService
 
             if (response.StatusCode == HttpStatusCode.Forbidden || response.StatusCode == HttpStatusCode.NotFound)
             {
-                Log.Error("Authentication Error response code: {0}", response.StatusCode);
+                _logger.Error("Authentication Error response code: {0}", response.StatusCode);
                 return 1;
             }
             
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.Message);
-            
+            _logger.Error("Unkown error {0}", ex.Message);
         }
         
         return -1;
@@ -140,19 +166,20 @@ public class AuthenticationService: IAuthenticationService
                 AuthenticationCredential.JWTToken = token;
                 IsAuthenticated = true;
                 GetAuthenticatedUserInfo();
+                _logger.Information("User {0} authenticated", user);
                 return 0;
             }
 
             if (response.StatusCode == HttpStatusCode.Forbidden || response.StatusCode == HttpStatusCode.NotFound)
             {
-                Log.Error("Authentication Error response code: {0}", response.StatusCode);
+                _logger.Error("Authentication Error response code: {0}", response.StatusCode);
                 return 1;
             }
             
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.Message);
+            _logger.Error("Unkown error {0}", ex.Message);
             
         }
         
@@ -180,7 +207,7 @@ public class AuthenticationService: IAuthenticationService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Error getting user info {ExMessage}", ex.Message);
+            _logger.Error("Error getting user info {ExMessage}", ex.Message);
         }
         
         return -1;
@@ -204,15 +231,28 @@ public class AuthenticationService: IAuthenticationService
 
             if (response != null)
             {
+                _logger.Debug("Listing authentication methods");
                 return response;
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.Message);
+            _logger.Error("Unkown error {0}", ex.Message);
             
         }
         return defaultResponse;
 
     }
+
+    // This method is called by the Set accessor of each property.
+    // The CallerMemberName attribute that is applied to the optional propertyName
+    // parameter causes the property name of the caller to be substituted as an argument.
+    private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    {
+        if (PropertyChanged != null)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    public event PropertyChangedEventHandler? PropertyChanged;
 }

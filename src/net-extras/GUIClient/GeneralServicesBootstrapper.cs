@@ -21,7 +21,6 @@ public class GeneralServicesBootstrapper
                 ));
         
         services.RegisterLazySingleton<IAuthenticationService>(() => new AuthenticationService(
-            resolver.GetService<ILoggerFactory>(),
             resolver.GetService<IRegistrationService>(),
             resolver.GetService<IRestService>(),
             resolver.GetService<IMutableConfigurationService>()
@@ -31,6 +30,10 @@ public class GeneralServicesBootstrapper
             resolver.GetService<IRestService>()
         ));
         
+        services.RegisterLazySingleton<IStatisticsService>(() => new StatisticsService(
+            resolver.GetService<IRestService>()
+        ));
+
         services.RegisterLazySingleton<IRestService>(() => new RestService(
             resolver.GetService<ILoggerFactory>(),
             resolver.GetService<ServerConfiguration>(),

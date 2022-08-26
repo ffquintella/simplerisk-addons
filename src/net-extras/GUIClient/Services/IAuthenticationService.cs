@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using Avalonia.Controls;
 using GUIClient.Models;
 using Model.Authentication;
@@ -45,4 +46,6 @@ public interface IAuthenticationService
     bool CheckTokenValidTime(string token, int minutesToExpire = 0);
 
     int RefreshToken();
+    
+    event PropertyChangedEventHandler? PropertyChanged;
 }
