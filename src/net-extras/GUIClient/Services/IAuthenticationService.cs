@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Avalonia.Controls;
 using GUIClient.Models;
@@ -47,5 +48,5 @@ public interface IAuthenticationService
 
     int RefreshToken();
     
-    event PropertyChangedEventHandler? PropertyChanged;
+    event EventHandler? AuthenticationSucceeded;
 }

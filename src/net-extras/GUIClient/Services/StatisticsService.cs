@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Model.Authentication;
+using Model.Statistics;
 using RestSharp;
 
 namespace GUIClient.Services;
@@ -15,7 +16,7 @@ public class StatisticsService: ServiceBase, IStatisticsService
         
     }
     
-    public Dictionary<string, double> GetRisksOverTime()
+    public List<RisksOnDay> GetRisksOverTime()
     {
         var client = _restService.GetClient();
         
@@ -23,7 +24,7 @@ public class StatisticsService: ServiceBase, IStatisticsService
         
         try
         {
-            var response = client.Get<Dictionary<string, double>>(request);
+            var response = client.Get<List<RisksOnDay>>(request);
 
             return response;
             

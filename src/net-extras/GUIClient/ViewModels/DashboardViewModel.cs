@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using Splat;
 
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
+using Model.Statistics;
 using ReactiveUI;
 
 namespace GUIClient.ViewModels;
@@ -17,13 +19,8 @@ public class DashboardViewModel: ViewModelBase
     
     private bool _initialized = false;
     
-    private Dictionary<string, double> _risksOverTime;
-    public Dictionary<string, double> RisksOverTime
-    {
-        get => _risksOverTime;
-        set => this.RaiseAndSetIfChanged(ref _risksOverTime, value);
-    }
-    
+    private ObservableCollection<ISeries> _risksOverTime;
+
     public string StrWelcome { get; set; }
 
     public ISeries[] Series { get; set; } = new ISeries[]
@@ -35,6 +32,12 @@ public class DashboardViewModel: ViewModelBase
         }
     };
 
+    public ObservableCollection<ISeries> RisksOverTime
+    {
+        get => _risksOverTime;
+        set => this.RaiseAndSetIfChanged(ref _risksOverTime, value);
+    }
+    
     public DashboardViewModel()
     {
         var localizationService = GetService<ILocalizationService>();
@@ -42,7 +45,7 @@ public class DashboardViewModel: ViewModelBase
         _statisticsService = GetService<IStatisticsService>();
         _authenticationService = GetService<IAuthenticationService>();
 
-        _authenticationService.PropertyChanged += (obj, args) =>
+        _authenticationService.AuthenticationSucceeded += (obj, args) =>
         {
             Initialize();
         };
@@ -54,7 +57,16 @@ public class DashboardViewModel: ViewModelBase
     {
         if (!_initialized)
         {
-            RisksOverTime = _statisticsService.GetRisksOverTime();
+            RisksOverTime = new ObservableCollection<ISeries>
+            {
+                new LineSeries<RisksOnDay>
+                {
+                    Name = "Risks Over Time",
+                    Values = _statisticsService.GetRisksOverTime()
+                }
+            };
+                    
+
             _initialized = true;
         }
     }

@@ -17,7 +17,7 @@ using System.Text.Json;
 
 namespace GUIClient.Services;
 
-public class AuthenticationService: ServiceBase, IAuthenticationService, INotifyPropertyChanged
+public class AuthenticationService: ServiceBase, IAuthenticationService
 {
     //public bool IsAuthenticated { get; set; } = false;
 
@@ -31,11 +31,7 @@ public class AuthenticationService: ServiceBase, IAuthenticationService, INotify
 
         set
         {
-            if (value != _isAuthenticated)
-            {
-                _isAuthenticated = value;
-                NotifyPropertyChanged();
-            }
+            _isAuthenticated = value;
         }
     }
 
@@ -72,6 +68,7 @@ public class AuthenticationService: ServiceBase, IAuthenticationService, INotify
             AuthenticationCredential.JWTToken = token;
             IsAuthenticated = true;
             AuthenticatedUserInfo = _mutableConfigurationService.GetAuthenticatedUser()!;
+            NotifyAuthenticationSucceeded();
         }
         else
         {
@@ -244,15 +241,9 @@ public class AuthenticationService: ServiceBase, IAuthenticationService, INotify
 
     }
 
-    // This method is called by the Set accessor of each property.
-    // The CallerMemberName attribute that is applied to the optional propertyName
-    // parameter causes the property name of the caller to be substituted as an argument.
-    private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    private void NotifyAuthenticationSucceeded()
     {
-        if (PropertyChanged != null)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+        AuthenticationSucceeded(this, new EventArgs());
     }
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event EventHandler? AuthenticationSucceeded;
 }

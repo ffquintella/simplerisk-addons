@@ -7,6 +7,7 @@ using GUIClient.Views;
 using Splat;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
+using Model.Statistics;
 
 namespace GUIClient
 {
@@ -35,13 +36,11 @@ namespace GUIClient
                         // finally register your own mappers
                         // you can learn more about mappers at:
                         // ToDo add website link...
-                        //.HasMap<City>((city, point) =>
-                        //{
-                        //    point.PrimaryValue = city.Population;
-                        //    point.SecondaryValue = point.Context.Index;
-                        //})
-                        // .HasMap<Foo>( .... )
-                        // .HasMap<Bar>( .... )
+                        .HasMap<RisksOnDay>((risks, point) =>
+                        {
+                            point.PrimaryValue = risks.RisksCreated;
+                            point.SecondaryValue = point.Context.Index;
+                        })
             );
             
             

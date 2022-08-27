@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Model.Statistics;
 
 namespace GUIClient.Services;
 
 public interface IStatisticsService
 {
-    Dictionary<string, double> GetRisksOverTime();
+    List<RisksOnDay> GetRisksOverTime();
     
 }

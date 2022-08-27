@@ -2,6 +2,9 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using GUIClient.ViewModels;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using Model.Statistics;
 
 namespace GUIClient.Views;
 
@@ -20,6 +23,7 @@ public partial class DashboardView : UserControl
     
     private void InitializeComponent()
     {
+       
         AvaloniaXamlLoader.Load(this);
     }
 }
