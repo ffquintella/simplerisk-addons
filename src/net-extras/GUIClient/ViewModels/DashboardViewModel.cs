@@ -75,7 +75,9 @@ public class DashboardViewModel: ViewModelBase
                 {
                     Labels = riskDays,
                     TextSize = 9,
-                    LabelsRotation = 90
+                    LabelsRotation = 90,
+                    MinLimit = 0,
+                    MaxLimit = 10
                 }
             };
 
