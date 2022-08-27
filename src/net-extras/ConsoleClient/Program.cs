@@ -38,6 +38,7 @@ Log.Information("Starting Console Client with debug");
 
 var services = new ServiceCollection();
 // add extra services to the container here
+services.AddSingleton<Serilog.ILogger>(Log.Logger);
 services.AddSingleton<IConfiguration>(config);
 services.AddScoped<IClientRegistrationService, ClientRegistrationService>();
 services.AddSingleton<DALManager>();
