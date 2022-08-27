@@ -14,6 +14,7 @@ using RestSharp;
 using RestSharp.Authenticators;
 using Serilog;
 using System.Text.Json;
+using GUIClient.Resources;
 
 namespace GUIClient.Services;
 
@@ -36,16 +37,17 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
     }
 
     
-    
     private IRegistrationService _registrationService;
     private IMutableConfigurationService _mutableConfigurationService;
+    private IEnvironmentService _environmentService;
     public AuthenticationCredential AuthenticationCredential { get; set; }
     public AuthenticatedUserInfo? AuthenticatedUserInfo { get; set; }
 
     public AuthenticationService( 
         IRegistrationService registrationService,
         IRestService restService,
-        IMutableConfigurationService mutableConfigurationService): base(restService)
+        IMutableConfigurationService mutableConfigurationService,
+        IEnvironmentService environmentService): base(restService)
     {
         AuthenticationCredential = new AuthenticationCredential
         {
@@ -54,6 +56,7 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
         
         _registrationService = registrationService;
         _mutableConfigurationService = mutableConfigurationService;
+        _environmentService = environmentService;
     }
     
     public void TryAuthenticate(Window parentWindow)
@@ -147,6 +150,7 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
         var client = _restService.GetClient();
         var request = new RestRequest("/Authentication/GetToken");
         client.Authenticator = new HttpBasicAuthenticator(user, password);
+        client.AddDefaultHeader("ClientId", _environmentService.DeviceID);
         
         try
         {
