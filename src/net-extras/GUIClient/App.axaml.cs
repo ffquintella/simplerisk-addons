@@ -39,7 +39,8 @@ namespace GUIClient
                         .HasMap<RisksOnDay>((risks, point) =>
                         {
                             point.PrimaryValue = risks.RisksCreated;
-                            point.SecondaryValue = point.Context.Index;
+                            //point.SecondaryValue = point.Context.Index;
+                            point.SecondaryValue = risks.Day.Day;
                         })
             );
             
