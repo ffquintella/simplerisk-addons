@@ -41,6 +41,7 @@ namespace GUIClient
                             point.PrimaryValue = risks.RisksCreated;
                             //point.SecondaryValue = point.Context.Index;
                             point.SecondaryValue = risks.Day.Day;
+                            
                         })
             );
             

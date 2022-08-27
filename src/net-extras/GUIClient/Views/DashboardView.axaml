@@ -15,7 +15,7 @@
     <DockPanel>
         <TextBlock Text="{Binding StrWelcome}" DockPanel.Dock="Top"/>
         <lvc:CartesianChart
-            Series="{Binding RisksOverTime}" Width="300" Height="300"/>
+            Series="{Binding RisksOverTime}" Width="600" Height="300"/>
     </DockPanel>
     
 </UserControl>
