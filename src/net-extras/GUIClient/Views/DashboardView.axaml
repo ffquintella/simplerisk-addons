@@ -17,6 +17,7 @@
         <lvc:CartesianChart
             Series="{Binding RisksOverTime}" 
             XAxes="{Binding RisksOverTimeXAxis}"
+            ZoomMode="X"
             Width="800" Height="300"/>
     </DockPanel>
     

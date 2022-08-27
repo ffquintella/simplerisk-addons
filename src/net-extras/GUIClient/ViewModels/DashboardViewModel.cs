@@ -74,7 +74,8 @@ public class DashboardViewModel: ViewModelBase
                 new Axis
                 {
                     Labels = riskDays,
-                    TextSize = 7
+                    TextSize = 9,
+                    LabelsRotation = 90
                 }
             };
 
