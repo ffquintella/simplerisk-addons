@@ -22,8 +22,8 @@ public class DashboardViewModel: ViewModelBase
     
     private ObservableCollection<ISeries> _risksOverTime;
     public List<Axis> _risksOverTimeXAxis;
-    public string StrWelcome { get; set; }
-
+    public string StrWelcome { get; }
+    public string StrRisksOverTime { get;}
  
 
     public ObservableCollection<ISeries> RisksOverTime
@@ -38,6 +38,7 @@ public class DashboardViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _risksOverTimeXAxis, value);
     }
     
+    
     public DashboardViewModel()
     {
         var localizationService = GetService<ILocalizationService>();
@@ -51,6 +52,7 @@ public class DashboardViewModel: ViewModelBase
         };
         
         StrWelcome = _localizer["WelcomeMSG"];
+        StrRisksOverTime = _localizer["RisksOverTime"];
     }
     
     public void Initialize()

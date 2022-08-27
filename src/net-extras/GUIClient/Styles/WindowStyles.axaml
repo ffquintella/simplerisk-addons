@@ -58,6 +58,12 @@
         <Setter Property="Background" Value="#880000"/>
     </Style>
     
+    <Style Selector="TextBlock.header">
+        <Setter Property="Margin" Value="0 5 0 0"/>
+        <Setter Property="Foreground" Value="#bbbbbb"/>
+        <Setter Property="Background" Value="#222222"/>
+    </Style>
+    
     <Style Selector="Button:is:disabled">
         <Setter Property="Background" Value="#787878"/>
     </Style>

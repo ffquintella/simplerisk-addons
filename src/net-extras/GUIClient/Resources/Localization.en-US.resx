@@ -114,4 +114,7 @@
     <data name="ClientDeleteConfirmationMSG" xml:space="preserve">
         <value>Are you sure you want to delete that client?.</value>
     </data>
+    <data name="RisksOverTime" xml:space="preserve">
+        <value>Risks over time</value>
+    </data>
 </root>
