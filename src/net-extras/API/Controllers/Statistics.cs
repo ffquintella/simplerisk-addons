@@ -37,7 +37,17 @@ public class Statistics : ApiBaseController
         var firstDay = DateTime.Now.Subtract(TimeSpan.FromDays(daysSpan));
         
         var srDbContext = _dalManager.GetContext();
-        var risks = srDbContext.Risks.Where(risk => risk.SubmissionDate > firstDay).ToList();
+        var risks = srDbContext.Risks.Join(srDbContext.RiskScorings, 
+            risk => risk.Id,
+            riskScoring => riskScoring.Id,
+            (risk, riskScoring) => new
+            {
+                Id = risk.Id,
+                SubmissionDate = risk.SubmissionDate,
+                CalculatedRisk = riskScoring.CalculatedRisk,
+                Status = risk.Status
+            }).
+            Where(risk => risk.SubmissionDate > firstDay).ToList();
         
         var result = new List<RisksOnDay>();
 
@@ -57,7 +67,7 @@ public class Statistics : ApiBaseController
             foreach (var risk in risksSelected)
             {
                 riskOnDay.RisksCreated++;
-                
+                riskOnDay.TotalRiskValue += risk.CalculatedRisk;
             }
             result.Add(riskOnDay);
             computingDay = computingDay.AddDays(1);
