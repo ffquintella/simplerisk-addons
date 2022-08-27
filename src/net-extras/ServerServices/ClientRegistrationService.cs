@@ -176,7 +176,7 @@ public class ClientRegistrationService: IClientRegistrationService
             return -1;
         }
         
-        return clientRegistration.Status != "accepted" ? 0 : 1;
+        return clientRegistration.Status != "approved" ? 0 : 1;
     }
     
     private AddonsClientRegistration? GetByExternalId(string externalId)
