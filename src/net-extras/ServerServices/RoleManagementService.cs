@@ -7,22 +7,25 @@ namespace ServerServices;
 
 public class RoleManagementService: IRoleManagementService
 {
-    private SRDbContext? _dbContext = null;
+    //private SRDbContext? _dbContext = null;
+    private DALManager? _dalManager;
     private ILogger _log;
 
     public RoleManagementService(DALManager dalManager,
         ILoggerFactory logger )
     {
-        _dbContext = dalManager.GetContext();
+        _dalManager = dalManager;
+        //_dbContext = dalManager.GetContext();
         _log = logger.CreateLogger(nameof(UserManagementService));
     }
 
 
     public List<string> GetRolePermissions(int roleId)
     {
-        var roles = _dbContext!.RoleResponsibilities.Where(rlr => rlr.RoleId == roleId);
+        var dbContext = _dalManager!.GetContext();
+        var roles = dbContext!.RoleResponsibilities.Where(rlr => rlr.RoleId == roleId);
 
-        var permissions = _dbContext!.Permissions.Where(p => roles.Any(r => r.PermissionId == p.Id));
+        var permissions = dbContext!.Permissions.Where(p => roles.Any(r => r.PermissionId == p.Id));
 
         var result = new List<string>();
 
@@ -36,7 +39,8 @@ public class RoleManagementService: IRoleManagementService
 
     public Role? GetRole(int roleId)
     {
-        var role = _dbContext!.Roles.Find(roleId);
+        var dbContext = _dalManager!.GetContext();
+        var role = dbContext!.Roles.Find(roleId);
         return role;
     }
 }

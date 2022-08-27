@@ -9,7 +9,8 @@ namespace ServerServices;
 
 public class UserManagementService: IUserManagementService
 {
-    private SRDbContext? _dbContext = null;
+    //private SRDbContext? _dbContext = null;
+    private DALManager? _dalManager;
     private ILogger _log;
     private IRoleManagementService _roleManagementService;
 
@@ -17,14 +18,16 @@ public class UserManagementService: IUserManagementService
         ILoggerFactory logger,
         IRoleManagementService roleManagementService)
     {
-        _dbContext = dalManager.GetContext();
+        //_dbContext = dalManager.GetContext();
+        _dalManager = dalManager;
         _log = logger.CreateLogger(nameof(UserManagementService));
         _roleManagementService = roleManagementService;
     }
 
     public User? GetUser(string userName)
     {
-        var user = _dbContext?.Users?
+        var dbContext = _dalManager!.GetContext();
+        var user = dbContext?.Users?
             .Where(u => u.Username == Encoding.UTF8.GetBytes(userName))
             .FirstOrDefault();
 
@@ -33,7 +36,8 @@ public class UserManagementService: IUserManagementService
     
     public User? GetUserById(int userId)
     {
-        var user = _dbContext?.Users?
+        var dbContext = _dalManager!.GetContext();
+        var user = dbContext?.Users?
             .Where(u => u.Value == userId)
             .FirstOrDefault();
 
@@ -56,9 +60,11 @@ public class UserManagementService: IUserManagementService
             permissions = rolePermissions;
         }
         
-        var userPermissionsCon = _dbContext!.PermissionToUsers.Where(pu => pu.UserId == userId).ToList();
+        var dbContext = _dalManager!.GetContext();
         
-        var userPermissions = _dbContext!.Permissions.Where(p => userPermissionsCon.Select(upc=> upc.PermissionId ).Contains(p.Id)).ToList();
+        var userPermissionsCon = dbContext!.PermissionToUsers.Where(pu => pu.UserId == userId).ToList();
+        
+        var userPermissions = dbContext!.Permissions.Where(p => userPermissionsCon.Select(upc=> upc.PermissionId ).Contains(p.Id)).ToList();
 
         var strUserPermissions = userPermissions.Select(up=>up.Key).ToList();
 
