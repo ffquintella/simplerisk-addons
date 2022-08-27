@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using Splat;
@@ -20,22 +21,21 @@ public class DashboardViewModel: ViewModelBase
     private bool _initialized = false;
     
     private ObservableCollection<ISeries> _risksOverTime;
-
+    public List<Axis> _risksOverTimeXAxis;
     public string StrWelcome { get; set; }
 
-    public ISeries[] Series { get; set; } = new ISeries[]
-    {
-        new LineSeries<double>
-        {
-            Values = new double[] {2, 9, 3, 5, 3, 4, 6},
-            Fill = null
-        }
-    };
+ 
 
     public ObservableCollection<ISeries> RisksOverTime
     {
         get => _risksOverTime;
         set => this.RaiseAndSetIfChanged(ref _risksOverTime, value);
+    }
+    
+    public List<Axis> RisksOverTimeXAxis
+    {
+        get => _risksOverTimeXAxis;
+        set => this.RaiseAndSetIfChanged(ref _risksOverTimeXAxis, value);
     }
     
     public DashboardViewModel()
@@ -57,15 +57,26 @@ public class DashboardViewModel: ViewModelBase
     {
         if (!_initialized)
         {
+            var risksOverTimeValues = _statisticsService.GetRisksOverTime();
+            var riskDays = risksOverTimeValues.Select(r => r.Day.ToShortDateString()).ToList();
+            
             RisksOverTime = new ObservableCollection<ISeries>
             {
                 new LineSeries<RisksOnDay>
                 {
                     Name = "Risks Over Time",
-                    Values = _statisticsService.GetRisksOverTime()
+                    Values = risksOverTimeValues
                 }
             };
-                    
+
+            RisksOverTimeXAxis = new List<Axis>
+            {
+                new Axis
+                {
+                    Labels = riskDays,
+                    TextSize = 7
+                }
+            };
 
             _initialized = true;
         }
