@@ -17,6 +17,7 @@ public class NavigationBarViewModel: ViewModelBase
     private IAuthenticationService _authenticationService;
     private bool _isEnabled = false;
     private bool _isAdmin = false;
+    private bool _hasAssessmentPermission = false;
     public string? _loggedUser;
 
     public Boolean IsAdmin
@@ -34,6 +35,17 @@ public class NavigationBarViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
     }
 
+    public Boolean HasAssessmentPermission
+    {
+        get
+        {
+            if (!_isEnabled) return false;
+            return _hasAssessmentPermission;
+        }
+        set => this.RaiseAndSetIfChanged(ref _hasAssessmentPermission, value);
+    }
+
+    
     public String LoggedUser
     {
         get => _loggedUser;
@@ -49,22 +61,31 @@ public class NavigationBarViewModel: ViewModelBase
         _configuration = configuration;
         _authenticationService = authenticationService;
         
-        Task.Run(() => UpdateAuthenticationStatus());
-        
-        
+        //Task.Run(() => UpdateAuthenticationStatus());
+
+        _authenticationService.AuthenticationSucceeded += (obj, args) =>
+        {
+            Initialize();
+        };
     }
 
+    public void Initialize()
+    {
+        UpdateAuthenticationStatus();
+    }
+    
     public async Task UpdateAuthenticationStatus()
     {
-        while (!_authenticationService.IsAuthenticated)
+        /*while (!_authenticationService.IsAuthenticated)
         {
             Task.Delay(1000);
-        }
+        }*/
 
         IsEnabled = true;
         if (_authenticationService!.AuthenticatedUserInfo == null) _authenticationService.GetAuthenticatedUserInfo();
         LoggedUser = _authenticationService!.AuthenticatedUserInfo!.UserName!;
         if (_authenticationService.AuthenticatedUserInfo.UserRole == "Administrator") IsAdmin = true;
+        if (_authenticationService.AuthenticatedUserInfo.UserPermissions!.Contains("assessments")) HasAssessmentPermission = true;
     }
     
     public void OnSettingsCommand(NavigationBar? parentControl)
