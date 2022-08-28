@@ -21,7 +21,7 @@
         </Button>
         <Button Name="BtnAssessment"
                 IsEnabled="{Binding IsEnabled}"
-                Command="{Binding OnDashboardCommand}"
+                Command="{Binding OnAssessmentCommand}"
                 CommandParameter="{Binding ElementName=NavigationUserControl}"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5 0" >
             <PathIcon Height="16" Data="{StaticResource clipboardCheckMultipleOutline}" />

@@ -76,7 +76,7 @@ namespace GUIClient.ViewModels
                     break;
                 case AvaliableViews.Assessment:
                     
-                    ViewDeviceIsVisible = true;
+                    AssessmentIsVisible = true;
                     break;
             }
         }

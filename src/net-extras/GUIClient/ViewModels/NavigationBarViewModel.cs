@@ -106,4 +106,10 @@ public class NavigationBarViewModel: ViewModelBase
             .NavigateTo(AvaliableViews.Dashboard);
         
     }
+    public void OnAssessmentCommand(NavigationBar? parentControl)
+    {
+        ((MainWindowViewModel)parentControl.ParentWindow.DataContext)
+            .NavigateTo(AvaliableViews.Assessment);
+        
+    }
 }
