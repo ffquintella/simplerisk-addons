@@ -15,6 +15,7 @@ namespace GUIClient.ViewModels
         
         private bool _viewDashboardIsVisible = true;
         private bool _viewDeviceIsVisible = false;
+        private bool _assessmentIsVisible = false;
         
         public string StrApplicationMN { get; }
         public string StrExitMN { get; }
@@ -30,6 +31,13 @@ namespace GUIClient.ViewModels
             get => _viewDeviceIsVisible;
             set => this.RaiseAndSetIfChanged(ref _viewDeviceIsVisible, value);
         }
+        
+        public bool AssessmentIsVisible
+        {
+            get => _assessmentIsVisible;
+            set => this.RaiseAndSetIfChanged(ref _assessmentIsVisible, value);
+        }
+        
         private DeviceViewModel _deviceViewModel = 
             new DeviceViewModel(GetService<ILocalizationService>(), 
                 GetService<IClientService>());
@@ -66,6 +74,10 @@ namespace GUIClient.ViewModels
                     DeviceViewModel.Initialize();
                     ViewDeviceIsVisible = true;
                     break;
+                case AvaliableViews.Assessment:
+                    
+                    ViewDeviceIsVisible = true;
+                    break;
             }
         }
 
@@ -73,6 +85,7 @@ namespace GUIClient.ViewModels
         {
             ViewDashboardIsVisible = false;
             ViewDeviceIsVisible = false;
+            AssessmentIsVisible = false;
         }
         
         private static T GetService<T>() => Locator.Current.GetService<T>();

@@ -3,5 +3,6 @@
 public enum AvaliableViews
 {
     Dashboard,
-    Devices
+    Devices,
+    Assessment
 }

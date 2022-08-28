@@ -11,7 +11,6 @@
     <Design.DataContext>
         <vm:DashboardViewModel/>
     </Design.DataContext>
-   
     
     <DockPanel>
         <TextBlock Text="{Binding StrWelcome}" DockPanel.Dock="Top"/>

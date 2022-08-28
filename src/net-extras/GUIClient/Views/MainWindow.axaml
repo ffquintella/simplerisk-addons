@@ -46,6 +46,9 @@
             <views:DeviceView Margin="10"
                               DataContext="{Binding DeviceViewModel}"
                               IsVisible="{Binding $parent.DataContext.ViewDeviceIsVisible}" />
+            <views:AssessmentView Margin="10"
+                              DataContext="{Binding DeviceViewModel}"
+                              IsVisible="{Binding $parent.DataContext.AssessmentIsVisible}" />
         </DockPanel>
     </Panel>
     
