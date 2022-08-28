@@ -12,18 +12,20 @@
         <vm:DashboardViewModel/>
     </Design.DataContext>
     
-    <DockPanel>
-        <TextBlock Text="{Binding StrWelcome}" DockPanel.Dock="Top"/>
-        <StackPanel DockPanel.Dock="Left">
-            <TextBlock Classes="header" Text="{Binding StrRisksOverTime}"/>
-            <lvc:CartesianChart
-                Series="{Binding RisksOverTime}" 
-                XAxes="{Binding RisksOverTimeXAxis}"
-                ZoomMode="X"
-                Background="#2e2d2d"
-                Width="700" Height="300"/>            
-        </StackPanel>
-
-    </DockPanel>
+    <Grid RowDefinitions="Auto, *" Margin="5">
+        <TextBlock Grid.Row="0" Text="{Binding StrWelcome}" DockPanel.Dock="Top"/>
+        <Grid Grid.Row="1" ColumnDefinitions=" *, *" RowDefinitions=" * , *" >
+            <StackPanel Grid.Column="0" Grid.Row="0">
+                <TextBlock Classes="header" Text="{Binding StrRisksOverTime}"/>
+                <lvc:CartesianChart
+                    Series="{Binding RisksOverTime}" 
+                    XAxes="{Binding RisksOverTimeXAxis}"
+                    ZoomMode="X"
+                    MinWidth="400"
+                    MinHeight="300"
+                    Background="#2e2d2d"/>            
+            </StackPanel>
+        </Grid>
+    </Grid>
     
 </UserControl>
