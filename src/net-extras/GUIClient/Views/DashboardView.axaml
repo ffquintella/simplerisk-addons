@@ -13,10 +13,10 @@
     </Design.DataContext>
     
     <Grid RowDefinitions="Auto, *" Margin="5">
-        <TextBlock Grid.Row="0" Text="{Binding StrWelcome}" DockPanel.Dock="Top"/>
+        <TextBlock Grid.Row="0" Text="{Binding StrWelcome}" />
         <Grid Grid.Row="1" ColumnDefinitions=" *, *" RowDefinitions=" * , *" >
             <StackPanel Grid.Column="0" Grid.Row="0">
-                <TextBlock Classes="header" Text="{Binding StrRisksOverTime}"/>
+                <TextBlock Classes="header" Text="{Binding StrRisksOverTime}" TextAlignment="Center"/>
                 <lvc:CartesianChart
                     Series="{Binding RisksOverTime}" 
                     XAxes="{Binding RisksOverTimeXAxis}"
