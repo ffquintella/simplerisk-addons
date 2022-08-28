@@ -11,6 +11,7 @@
     <Design.DataContext>
         <vm:DashboardViewModel/>
     </Design.DataContext>
+   
     
     <DockPanel>
         <TextBlock Text="{Binding StrWelcome}" DockPanel.Dock="Top"/>
@@ -20,6 +21,7 @@
                 Series="{Binding RisksOverTime}" 
                 XAxes="{Binding RisksOverTimeXAxis}"
                 ZoomMode="X"
+                Background="#2e2d2d"
                 Width="700" Height="300"/>            
         </StackPanel>
 

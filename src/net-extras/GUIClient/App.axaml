@@ -10,6 +10,7 @@
         <FluentTheme Mode="Dark"/>
         <StyleInclude Source="avares://GUIClient/Styles/Icons.axaml" />
         <StyleInclude Source="avares://GUIClient/Styles/WindowStyles.axaml" />
+        <StyleInclude Source="avares://GUIClient/Styles/ComponentStyles.axaml" />
         <StyleInclude Source="avares://Material.Icons.Avalonia/App.xaml" />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
     </Application.Styles>

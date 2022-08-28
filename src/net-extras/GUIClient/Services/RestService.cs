@@ -45,6 +45,11 @@ public class RestService: IRestService
     public RestClient GetClient()
     {
         Initialize();
+        if (_authenticationService == null)
+        {
+            var client = new RestClient(_options!);
+            return client;
+        }
         if (_authenticationService!.IsAuthenticated)
         {
             if (_authenticationService.AuthenticationCredential.AuthenticationType == AuthenticationType.JWT)
