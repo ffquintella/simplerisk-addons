@@ -87,6 +87,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assessments.
+        /// </summary>
+        internal static string Assessments {
+            get {
+                return ResourceManager.GetString("Assessments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There was an error trying to approve the client..
         /// </summary>
         internal static string ClientApproveErrorMSG {

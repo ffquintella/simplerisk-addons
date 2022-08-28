@@ -9,10 +9,12 @@
         <vm:AssessmentViewModel/>
     </Design.DataContext>
 
-    <StackPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <TextBlock Classes="header" Text="Assessments" Width="400"/>
-        </StackPanel>    
-    </StackPanel>
+    <Grid ColumnDefinitions="Auto, *">
+        <StackPanel Grid.Column="0">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                <TextBlock Classes="header" Text="{Binding StrAssessments, Mode=OneTime}" TextAlignment="Center"/>
+            </StackPanel>    
+        </StackPanel>
+    </Grid>
     
 </UserControl>

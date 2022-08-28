@@ -117,4 +117,7 @@
     <data name="RisksOverTime" xml:space="preserve">
         <value>Risks over time</value>
     </data>
+    <data name="Assessments" xml:space="preserve">
+        <value>Assessments</value>
+    </data>
 </root>
