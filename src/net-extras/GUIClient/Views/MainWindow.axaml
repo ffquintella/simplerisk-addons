@@ -19,6 +19,7 @@
     </Design.DataContext>
 
     <Grid RowDefinitions="30, Auto">
+        <!-- Menu -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto, *">
             <Menu Grid.Column="0">
                 <MenuItem Header="{Binding StrApplicationMN}">
@@ -34,7 +35,7 @@
             </Menu>   
         </Grid>
         <StackPanel Grid.Row="1">
-            <ExperimentalAcrylicBorder IsHitTestVisible="False" IsEnabled="True">
+            <ExperimentalAcrylicBorder Grid.Column="1" IsHitTestVisible="False" IsEnabled="True">
                 <ExperimentalAcrylicBorder.Material>
                     <ExperimentalAcrylicMaterial
                         BackgroundSource="Digger"
@@ -43,7 +44,6 @@
                         MaterialOpacity="0.65" />
                 </ExperimentalAcrylicBorder.Material>
             </ExperimentalAcrylicBorder>
-            <!-- Menu -->
                  
             <Grid RowDefinitions="Auto, *, Auto" Margin="0 0">
                 

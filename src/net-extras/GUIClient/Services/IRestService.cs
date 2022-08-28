@@ -4,5 +4,5 @@ namespace GUIClient.Services;
 
 public interface IRestService
 {
-    RestClient GetClient();
+    RestClient GetClient(bool ignoreTimeVerification = false);
 }

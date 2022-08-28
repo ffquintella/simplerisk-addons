@@ -102,7 +102,7 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
 
     public int RefreshToken()
     {
-        var client = _restService.GetClient();
+        var client = _restService.GetClient(ignoreTimeVerification: true);
         var request = new RestRequest("/Authentication/GetToken");
 
         try
