@@ -18,40 +18,47 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Panel>
-        <ExperimentalAcrylicBorder IsHitTestVisible="False">
-            <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial
-                    BackgroundSource="Digger"
-                    TintColor="Black"
-                    TintOpacity="1"
-                    MaterialOpacity="0.65" />
-            </ExperimentalAcrylicBorder.Material>
-        </ExperimentalAcrylicBorder>
-        <DockPanel Margin="0 20">
-            <Menu DockPanel.Dock="Top">
+    <Grid RowDefinitions="30, Auto">
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *">
+            <Menu Grid.Column="0">
                 <MenuItem Header="{Binding StrApplicationMN}">
                     <!--MenuItem Header="_Open..."/>
-                    <Separator/-->
+                            <Separator/-->
                     <MenuItem Header="{Binding StrExitMN}" 
                               Command="{Binding OnMenuExitCommand}"/>
                 </MenuItem>
                 <!--MenuItem Header="_Edit">
-                    <MenuItem Header="Copy"/>
-                    <MenuItem Header="Paste"/>
-                </MenuItem-->
-            </Menu>
-            <views:NavigationBar DockPanel.Dock="Top" ParentWindow="{Binding ElementName=MainWindowName}"/>
-            <views:DashboardView Margin="10" IsVisible="{Binding $parent.DataContext.ViewDashboardIsVisible}" />
-            <views:DeviceView Margin="10"
-                              DataContext="{Binding DeviceViewModel}"
-                              IsVisible="{Binding $parent.DataContext.ViewDeviceIsVisible}" />
-            <views:AssessmentView Margin="10"
-                              DataContext="{Binding DeviceViewModel}"
-                              IsVisible="{Binding $parent.DataContext.AssessmentIsVisible}" />
-        </DockPanel>
-    </Panel>
-    
+                            <MenuItem Header="Copy"/>
+                            <MenuItem Header="Paste"/>
+                        </MenuItem-->
+            </Menu>   
+        </Grid>
+        <StackPanel Grid.Row="1">
+            <ExperimentalAcrylicBorder IsHitTestVisible="False" IsEnabled="True">
+                <ExperimentalAcrylicBorder.Material>
+                    <ExperimentalAcrylicMaterial
+                        BackgroundSource="Digger"
+                        TintColor="Black"
+                        TintOpacity="1"
+                        MaterialOpacity="0.65" />
+                </ExperimentalAcrylicBorder.Material>
+            </ExperimentalAcrylicBorder>
+            <!-- Menu -->
+                 
+            <Grid RowDefinitions="Auto, *, Auto" Margin="0 0">
+                
+                <!-- Navigation Bar -->
+                <views:NavigationBar Grid.Row="0" ParentWindow="{Binding ElementName=MainWindowName}"/>
+                <views:DashboardView Grid.Row="1" IsVisible="{Binding $parent.DataContext.ViewDashboardIsVisible}" />
+                <views:DeviceView Grid.Row="1" Margin="10"
+                                  DataContext="{Binding DeviceViewModel}"
+                                  IsVisible="{Binding $parent.DataContext.ViewDeviceIsVisible}" />
+                <views:AssessmentView Grid.Row="1" Margin="10"
+                                  DataContext="{Binding DeviceViewModel}"
+                                  IsVisible="{Binding $parent.DataContext.AssessmentIsVisible}" />
+            </Grid>
+        </StackPanel>
+    </Grid>
     
 
 </Window>

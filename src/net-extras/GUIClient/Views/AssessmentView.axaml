@@ -8,6 +8,11 @@
     <Design.DataContext>
         <vm:AssessmentViewModel/>
     </Design.DataContext>
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <TextBlock Classes="header" Text="Assessments" Width="400"/>
+        </StackPanel>    
+    </StackPanel>
     
-    Welcome to Avalonia!
 </UserControl>
