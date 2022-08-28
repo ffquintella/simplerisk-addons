@@ -106,7 +106,13 @@ public static class AuthenticationBootstrapper
             {
                 policy.RequireAuthenticatedUser()
                     .Requirements.Add(new ValidUserRequirement());
-                policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"governance"}));
+                policy.RequireClaim("Permission", new[] {"governance"});
+            });
+            options.AddPolicy("RequireAssessmentAccess", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+                policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"assessment"}));
             });
             options.AddPolicy("RequireAdminOnly", policy =>
             {

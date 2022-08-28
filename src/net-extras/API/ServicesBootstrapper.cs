@@ -36,6 +36,7 @@ public class ServicesBootstrapper
         services.AddSingleton<IAuthorizationHandler, ValidUserRequirementHandler>();
         services.AddSingleton<IAuthorizationHandler, UserInRoleRequirementHandler>();
         services.AddSingleton<IEnvironmentService, EnvironmentService>();
+        services.AddSingleton<IAssessmentsService, AssessmentsService>();
         services.AddSingleton<DALManager>(sp => new DALManager(config));
         
         services.AddTransient<IUserManagementService, UserManagementService>();
