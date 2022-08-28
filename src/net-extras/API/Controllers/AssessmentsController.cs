@@ -5,7 +5,7 @@ using ServerServices;
 
 namespace API.Controllers;
 
-[Authorize(Policy = "RequireAdminOnly", Roles = "Administrator")]
+[Authorize(Policy = "RequireAssessmentAccess")]
 [ApiController]
 [Route("[controller]")]
 public class AssessmentsController : ApiBaseController
