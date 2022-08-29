@@ -37,5 +37,83 @@ public class AssessmentsController : ApiBaseController
         }
 
     }
+    [HttpGet]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Assessment))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+    public ActionResult<Assessment> GetAssessment(int id)
+    {
+
+        try
+        {
+            Logger.Debug("Searching assessment with id {id}", id);
+            var assessment = _assessmentsService.Get(id);
+            if (assessment == null)
+            {
+                Logger.Error("Assessment with id {id} not found", id);
+                return NotFound("Assessment not found");
+            }
+            
+            return assessment;
+
+        }catch(Exception ex)
+        {
+            Logger.Error(ex, "Error finding assessment");
+            return StatusCode(500, "Error finding assessment");
+        }
+
+    }
+    [HttpGet]
+    [Route("{id}/answers")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AssessmentAnswer>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+    public ActionResult<List<AssessmentAnswer>> ListAssessmentAnswers(int id)
+    {
+
+        try
+        {
+            Logger.Debug("Searching answers for assessment with id {id}", id);
+            var assessmentAnswers = _assessmentsService.GetAnswers(id);
+            if (assessmentAnswers == null)
+            {
+                Logger.Error("Answers for assessment with id {id} not found", id);
+                return NotFound("Assessment not found");
+            }
+            
+            return assessmentAnswers;
+
+        }catch(Exception ex)
+        {
+            Logger.Error(ex, "Error finding assessment answers");
+            return StatusCode(500, "Answers not found");
+        }
+
+    }
     
+    [HttpGet]
+    [Route("{id}/questions")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AssessmentQuestion>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+    public ActionResult<List<AssessmentQuestion>> ListAssessmentQuestions(int id)
+    {
+
+        try
+        {
+            Logger.Debug("Searching questions for assessment with id {id}", id);
+            var assessmentQuestions = _assessmentsService.GetQuestions(id);
+            if (assessmentQuestions == null)
+            {
+                Logger.Error("Questions for assessment with id {id} not found", id);
+                return NotFound("Questions not found");
+            }
+            
+            return assessmentQuestions;
+
+        }catch(Exception ex)
+        {
+            Logger.Error(ex, "Error finding assessment questions");
+            return StatusCode(500, "Questions not found");
+        }
+
+    }
 }
