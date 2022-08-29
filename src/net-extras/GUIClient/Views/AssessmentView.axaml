@@ -28,7 +28,18 @@
         </Grid>
         <TabControl Grid.Column="1" Name="AssessmentTabs" SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem Header="{Binding StrQuestions, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
-                Tab 1
+                <DataGrid Name="QuestionsDataGrid" 
+                          Items="{Binding  AssessmentQuestions}" 
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn IsReadOnly="True" 
+                                            Header="ID" 
+                                            Binding="{Binding Id}"/>
+                        <DataGridTextColumn IsReadOnly="True" 
+                                            Header="Question"
+                                            Binding="{Binding Question}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
             <TabItem Header="{Binding StrAnswers, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
                 Tab 1
