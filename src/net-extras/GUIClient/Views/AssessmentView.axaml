@@ -26,7 +26,7 @@
                     </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <TabControl Grid.Column="1" Name="AssessmentTabs" >
+        <TabControl Grid.Column="1" Name="AssessmentTabs" SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem Header="{Binding StrQuestions, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
                 Tab 1
             </TabItem>

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Avalonia.Controls;
+using Avalonia.Media.TextFormatting.Unicode;
 using DAL.Entities;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
@@ -31,15 +33,51 @@ public class AssessmentViewModel: ViewModelBase
         get => _assessments;
         set => this.RaiseAndSetIfChanged(ref _assessments, value);
     }
-    
-    public Assessment SelectedAssessment { get; set; }
-    public int SelectedTabIndex { get; set; } = 1;
-    
+    private Assessment? _selectedAssessment;
+
+    public Assessment? SelectedAssessment
+    {
+        get
+        {
+            return _selectedAssessment;
+        }
+        set
+        {
+            if (value != null)
+            {
+                switch(SelectedTabIndex)
+                {
+                    case 0:
+                        UpdateSelectedQuestions( value.Id);
+                        break;
+                }                
+            }
+            this.RaiseAndSetIfChanged(ref _selectedAssessment, value);
+        }
+    }
+
+    public int SelectedTabIndex { get; set; } = 0;
+
+    private List<AssessmentQuestion> _assessmentQuestions;
+
+    public List<AssessmentQuestion> AssessmentQuestions
+    {
+        get => _assessmentQuestions;
+        set => this.RaiseAndSetIfChanged(ref _assessmentQuestions, value);
+    }
+
+    private void UpdateSelectedQuestions(int assessmentId)
+    {
+        var questions = _assessmentsService.GetAssessmentQuestions(assessmentId);
+        if (questions == null) return;
+        AssessmentQuestions = questions;
+    }
     public AssessmentViewModel() : base()
     {
         
         _assessments = new ObservableCollection<Assessment>();
         _assessmentsService = GetService<IAssessmentsService>();
+        _assessmentQuestions = new List<AssessmentQuestion>();
         
         StrAssessments = Localizer["Assessments"];
         _strAnswers = Localizer["Answers"];
