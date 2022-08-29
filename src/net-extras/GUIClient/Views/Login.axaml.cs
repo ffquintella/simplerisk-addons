@@ -102,9 +102,5 @@ public partial class Login : Window
         }
     }
 
-    private class RegistrationResult
-    {
-    }
-
     private static T GetService<T>() => Locator.Current.GetService<T>();
 }

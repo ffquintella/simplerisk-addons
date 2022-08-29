@@ -19,7 +19,7 @@
                 <TextBlock Classes="header" Text="{Binding StrRisksOverTime}" TextAlignment="Center"/>
                 <lvc:CartesianChart
                     Series="{Binding RisksOverTime}" 
-                    XAxes="{Binding RisksOverTimeXAxis}"
+                    XAxes="{Binding RisksOverTimeXAxis, Mode=OneWay}"
                     ZoomMode="X"
                     MinWidth="400"
                     MinHeight="300"

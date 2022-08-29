@@ -22,7 +22,7 @@
                 <material:MaterialIcon Kind="ViewDashboard"/>
             </Button>
             <Button Name="BtnAssessment"
-                    IsEnabled="{Binding IsEnabled}"
+                    IsEnabled="{Binding HasAssessmentPermission}"
                     Command="{Binding OnAssessmentCommand}"
                     CommandParameter="{Binding ElementName=NavigationUserControl}"
                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5 0" >

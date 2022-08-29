@@ -174,6 +174,7 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
                 IsAuthenticated = true;
                 GetAuthenticatedUserInfo();
                 _logger.Information("User {0} authenticated", user);
+                NotifyAuthenticationSucceeded();
                 return 0;
             }
 
