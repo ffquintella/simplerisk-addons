@@ -37,7 +37,7 @@ namespace GUIClient.Views
             
             var dialog = new Settings()
             {
-                DataContext = new SettingsViewModel(localizationService, serverConfiguration)
+                DataContext = new SettingsViewModel(serverConfiguration)
             };
             dialog.ShowDialog( this );
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Avalonia.Logging;
 using Model.Authentication;
+using Model.Exceptions;
 using Model.Statistics;
 using RestSharp;
 
@@ -26,13 +28,19 @@ public class StatisticsService: ServiceBase, IStatisticsService
         {
             var response = client.Get<List<RisksOnDay>>(request);
 
+            if (response == null)
+            {
+                _logger.Error("Error getting risks over time");
+                response = new List<RisksOnDay>();
+            }
+            
             return response;
             
         }
         catch (Exception ex)
         {
-            _logger.Error("Error getting user info {ExMessage}", ex.Message);
-            return null;
+            _logger.Error("Error getting user info ExMessage}", ex.Message);
+            throw new RestComunicationException("Error getting user info", ex);
         }
         
     }

@@ -54,7 +54,7 @@ public class RestService: IRestService
         {
             if (_authenticationService.AuthenticationCredential.AuthenticationType == AuthenticationType.JWT)
             {
-                if(!ignoreTimeVerification && !_authenticationService.CheckTokenValidTime(_authenticationService.AuthenticationCredential.JWTToken,
+                if(!ignoreTimeVerification && !_authenticationService.CheckTokenValidTime(_authenticationService.AuthenticationCredential.JWTToken!,
                    60 * 5))
                 {
                     _authenticationService.RefreshToken();

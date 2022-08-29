@@ -8,8 +8,6 @@ namespace GUIClient.ViewModels;
 
 public class SettingsViewModel: ViewModelBase
 {
-    private ILocalizationService _localizationService;
-    public IStringLocalizer _localizer;
     
     public string StrServer { get; }
     public string StrSystem { get; }
@@ -24,16 +22,13 @@ public class SettingsViewModel: ViewModelBase
     public ServerConfiguration ServerConfiguration { get; }
     public string ServerURL { get; }
     
-    public SettingsViewModel(ILocalizationService localizationService, ServerConfiguration serverConfiguration)
+    public SettingsViewModel(ServerConfiguration serverConfiguration)
     {
-       _localizationService = localizationService;
-       _localizer = _localizationService.GetLocalizer();
-
-       StrSystem = _localizer["Sys"];
-       StrServer = _localizer["Server"] ;
-       StrOperationalSystem = _localizer["OperationalSystem"] + ":";
-       StrHost = _localizer["Host"] +':';
-       StrDescription = _localizer["Description"] +':';
+       StrSystem = Localizer["Sys"];
+       StrServer = Localizer["Server"] ;
+       StrOperationalSystem = Localizer["OperationalSystem"] + ":";
+       StrHost = Localizer["Host"] +':';
+       StrDescription = Localizer["Description"] +':';
        
        StrOperationalSystemData = ComputerInfo.GetOsVersion();
        StrHostData = ComputerInfo.GetComputerName() ;

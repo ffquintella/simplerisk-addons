@@ -20,19 +20,19 @@ public class DashboardViewModel: ViewModelBase
     
     private bool _initialized = false;
     
-    private ObservableCollection<ISeries> _risksOverTime;
-    public List<Axis> _risksOverTimeXAxis;
+    private ObservableCollection<ISeries>? _risksOverTime;
+    public List<Axis>? _risksOverTimeXAxis;
     public string StrWelcome { get; }
     public string StrRisksOverTime { get;}
  
 
-    public ObservableCollection<ISeries> RisksOverTime
+    public ObservableCollection<ISeries>? RisksOverTime
     {
         get => _risksOverTime;
         set => this.RaiseAndSetIfChanged(ref _risksOverTime, value);
     }
     
-    public List<Axis> RisksOverTimeXAxis
+    public List<Axis>? RisksOverTimeXAxis
     {
         get => _risksOverTimeXAxis;
         set => this.RaiseAndSetIfChanged(ref _risksOverTimeXAxis, value);

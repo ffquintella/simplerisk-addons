@@ -36,6 +36,7 @@ public class DeviceViewModel: ViewModelBase
     {
         var clientService = GetService<IClientService>();
         _clientService = clientService;
+        _clients = new List<Client>();
 
         StrName = Localizer["Name"];
         StrComputer = Localizer["Computer"];
@@ -119,7 +120,7 @@ public class DeviceViewModel: ViewModelBase
                         Icon = MessageBox.Avalonia.Enums.Icon.Warning,
                     });
                         
-                messageBoxStandardWindow.Show(); 
+                await messageBoxStandardWindow.Show(); 
             }
             else
             {

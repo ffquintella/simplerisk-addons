@@ -12,9 +12,8 @@ namespace GUIClient.ViewModels;
 public class NavigationBarViewModel: ViewModelBase
 {
 
-    private ILocalizationService _localization;
+    
     private ServerConfiguration _configuration;
-    private IAuthenticationService _authenticationService;
     private bool _isEnabled = false;
     private bool _isAdmin = false;
     private bool _hasAssessmentPermission = false;
@@ -46,24 +45,21 @@ public class NavigationBarViewModel: ViewModelBase
     }
 
     
-    public String LoggedUser
+    public String? LoggedUser
     {
         get => _loggedUser;
         set => this.RaiseAndSetIfChanged(ref _loggedUser, value);
     }
 
     public NavigationBarViewModel(
-        ILocalizationService localization,
-        ServerConfiguration configuration,
-        IAuthenticationService authenticationService)
+        ServerConfiguration configuration)
     {
-        _localization = localization;
+        
         _configuration = configuration;
-        _authenticationService = authenticationService;
         
         //Task.Run(() => UpdateAuthenticationStatus());
 
-        _authenticationService.AuthenticationSucceeded += (obj, args) =>
+        AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
             Initialize();
         };
@@ -74,7 +70,7 @@ public class NavigationBarViewModel: ViewModelBase
         UpdateAuthenticationStatus();
     }
     
-    public async Task UpdateAuthenticationStatus()
+    public void UpdateAuthenticationStatus()
     {
         /*while (!_authenticationService.IsAuthenticated)
         {
@@ -82,54 +78,54 @@ public class NavigationBarViewModel: ViewModelBase
         }*/
 
         IsEnabled = true;
-        if (_authenticationService!.AuthenticatedUserInfo == null) _authenticationService.GetAuthenticatedUserInfo();
-        LoggedUser = _authenticationService!.AuthenticatedUserInfo!.UserName!;
-        if (_authenticationService.AuthenticatedUserInfo.UserRole == "Administrator") IsAdmin = true;
-        if (_authenticationService.AuthenticatedUserInfo.UserPermissions!.Contains("assessments")) HasAssessmentPermission = true;
+        if (AuthenticationService!.AuthenticatedUserInfo == null) AuthenticationService.GetAuthenticatedUserInfo();
+        LoggedUser = AuthenticationService!.AuthenticatedUserInfo!.UserName!;
+        if (AuthenticationService.AuthenticatedUserInfo.UserRole == "Administrator") IsAdmin = true;
+        if (AuthenticationService.AuthenticatedUserInfo.UserPermissions!.Contains("assessments")) HasAssessmentPermission = true;
     }
     
-    public void OnSettingsCommand(NavigationBar? parentControl)
+    public void OnSettingsCommand(NavigationBar parentControl)
     {
-
+        
         var dialog = new Settings()
         {
-            DataContext = new SettingsViewModel(_localization, _configuration)
+            DataContext = new SettingsViewModel(_configuration)
         };
         dialog.ShowDialog( parentControl.ParentWindow );
 
     }
     
-    public void OnAccountCommand(NavigationBar? parentControl)
+    public void OnAccountCommand(NavigationBar parentControl)
     {
-        if (_authenticationService == null)
+        if (AuthenticationService == null)
         {
-            _authenticationService!.GetAuthenticatedUserInfo();
+            AuthenticationService!.GetAuthenticatedUserInfo();
         }
 
         var dialog = new UserInfo()
         {
-            DataContext = new UserInfoViewModel(_authenticationService.AuthenticatedUserInfo!)
+            DataContext = new UserInfoViewModel(AuthenticationService.AuthenticatedUserInfo!)
         };
         dialog.ShowDialog( parentControl.ParentWindow );
 
     }
     
-    public void OnDeviceCommand(NavigationBar? parentControl)
+    public void OnDeviceCommand(NavigationBar parentControl)
     {
-        ((MainWindowViewModel)parentControl.ParentWindow.DataContext)
+        ((MainWindowViewModel)parentControl.ParentWindow.DataContext!)
             .NavigateTo(AvaliableViews.Devices);
         
     }
     
-    public void OnDashboardCommand(NavigationBar? parentControl)
+    public void OnDashboardCommand(NavigationBar parentControl)
     {
-        ((MainWindowViewModel)parentControl.ParentWindow.DataContext)
+        ((MainWindowViewModel)parentControl.ParentWindow.DataContext!)
             .NavigateTo(AvaliableViews.Dashboard);
         
     }
-    public void OnAssessmentCommand(NavigationBar? parentControl)
+    public void OnAssessmentCommand(NavigationBar parentControl)
     {
-        ((MainWindowViewModel)parentControl.ParentWindow.DataContext)
+        ((MainWindowViewModel)parentControl.ParentWindow.DataContext!)
             .NavigateTo(AvaliableViews.Assessment);
         
     }

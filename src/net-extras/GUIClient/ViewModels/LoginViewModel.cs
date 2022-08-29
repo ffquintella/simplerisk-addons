@@ -15,10 +15,7 @@ namespace GUIClient.ViewModels;
 
 public class LoginViewModel : ViewModelBase
 {
-    private ILocalizationService _localizationService;
-    private IAuthenticationService _authenticationService;
-    public IStringLocalizer _localizer;
-
+    
     public string StrNotAccepted { get; }
     public string StrLogin { get; }
     public string StrUsername { get; }
@@ -48,19 +45,16 @@ public class LoginViewModel : ViewModelBase
 
     public int ProgressBarMaxValue { get; set; } = 100;
 
-    public List<AuthenticationMethod> AuthenticationMethods => _authenticationService.GetAuthenticationMethods();
+    public List<AuthenticationMethod> AuthenticationMethods => AuthenticationService.GetAuthenticationMethods();
 
-    public LoginViewModel(ILocalizationService localizationService, IAuthenticationService authenticationService)
+    public LoginViewModel()
     {
-        _authenticationService = authenticationService;
-        _localizationService = localizationService;
-        _localizer = _localizationService.GetLocalizer();
-        StrNotAccepted = _localizer["NotAccepted"];
-        StrLogin = _localizer["Login"];
-        StrPassword = _localizer["Password"];
-        StrUsername = _localizer["Username"];
-        StrExit = _localizer["Exit"];
-        StrEnvironment = _localizer["Environment"];
+        StrNotAccepted = Localizer["NotAccepted"];
+        StrLogin = Localizer["Login"];
+        StrPassword = Localizer["Password"];
+        StrUsername = Localizer["Username"];
+        StrExit = Localizer["Exit"];
+        StrEnvironment = Localizer["Environment"];
     }
 
     private bool _isAccepted;
@@ -91,12 +85,12 @@ public class LoginViewModel : ViewModelBase
             var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                 {
-                    ContentTitle = _localizer["Warning"],
-                    ContentMessage = _localizer["SelectAuthenticationMSG"]  ,
+                    ContentTitle = Localizer["Warning"],
+                    ContentMessage = Localizer["SelectAuthenticationMSG"]  ,
                     Icon = MessageBox.Avalonia.Enums.Icon.Warning,
                 });
                         
-            messageBoxStandardWindow.Show(); 
+            await messageBoxStandardWindow.Show(); 
         }
         else
         {
@@ -105,18 +99,18 @@ public class LoginViewModel : ViewModelBase
                 var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                     .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                     {
-                        ContentTitle = _localizer["Warning"],
-                        ContentMessage = _localizer["NotImplementedMSG"]  ,
+                        ContentTitle = Localizer["Warning"],
+                        ContentMessage = Localizer["NotImplementedMSG"]  ,
                         Icon = MessageBox.Avalonia.Enums.Icon.Warning,
                     });
                             
-                messageBoxStandardWindow.Show(); 
+                await messageBoxStandardWindow.Show(); 
             }
             else
             {
                 ProgressBarVisibility = true;
 
-                var task = Task.Run(() => _authenticationService.DoServerAuthentication(Username, Password));
+                var task = Task.Run(() => AuthenticationService.DoServerAuthentication(Username!, Password!));
 
                 int i = 1;
                 while(!task.IsCompleted && i < 100)
@@ -139,12 +133,12 @@ public class LoginViewModel : ViewModelBase
                     var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                         .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                         {
-                            ContentTitle = _localizer["Warning"],
-                            ContentMessage = _localizer["LoginError"]  ,
+                            ContentTitle = Localizer["Warning"],
+                            ContentMessage = Localizer["LoginError"]  ,
                             Icon = MessageBox.Avalonia.Enums.Icon.Warning,
                         });
                             
-                    messageBoxStandardWindow.Show(); 
+                    await messageBoxStandardWindow.Show(); 
                 }
                 else
                 {

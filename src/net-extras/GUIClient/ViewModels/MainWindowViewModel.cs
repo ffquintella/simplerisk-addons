@@ -10,8 +10,6 @@ namespace GUIClient.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private ILocalizationService _localizationService;
-        public IStringLocalizer _localizer;
         
         private bool _viewDashboardIsVisible = true;
         private bool _viewDeviceIsVisible = false;
@@ -49,11 +47,9 @@ namespace GUIClient.ViewModels
 
         public MainWindowViewModel(ILocalizationService localizationService)
         {
-            _localizationService = localizationService;
-            _localizer = _localizationService.GetLocalizer();
-
-            StrApplicationMN = _localizer["ApplicationMN"];
-            StrExitMN = _localizer["ExitMN"];
+            
+            StrApplicationMN = Localizer["ApplicationMN"];
+            StrExitMN = Localizer["ExitMN"];
         }
 
         public void OnMenuExitCommand()
@@ -87,7 +83,6 @@ namespace GUIClient.ViewModels
             AssessmentIsVisible = false;
         }
         
-        private static T GetService<T>() => Locator.Current.GetService<T>();
         
     }
 }

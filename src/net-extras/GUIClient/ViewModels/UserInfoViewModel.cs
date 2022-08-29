@@ -8,8 +8,7 @@ namespace GUIClient.ViewModels;
 
 public class UserInfoViewModel: ViewModelBase
 {
-    private AuthenticatedUserInfo? _userInfo;
-    private IStringLocalizer _localizer; 
+    private AuthenticatedUserInfo _userInfo;
     
     private string StrUserName { get;  }
     
@@ -17,11 +16,10 @@ public class UserInfoViewModel: ViewModelBase
     private string StrRole { get; }
     public UserInfoViewModel(AuthenticatedUserInfo userInfo)
     {
-        UserInfo = userInfo;
-        _localizer = GetService<ILocalizationService>().GetLocalizer();
-        StrUserName = _localizer["Username"];
-        StrUserAccount = _localizer["Account"];
-        StrRole = _localizer["Role"];
+        _userInfo = userInfo;
+        StrUserName = Localizer["Username"];
+        StrUserAccount = Localizer["Account"];
+        StrRole = Localizer["Role"];
     }
 
     public AuthenticatedUserInfo UserInfo
@@ -30,5 +28,5 @@ public class UserInfoViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _userInfo, value);
     }
     
-    private static T GetService<T>() => Locator.Current.GetService<T>();
+    
 }

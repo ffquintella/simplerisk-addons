@@ -32,14 +32,14 @@ public class ClientService: IClientService
         try
         {
             var response = restClient.Get<List<Client>>(request);
-
-            return response;
+            
+            return response!;
 
         }
         catch (Exception ex)
         {
             _logger.Error("Error listing clients {ExMessage}", ex.Message);
-            throw new RestComunicationException(ex.Message);
+            throw new RestComunicationException(ex.Message, ex);
         }
     }
 
@@ -63,7 +63,7 @@ public class ClientService: IClientService
         catch (Exception ex)
         {
             _logger.Error("Error approving client {ExMessage}", ex.Message);
-            throw new RestComunicationException(ex.Message);
+            throw new RestComunicationException(ex.Message, ex);
         }
     }
     public int Reject(int id)
@@ -92,7 +92,7 @@ public class ClientService: IClientService
             }
                 
             _logger.Error("Error rejecting client {ExMessage}", ex.Message);
-            throw new RestComunicationException(ex.Message);
+            throw new RestComunicationException(ex.Message, ex);
         }
     }
     
@@ -122,7 +122,7 @@ public class ClientService: IClientService
             }
             
            _logger.Error("Error deleting client {ExMessage}", ex.Message);
-            throw new RestComunicationException(ex.Message);
+            throw new RestComunicationException(ex.Message, ex);
         }
     }
 }

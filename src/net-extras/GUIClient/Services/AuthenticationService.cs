@@ -87,6 +87,12 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
 
+        if (jwtToken == null)
+        {
+            _logger.Error("Invalid token format");
+            return false;
+        }
+
         if (jwtToken.ValidTo > DateTime.UtcNow.AddMinutes(minutesToExpire))
         {
             _logger.Debug("Token is valid");
@@ -111,10 +117,10 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
 
             if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
             {
-                var token = JsonSerializer.Deserialize<string>(response.Content);
+                var token = JsonSerializer.Deserialize<string>(response.Content!);
                 //var token = response.Content;
                 _mutableConfigurationService.SetConfigurationValue("IsAuthenticate", "true");
-                _mutableConfigurationService.SetConfigurationValue("AuthToken", token);
+                _mutableConfigurationService.SetConfigurationValue("AuthToken", token!);
                 _mutableConfigurationService.SetConfigurationValue("AuthTokenTime", DateTime.Now.Ticks.ToString());
                 AuthenticationCredential.AuthenticationType = AuthenticationType.JWT;
                 AuthenticationCredential.JWTToken = token;
@@ -158,10 +164,10 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
 
             if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
             {
-                var token = JsonSerializer.Deserialize<string>(response.Content);
+                var token = JsonSerializer.Deserialize<string>(response.Content!);
                 //var token = response.Content;
                 _mutableConfigurationService.SetConfigurationValue("IsAuthenticate", "true");
-                _mutableConfigurationService.SetConfigurationValue("AuthToken", token);
+                _mutableConfigurationService.SetConfigurationValue("AuthToken", token!);
                 _mutableConfigurationService.SetConfigurationValue("AuthTokenTime", DateTime.Now.Ticks.ToString());
                 AuthenticationCredential.AuthenticationType = AuthenticationType.JWT;
                 AuthenticationCredential.JWTToken = token;
@@ -247,7 +253,7 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
 
     private void NotifyAuthenticationSucceeded()
     {
-        AuthenticationSucceeded(this, new EventArgs());
+        if(AuthenticationSucceeded != null) AuthenticationSucceeded(this, new EventArgs());
     }
     public event EventHandler? AuthenticationSucceeded;
 }
