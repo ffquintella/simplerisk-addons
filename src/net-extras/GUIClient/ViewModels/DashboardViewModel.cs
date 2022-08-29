@@ -21,7 +21,7 @@ public class DashboardViewModel: ViewModelBase
     private bool _initialized = false;
     
     private ObservableCollection<ISeries>? _risksOverTime;
-    public List<Axis>? _risksOverTimeXAxis;
+    public List<Axis> _risksOverTimeXAxis;
     public string StrWelcome { get; }
     public string StrRisksOverTime { get;}
  
@@ -43,6 +43,8 @@ public class DashboardViewModel: ViewModelBase
     {
         _statisticsService = GetService<IStatisticsService>();
 
+        _risksOverTimeXAxis = new List<Axis>();
+        
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
             Initialize();
