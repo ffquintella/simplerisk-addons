@@ -33,6 +33,7 @@ public class AssessmentViewModel: ViewModelBase
     }
     
     public Assessment SelectedAssessment { get; set; }
+    public int SelectedTabIndex { get; set; } = 1;
     
     public AssessmentViewModel() : base()
     {

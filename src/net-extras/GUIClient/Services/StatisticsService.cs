@@ -39,8 +39,8 @@ public class StatisticsService: ServiceBase, IStatisticsService
         }
         catch (Exception ex)
         {
-            _logger.Error("Error getting user info ExMessage}", ex.Message);
-            throw new RestComunicationException("Error getting user info", ex);
+            _logger.Error("Error getting risks over time message:{0}", ex.Message);
+            throw new RestComunicationException("Error getting risks over time", ex);
         }
         
     }

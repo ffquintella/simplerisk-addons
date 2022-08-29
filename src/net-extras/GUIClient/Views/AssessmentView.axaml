@@ -26,12 +26,12 @@
                     </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <TabControl Grid.Column="1" Name="AssessmentTabs">
-            <TabItem Header="{Binding StrAnswers, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
+        <TabControl Grid.Column="1" Name="AssessmentTabs" >
+            <TabItem Header="{Binding StrQuestions, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
                 Tab 1
             </TabItem>
-            <TabItem Header="{Binding StrQuestions, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
-                Tab 2
+            <TabItem Header="{Binding StrAnswers, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
+                Tab 1
             </TabItem>
         </TabControl>
     </Grid>
