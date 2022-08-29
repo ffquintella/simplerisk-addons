@@ -78,6 +78,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Answers.
+        /// </summary>
+        internal static string Answers {
+            get {
+                return ResourceManager.GetString("Answers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Application.
         /// </summary>
         internal static string ApplicationMN {
@@ -263,6 +272,15 @@ namespace GUIClient.Resources {
         internal static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Questions.
+        /// </summary>
+        internal static string Questions {
+            get {
+                return ResourceManager.GetString("Questions", resourceCulture);
             }
         }
         

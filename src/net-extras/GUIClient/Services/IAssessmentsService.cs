@@ -10,5 +10,5 @@ public interface IAssessmentsService
     /// Get the list of assessments frome the server
     /// </summary>
     /// <returns>The list or null</returns>
-    Task<List<Assessment>?> GetAssessments();
+    List<Assessment>? GetAssessments();
 }

@@ -12,11 +12,10 @@ public partial class AssessmentView : UserControl
         DataContext = new AssessmentViewModel();
         InitializeComponent();
         
-        var lstBox = this.FindControl<ListBox>("LstAssessments");
-        
+        /*var lstBox = this.FindControl<ListBox>("LstAssessments");
         var cntx = DataContext as AssessmentViewModel;
-        cntx.ListBox = lstBox;
-        DataContext = cntx;
+        cntx.ListBox = lstBox;*/
+        //DataContext = cntx;
     }
 
     private void InitializeComponent()

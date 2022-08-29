@@ -6,6 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.AssessmentView"
              Name="AssessmentViewName">
+    
     <Design.DataContext>
         <vm:AssessmentViewModel/>
     </Design.DataContext>
@@ -23,7 +24,14 @@
                     </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <Rectangle Grid.Column="1" Fill="red" />
+        <TabControl Grid.Column="1">
+            <TabItem Header="{Binding StrAnswers, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
+                Tab 1
+            </TabItem>
+            <TabItem Header="{Binding StrQuestions, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
+                Tab 2
+            </TabItem>
+        </TabControl>
     </Grid>
     
 </UserControl>

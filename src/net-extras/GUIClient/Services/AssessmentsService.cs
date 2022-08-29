@@ -14,14 +14,14 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         
     }
     
-    public async Task<List<Assessment>?> GetAssessments()
+    public List<Assessment>? GetAssessments()
     {
         var client = _restService.GetClient();
         var request = new RestRequest("/Assessments");
 
         try
         {
-            var response = await client.GetAsync<List<Assessment>>(request);
+            var response = client.Get<List<Assessment>>(request);
             return response;
         }
         catch (Exception ex)

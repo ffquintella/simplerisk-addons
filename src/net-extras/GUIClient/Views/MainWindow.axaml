@@ -54,7 +54,6 @@
                                   DataContext="{Binding DeviceViewModel}"
                                   IsVisible="{Binding $parent.DataContext.ViewDeviceIsVisible}" />
                 <views:AssessmentView Grid.Row="1" Margin="10"
-                                  DataContext="{Binding DeviceViewModel}"
                                   IsVisible="{Binding $parent.DataContext.AssessmentIsVisible}" />
                 
             </Grid>
