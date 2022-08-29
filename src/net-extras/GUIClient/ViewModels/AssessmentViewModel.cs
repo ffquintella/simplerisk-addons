@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Avalonia.Controls;
 using DAL.Entities;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
@@ -11,15 +13,15 @@ namespace GUIClient.ViewModels;
 public class AssessmentViewModel: ViewModelBase
 {
     
-    
+    public ListBox ListBox { get; set; }
     public string StrAssessments { get; }
     private bool _isInitialized = false;
     
     private IAssessmentsService _assessmentsService;
     
-    private List<Assessment> _assessments;
+    private ObservableCollection<Assessment> _assessments;
     
-    public List<Assessment> Assessments
+    public ObservableCollection<Assessment> Assessments
     {
         get => _assessments;
         set => this.RaiseAndSetIfChanged(ref _assessments, value);
@@ -28,7 +30,7 @@ public class AssessmentViewModel: ViewModelBase
     public AssessmentViewModel()
     {
         
-        _assessments = new List<Assessment>();
+        _assessments = new ObservableCollection<Assessment>();
         _assessmentsService = GetService<IAssessmentsService>();
         
         StrAssessments = Localizer["Assessments"];
@@ -36,9 +38,10 @@ public class AssessmentViewModel: ViewModelBase
         {
             Initialize();
         };
+
+
     }
-
-
+    
     private async void Initialize()
     {
         if (!_isInitialized)
@@ -50,8 +53,9 @@ public class AssessmentViewModel: ViewModelBase
                 Logger.Error("Assessments are null");
                 throw new RestComunicationException("Error getting assessments");
             }
-            Assessments = assessments;
-            
+            Assessments = new ObservableCollection<Assessment>(assessments);
+            ListBox.Items = Assessments;
+
         }
     }
     

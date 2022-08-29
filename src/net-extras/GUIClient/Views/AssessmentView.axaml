@@ -4,22 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:GUIClient.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="GUIClient.Views.AssessmentView">
+             x:Class="GUIClient.Views.AssessmentView"
+             Name="AssessmentViewName">
     <Design.DataContext>
         <vm:AssessmentViewModel/>
     </Design.DataContext>
 
     <Grid ColumnDefinitions="Auto, *">
-        <StackPanel Grid.Column="0">
+        <StackPanel Grid.Column="0" MinWidth="250">
             <TextBlock Classes="header" Text="{Binding StrAssessments, Mode=OneTime}" TextAlignment="Center"/>
-            <ListBox Items="{Binding Assessments}" Width="200">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border Background="Red" CornerRadius="4" Padding="4">
-                            <TextBlock Text="{Binding .Name}"/>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+            <ListBox Name="LstAssessments"  Items="{Binding Assessments}" SelectionMode="Single"
+                     HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
+                     ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
     </Grid>
