@@ -18,7 +18,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Grid RowDefinitions="30, Auto">
+    <Grid RowDefinitions="30, *">
         <!-- Menu -->
         <Grid Grid.Row="0" ColumnDefinitions="Auto, *">
             <Menu Grid.Column="0">
@@ -34,8 +34,8 @@
                         </MenuItem-->
             </Menu>   
         </Grid>
-        <StackPanel Grid.Row="1">
-            <ExperimentalAcrylicBorder Grid.Column="1" IsHitTestVisible="False" IsEnabled="True">
+        <Grid Grid.Row="1" RowDefinitions="*">
+            <ExperimentalAcrylicBorder  IsHitTestVisible="False" IsEnabled="True">
                 <ExperimentalAcrylicBorder.Material>
                     <ExperimentalAcrylicMaterial
                         BackgroundSource="Digger"
@@ -56,8 +56,9 @@
                 <views:AssessmentView Grid.Row="1" Margin="10"
                                   DataContext="{Binding DeviceViewModel}"
                                   IsVisible="{Binding $parent.DataContext.AssessmentIsVisible}" />
+                
             </Grid>
-        </StackPanel>
+        </Grid>
     </Grid>
     
 
