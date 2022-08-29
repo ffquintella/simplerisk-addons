@@ -9,7 +9,7 @@ namespace GUIClient.Services;
 
 public class AssessmentsService: ServiceBase, IAssessmentsService
 {
-    public AssessmentsService(RestService restService) : base(restService)
+    public AssessmentsService(IRestService restService) : base(restService)
     {
         
     }

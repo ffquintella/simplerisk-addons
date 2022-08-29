@@ -11,10 +11,16 @@
 
     <Grid ColumnDefinitions="Auto, *">
         <StackPanel Grid.Column="0">
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                <TextBlock Classes="header" Text="{Binding StrAssessments, Mode=OneTime}" TextAlignment="Center"/>
-                <ListBox />
-            </StackPanel>    
+            <TextBlock Classes="header" Text="{Binding StrAssessments, Mode=OneTime}" TextAlignment="Center"/>
+            <ListBox Items="{Binding Assessments}" Width="200">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="Red" CornerRadius="4" Padding="4">
+                            <TextBlock Text="{Binding .Name}"/>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
     </Grid>
     

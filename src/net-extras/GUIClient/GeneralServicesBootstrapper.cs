@@ -34,6 +34,8 @@ public class GeneralServicesBootstrapper
         services.RegisterLazySingleton<IStatisticsService>(() => new StatisticsService(
             resolver.GetService<IRestService>()
         ));
+        
+        services.RegisterLazySingleton<IAssessmentsService>(() => new AssessmentsService(resolver.GetService<IRestService>()));
 
         services.RegisterLazySingleton<IRestService>(() => new RestService(
             resolver.GetService<ILoggerFactory>(),
