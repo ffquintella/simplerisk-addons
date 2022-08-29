@@ -14,7 +14,9 @@
     <Grid ColumnDefinitions="Auto, *" >
         <Grid Grid.Column="0" RowDefinitions="Auto, *" >
             <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrAssessments, Mode=OneTime}" TextAlignment="Center"/>
-            <ListBox Grid.Row="1" Name="LstAssessments"  Items="{Binding Assessments}" SelectionMode="Single"
+            <ListBox Grid.Row="1" Name="LstAssessments"  
+                     Items="{Binding Assessments}" SelectionMode="Single"
+                     SelectedItem="{Binding SelectedAssessment}"
                      HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
                      ScrollViewer.HorizontalScrollBarVisibility="Visible">
                     <ListBox.ItemTemplate>

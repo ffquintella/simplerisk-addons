@@ -32,6 +32,8 @@ public class AssessmentViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _assessments, value);
     }
     
+    public Assessment SelectedAssessment { get; set; }
+    
     public AssessmentViewModel() : base()
     {
         
