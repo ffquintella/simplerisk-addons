@@ -14,9 +14,9 @@ namespace GUIClient.ViewModels;
 
 public class DashboardViewModel: ViewModelBase
 {
-    public IStringLocalizer _localizer;
+    
     public IStatisticsService _statisticsService;
-    public IAuthenticationService _authenticationService;
+    
     
     private bool _initialized = false;
     
@@ -41,18 +41,15 @@ public class DashboardViewModel: ViewModelBase
     
     public DashboardViewModel()
     {
-        var localizationService = GetService<ILocalizationService>();
-        _localizer = localizationService.GetLocalizer();
         _statisticsService = GetService<IStatisticsService>();
-        _authenticationService = GetService<IAuthenticationService>();
 
-        _authenticationService.AuthenticationSucceeded += (obj, args) =>
+        AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
             Initialize();
         };
         
-        StrWelcome = _localizer["WelcomeMSG"];
-        StrRisksOverTime = _localizer["RisksOverTime"];
+        StrWelcome = Localizer["WelcomeMSG"];
+        StrRisksOverTime = Localizer["RisksOverTime"];
     }
     
     public void Initialize()
@@ -86,5 +83,5 @@ public class DashboardViewModel: ViewModelBase
             _initialized = true;
         }
     }
-    private static T GetService<T>() => Locator.Current.GetService<T>();
+    
 }

@@ -6,15 +6,28 @@ namespace GUIClient.ViewModels;
 
 public class AssessmentViewModel: ViewModelBase
 {
-    public IStringLocalizer _localizer;
     
-    public string StrAssessments { get; } 
+    
+    public string StrAssessments { get; }
+    private bool _isInitialized = false;
     
     public AssessmentViewModel()
     {
-        var localizationService = GetService<ILocalizationService>();
-        _localizer = localizationService.GetLocalizer();
-        StrAssessments = _localizer["Assessments"];
+        StrAssessments = Localizer["Assessments"];
+        AuthenticationService.AuthenticationSucceeded += (obj, args) =>
+        {
+            Initialize();
+        };
     }
-    private static T GetService<T>() => Locator.Current.GetService<T>();
+
+
+    private void Initialize()
+    {
+        if (!_isInitialized)
+        {
+            _isInitialized = true;
+        }
+    }
+    
+    
 }

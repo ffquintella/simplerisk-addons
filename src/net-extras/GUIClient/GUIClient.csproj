@@ -84,6 +84,7 @@
       </Content>
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\DAL\DAL.csproj" />
       <ProjectReference Include="..\Model\Model.csproj" />
       <ProjectReference Include="..\Tools\Tools.csproj" />
     </ItemGroup>

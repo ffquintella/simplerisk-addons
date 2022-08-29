@@ -13,6 +13,7 @@
         <StackPanel Grid.Column="0">
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
                 <TextBlock Classes="header" Text="{Binding StrAssessments, Mode=OneTime}" TextAlignment="Center"/>
+                <ListBox />
             </StackPanel>    
         </StackPanel>
     </Grid>

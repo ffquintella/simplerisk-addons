@@ -23,7 +23,6 @@ public class DeviceViewModel: ViewModelBase
     }
 
     private IClientService _clientService;
-    private IStringLocalizer _localizer;
     
     private string StrName { get;  }
     private string StrComputer { get;  }
@@ -33,17 +32,15 @@ public class DeviceViewModel: ViewModelBase
     public ReactiveCommand<int, Unit> BtApproveClicked { get; }
     public ReactiveCommand<int, Unit> BtRejectClicked { get; }
     public ReactiveCommand<int, Unit> BtDeleteClicked { get; }
-    public DeviceViewModel(
-        ILocalizationService localizationService,
-        IClientService clientService)
+    public DeviceViewModel()
     {
-        _localizer = localizationService.GetLocalizer();
+        var clientService = GetService<IClientService>();
         _clientService = clientService;
 
-        StrName = _localizer["Name"];
-        StrComputer = _localizer["Computer"];
-        StrLoggedAccount= _localizer["LoggedAccount"];
-        StrActions= _localizer["Actions"];
+        StrName = Localizer["Name"];
+        StrComputer = Localizer["Computer"];
+        StrLoggedAccount= Localizer["LoggedAccount"];
+        StrActions= Localizer["Actions"];
         
         BtApproveClicked = ReactiveCommand.Create<int>(ExecuteAproveOrder);
         BtRejectClicked = ReactiveCommand.Create<int>(ExecuteRejectOrder);
@@ -60,8 +57,8 @@ public class DeviceViewModel: ViewModelBase
             var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                 {
-                    ContentTitle = _localizer["Warning"],
-                    ContentMessage = _localizer["ClientApproveErrorMSG"]  ,
+                    ContentTitle = Localizer["Warning"],
+                    ContentMessage = Localizer["ClientApproveErrorMSG"]  ,
                     Icon = MessageBox.Avalonia.Enums.Icon.Warning,
                 });
                         
@@ -81,8 +78,8 @@ public class DeviceViewModel: ViewModelBase
             var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                 {
-                    ContentTitle = _localizer["Warning"],
-                    ContentMessage = _localizer["ClientRejectErrorMSG"]  ,
+                    ContentTitle = Localizer["Warning"],
+                    ContentMessage = Localizer["ClientRejectErrorMSG"]  ,
                     Icon = MessageBox.Avalonia.Enums.Icon.Warning,
                 });
                         
@@ -100,8 +97,8 @@ public class DeviceViewModel: ViewModelBase
         var messageBoxConfirm = MessageBox.Avalonia.MessageBoxManager
             .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
             {
-                ContentTitle = _localizer["Warning"],
-                ContentMessage = _localizer["ClientDeleteConfirmationMSG"]  ,
+                ContentTitle = Localizer["Warning"],
+                ContentMessage = Localizer["ClientDeleteConfirmationMSG"]  ,
                 ButtonDefinitions = ButtonEnum.OkAbort,
                 Icon = Icon.Question,
             });
@@ -117,8 +114,8 @@ public class DeviceViewModel: ViewModelBase
                 var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                     .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                     {
-                        ContentTitle = _localizer["Warning"],
-                        ContentMessage = _localizer["ClientRejectErrorMSG"]  ,
+                        ContentTitle = Localizer["Warning"],
+                        ContentMessage = Localizer["ClientRejectErrorMSG"]  ,
                         Icon = MessageBox.Avalonia.Enums.Icon.Warning,
                     });
                         

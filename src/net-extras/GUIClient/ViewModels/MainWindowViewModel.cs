@@ -39,8 +39,7 @@ namespace GUIClient.ViewModels
         }
         
         private DeviceViewModel _deviceViewModel = 
-            new DeviceViewModel(GetService<ILocalizationService>(), 
-                GetService<IClientService>());
+            new DeviceViewModel();
 
         public DeviceViewModel DeviceViewModel
         {
