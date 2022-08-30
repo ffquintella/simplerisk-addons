@@ -5,6 +5,7 @@
              xmlns:vm="using:GUIClient.ViewModels"
              xmlns:sys="using:System"
              xmlns:ent="using:DAL.Entities"
+             xmlns:convertes="clr-namespace:GUIClient.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.AssessmentView"
              Name="AssessmentViewName">
@@ -13,6 +14,10 @@
         <vm:AssessmentViewModel/>
     </Design.DataContext>
 
+    <UserControl.Resources>
+        <convertes:IntEqualConverter x:Key="intEqualConverter"/>
+    </UserControl.Resources>
+    
     <Grid ColumnDefinitions="Auto, *" >
         <Grid Grid.Column="0" RowDefinitions="Auto, *" >
             <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrAssessments, Mode=OneTime}" TextAlignment="Center"/>
@@ -42,10 +47,18 @@
                                                 Header="{Binding StrActions}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate DataType="ent:AssessmentQuestion">
-                                    <TextBlock Text="{Binding Question }"
-                                               VerticalAlignment="Center" 
-                                               HorizontalAlignment="Left" TextWrapping="Wrap"
-                                               />
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Question }"
+                                                   VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Left" TextWrapping="Wrap"
+                                        />
+                                        <TextBlock Text="#### Details ####"
+                                                   IsVisible="{Binding Id,
+                                                   Converter={StaticResource intEqualConverter},
+                                                   ConverterParameter={Binding #AssessmentViewName.DataContext.SelectedAssessmentQuestion.Id}}"
+                                                   />
+                                    </StackPanel>
+
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
