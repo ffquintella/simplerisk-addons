@@ -34,8 +34,8 @@
                         </MenuItem-->
             </Menu>   
         </Grid>
-        <Grid Grid.Row="1" RowDefinitions="*">
-            <ExperimentalAcrylicBorder  IsHitTestVisible="False" IsEnabled="True">
+        <Grid Grid.Row="1" RowDefinitions="Auto, *">
+            <ExperimentalAcrylicBorder Grid.Row="0"  IsHitTestVisible="False" IsEnabled="True">
                 <ExperimentalAcrylicBorder.Material>
                     <ExperimentalAcrylicMaterial
                         BackgroundSource="Digger"
@@ -45,7 +45,7 @@
                 </ExperimentalAcrylicBorder.Material>
             </ExperimentalAcrylicBorder>
                  
-            <Grid RowDefinitions="Auto, *, Auto" Margin="0 0">
+            <Grid Grid.Row="1" RowDefinitions="Auto, *, Auto" Margin="0 0">
                 
                 <!-- Navigation Bar -->
                 <views:NavigationBar Grid.Row="0" ParentWindow="{Binding ElementName=MainWindowName}" Margin="0 5 0 0 "/>
