@@ -32,12 +32,14 @@
             <TabItem Header="{Binding StrQuestions, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
                 <DataGrid Name="QuestionsDataGrid" 
                           Items="{Binding  AssessmentQuestions}" 
-                          AutoGenerateColumns="False">
+                          AutoGenerateColumns="False"
+                          SelectedItem="{Binding SelectedAssessmentQuestion}">
                     <DataGrid.Columns>
                         <DataGridTextColumn IsReadOnly="True" 
                                             Header="ID" 
                                             Binding="{Binding Id}"/>
-                        <DataGridTemplateColumn Width="*" Header="{Binding StrActions}">
+                        <DataGridTemplateColumn Width="*" 
+                                                Header="{Binding StrActions}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate DataType="ent:AssessmentQuestion">
                                     <TextBlock Text="{Binding Question }"
