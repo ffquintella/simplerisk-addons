@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Media.TextFormatting.Unicode;
 using DAL.Entities;
@@ -119,7 +120,7 @@ public class AssessmentViewModel: ViewModelBase
 
     private void UpdateAssessmentQuestionAnswers(int assessmentQuestionId)
     {
-        //TODO: Impelment this
+        AssessmentQuestionAnswers = AssessmentAnswers.Where(answ => answ.QuestionId == assessmentQuestionId).ToList();
     }
     public AssessmentViewModel() : base()
     {
