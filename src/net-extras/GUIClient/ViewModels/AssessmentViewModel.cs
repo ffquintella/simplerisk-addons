@@ -49,6 +49,7 @@ public class AssessmentViewModel: ViewModelBase
                 {
                     case 0:
                         UpdateSelectedQuestions( value.Id);
+                        UpdateSelectedAnswers(value.Id);
                         break;
                 }                
             }
@@ -56,6 +57,26 @@ public class AssessmentViewModel: ViewModelBase
         }
     }
 
+    private AssessmentQuestion? _selectedAssessmentQuestion;
+    
+    public AssessmentQuestion? SelectedAssessmentQuestion
+    {
+        get
+        {
+            return _selectedAssessmentQuestion;
+        }
+        set
+        {
+            if (value != null)
+            {
+
+                UpdateAssessmentQuestionAnswers( value.Id);
+            
+            }
+            this.RaiseAndSetIfChanged(ref _selectedAssessmentQuestion, value);
+        }
+    }
+    
     public int SelectedTabIndex { get; set; } = 0;
 
     private List<AssessmentQuestion> _assessmentQuestions;
@@ -71,6 +92,34 @@ public class AssessmentViewModel: ViewModelBase
         var questions = _assessmentsService.GetAssessmentQuestions(assessmentId);
         if (questions == null) return;
         AssessmentQuestions = questions;
+    }
+    
+    private List<AssessmentAnswer> _assessmentAnswers;
+
+    public List<AssessmentAnswer> AssessmentAnswers
+    {
+        get => _assessmentAnswers;
+        set => this.RaiseAndSetIfChanged(ref _assessmentAnswers, value);
+    }
+    
+    private void UpdateSelectedAnswers(int assessmentId)
+    {
+        var answers = _assessmentsService.GetAssessmentAnswers(assessmentId);
+        if (answers == null) return;
+        AssessmentAnswers = answers;
+    }
+    
+    private List<AssessmentAnswer> _assessmentQuestionAnswers;
+
+    public List<AssessmentAnswer> AssessmentQuestionAnswers
+    {
+        get => _assessmentQuestionAnswers;
+        set => this.RaiseAndSetIfChanged(ref _assessmentQuestionAnswers, value);
+    }
+
+    private void UpdateAssessmentQuestionAnswers(int assessmentQuestionId)
+    {
+        //TODO: Impelment this
     }
     public AssessmentViewModel() : base()
     {

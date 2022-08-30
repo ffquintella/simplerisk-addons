@@ -48,6 +48,22 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
             return null;
         }
     }
+    
+    public List<AssessmentAnswer>? GetAssessmentAnswers(int assessmentId)
+    {
+        var client = _restService.GetClient();
+        var request = new RestRequest($"/Assessments/{assessmentId}/Answers");
 
+        try
+        {
+            var response = client.Get<List<AssessmentAnswer>>(request);
+            return response;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error getting assessments answers: {0}", ex.Message);
+            return null;
+        }
+    }
 
 }

@@ -3,6 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:GUIClient.ViewModels"
+             xmlns:sys="using:System"
+             xmlns:ent="using:DAL.Entities"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.AssessmentView"
              Name="AssessmentViewName">
@@ -35,9 +37,19 @@
                         <DataGridTextColumn IsReadOnly="True" 
                                             Header="ID" 
                                             Binding="{Binding Id}"/>
-                        <DataGridTextColumn IsReadOnly="True" 
+                        <DataGridTemplateColumn Width="*" Header="{Binding StrActions}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="ent:AssessmentQuestion">
+                                    <TextBlock Text="{Binding Question }"
+                                               VerticalAlignment="Center" 
+                                               HorizontalAlignment="Left" TextWrapping="Wrap"
+                                               />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <!--DataGridTextColumn IsReadOnly="True" 
                                             Header="Question"
-                                            Binding="{Binding Question}" />
+                                            Binding="{Binding Question}" /-->
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

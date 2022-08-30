@@ -18,4 +18,11 @@ public interface IAssessmentsService
     /// <param name="assessmentId"></param>
     /// <returns>The question list or null if not found</returns>
     List<AssessmentQuestion>? GetAssessmentQuestions(int assessmentId);
+
+    /// <summary>
+    /// Get the assessment answers from the server
+    /// </summary>
+    /// <param name="assessmentId"></param>
+    /// <returns></returns>
+    List<AssessmentAnswer>? GetAssessmentAnswers(int assessmentId);
 }
