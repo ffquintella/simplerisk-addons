@@ -8,12 +8,14 @@
         x:Class="GUIClient.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Simplerisk .Net Client"
-        TransparencyLevelHint="AcrylicBlur"
-        Background="Transparent"
         ExtendClientAreaToDecorationsHint="True"
         Name="MainWindowName"
         Opened="LoadCheck">
-
+<!--
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent" 
+-->
+    
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
