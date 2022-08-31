@@ -16,11 +16,11 @@ public class IntEqualConverter: IValueConverter
                             object? parameter, 
                             CultureInfo culture)
     {
-        if (value is int sourceText && parameter is int compareText
+        if (value is int sourceValue && parameter is int compareValue
                                        && targetType.IsAssignableTo(typeof(bool)))
         {
 
-            if (sourceText == compareText)
+            if (sourceValue == compareValue)
             {
                 return true;
             }
