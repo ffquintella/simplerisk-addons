@@ -20,8 +20,9 @@
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="Auto, *" >
-        <Grid Grid.Column="0" RowDefinitions="Auto, *, Auto" >
+        <Grid Grid.Column="0" RowDefinitions="Auto, *, Auto, Auto" >
             <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrAssessments, Mode=OneTime}" TextAlignment="Center"/>
+            <!-- Assessment List -->
             <ListBox Grid.Row="1" Name="LstAssessments"  
                      Items="{Binding Assessments}" SelectionMode="Single"
                      SelectedItem="{Binding SelectedAssessment}"
@@ -33,8 +34,21 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
             </ListBox>
-            <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto">
-                <Button Grid.Column="0">
+            <!-- New Assessment Bar -->
+            <Grid Grid.Row="2" ColumnDefinitions="*, Auto, Auto" 
+                  IsVisible="{Binding AssessmentAddBarVisible}">
+                <TextBox Grid.Column="0" Name="TxtAssessmentName" Text="{Binding TxtAssessmentAddValue, Mode=TwoWay}" />
+                <Button Grid.Column="1">
+                    <material:MaterialIcon Kind="Check"/>
+                </Button>
+                <Button Grid.Column="2" Name="TxtCancelAddAssessment" 
+                        Command="{Binding BtCancelAddAssessmentClicked}">
+                    <material:MaterialIcon Kind="Cancel"/>
+                </Button>
+            </Grid>
+            <!-- Assessment Control Bar -->
+            <Grid Grid.Row="3" ColumnDefinitions="Auto, *, Auto">
+                <Button Grid.Column="0" Name="BtAddAssessment" Command="{Binding BtAddAssessmentClicked}">
                     <material:MaterialIcon Kind="Add"/>
                 </Button>
                 <Button Grid.Column="2" IsEnabled="{Binding !!SelectedAssessment}">
@@ -42,7 +56,9 @@
                 </Button>
             </Grid>
         </Grid>
+        <!-- Data TABS -->
         <TabControl Grid.Column="1" Name="AssessmentTabs" SelectedIndex="{Binding SelectedTabIndex}">
+            <!-- QUESTIONS TAB -->
             <TabItem Header="{Binding StrQuestions, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
                 <DataGrid Name="QuestionsDataGrid" 
                           Items="{Binding  AssessmentQuestions}" 
@@ -97,6 +113,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
+            <!-- ANSWERS TAB -->
             <TabItem Header="{Binding StrAnswers, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
                 Tab 1
             </TabItem>

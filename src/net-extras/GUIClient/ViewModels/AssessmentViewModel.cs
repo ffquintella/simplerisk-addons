@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
 using Avalonia.Controls;
 using Avalonia.Media.TextFormatting.Unicode;
 using DAL.Entities;
@@ -111,7 +112,6 @@ public class AssessmentViewModel: ViewModelBase
     }
     
     private List<AssessmentAnswer> _assessmentQuestionAnswers;
-
     public List<AssessmentAnswer> AssessmentQuestionAnswers
     {
         get => _assessmentQuestionAnswers;
@@ -122,7 +122,18 @@ public class AssessmentViewModel: ViewModelBase
     {
         AssessmentQuestionAnswers = AssessmentAnswers.Where(answ => answ.QuestionId == assessmentQuestionId).ToList();
     }
+
+    private bool _assessmentAddBarVisible = false;
+    public bool AssessmentAddBarVisible
+    {
+        get => _assessmentAddBarVisible;
+        set => this.RaiseAndSetIfChanged(ref _assessmentAddBarVisible, value);
+    }
     public string StrAnswer { get; }
+
+    public string TxtAssessmentAddValue { get; set; } = "";
+    public ReactiveCommand<Unit, Unit> BtAddAssessmentClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtCancelAddAssessmentClicked { get; }
     public AssessmentViewModel() : base()
     {
         
@@ -135,12 +146,25 @@ public class AssessmentViewModel: ViewModelBase
         StrQuestions = Localizer["Questions"];
         StrAnswer = Localizer["Answer"];
         
+        BtAddAssessmentClicked = ReactiveCommand.Create(ExecuteAddAssessment);
+        BtCancelAddAssessmentClicked = ReactiveCommand.Create(ExecuteCancelAddAssessment);
+        
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
             Initialize();
         };
-
-
+    }
+    
+    private void ExecuteAddAssessment()
+    {
+        TxtAssessmentAddValue = "";
+        AssessmentAddBarVisible = true;
+    }
+    
+    private void ExecuteCancelAddAssessment()
+    {
+        TxtAssessmentAddValue = "";
+        AssessmentAddBarVisible = false;
     }
     
     private void Initialize()
