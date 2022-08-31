@@ -184,8 +184,8 @@ public class AssessmentViewModel: ViewModelBase
                 {
                     ContentTitle = Localizer["Warning"],
                     ContentMessage = Localizer["AssessmentNameInvalidMSG"],
-                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
                     Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
                 });
                             
             await messageBoxStandardWindow.Show(); 
