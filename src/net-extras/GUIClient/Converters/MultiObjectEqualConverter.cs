@@ -46,10 +46,5 @@ public class MultiObjectEqualConverter: IMultiValueConverter
         return new BindingNotification(new InvalidCastException(), BindingErrorType.Error);
     }
     
-    public object ConvertBack( object? value, Type targetType, object? parameter, CultureInfo culture )
-    {
-        throw new NotSupportedException();
-    }
-
-  
+ 
 }

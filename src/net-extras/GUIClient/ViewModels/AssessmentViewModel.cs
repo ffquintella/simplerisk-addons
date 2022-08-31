@@ -122,6 +122,7 @@ public class AssessmentViewModel: ViewModelBase
     {
         AssessmentQuestionAnswers = AssessmentAnswers.Where(answ => answ.QuestionId == assessmentQuestionId).ToList();
     }
+    public string StrAnswer { get; }
     public AssessmentViewModel() : base()
     {
         
@@ -132,6 +133,7 @@ public class AssessmentViewModel: ViewModelBase
         StrAssessments = Localizer["Assessments"];
         _strAnswers = Localizer["Answers"];
         StrQuestions = Localizer["Questions"];
+        StrAnswer = Localizer["Answer"];
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {

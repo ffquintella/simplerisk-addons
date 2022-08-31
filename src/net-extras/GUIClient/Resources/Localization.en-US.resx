@@ -126,4 +126,7 @@
     <data name="Questions" xml:space="preserve">
         <value>Questions</value>
     </data>
+    <data name="Answer" xml:space="preserve">
+        <value>Answer</value>
+    </data>
 </root>

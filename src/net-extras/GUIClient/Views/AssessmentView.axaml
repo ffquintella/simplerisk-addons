@@ -16,6 +16,7 @@
 
     <UserControl.Resources>
         <convertes:MultiObjectEqualConverter x:Key="multiObjectEqualConverter"/>
+        <convertes:AssessmentAnswerSelectionConverter x:Key="assessmentAnswerSelectionConverter"/>
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="Auto, *" >
@@ -52,16 +53,31 @@
                                                    VerticalAlignment="Center" 
                                                    HorizontalAlignment="Left" TextWrapping="Wrap"
                                         />
-                                        <TextBlock Text="#### Details ####">
-                                            <TextBlock.IsVisible>
+                                        <ItemsControl Name="Details"  
+                                                      Items="{Binding #AssessmentViewName.DataContext.AssessmentQuestionAnswers}" >
+                                            
+                                            <ItemsControl.IsVisible>
                                                 <MultiBinding Converter="{StaticResource multiObjectEqualConverter}">
                                                     <Binding Path="Id"/>
                                                     <Binding RelativeSource="{RelativeSource  FindAncestor, AncestorType={x:Type DataGrid} }"
                                                              Path="SelectedItem.Id"/>
-                                                            
                                                 </MultiBinding>
-                                            </TextBlock.IsVisible>
-                                        </TextBlock>
+                                            </ItemsControl.IsVisible>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Vertical" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                                        <TextBlock  Text="{Binding #AssessmentViewName.DataContext.StrAnswer}"/>
+                                                        <TextBlock Text=": "/><TextBlock  Text="{Binding Answer}"/>
+                                                        <TextBlock Text=" - Risk: "/><TextBlock Text="{Binding RiskScore}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
                                     </StackPanel>
 
                                 </DataTemplate>
