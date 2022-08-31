@@ -15,7 +15,7 @@
     </Design.DataContext>
 
     <UserControl.Resources>
-        <convertes:IntEqualConverter x:Key="intEqualConverter"/>
+        <convertes:MultiObjectEqualConverter x:Key="multiObjectEqualConverter"/>
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="Auto, *" >
@@ -52,11 +52,16 @@
                                                    VerticalAlignment="Center" 
                                                    HorizontalAlignment="Left" TextWrapping="Wrap"
                                         />
-                                        <TextBlock Text="#### Details ####"
-                                                   IsVisible="{Binding Id,
-                                                   Converter={StaticResource intEqualConverter},
-                                                   ConverterParameter={Binding #AssessmentViewName.DataContext.SelectedAssessmentQuestion.Id}}"
-                                                   />
+                                        <TextBlock Text="#### Details ####">
+                                            <TextBlock.IsVisible>
+                                                <MultiBinding Converter="{StaticResource multiObjectEqualConverter}">
+                                                    <Binding Path="Id"/>
+                                                    <Binding RelativeSource="{RelativeSource  FindAncestor, AncestorType={x:Type DataGrid} }"
+                                                             Path="SelectedItem.Id"/>
+                                                            
+                                                </MultiBinding>
+                                            </TextBlock.IsVisible>
+                                        </TextBlock>
                                     </StackPanel>
 
                                 </DataTemplate>
