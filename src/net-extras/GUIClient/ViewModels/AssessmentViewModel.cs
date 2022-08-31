@@ -140,7 +140,7 @@ public class AssessmentViewModel: ViewModelBase
     } 
     public ReactiveCommand<Unit, Unit> BtAddAssessmentClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelAddAssessmentClicked { get; }
-    public ReactiveCommand<Unit, Unit> BtSaveAssessmentClicked { get; }
+    public ReactiveCommand<bool, Unit> BtSaveAssessmentClicked { get; }
     public AssessmentViewModel() : base()
     {
         
@@ -155,7 +155,7 @@ public class AssessmentViewModel: ViewModelBase
         
         BtAddAssessmentClicked = ReactiveCommand.Create(ExecuteAddAssessment);
         BtCancelAddAssessmentClicked = ReactiveCommand.Create(ExecuteCancelAddAssessment);
-        BtSaveAssessmentClicked = ReactiveCommand.Create(ExecuteSaveAssessment);
+        BtSaveAssessmentClicked = ReactiveCommand.Create<bool>(ExecuteSaveAssessment);
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
@@ -175,11 +175,11 @@ public class AssessmentViewModel: ViewModelBase
         AssessmentAddBarVisible = false;
     }
     
-    private async void ExecuteSaveAssessment()
+    private async void ExecuteSaveAssessment(bool update = false)
     {
         if(TxtAssessmentAddValue.Trim() == "")
         {
-            var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+            var msgBox1 = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                 {
                     ContentTitle = Localizer["Warning"],
@@ -188,9 +188,49 @@ public class AssessmentViewModel: ViewModelBase
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 });
                             
-            await messageBoxStandardWindow.Show(); 
+            await msgBox1.Show(); 
             return;
         }
+        
+        if(Assessments.FirstOrDefault(ass => ass.Name == TxtAssessmentAddValue) != null)
+        {
+            var msgBox2 = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Warning"],
+                    ContentMessage = Localizer["AssessmentNameExistsMSG"],
+                    Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                });
+                            
+            await msgBox2.Show(); 
+            return;
+        }
+
+        var result = _assessmentsService.Create(new Assessment
+        {
+            Name = TxtAssessmentAddValue,
+        });
+
+        if (result.Item1 == 0)
+        {
+            Assessments.Add(result.Item2!);
+            TxtAssessmentAddValue = "";
+            AssessmentAddBarVisible = false;
+            return ;
+        }
+
+        var msgBox3 = MessageBox.Avalonia.MessageBoxManager
+            .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+            {
+                ContentTitle = Localizer["Warning"],
+                ContentMessage = Localizer["ErrorCreatingAssessmentMSG"],
+                Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            });
+                            
+        await msgBox3.Show(); 
+        return;
         
         //TxtAssessmentAddValue = "";
         //AssessmentAddBarVisible = false;

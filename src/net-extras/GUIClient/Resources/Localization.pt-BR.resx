@@ -132,4 +132,10 @@
     <data name="AssessmentNameInvalidMSG" xml:space="preserve">
         <value>O nome do levantamento é inválido</value>
     </data>
+    <data name="AssessmentNameExistsMSG" xml:space="preserve">
+        <value>O nome do levantamento já existe.</value>
+    </data>
+    <data name="ErrorCreatingAssessmentMSG" xml:space="preserve">
+        <value>Erro criando levantamento.</value>
+    </data>
 </root>

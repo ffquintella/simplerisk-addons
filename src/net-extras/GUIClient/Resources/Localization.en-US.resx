@@ -132,4 +132,10 @@
     <data name="AssessmentNameInvalidMSG" xml:space="preserve">
         <value>The assessment name is invalid</value>
     </data>
+    <data name="AssessmentNameExistsMSG" xml:space="preserve">
+        <value>The assessment name alreay exists.</value>
+    </data>
+    <data name="ErrorCreatingAssessmentMSG" xml:space="preserve">
+        <value>Error creating assessment.</value>
+    </data>
 </root>

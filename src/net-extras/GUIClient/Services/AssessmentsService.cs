@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DAL.Entities;
 using RestSharp;
 using Serilog;
+using System.Text.Json;
 
 namespace GUIClient.Services;
 
@@ -28,6 +29,33 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         {
             _logger.Error("Error getting assessments: {0}", ex.Message);
             return null;
+        }
+        
+    }
+
+    public Tuple<int, Assessment?> Create(Assessment assessment)
+    {
+        var client = _restService.GetClient();
+        var request = new RestRequest("/Assessments");
+        request.AddJsonBody(assessment);
+        
+        try
+        {
+            var response = client.Post<Assessment>(request);
+            
+            if (response!= null)
+            {
+                
+                return new Tuple<int, Assessment?>(0, response);
+            }
+            
+            return new Tuple<int, Assessment?>(-1, null);
+            
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error creating assessment: {0}", ex.Message);
+            return new Tuple<int, Assessment?>(-1, null);
         }
         
     }

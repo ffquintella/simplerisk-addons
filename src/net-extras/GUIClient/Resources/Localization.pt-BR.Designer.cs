@@ -105,6 +105,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O nome do levantamento já existe..
+        /// </summary>
+        internal static string AssessmentNameExistsMSG {
+            get {
+                return ResourceManager.GetString("AssessmentNameExistsMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O nome do levantamento é inválido.
         /// </summary>
         internal static string AssessmentNameInvalidMSG {
@@ -173,6 +182,15 @@ namespace GUIClient.Resources {
         internal static string Environment {
             get {
                 return ResourceManager.GetString("Environment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erro criando levantamento..
+        /// </summary>
+        internal static string ErrorCreatingAssessmentMSG {
+            get {
+                return ResourceManager.GetString("ErrorCreatingAssessmentMSG", resourceCulture);
             }
         }
         
