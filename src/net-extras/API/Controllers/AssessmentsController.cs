@@ -63,6 +63,40 @@ public class AssessmentsController : ApiBaseController
         }
 
     }
+    
+    [HttpPost]
+    [Route("")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Assessment))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(string))]
+    public ActionResult<Assessment> CreateAssessment([FromBody] Assessment assessment)
+    {
+
+        try
+        {
+            Logger.Debug("Creating new assessment");
+            var operResult = _assessmentsService.Create(assessment);
+            if (operResult.Item1 == 1)
+            {
+                return Conflict("Assessment already exists");
+            }
+
+            if (operResult.Item1 == 0)
+            {
+                return CreatedAtAction(nameof(GetAssessment), new { id = assessment.Id }, assessment);
+            }
+            
+            return StatusCode(500, "Error creating assessment");
+            
+
+        }catch(Exception ex)
+        {
+            Logger.Error("Error creating assessment: {0}", ex.Message);
+            return StatusCode(500, "Error creating assessment");
+        }
+
+    }
+    
+    
     [HttpGet]
     [Route("{id}/answers")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AssessmentAnswer>))]

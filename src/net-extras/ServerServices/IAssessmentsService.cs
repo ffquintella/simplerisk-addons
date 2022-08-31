@@ -30,4 +30,11 @@ public interface IAssessmentsService
     /// <param name="id">Assessment Id</param>
     /// <returns>AssessmentQuestion List Or Null if not found</returns>
     List<AssessmentQuestion>? GetQuestions(int id);
+
+    /// <summary>
+    /// Creates a new assessment on the database
+    /// </summary>
+    /// <param name="assessment"></param>
+    /// <returns>-1 if error, 0 if ok, 1 if already exists</returns>
+    Tuple<int,Assessment?> Create(Assessment assessment);
 }
