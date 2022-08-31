@@ -5,6 +5,7 @@
              xmlns:vm="using:GUIClient.ViewModels"
              xmlns:sys="using:System"
              xmlns:ent="using:DAL.Entities"
+             xmlns:material="using:Material.Icons.Avalonia"
              xmlns:convertes="clr-namespace:GUIClient.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.AssessmentView"
@@ -16,11 +17,10 @@
 
     <UserControl.Resources>
         <convertes:MultiObjectEqualConverter x:Key="multiObjectEqualConverter"/>
-        <convertes:AssessmentAnswerSelectionConverter x:Key="assessmentAnswerSelectionConverter"/>
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="Auto, *" >
-        <Grid Grid.Column="0" RowDefinitions="Auto, *" >
+        <Grid Grid.Column="0" RowDefinitions="Auto, *, Auto" >
             <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrAssessments, Mode=OneTime}" TextAlignment="Center"/>
             <ListBox Grid.Row="1" Name="LstAssessments"  
                      Items="{Binding Assessments}" SelectionMode="Single"
@@ -33,6 +33,14 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
             </ListBox>
+            <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto">
+                <Button Grid.Column="0">
+                    <material:MaterialIcon Kind="Add"/>
+                </Button>
+                <Button Grid.Column="2" IsEnabled="{Binding !!SelectedAssessment}">
+                    <material:MaterialIcon Kind="Delete"/>
+                </Button>
+            </Grid>
         </Grid>
         <TabControl Grid.Column="1" Name="AssessmentTabs" SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem Header="{Binding StrQuestions, Mode=OneTime}"  VerticalContentAlignment="Center" Margin="10">
