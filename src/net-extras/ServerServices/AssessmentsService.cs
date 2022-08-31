@@ -33,12 +33,10 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         try
         {
             var ass = srDbContext.Assessments.Add(assessment);
-
+            srDbContext.SaveChanges();
             if (ass.IsKeySet)
             {
-                srDbContext.SaveChanges();
                 return new Tuple<int, Assessment>(0, ass.Entity);
-                
             }
         }
         catch (Exception ex)
