@@ -65,7 +65,7 @@
                                             </ItemsControl.IsVisible>
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Vertical" />
+                                                    <StackPanel Orientation="Vertical" Background="#292a33"/>
                                                 </ItemsPanelTemplate>
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
