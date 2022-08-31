@@ -38,7 +38,8 @@
             <Grid Grid.Row="2" ColumnDefinitions="*, Auto, Auto" 
                   IsVisible="{Binding AssessmentAddBarVisible}">
                 <TextBox Grid.Column="0" Name="TxtAssessmentName" Text="{Binding TxtAssessmentAddValue, Mode=TwoWay}" />
-                <Button Grid.Column="1">
+                <Button Grid.Column="1" Name="BtSaveAssessment"
+                        Command="{Binding BtSaveAssessmentClicked}">
                     <material:MaterialIcon Kind="Check"/>
                 </Button>
                 <Button Grid.Column="2" Name="TxtCancelAddAssessment" 

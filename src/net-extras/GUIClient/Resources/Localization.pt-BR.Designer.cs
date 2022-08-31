@@ -105,6 +105,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O nome do levantamento é inválido.
+        /// </summary>
+        internal static string AssessmentNameInvalidMSG {
+            get {
+                return ResourceManager.GetString("AssessmentNameInvalidMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Levantamentos.
         /// </summary>
         internal static string Assessments {

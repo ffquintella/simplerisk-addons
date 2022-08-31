@@ -129,4 +129,7 @@
     <data name="Answer" xml:space="preserve">
         <value>Resposta</value>
     </data>
+    <data name="AssessmentNameInvalidMSG" xml:space="preserve">
+        <value>O nome do levantamento é inválido</value>
+    </data>
 </root>

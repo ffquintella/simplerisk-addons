@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Media.TextFormatting.Unicode;
 using DAL.Entities;
 using GUIClient.Services;
+using MessageBox.Avalonia.DTO;
 using Microsoft.Extensions.Localization;
 using Model.Exceptions;
 using ReactiveUI;
@@ -131,9 +132,15 @@ public class AssessmentViewModel: ViewModelBase
     }
     public string StrAnswer { get; }
 
-    public string TxtAssessmentAddValue { get; set; } = "";
+    private string _txtAssessmentAddValue = "";
+    public string TxtAssessmentAddValue
+    {
+        get => _txtAssessmentAddValue; 
+        set => this.RaiseAndSetIfChanged(ref _txtAssessmentAddValue, value); 
+    } 
     public ReactiveCommand<Unit, Unit> BtAddAssessmentClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelAddAssessmentClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtSaveAssessmentClicked { get; }
     public AssessmentViewModel() : base()
     {
         
@@ -148,6 +155,7 @@ public class AssessmentViewModel: ViewModelBase
         
         BtAddAssessmentClicked = ReactiveCommand.Create(ExecuteAddAssessment);
         BtCancelAddAssessmentClicked = ReactiveCommand.Create(ExecuteCancelAddAssessment);
+        BtSaveAssessmentClicked = ReactiveCommand.Create(ExecuteSaveAssessment);
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
@@ -165,6 +173,27 @@ public class AssessmentViewModel: ViewModelBase
     {
         TxtAssessmentAddValue = "";
         AssessmentAddBarVisible = false;
+    }
+    
+    private async void ExecuteSaveAssessment()
+    {
+        if(TxtAssessmentAddValue.Trim() == "")
+        {
+            var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Warning"],
+                    ContentMessage = Localizer["AssessmentNameInvalidMSG"],
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                });
+                            
+            await messageBoxStandardWindow.Show(); 
+            return;
+        }
+        
+        //TxtAssessmentAddValue = "";
+        //AssessmentAddBarVisible = false;
     }
     
     private void Initialize()
