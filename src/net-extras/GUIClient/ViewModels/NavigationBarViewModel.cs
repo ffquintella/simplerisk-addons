@@ -89,7 +89,8 @@ public class NavigationBarViewModel: ViewModelBase
         
         var dialog = new Settings()
         {
-            DataContext = new SettingsViewModel(_configuration)
+            DataContext = new SettingsViewModel(_configuration),
+            WindowStartupLocation = WindowStartupLocation.CenterOwner
         };
         dialog.ShowDialog( parentControl.ParentWindow );
 
@@ -104,7 +105,8 @@ public class NavigationBarViewModel: ViewModelBase
 
         var dialog = new UserInfo()
         {
-            DataContext = new UserInfoViewModel(AuthenticationService.AuthenticatedUserInfo!)
+            DataContext = new UserInfoViewModel(AuthenticationService.AuthenticatedUserInfo!),
+            WindowStartupLocation = WindowStartupLocation.CenterOwner
         };
         dialog.ShowDialog( parentControl.ParentWindow );
 
