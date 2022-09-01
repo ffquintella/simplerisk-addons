@@ -37,4 +37,11 @@ public interface IAssessmentsService
     /// <param name="assessment"></param>
     /// <returns>-1 if error, 0 if ok, 1 if already exists</returns>
     Tuple<int,Assessment?> Create(Assessment assessment);
+
+    /// <summary>
+    /// Deletes the assessment specified by id
+    /// </summary>
+    /// <param name="assessment">assessment</param>
+    /// <returns>-1 if error, 0 if ok</returns>
+    int Delete(Assessment assessment);
 }

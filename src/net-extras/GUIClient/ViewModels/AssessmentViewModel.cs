@@ -187,7 +187,7 @@ public class AssessmentViewModel: ViewModelBase
                 ContentMessage = Localizer["ConfirmDeleteAssessmentMSG"] + SelectedAssessment.Name,
                 ButtonDefinitions = ButtonEnum.OkCancel,
                 Icon = MessageBox.Avalonia.Enums.Icon.Warning,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
             });
                             
         var result = await msgBox1.Show();

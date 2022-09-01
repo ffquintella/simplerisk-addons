@@ -1,5 +1,6 @@
 ﻿using DAL;
 using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServerServices;
 using ILogger = Serilog.ILogger;
@@ -27,6 +28,16 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         return srDbContext.Assessments.Find(id);
     }
 
+    public int Delete(Assessment assessment)
+    {
+        var srDbContext = DALManager.GetContext();
+        var result= srDbContext.Assessments.Remove(assessment);
+        srDbContext.SaveChanges();
+        if(result.State == EntityState.Deleted)
+            return 0;
+        return -1;
+    }
+    
     public Tuple<int,Assessment?> Create(Assessment assessment)
     {
         var srDbContext = DALManager.GetContext();
