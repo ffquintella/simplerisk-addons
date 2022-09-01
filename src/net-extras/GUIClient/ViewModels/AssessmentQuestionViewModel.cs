@@ -5,6 +5,7 @@ namespace GUIClient.ViewModels;
 public class AssessmentQuestionViewModel: ViewModelBase
 {
     private string StrQuestion { get; }
+    private string StrAnswers { get; }
     private string TxtQuestion { get; set; } = "";
     
     private Window DisplayWindow { get; }
@@ -13,5 +14,6 @@ public class AssessmentQuestionViewModel: ViewModelBase
     {
         DisplayWindow = displayWindow;
         StrQuestion = Localizer["Question"];
+        StrAnswers = Localizer["Answers"];
     }
 }
