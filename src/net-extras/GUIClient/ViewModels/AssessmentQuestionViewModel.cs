@@ -8,8 +8,10 @@ using System.Text;
 using Avalonia.Controls;
 using DAL.Entities;
 using DynamicData;
+using GUIClient.Tools;
 using MessageBox.Avalonia.DTO;
 using ReactiveUI;
+using Tools;
 
 namespace GUIClient.ViewModels;
 
@@ -85,7 +87,6 @@ public class AssessmentQuestionViewModel: ViewModelBase
     {
         get => _answers;
         set => this.RaiseAndSetIfChanged(ref _answers, value);
-        
     }
 
     private AssessmentAnswer? _selectedAnswer = null;
@@ -148,10 +149,15 @@ public class AssessmentQuestionViewModel: ViewModelBase
                 return;  
             }
 
-            Answers.FirstOrDefault(ans => ans.Answer == SelectedAnswer.Answer).Answer = TxtAnswer;
-            Answers.FirstOrDefault(ans => ans.Answer == SelectedAnswer.Answer).RiskScore = TxtRisk;
-            Answers.FirstOrDefault(ans => ans.Answer == SelectedAnswer.Answer).RiskSubject = Encoding.UTF8.GetBytes(TxtSubject);
+            var editAnwser = SelectedAnswer.DeepCopy();
+            
+            editAnwser.Answer = TxtAnswer;
+            editAnwser.RiskScore = TxtRisk;
+            editAnwser.RiskSubject = Encoding.UTF8.GetBytes(TxtSubject);
 
+            Answers.Remove(SelectedAnswer);
+            SelectedAnswer = null;
+            Answers.Add(editAnwser);
         }
         else
         {
