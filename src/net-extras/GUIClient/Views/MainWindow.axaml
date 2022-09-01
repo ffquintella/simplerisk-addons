@@ -50,12 +50,15 @@
             <Grid Grid.Row="1" RowDefinitions="Auto, *, Auto" Margin="0 0">
                 
                 <!-- Navigation Bar -->
-                <views:NavigationBar Grid.Row="0" ParentWindow="{Binding ElementName=MainWindowName}" Margin="0 5 0 0 "/>
+                <views:NavigationBar Grid.Row="0" 
+                                     ParentWindow="{Binding ElementName=MainWindowName}" 
+                                     Margin="0 5 0 0 "/>
                 <views:DashboardView Grid.Row="1" IsVisible="{Binding $parent.DataContext.ViewDashboardIsVisible}" />
                 <views:DeviceView Grid.Row="1" Margin="10"
                                   DataContext="{Binding DeviceViewModel}"
                                   IsVisible="{Binding $parent.DataContext.ViewDeviceIsVisible}" />
                 <views:AssessmentView Grid.Row="1" Margin="10"
+                                      ParentWindow="{Binding ElementName=MainWindowName}" 
                                   IsVisible="{Binding $parent.DataContext.AssessmentIsVisible}" />
                 
             </Grid>

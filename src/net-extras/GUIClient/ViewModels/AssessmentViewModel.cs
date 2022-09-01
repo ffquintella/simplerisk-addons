@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Media.TextFormatting.Unicode;
 using DAL.Entities;
 using GUIClient.Services;
+using GUIClient.Views;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 using Microsoft.Extensions.Localization;
@@ -213,6 +214,18 @@ public class AssessmentViewModel: ViewModelBase
             SelectedAssessment = null;
         }
         
+    }
+    
+    public void OnAddQuestionCommand(AssessmentView parentControl)
+    {
+        
+        var dialog = new AssessmentQuestionView()
+        {
+            //DataContext = new SettingsViewModel(_configuration),
+            WindowStartupLocation = WindowStartupLocation.CenterOwner
+        };
+        dialog.ShowDialog( parentControl.ParentWindow );
+
     }
     
     

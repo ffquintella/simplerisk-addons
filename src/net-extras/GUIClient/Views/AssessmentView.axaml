@@ -120,9 +120,11 @@
                     </DataGrid>
                     <!-- ITENS Control Menu-->
                     <Grid Grid.Column="1" RowDefinitions="Auto,*">
-                        <StackPanel Grid.Row="0">
+                        <StackPanel Grid.Row="0" IsEnabled="{Binding !!SelectedAssessment}">
                             <Button Grid.Column="0" Name="BtAddQuestion" 
                                     Margin="3 3 0 0"
+                                    Command="{Binding OnAddQuestionCommand}"
+                                    CommandParameter="{Binding ElementName=AssessmentViewName}"
                                     >
                                 <material:MaterialIcon Kind="Add"/>
                             </Button>

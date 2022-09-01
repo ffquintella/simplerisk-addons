@@ -11,6 +11,7 @@
     <Design.DataContext>
         <vm:NavigationBarViewModel/>
     </Design.DataContext>
+    
     <Grid ColumnDefinitions="Auto, *, Auto">
         <TextBlock Grid.Column="0" Text=""/>
         <Rectangle Grid.Column="1" />
