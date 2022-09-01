@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reactive;
 using Avalonia.Controls;
 using DAL.Entities;
 using ReactiveUI;
@@ -22,6 +23,22 @@ public class AssessmentQuestionViewModel: ViewModelBase
     private string TxtRisk { get; set; } = "";
     private string TxtSubject { get; set; } = "";
 
+    private bool _inputEnabled = false;
+
+    private bool InputEnabled
+    {
+        get => _inputEnabled;
+        set=> this.RaiseAndSetIfChanged(ref _inputEnabled, value);
+    }
+
+    private bool _gridEnabled = true;
+
+    private bool GridEnabled
+    {
+        get => _gridEnabled;
+        set=> this.RaiseAndSetIfChanged(ref _gridEnabled, value);
+    }
+    
     private List<AssessmentAnswer> _answers = new List<AssessmentAnswer>();
     private List<AssessmentAnswer> Answers
     {
@@ -30,6 +47,17 @@ public class AssessmentQuestionViewModel: ViewModelBase
         
     }
 
+    private AssessmentAnswer _selectedAnswer = null;
+    private AssessmentAnswer SelectedAnswer
+    {
+        get => _selectedAnswer;
+        set => this.RaiseAndSetIfChanged(ref _selectedAnswer, value);
+        
+    }
+
+    public ReactiveCommand<Unit, Unit> BtAddAnswerClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtCancelAddAnswerClicked { get; }
+    
     public AssessmentQuestionViewModel(Window displayWindow)
     {
         DisplayWindow = displayWindow;
@@ -38,5 +66,30 @@ public class AssessmentQuestionViewModel: ViewModelBase
         StrAnswer = Localizer["Answer"];
         StrRisk = Localizer["Risk"];
         StrSubject = Localizer["Subject"];
+        
+        BtAddAnswerClicked = ReactiveCommand.Create(ExecuteAddAnswer);
+        BtCancelAddAnswerClicked = ReactiveCommand.Create(ExecuteCancelAddAnswer);
+    }
+    
+    private void ExecuteAddAnswer()
+    {
+        SelectedAnswer = null;
+        GridEnabled = false;
+        CleanAndUpdateButtonStatus(true);
+    }
+    
+    private void ExecuteCancelAddAnswer()
+    {
+        GridEnabled = true;
+        CleanAndUpdateButtonStatus(false);
+    }
+
+    private void CleanAndUpdateButtonStatus(bool enable)
+    {
+        TxtAnswer = "";
+        TxtRisk = "";
+        TxtSubject = "";
+
+        InputEnabled = enable;
     }
 }
