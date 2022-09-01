@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reactive;
+using System.Text;
 using Avalonia.Controls;
 using DAL.Entities;
 using ReactiveUI;
@@ -85,7 +86,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
 
     public ReactiveCommand<Unit, Unit> BtAddAnswerClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelAddAnswerClicked { get; }
-    
+    public ReactiveCommand<Unit, Unit> BtSaveAnswerClicked { get; }
     public AssessmentQuestionViewModel(Window displayWindow)
     {
         DisplayWindow = displayWindow;
@@ -97,10 +98,26 @@ public class AssessmentQuestionViewModel: ViewModelBase
         
         BtAddAnswerClicked = ReactiveCommand.Create(ExecuteAddAnswer);
         BtCancelAddAnswerClicked = ReactiveCommand.Create(ExecuteCancelAddAnswer);
+        BtSaveAnswerClicked = ReactiveCommand.Create(ExecuteSaveAnswer);
         
 
     }
-    
+    private void ExecuteSaveAnswer()
+    {
+        var answer = new AssessmentAnswer
+        {
+            Answer = TxtAnswer,
+            AssessmentId = 0,
+            QuestionId = -1,
+            RiskScore = TxtRisk,
+            RiskSubject = Encoding.UTF8.GetBytes(TxtSubject)
+        };
+        
+        Answers.Add(answer);
+        
+        
+        ExecuteCancelAddAnswer();
+    }
     private void ExecuteAddAnswer()
     {
         SelectedAnswer = null;
