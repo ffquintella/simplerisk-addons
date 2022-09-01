@@ -33,7 +33,7 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         var srDbContext = DALManager.GetContext();
         var result= srDbContext.Assessments.Remove(assessment);
         srDbContext.SaveChanges();
-        if(result.State == EntityState.Deleted)
+        if(result.State == EntityState.Detached)
             return 0;
         return -1;
     }
