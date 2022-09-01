@@ -86,7 +86,7 @@ public class AssessmentsController : ApiBaseController
             
             if(result == 0)
             {
-                Logger.Debug("Assessment with id {id} deleted", id);
+                Logger.Information("Assessment with id {id} deleted", id);
                 return Ok();
             }
             else
