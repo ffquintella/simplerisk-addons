@@ -366,6 +366,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Risco.
+        /// </summary>
+        internal static string Risk {
+            get {
+                return ResourceManager.GetString("Risk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Riscos através do tempo.
         /// </summary>
         internal static string RisksOverTime {

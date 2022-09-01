@@ -147,4 +147,7 @@
     <data name="Question" xml:space="preserve">
         <value>Pergunta</value>
     </data>
+    <data name="Risk" xml:space="preserve">
+        <value>Risco</value>
+    </data>
 </root>
