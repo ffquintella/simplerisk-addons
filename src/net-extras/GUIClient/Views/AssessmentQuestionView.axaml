@@ -18,6 +18,7 @@
     
     <Window.Resources>
         <convertes:DoubleSubConverter x:Key="doubleSubConverter"/>
+        <convertes:ByteToStringConverter x:Key="byteToStringConverter"/>
     </Window.Resources>
     
     <Panel>
@@ -100,7 +101,8 @@
                                                 Binding="{Binding RiskScore}"/>
                             <DataGridTextColumn IsReadOnly="True" 
                                                 Header="{Binding StrSubject}" 
-                                                Binding="{Binding RiskSubject}"/>
+                                                Binding="{Binding RiskSubject, 
+                                    Converter={StaticResource byteToStringConverter}}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

@@ -17,6 +17,7 @@
 
     <UserControl.Resources>
         <convertes:MultiObjectEqualConverter x:Key="multiObjectEqualConverter"/>
+        <convertes:ByteToStringConverter x:Key="byteToStringConverter"/>
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="Auto, *" >
@@ -107,7 +108,8 @@
                                                         <StackPanel Orientation="Horizontal" Margin="5">
                                                             <TextBlock  Text="{Binding #AssessmentViewName.DataContext.StrAnswer}"/>
                                                             <TextBlock Text=": "/><TextBlock  Text="{Binding Answer}"/>
-                                                            <TextBlock Text=" - Risk: "/><TextBlock Text="{Binding RiskScore}"/>
+                                                            <TextBlock Text=" - "/><TextBlock Text="{Binding #AssessmentViewName.DataContext.StrRisk}"/><TextBlock Text=": "/><TextBlock Text="{Binding RiskScore}"/>
+                                                            <TextBlock Text=" - "/><TextBlock Text="{Binding #AssessmentViewName.DataContext.StrSubject}"/><TextBlock Text=": "/><TextBlock MaxWidth="300" TextWrapping="Wrap" Text="{Binding RiskSubject, Converter={StaticResource byteToStringConverter}}"/>
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>

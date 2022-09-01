@@ -133,6 +133,8 @@ public class AssessmentViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _assessmentAddBarVisible, value);
     }
     public string StrAnswer { get; }
+    public string StrRisk { get; }
+    public string StrSubject { get; }
 
     private string _txtAssessmentAddValue = "";
     public string TxtAssessmentAddValue
@@ -156,6 +158,8 @@ public class AssessmentViewModel: ViewModelBase
         _strAnswers = Localizer["Answers"];
         StrQuestions = Localizer["Questions"];
         StrAnswer = Localizer["Answer"];
+        StrRisk = Localizer["Risk"];
+        StrSubject = Localizer["Subject"];
         
         BtAddAssessmentClicked = ReactiveCommand.Create(ExecuteAddAssessment);
         BtCancelAddAssessmentClicked = ReactiveCommand.Create(ExecuteCancelAddAssessment);
