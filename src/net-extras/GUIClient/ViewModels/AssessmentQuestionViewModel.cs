@@ -18,10 +18,28 @@ public class AssessmentQuestionViewModel: ViewModelBase
     private string TxtQuestion { get; set; } = "";
     
     private Window DisplayWindow { get; }
-    
-    private string TxtAnswer { get; set; } = "";
-    private string TxtRisk { get; set; } = "";
-    private string TxtSubject { get; set; } = "";
+
+
+    private string _txtAnser = "";
+    private string TxtAnswer
+    {
+        get => _txtAnser; 
+        set => this.RaiseAndSetIfChanged(ref _txtAnser, value); 
+    }
+
+    private string _txtRisk = "";
+    private string TxtRisk { 
+        get => _txtRisk; 
+        set => this.RaiseAndSetIfChanged(ref _txtRisk, value);  
+    }
+
+    private string _txtSubject = "";
+    private string TxtSubject
+    {
+        get => _txtSubject; 
+        set => this.RaiseAndSetIfChanged(ref _txtSubject, value);
+        
+    }
 
     private bool _inputEnabled = false;
 
