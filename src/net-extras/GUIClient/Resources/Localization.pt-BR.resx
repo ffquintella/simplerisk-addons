@@ -138,4 +138,7 @@
     <data name="ErrorCreatingAssessmentMSG" xml:space="preserve">
         <value>Erro criando levantamento.</value>
     </data>
+    <data name="ConfirmDeleteAssessmentMSG" xml:space="preserve">
+        <value>Tem certeza? Isto irá apagar completamente o levantamento: </value>
+    </data>
 </root>

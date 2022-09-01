@@ -54,7 +54,8 @@
                         Command="{Binding BtAddAssessmentClicked}">
                     <material:MaterialIcon Kind="Add"/>
                 </Button>
-                <Button Grid.Column="2" IsEnabled="{Binding !!SelectedAssessment}">
+                <Button Grid.Column="2" IsEnabled="{Binding !!SelectedAssessment}"
+                        Command="{Binding BtDeleteAssessmentClicked}">
                     <material:MaterialIcon Kind="Delete"/>
                 </Button>
             </Grid>

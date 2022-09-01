@@ -168,6 +168,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tem certeza? Isto irá apagar completamente o levantamento: .
+        /// </summary>
+        internal static string ConfirmDeleteAssessmentMSG {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteAssessmentMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Descrição.
         /// </summary>
         internal static string Description {

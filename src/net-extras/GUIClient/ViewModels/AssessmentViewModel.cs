@@ -8,6 +8,7 @@ using Avalonia.Media.TextFormatting.Unicode;
 using DAL.Entities;
 using GUIClient.Services;
 using MessageBox.Avalonia.DTO;
+using MessageBox.Avalonia.Enums;
 using Microsoft.Extensions.Localization;
 using Model.Exceptions;
 using ReactiveUI;
@@ -140,6 +141,8 @@ public class AssessmentViewModel: ViewModelBase
     } 
     public ReactiveCommand<Unit, Unit> BtAddAssessmentClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelAddAssessmentClicked { get; }
+    
+    public ReactiveCommand<Unit, Unit> BtDeleteAssessmentClicked { get; }
     public ReactiveCommand<bool, Unit> BtSaveAssessmentClicked { get; }
     public AssessmentViewModel() : base()
     {
@@ -156,6 +159,7 @@ public class AssessmentViewModel: ViewModelBase
         BtAddAssessmentClicked = ReactiveCommand.Create(ExecuteAddAssessment);
         BtCancelAddAssessmentClicked = ReactiveCommand.Create(ExecuteCancelAddAssessment);
         BtSaveAssessmentClicked = ReactiveCommand.Create<bool>(ExecuteSaveAssessment);
+        BtDeleteAssessmentClicked = ReactiveCommand.Create(ExecuteDeleteAssessment);
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
@@ -168,6 +172,33 @@ public class AssessmentViewModel: ViewModelBase
         TxtAssessmentAddValue = "";
         AssessmentAddBarVisible = true;
     }
+    
+    private async void ExecuteDeleteAssessment()
+    {
+        if(SelectedAssessment == null)
+        {
+            return;
+        }
+        
+        var msgBox1 = MessageBox.Avalonia.MessageBoxManager
+            .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+            {
+                ContentTitle = Localizer["Warning"],
+                ContentMessage = Localizer["ConfirmDeleteAssessmentMSG"] + SelectedAssessment.Name,
+                ButtonDefinitions = ButtonEnum.OkCancel,
+                Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            });
+                            
+        var result = await msgBox1.Show();
+
+        if (result == ButtonResult.Ok)
+        {
+            
+        }
+        
+    }
+    
     
     private void ExecuteCancelAddAssessment()
     {

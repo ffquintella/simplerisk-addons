@@ -168,6 +168,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you shure? This will delete completly the assignment: .
+        /// </summary>
+        internal static string ConfirmDeleteAssessmentMSG {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteAssessmentMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         internal static string Description {

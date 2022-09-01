@@ -138,4 +138,7 @@
     <data name="ErrorCreatingAssessmentMSG" xml:space="preserve">
         <value>Error creating assessment.</value>
     </data>
+    <data name="ConfirmDeleteAssessmentMSG" xml:space="preserve">
+        <value>Are you shure? This will delete completly the assignment: </value>
+    </data>
 </root>
