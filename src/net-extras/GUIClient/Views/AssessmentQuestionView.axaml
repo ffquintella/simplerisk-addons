@@ -92,8 +92,10 @@
                                 <material:MaterialIcon Kind="Cancel"/>
                             </Button>
                             <Button Name="BtSaveAnswer" Margin="3"
-                                    IsEnabled="{Binding InputEnabled}"
-                                    Command="{Binding BtSaveAnswerClicked}">
+                                    IsEnabled="{Binding BtSaveEnabled}"
+                                    Command="{Binding BtSaveAnswerClicked}"
+                                    CommandParameter="{Binding !!SelectedAnswer}"
+                                    >
                                 <material:MaterialIcon Kind="Check"/>
                             </Button>
                             <Button Name="BtDeleteAnswer" Margin="3"

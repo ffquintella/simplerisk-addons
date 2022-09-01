@@ -31,9 +31,9 @@ public class AssessmentQuestionViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _txtAnser, value); 
     }
 
-    private int _txtRisk = 0;
+    private float _txtRisk = 0;
     
-    private int TxtRisk { 
+    private float TxtRisk { 
         get => _txtRisk;
         set
         {
@@ -60,6 +60,14 @@ public class AssessmentQuestionViewModel: ViewModelBase
         get => _inputEnabled;
         set=> this.RaiseAndSetIfChanged(ref _inputEnabled, value);
     }
+    
+    private bool _btSaveEnabled = false;
+
+    private bool BtSaveEnabled
+    {
+        get => _btSaveEnabled;
+        set=> this.RaiseAndSetIfChanged(ref _btSaveEnabled, value);
+    }
 
     private bool _gridEnabled = true;
 
@@ -77,18 +85,29 @@ public class AssessmentQuestionViewModel: ViewModelBase
         
     }
 
-    private AssessmentAnswer _selectedAnswer = null;
-    private AssessmentAnswer SelectedAnswer
+    private AssessmentAnswer? _selectedAnswer = null;
+    private AssessmentAnswer? SelectedAnswer
     {
         get => _selectedAnswer;
-        set => this.RaiseAndSetIfChanged(ref _selectedAnswer, value);
+        set
+        {
+            if (value is not null)
+            {
+                TxtAnswer = value.Answer;
+                TxtRisk = value.RiskScore;
+                TxtSubject = System.Text.Encoding.UTF8.GetString(value.RiskSubject);
+                BtSaveEnabled = true;  
+            }
+
+            this.RaiseAndSetIfChanged(ref _selectedAnswer, value);
+        }
         
     }
 
     private Assessment SelectedAssessment { get; }
     public ReactiveCommand<Unit, Unit> BtAddAnswerClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelAddAnswerClicked { get; }
-    public ReactiveCommand<Unit, Unit> BtSaveAnswerClicked { get; }
+    public ReactiveCommand<bool, Unit> BtSaveAnswerClicked { get; }
     public AssessmentQuestionViewModel(Window displayWindow, Assessment selectedAssessment)
     {
         DisplayWindow = displayWindow;
@@ -101,11 +120,11 @@ public class AssessmentQuestionViewModel: ViewModelBase
         
         BtAddAnswerClicked = ReactiveCommand.Create(ExecuteAddAnswer);
         BtCancelAddAnswerClicked = ReactiveCommand.Create(ExecuteCancelAddAnswer);
-        BtSaveAnswerClicked = ReactiveCommand.Create(ExecuteSaveAnswer);
+        BtSaveAnswerClicked = ReactiveCommand.Create<bool>(ExecuteSaveAnswer);
         
 
     }
-    private void ExecuteSaveAnswer()
+    private void ExecuteSaveAnswer(bool update = false)
     {
         var answer = new AssessmentAnswer
         {
@@ -139,7 +158,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
         TxtAnswer = "";
         TxtRisk = 0;
         TxtSubject = "";
-
+        BtSaveEnabled = enable;
         InputEnabled = enable;
     }
 }
