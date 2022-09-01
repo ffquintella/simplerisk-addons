@@ -3,9 +3,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:GUIClient.ViewModels"
+        xmlns:material="using:Material.Icons.Avalonia"
         xmlns:convertes="clr-namespace:GUIClient.Converters"
         xmlns:sys="using:System"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
         x:Class="GUIClient.Views.AssessmentQuestionView"
         Title="Assessment Question"
         TransparencyLevelHint="AcrylicBlur"
@@ -56,18 +57,52 @@
                         Text="{Binding StrAnswers}"/>      
                 </Panel>
                 <Grid Grid.Row="3" RowDefinitions="Auto,*">
-                    <Grid Grid.Row="0" ColumnDefinitions="*, Auto, Auto, *">
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto,*,Auto">
                         <StackPanel Grid.Column="1">
                             <TextBlock Text="{Binding StrAnswer}"
                                        HorizontalAlignment="Center"/>
-                            <TextBox Width="250"/>    
+                            <TextBox Width="200" Text="{Binding TxtAnswer}"/>    
                         </StackPanel>
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="{Binding StrRisk}" 
                                        HorizontalAlignment="Center"/>
-                            <TextBox Width="50"/>    
-                        </StackPanel> 
+                            <TextBox Width="50" Text="{Binding TxtRisk}"/>    
+                        </StackPanel>
+                        <StackPanel Grid.Column="3">
+                            <TextBlock Text="{Binding StrSubject}" 
+                                       HorizontalAlignment="Center"/>
+                            <TextBox Width="200" Text="{Binding TxtSubject}"/>    
+                        </StackPanel>
+                        <StackPanel Grid.Column="5" Orientation="Horizontal" Margin="10">
+                            <Button Name="BtAddAnswer" Margin="3">
+                                <material:MaterialIcon Kind="Add"/>
+                            </Button>
+                            <Button Name="BtSaveAnswer" Margin="3">
+                                <material:MaterialIcon Kind="Check"/>
+                            </Button>
+                            <Button Name="BtDeleteAnswer" Margin="3">
+                                <material:MaterialIcon Kind="Delete"/>
+                            </Button>
+                        </StackPanel>
                     </Grid>
+                    <DataGrid Grid.Row="1" Name="DevicesDataGrid" 
+                              Items="{Binding  Answers}"
+                              AutoGenerateColumns="False">
+                        <DataGrid.Columns >
+                            <DataGridTextColumn IsReadOnly="True" 
+                                                Header="ID" 
+                                                Binding="{Binding Id}"/>
+                            <DataGridTextColumn IsReadOnly="True" 
+                                                Header="{Binding StrAnswer}" 
+                                                Binding="{Binding Answer}"/>
+                            <DataGridTextColumn IsReadOnly="True" 
+                                                Header="Score" 
+                                                Binding="{Binding RiskScore}"/>
+                            <DataGridTextColumn IsReadOnly="True" 
+                                                Header="{Binding StrSubject}" 
+                                                Binding="{Binding RiskSubject}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
 
             </Grid>
