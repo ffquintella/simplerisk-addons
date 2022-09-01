@@ -3,15 +3,55 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:GUIClient.ViewModels"
+        xmlns:convertes="clr-namespace:GUIClient.Converters"
+        xmlns:sys="using:System"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GUIClient.Views.AssessmentQuestionView"
-        Title="Assessment Question">
+        Title="Assessment Question"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True">
     
     <Design.DataContext>
-        <vm:AssessmentViewModel/>
+        <vm:AssessmentQuestionViewModel/>
     </Design.DataContext>
     
-    <Grid RowDefinitions="Auto, *">
-        <TextBlock Grid.Row="0" Text="Questions"/>
-    </Grid>
+    <Window.Resources>
+        <convertes:DoubleSubConverter x:Key="doubleSubConverter"/>
+    </Window.Resources>
+    
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        
+        <Panel Margin="0 30">
+            <Grid RowDefinitions="Auto,Auto, *" ColumnDefinitions="*">
+                <Panel Grid.Row="0" Background="#222222" Grid.Column="0">
+                    <TextBlock 
+                               Background="#222222"
+                               HorizontalAlignment="Center"
+                               Text="{Binding StrQuestion}"/>      
+                </Panel>
+                <Grid Grid.Row="1" Grid.Column="0"
+                      ColumnDefinitions="*" Margin="10 10 0 0">
+                    <TextBox Grid.Column="0" 
+                             Width="{Binding DisplayWindow.Width, 
+                                Converter={StaticResource doubleSubConverter},
+                                ConverterParameter=20}"
+                             Height="50"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             HorizontalAlignment="Left"
+                             Text="{Binding TxtQuestion}"/> 
+                </Grid>
+
+            </Grid>
+        </Panel>
+    </Panel>
 </Window>

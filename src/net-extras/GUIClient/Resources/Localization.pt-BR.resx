@@ -144,4 +144,7 @@
     <data name="ErrorDeletingAssessmentMSG" xml:space="preserve">
         <value>Erro apagando o levantamento selecionado.</value>
     </data>
+    <data name="Question" xml:space="preserve">
+        <value>Pergunta</value>
+    </data>
 </root>

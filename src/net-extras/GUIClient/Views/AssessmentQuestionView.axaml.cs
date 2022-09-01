@@ -9,7 +9,7 @@ public partial class AssessmentQuestionView : Window
 {
     public AssessmentQuestionView()
     {
-        DataContext = new AssessmentQuestionViewModel();
+        DataContext = new AssessmentQuestionViewModel(this);
         
         InitializeComponent();
 #if DEBUG
