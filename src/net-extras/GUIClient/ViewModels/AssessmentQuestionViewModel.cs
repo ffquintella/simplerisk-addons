@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Reactive;
 using Avalonia.Controls;
 using DAL.Entities;
@@ -27,10 +29,18 @@ public class AssessmentQuestionViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _txtAnser, value); 
     }
 
-    private string _txtRisk = "";
-    private string TxtRisk { 
-        get => _txtRisk; 
-        set => this.RaiseAndSetIfChanged(ref _txtRisk, value);  
+    private int _txtRisk = 0;
+    
+    private int TxtRisk { 
+        get => _txtRisk;
+        set
+        {
+            if (value > 10)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), "0-10.");
+            }
+            this.RaiseAndSetIfChanged(ref _txtRisk, value);  
+        }
     }
 
     private string _txtSubject = "";
@@ -87,6 +97,8 @@ public class AssessmentQuestionViewModel: ViewModelBase
         
         BtAddAnswerClicked = ReactiveCommand.Create(ExecuteAddAnswer);
         BtCancelAddAnswerClicked = ReactiveCommand.Create(ExecuteCancelAddAnswer);
+        
+
     }
     
     private void ExecuteAddAnswer()
@@ -105,7 +117,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
     private void CleanAndUpdateButtonStatus(bool enable)
     {
         TxtAnswer = "";
-        TxtRisk = "";
+        TxtRisk = 0;
         TxtSubject = "";
 
         InputEnabled = enable;
