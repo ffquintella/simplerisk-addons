@@ -194,7 +194,23 @@ public class AssessmentViewModel: ViewModelBase
 
         if (result == ButtonResult.Ok)
         {
-            
+            var delResult = _assessmentsService.Delete(SelectedAssessment.Id);
+            if (delResult == -1)
+            {
+                var msgBox2 = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                    {
+                        ContentTitle = Localizer["Error"],
+                        ContentMessage = Localizer["ErrorDeletingAssessmentMSG"],
+                        Icon = MessageBox.Avalonia.Enums.Icon.Error,
+                        WindowStartupLocation = WindowStartupLocation.CenterScreen
+                    });
+                            
+                await msgBox2.Show();
+                return;
+            }
+            Assessments.Remove(SelectedAssessment);
+            SelectedAssessment = null;
         }
         
     }

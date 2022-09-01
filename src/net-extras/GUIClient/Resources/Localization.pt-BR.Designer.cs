@@ -204,6 +204,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Erro apagando o levantamento selecionado..
+        /// </summary>
+        internal static string ErrorDeletingAssessmentMSG {
+            get {
+                return ResourceManager.GetString("ErrorDeletingAssessmentMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sair.
         /// </summary>
         internal static string Exit {

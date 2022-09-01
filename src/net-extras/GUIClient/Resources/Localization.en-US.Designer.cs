@@ -204,6 +204,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error deleting selected assessment..
+        /// </summary>
+        internal static string ErrorDeletingAssessmentMSG {
+            get {
+                return ResourceManager.GetString("ErrorDeletingAssessmentMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         internal static string Exit {

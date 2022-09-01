@@ -21,6 +21,13 @@ public interface IAssessmentsService
     Tuple<int, Assessment?> Create(Assessment assessment);
     
     /// <summary>
+    /// Deletes one assessment
+    /// </summary>
+    /// <param name="assessmentId"></param>
+    /// <returns>0 if ok, -1 if error</returns>
+    int Delete(int assessmentId);
+    
+    /// <summary>
     /// Get the assessment questions from the server
     /// </summary>
     /// <param name="assessmentId"></param>

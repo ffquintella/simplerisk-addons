@@ -141,4 +141,7 @@
     <data name="ConfirmDeleteAssessmentMSG" xml:space="preserve">
         <value>Are you shure? This will delete completly the assignment: </value>
     </data>
+    <data name="ErrorDeletingAssessmentMSG" xml:space="preserve">
+        <value>Error deleting selected assessment.</value>
+    </data>
 </root>

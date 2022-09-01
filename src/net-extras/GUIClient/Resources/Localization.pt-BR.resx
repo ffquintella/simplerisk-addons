@@ -141,4 +141,7 @@
     <data name="ConfirmDeleteAssessmentMSG" xml:space="preserve">
         <value>Tem certeza? Isto irá apagar completamente o levantamento: </value>
     </data>
+    <data name="ErrorDeletingAssessmentMSG" xml:space="preserve">
+        <value>Erro apagando o levantamento selecionado.</value>
+    </data>
 </root>
