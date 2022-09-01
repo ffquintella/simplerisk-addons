@@ -96,7 +96,8 @@ public class AssessmentQuestionViewModel: ViewModelBase
                 TxtAnswer = value.Answer;
                 TxtRisk = value.RiskScore;
                 TxtSubject = System.Text.Encoding.UTF8.GetString(value.RiskSubject);
-                BtSaveEnabled = true;  
+                BtSaveEnabled = true;
+                InputEnabled = true;
             }
 
             this.RaiseAndSetIfChanged(ref _selectedAnswer, value);
@@ -149,6 +150,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
     
     private void ExecuteCancelAddAnswer()
     {
+        SelectedAnswer = null;
         GridEnabled = true;
         CleanAndUpdateButtonStatus(false);
     }
