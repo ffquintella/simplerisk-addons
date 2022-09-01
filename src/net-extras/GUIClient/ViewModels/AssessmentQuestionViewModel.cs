@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reactive;
 using System.Text;
@@ -68,8 +69,8 @@ public class AssessmentQuestionViewModel: ViewModelBase
         set=> this.RaiseAndSetIfChanged(ref _gridEnabled, value);
     }
     
-    private List<AssessmentAnswer> _answers = new List<AssessmentAnswer>();
-    private List<AssessmentAnswer> Answers
+    private ObservableCollection<AssessmentAnswer> _answers = new ObservableCollection<AssessmentAnswer>();
+    private ObservableCollection<AssessmentAnswer> Answers
     {
         get => _answers;
         set => this.RaiseAndSetIfChanged(ref _answers, value);
@@ -84,12 +85,14 @@ public class AssessmentQuestionViewModel: ViewModelBase
         
     }
 
+    private Assessment SelectedAssessment { get; }
     public ReactiveCommand<Unit, Unit> BtAddAnswerClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelAddAnswerClicked { get; }
     public ReactiveCommand<Unit, Unit> BtSaveAnswerClicked { get; }
-    public AssessmentQuestionViewModel(Window displayWindow)
+    public AssessmentQuestionViewModel(Window displayWindow, Assessment selectedAssessment)
     {
         DisplayWindow = displayWindow;
+        SelectedAssessment = selectedAssessment;
         StrQuestion = Localizer["Question"];
         StrAnswers = Localizer["Answers"];
         StrAnswer = Localizer["Answer"];
@@ -107,7 +110,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
         var answer = new AssessmentAnswer
         {
             Answer = TxtAnswer,
-            AssessmentId = 0,
+            AssessmentId = SelectedAssessment.Id,
             QuestionId = -1,
             RiskScore = TxtRisk,
             RiskSubject = Encoding.UTF8.GetBytes(TxtSubject)

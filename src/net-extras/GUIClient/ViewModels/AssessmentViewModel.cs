@@ -225,9 +225,11 @@ public class AssessmentViewModel: ViewModelBase
         
         var dialog = new AssessmentQuestionView()
         {
-            //DataContext = new SettingsViewModel(_configuration),
             WindowStartupLocation = WindowStartupLocation.CenterOwner
         };
+        
+        dialog.DataContext = new AssessmentQuestionViewModel(dialog, SelectedAssessment!);
+        
         dialog.ShowDialog( parentControl.ParentWindow );
 
     }
