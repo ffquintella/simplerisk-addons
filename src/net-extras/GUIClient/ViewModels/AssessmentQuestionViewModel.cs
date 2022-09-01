@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reactive;
 using System.Text;
 using Avalonia.Controls;
 using DAL.Entities;
+using DynamicData;
+using MessageBox.Avalonia.DTO;
 using ReactiveUI;
 
 namespace GUIClient.ViewModels;
@@ -127,18 +130,58 @@ public class AssessmentQuestionViewModel: ViewModelBase
     }
     private void ExecuteSaveAnswer(bool update = false)
     {
-        var answer = new AssessmentAnswer
+        if (update)
         {
-            Answer = TxtAnswer,
-            AssessmentId = SelectedAssessment.Id,
-            QuestionId = -1,
-            RiskScore = TxtRisk,
-            RiskSubject = Encoding.UTF8.GetBytes(TxtSubject)
-        };
+            
+            if ( TxtAnswer != SelectedAnswer.Answer && Answers.Any(ans => ans.Answer == TxtAnswer))
+            {
+                var msgBox1 = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                    {
+                        ContentTitle = Localizer["Warning"],
+                        ContentMessage = Localizer["AnswerAlreadyExistsMSG"],
+                        Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    });
+                            
+                msgBox1.Show(); 
+                return;  
+            }
+
+            Answers.FirstOrDefault(ans => ans.Answer == SelectedAnswer.Answer).Answer = TxtAnswer;
+            Answers.FirstOrDefault(ans => ans.Answer == SelectedAnswer.Answer).RiskScore = TxtRisk;
+            Answers.FirstOrDefault(ans => ans.Answer == SelectedAnswer.Answer).RiskSubject = Encoding.UTF8.GetBytes(TxtSubject);
+
+        }
+        else
+        {
+            if (Answers.Any(ans => ans.Answer == TxtAnswer))
+            {
+                var msgBox1 = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                    {
+                        ContentTitle = Localizer["Warning"],
+                        ContentMessage = Localizer["AnswerAlreadyExistsMSG"],
+                        Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    });
+                            
+                msgBox1.Show(); 
+                return;  
+            }
+            
+            var answer = new AssessmentAnswer
+            {
+                Answer = TxtAnswer,
+                AssessmentId = SelectedAssessment.Id,
+                QuestionId = -1,
+                RiskScore = TxtRisk,
+                RiskSubject = Encoding.UTF8.GetBytes(TxtSubject)
+            };
         
-        Answers.Add(answer);
-        
-        
+            Answers.Add(answer);
+        }
+
         ExecuteCancelAddAnswer();
     }
     private void ExecuteAddAnswer()

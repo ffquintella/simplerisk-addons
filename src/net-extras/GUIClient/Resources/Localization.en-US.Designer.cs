@@ -87,6 +87,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The answer alreay exists.
+        /// </summary>
+        internal static string AnswerAlreadyExistsMSG {
+            get {
+                return ResourceManager.GetString("AnswerAlreadyExistsMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Answers.
         /// </summary>
         internal static string Answers {

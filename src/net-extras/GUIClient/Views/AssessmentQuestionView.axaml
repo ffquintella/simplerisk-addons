@@ -94,7 +94,8 @@
                             <Button Name="BtSaveAnswer" Margin="3"
                                     IsEnabled="{Binding BtSaveEnabled}"
                                     Command="{Binding BtSaveAnswerClicked}"
-                                    CommandParameter="{Binding !!SelectedAnswer}"
+                                    CommandParameter="{Binding SelectedAnswer,
+                                    Converter={x:Static ObjectConverters.IsNotNull}}"
                                     >
                                 <material:MaterialIcon Kind="Check"/>
                             </Button>

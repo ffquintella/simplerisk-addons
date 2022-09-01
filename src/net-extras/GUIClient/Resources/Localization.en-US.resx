@@ -153,4 +153,7 @@
     <data name="Subject" xml:space="preserve">
         <value>Subject</value>
     </data>
+    <data name="AnswerAlreadyExistsMSG" xml:space="preserve">
+        <value>The answer alreay exists</value>
+    </data>
 </root>

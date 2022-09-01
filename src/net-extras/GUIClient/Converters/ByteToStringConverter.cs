@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Text;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Microsoft.Extensions.Localization;
@@ -30,7 +31,17 @@ public class ByteToStringConverter: IValueConverter
     
     public object ConvertBack( object? value, Type targetType, object? parameter, CultureInfo culture )
     {
-        throw new NotSupportedException();
+        if (value is string sourceData && targetType.IsAssignableTo(typeof(byte[])))
+        {
+            if (sourceData.Length == 0) return " ";
+
+            return Encoding.UTF8.GetBytes(sourceData);
+
+        }
+        // converter used for the wrong type
+        return new BindingNotification(new InvalidCastException(), BindingErrorType.Error);
+        
+
     }
 
 }
