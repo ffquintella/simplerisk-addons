@@ -80,6 +80,7 @@
                                      IsEnabled="{Binding InputEnabled}"
                                      Text="{Binding TxtSubject}"/>    
                         </StackPanel>
+                        <!-- ANSWERS Buttons -->
                         <StackPanel Grid.Column="5" Orientation="Horizontal" Margin="10">
                             <Button Name="BtAddAnswer" Margin="3"
                                     IsEnabled="{Binding !InputEnabled}"
@@ -100,11 +101,14 @@
                                 <material:MaterialIcon Kind="Check"/>
                             </Button>
                             <Button Name="BtDeleteAnswer" Margin="3"
-                                    IsEnabled="{Binding !!SelectedAnswer}">
+                                    IsEnabled="{Binding !!SelectedAnswer}"
+                                    Command="{Binding BtDeleteAnswerClicked}"
+                                    >
                                 <material:MaterialIcon Kind="Delete"/>
                             </Button>
                         </StackPanel>
                     </Grid>
+                    <!-- ANSWERS DATA GRID -->
                     <DataGrid Grid.Row="1" Name="AnswersDataGrid" 
                               IsEnabled="{Binding GridEnabled}"
                               SelectedItem="{Binding SelectedAnswer}"

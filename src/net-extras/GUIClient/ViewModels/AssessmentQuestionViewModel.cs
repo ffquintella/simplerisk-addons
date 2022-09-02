@@ -112,6 +112,8 @@ public class AssessmentQuestionViewModel: ViewModelBase
     private Assessment SelectedAssessment { get; }
     public ReactiveCommand<Unit, Unit> BtAddAnswerClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelAddAnswerClicked { get; }
+    
+    public ReactiveCommand<Unit, Unit> BtDeleteAnswerClicked { get; }
     public ReactiveCommand<bool, Unit> BtSaveAnswerClicked { get; }
     public AssessmentQuestionViewModel(Window displayWindow, Assessment selectedAssessment)
     {
@@ -126,8 +128,21 @@ public class AssessmentQuestionViewModel: ViewModelBase
         BtAddAnswerClicked = ReactiveCommand.Create(ExecuteAddAnswer);
         BtCancelAddAnswerClicked = ReactiveCommand.Create(ExecuteCancelAddAnswer);
         BtSaveAnswerClicked = ReactiveCommand.Create<bool>(ExecuteSaveAnswer);
-        
+        BtDeleteAnswerClicked = ReactiveCommand.Create(ExecuteDeleteAnswer);
 
+    }
+    
+    private void ExecuteDeleteAnswer()
+    {
+        if (SelectedAnswer is null)
+        {
+            Logger.Error("Button delete answer clicked but no answer selected.");
+            return;
+        }
+        Answers.Remove(SelectedAnswer);
+        SelectedAnswer = null;
+        GridEnabled = true;
+        CleanAndUpdateButtonStatus(false);
     }
     private void ExecuteSaveAnswer(bool update = false)
     {
@@ -155,9 +170,11 @@ public class AssessmentQuestionViewModel: ViewModelBase
             editAnwser.RiskScore = TxtRisk;
             editAnwser.RiskSubject = Encoding.UTF8.GetBytes(TxtSubject);
 
-            Answers.Remove(SelectedAnswer);
+            var location = Answers.IndexOf(SelectedAnswer);
+            Answers.RemoveAt(location);
             SelectedAnswer = null;
-            Answers.Add(editAnwser);
+            Answers.Insert(location, editAnwser);
+            //Answers.Add(editAnwser);
         }
         else
         {
