@@ -156,4 +156,10 @@
     <data name="AnswerAlreadyExistsMSG" xml:space="preserve">
         <value>The answer alreay exists</value>
     </data>
+    <data name="Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
 </root>

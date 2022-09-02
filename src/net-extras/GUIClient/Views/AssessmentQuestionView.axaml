@@ -57,7 +57,7 @@
                         HorizontalAlignment="Center"
                         Text="{Binding StrAnswers}"/>      
                 </Panel>
-                <Grid Grid.Row="3" RowDefinitions="Auto,*">
+                <Grid Grid.Row="3" RowDefinitions="Auto,*,Auto">
                     <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto,*,Auto">
                         <StackPanel Grid.Column="1">
                             <TextBlock Text="{Binding StrAnswer}"
@@ -130,8 +130,22 @@
                                     Converter={StaticResource byteToStringConverter}}"/>
                         </DataGrid.Columns>
                     </DataGrid>
+                    <!-- Main Buttos -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Name="BtSaveQuestion" Margin="3">
+                            <StackPanel Orientation="Horizontal">
+                                <material:MaterialIcon Kind="ContentSave"/>
+                                <TextBlock Text="{Binding StrSave}"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Name="BtCancelSaveQestion" Margin="3">
+                            <StackPanel Orientation="Horizontal">
+                                <material:MaterialIcon Kind="Cancel"/>
+                                <TextBlock Text="{Binding StrCancel}"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </Grid>
-
             </Grid>
         </Panel>
     </Panel>

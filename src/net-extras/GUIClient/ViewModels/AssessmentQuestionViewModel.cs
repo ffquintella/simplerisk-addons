@@ -19,11 +19,11 @@ public class AssessmentQuestionViewModel: ViewModelBase
 {
     private string StrQuestion { get; }
     private string StrAnswers { get; }
-    
     private string StrAnswer { get; }
-    
     private string StrRisk { get; }
     private string StrSubject { get; }
+    private string StrSave { get; }
+    private string StrCancel { get; }
     private string TxtQuestion { get; set; } = "";
     
     private Window DisplayWindow { get; }
@@ -112,9 +112,11 @@ public class AssessmentQuestionViewModel: ViewModelBase
     private Assessment SelectedAssessment { get; }
     public ReactiveCommand<Unit, Unit> BtAddAnswerClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelAddAnswerClicked { get; }
-    
     public ReactiveCommand<Unit, Unit> BtDeleteAnswerClicked { get; }
     public ReactiveCommand<bool, Unit> BtSaveAnswerClicked { get; }
+    
+    public ReactiveCommand<Unit, Unit> BtSaveQuestionClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtCancelSaveQuestionClicked { get; }
     public AssessmentQuestionViewModel(Window displayWindow, Assessment selectedAssessment)
     {
         DisplayWindow = displayWindow;
@@ -124,12 +126,24 @@ public class AssessmentQuestionViewModel: ViewModelBase
         StrAnswer = Localizer["Answer"];
         StrRisk = Localizer["Risk"];
         StrSubject = Localizer["Subject"];
+        StrSave = Localizer["Save"];
+        StrCancel = Localizer["Cancel"];
         
         BtAddAnswerClicked = ReactiveCommand.Create(ExecuteAddAnswer);
         BtCancelAddAnswerClicked = ReactiveCommand.Create(ExecuteCancelAddAnswer);
         BtSaveAnswerClicked = ReactiveCommand.Create<bool>(ExecuteSaveAnswer);
         BtDeleteAnswerClicked = ReactiveCommand.Create(ExecuteDeleteAnswer);
+        BtSaveQuestionClicked = ReactiveCommand.Create(ExecuteSaveQuestion);
+        BtCancelSaveQuestionClicked = ReactiveCommand.Create(ExecuteCancelSaveQuestion);
 
+    }
+
+    private void ExecuteSaveQuestion()
+    {
+    }
+
+    private void ExecuteCancelSaveQuestion()
+    {
     }
     
     private void ExecuteDeleteAnswer()
