@@ -12,7 +12,7 @@ namespace DAL.Entities
         public float Score { get; set; }
         public int? Owner { get; set; }
         public string? AffectedAssets { get; set; }
-        public string? Comment { get; set; }
+        public string Comment { get; set; } = null!;
         public DateTime SubmissionDate { get; set; }
     }
 }
