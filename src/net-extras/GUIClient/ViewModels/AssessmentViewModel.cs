@@ -234,6 +234,20 @@ public class AssessmentViewModel: ViewModelBase
 
     }
     
+    public void OnEditQuestionCommand(AssessmentView parentControl)
+    {
+        
+        var dialog = new AssessmentQuestionView()
+        {
+            WindowStartupLocation = WindowStartupLocation.CenterOwner
+        };
+        
+        dialog.DataContext = new AssessmentQuestionViewModel(dialog, SelectedAssessment!, 
+            SelectedAssessmentQuestion, AssessmentQuestionAnswers);
+        
+        dialog.ShowDialog( parentControl.ParentWindow );
+
+    }
     
     private void ExecuteCancelAddAssessment()
     {

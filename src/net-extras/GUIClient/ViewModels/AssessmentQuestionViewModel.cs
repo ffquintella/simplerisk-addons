@@ -110,6 +110,8 @@ public class AssessmentQuestionViewModel: ViewModelBase
     }
 
     private Assessment SelectedAssessment { get; }
+    private AssessmentQuestion? SelectedQuestion { get; }
+    
     public ReactiveCommand<Unit, Unit> BtAddAnswerClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelAddAnswerClicked { get; }
     public ReactiveCommand<Unit, Unit> BtDeleteAnswerClicked { get; }
@@ -117,10 +119,13 @@ public class AssessmentQuestionViewModel: ViewModelBase
     
     public ReactiveCommand<Unit, Unit> BtSaveQuestionClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelSaveQuestionClicked { get; }
-    public AssessmentQuestionViewModel(Window displayWindow, Assessment selectedAssessment)
+    public AssessmentQuestionViewModel(Window displayWindow, Assessment selectedAssessment, 
+        AssessmentQuestion? selectedQuestion = null, List<AssessmentAnswer> selectedQuestionAnswers = null)
     {
         DisplayWindow = displayWindow;
         SelectedAssessment = selectedAssessment;
+        SelectedQuestion = selectedQuestion;
+        
         StrQuestion = Localizer["Question"];
         StrAnswers = Localizer["Answers"];
         StrAnswer = Localizer["Answer"];
@@ -136,6 +141,13 @@ public class AssessmentQuestionViewModel: ViewModelBase
         BtSaveQuestionClicked = ReactiveCommand.Create(ExecuteSaveQuestion);
         BtCancelSaveQuestionClicked = ReactiveCommand.Create(ExecuteCancelSaveQuestion);
 
+
+        if (SelectedQuestion is not null && selectedQuestionAnswers is not null)
+        {
+            TxtQuestion = SelectedQuestion.Question;
+            Answers = new ObservableCollection<AssessmentAnswer>(selectedQuestionAnswers);
+        }
+        
     }
 
     private void ExecuteSaveQuestion()
