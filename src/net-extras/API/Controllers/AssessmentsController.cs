@@ -164,23 +164,80 @@ public class AssessmentsController : ApiBaseController
     }
     
     [HttpGet]
-    [Route("{id}/questions")]
+    [Route("{assessmentId}/questions")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AssessmentQuestion>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
-    public ActionResult<List<AssessmentQuestion>> ListAssessmentQuestions(int id)
+    public ActionResult<List<AssessmentQuestion>> ListAssessmentQuestions(int assessmentId)
     {
 
         try
         {
-            Logger.Debug("Searching questions for assessment with id {id}", id);
-            var assessmentQuestions = _assessmentsService.GetQuestions(id);
+            // First we check if the assessment exists
+            Logger.Debug("Searching for assessment with id {assessmentId}", assessmentId);
+            var assessment = _assessmentsService.Get(assessmentId);
+            if (assessment == null)
+            {
+                Logger.Error("Assessment with id {assessmentId} not found", assessmentId);
+                return NotFound("Assessment not found");
+            }
+            
+            Logger.Debug("Searching questions for assessment with id {id}", assessmentId);
+            var assessmentQuestions = _assessmentsService.GetQuestions(assessmentId);
             if (assessmentQuestions == null)
             {
-                Logger.Error("Questions for assessment with id {id} not found", id);
+                Logger.Error("Questions for assessment with id {id} not found", assessmentId);
                 return NotFound("Questions not found");
             }
             
             return assessmentQuestions;
+
+        }catch(Exception ex)
+        {
+            Logger.Error(ex, "Error finding assessment questions");
+            return StatusCode(500, "Questions not found");
+        }
+
+    }
+
+    /// <summary>
+    /// Creates a new assessment question
+    /// </summary>
+    /// <param name="assessmentId">The id of the parent assessment</param>
+    /// <param name="question">The question to be created</param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("{assessmentId}/questions")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(AssessmentQuestion))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(string))]
+    public ActionResult<AssessmentQuestion> CreateAssessmentQuestion(int assessmentId, [FromBody] AssessmentQuestion question)
+    {
+
+        try
+        {
+            // First we check if the assessment exists
+            Logger.Debug("Searching for assessment with id {assessmentId}", assessmentId);
+            var assessment = _assessmentsService.Get(assessmentId);
+            if (assessment == null)
+            {
+                Logger.Error("Assessment with id {assessmentId} not found", assessmentId);
+                return NotFound("Assessment not found");
+            }
+            
+            // Now we know it exists let´s check if the question we are tring to create already exists
+            Logger.Debug("Searching for question with text {0}", question.Question);
+            
+            var dbQuestion = _assessmentsService.GetQuestion(assessmentId, question.Question);
+
+            if (dbQuestion is not null)
+            {
+                Logger.Error("A question with the same text already exists for {assessmentId}", assessmentId);
+                return Conflict("Question already exists");
+            }
+
+            var result = _assessmentsService.SaveQuestion(assessmentId, question);
+            
+            return result;
 
         }catch(Exception ex)
         {

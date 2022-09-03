@@ -70,5 +70,20 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         var srDbContext = DALManager.GetContext();
         return srDbContext.AssessmentQuestions.Where(a => a.AssessmentId == id).ToList();
     }
+
+    public AssessmentQuestion? GetQuestion(int id, string question)
+    {
+        var srDbContext = DALManager.GetContext();
+        return srDbContext.AssessmentQuestions.FirstOrDefault(a => a.AssessmentId == id && a.Question == question);
+    }
+    
+    public AssessmentQuestion? SaveQuestion(int assessmentId, AssessmentQuestion question)
+    {
+        var srDbContext = DALManager.GetContext();
+        question.AssessmentId = assessmentId;
+        srDbContext.AssessmentQuestions.Add(question);
+        srDbContext.SaveChanges();
+        return question;
+    }
     
 }

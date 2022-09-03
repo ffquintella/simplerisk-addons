@@ -31,6 +31,23 @@ public interface IAssessmentsService
     /// <returns>AssessmentQuestion List Or Null if not found</returns>
     List<AssessmentQuestion>? GetQuestions(int id);
 
+    
+    /// <summary>
+    /// Finds the question with the given id and question text
+    /// </summary>
+    /// <param name="id">Assessment ID</param>
+    /// <param name="question">Question text</param>
+    /// <returns>AssessmentQuestion or null</returns>
+    AssessmentQuestion? GetQuestion(int id, string question);
+
+
+    /// <summary>
+    /// Saves the question on the database
+    /// </summary>
+    /// <param name="assessmentId">Assessment ID of the question</param>
+    /// <param name="question">Question</param>
+    /// <returns></returns>
+    AssessmentQuestion? SaveQuestion(int assessmentId, AssessmentQuestion question);
     /// <summary>
     /// Creates a new assessment on the database
     /// </summary>

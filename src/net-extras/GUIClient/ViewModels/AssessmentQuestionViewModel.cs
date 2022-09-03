@@ -152,6 +152,10 @@ public class AssessmentQuestionViewModel: ViewModelBase
 
     private void ExecuteSaveQuestion()
     {
+        var isUpdate = false;
+        if (SelectedQuestion is not null) isUpdate = true;
+        
+        
     }
 
     private void ExecuteCancelSaveQuestion()
