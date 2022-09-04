@@ -239,6 +239,7 @@ public class AssessmentsController : ApiBaseController
             
             if(result == null) return StatusCode(500, "Error creating question");
             
+            Logger.Information("Creating question id: {0} for assessment: {1}", result.Id, assessmentId);
             return Created($"/Assessments/{assessmentId}/Questions/{result.Id}", result);
 
         }catch(Exception ex)
