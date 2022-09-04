@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using DAL.Entities;
 using RestSharp;
@@ -60,6 +61,37 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         
     }
 
+    public Tuple<int, AssessmentQuestion?> SaveQuestion(int assessmentId, AssessmentQuestion question)
+    {
+        var client = _restService.GetClient();
+        var request = new RestRequest("/Assessments/{assessmentId}/Questions");
+        request.AddJsonBody(question);
+        
+        try
+        {
+            var response = client.Post(request);
+            
+            if (response.IsSuccessful && response.StatusCode == System.Net.HttpStatusCode.Created)
+            {
+                var questionResponse = JsonSerializer.Deserialize<AssessmentQuestion>(response.Content);
+                return new Tuple<int, AssessmentQuestion?>(0, questionResponse);
+            }
+
+            if (response.StatusCode == HttpStatusCode.Conflict)
+            {
+                return new Tuple<int, AssessmentQuestion?>(1, null);    
+            }
+            
+            return new Tuple<int, AssessmentQuestion?>(-1, null);
+            
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error creating assessment question: {0}", ex.Message);
+            return new Tuple<int, AssessmentQuestion?>(-1, null);
+        }
+    }
+    
     public int Delete(int assessmentId)
     {
         var client = _restService.GetClient();

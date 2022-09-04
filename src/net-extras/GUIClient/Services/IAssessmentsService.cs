@@ -20,6 +20,15 @@ public interface IAssessmentsService
     /// <returns>0 if ok, -1 if error</returns>
     Tuple<int, Assessment?> Create(Assessment assessment);
     
+    
+    /// <summary>
+    /// Saves the question on the server
+    /// </summary>
+    /// <param name="assessmentId">Assessment ID of the question</param>
+    /// <param name="question">Question</param>
+    /// <returns>0 if ok, -1 if error, 1 if alredy exists</returns>
+    Tuple<int, AssessmentQuestion?> SaveQuestion(int assessmentId, AssessmentQuestion question);
+    
     /// <summary>
     /// Deletes one assessment
     /// </summary>

@@ -2,6 +2,7 @@
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using ReactiveUI;
+using Serilog;
 using Splat;
 using ILogger = Serilog.ILogger;
 
@@ -33,7 +34,7 @@ namespace GUIClient.ViewModels
         {
             var localizationService = GetService<ILocalizationService>();
             _authenticationService = GetService<IAuthenticationService>();
-            _logger = GetService<ILogger>();
+            _logger = Log.Logger;
             var localizer = localizationService.GetLocalizer();
             if (localizer == null)
             {

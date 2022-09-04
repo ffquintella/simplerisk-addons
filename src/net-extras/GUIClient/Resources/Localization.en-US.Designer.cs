@@ -213,6 +213,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error creating assessment..
         /// </summary>
         internal static string ErrorCreatingAssessmentMSG {
@@ -227,6 +236,15 @@ namespace GUIClient.Resources {
         internal static string ErrorDeletingAssessmentMSG {
             get {
                 return ResourceManager.GetString("ErrorDeletingAssessmentMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A error occurred while saving the question..
+        /// </summary>
+        internal static string ErrorSavingQuestionMSG {
+            get {
+                return ResourceManager.GetString("ErrorSavingQuestionMSG", resourceCulture);
             }
         }
         
@@ -353,6 +371,15 @@ namespace GUIClient.Resources {
         internal static string Question {
             get {
                 return ResourceManager.GetString("Question", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The question already exists..
+        /// </summary>
+        internal static string QuestionAlreadyExistsMSG {
+            get {
+                return ResourceManager.GetString("QuestionAlreadyExistsMSG", resourceCulture);
             }
         }
         

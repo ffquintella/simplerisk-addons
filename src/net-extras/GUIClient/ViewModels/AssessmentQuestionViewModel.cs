@@ -6,10 +6,13 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using Avalonia.Controls;
+using Avalonia.Styling;
 using DAL.Entities;
 using DynamicData;
+using GUIClient.Services;
 using GUIClient.Tools;
 using MessageBox.Avalonia.DTO;
+using MessageBox.Avalonia.Enums;
 using ReactiveUI;
 using Tools;
 
@@ -109,6 +112,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
         
     }
 
+    private IAssessmentsService _assessmentsService;
     private Assessment SelectedAssessment { get; }
     private AssessmentQuestion? SelectedQuestion { get; }
     
@@ -120,7 +124,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
     public ReactiveCommand<Unit, Unit> BtSaveQuestionClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelSaveQuestionClicked { get; }
     public AssessmentQuestionViewModel(Window displayWindow, Assessment selectedAssessment, 
-        AssessmentQuestion? selectedQuestion = null, List<AssessmentAnswer> selectedQuestionAnswers = null)
+        AssessmentQuestion? selectedQuestion = null, List<AssessmentAnswer> selectedQuestionAnswers = null) : base()
     {
         DisplayWindow = displayWindow;
         SelectedAssessment = selectedAssessment;
@@ -147,15 +151,79 @@ public class AssessmentQuestionViewModel: ViewModelBase
             TxtQuestion = SelectedQuestion.Question;
             Answers = new ObservableCollection<AssessmentAnswer>(selectedQuestionAnswers);
         }
-        
+
+        _assessmentsService = GetService<IAssessmentsService>();
+
     }
 
     private void ExecuteSaveQuestion()
     {
         var isUpdate = false;
         if (SelectedQuestion is not null) isUpdate = true;
-        
-        
+
+        if (!isUpdate)
+        {
+            var assessmentQuestion = new AssessmentQuestion()
+            {
+                Question = TxtQuestion,
+                AssessmentId = SelectedAssessment.Id
+            };
+
+            try
+            {
+                var result = _assessmentsService.SaveQuestion(SelectedAssessment.Id, assessmentQuestion);
+                if (result.Item1 == 0)
+                {
+                    DisplayWindow.Close();
+                }
+
+                if (result.Item1 == 1)
+                {
+                    Logger.Error("Error saving question: Question already exists.");
+                    var msgError = MessageBox.Avalonia.MessageBoxManager
+                        .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                        {
+                            ContentTitle = Localizer["Error"],
+                            ContentMessage = Localizer["QuestionAlreadyExistsMSG"],
+                            Icon = Icon.Error,
+                            WindowStartupLocation = WindowStartupLocation.CenterOwner
+                        });
+                            
+                    msgError.Show(); 
+                }
+                
+                if (result.Item1 == -1)
+                {
+                    Logger.Error("Error saving question: Question already exists.");
+                    var msgError = MessageBox.Avalonia.MessageBoxManager
+                        .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                        {
+                            ContentTitle = Localizer["Error"],
+                            ContentMessage = Localizer["ErrorSavingQuestionMSG"],
+                            Icon = Icon.Error,
+                            WindowStartupLocation = WindowStartupLocation.CenterOwner
+                        });
+                            
+                    msgError.Show(); 
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error saving question: {0}", ex.Message);
+                var msgError = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                    {
+                        ContentTitle = Localizer["Error"],
+                        ContentMessage = Localizer["ErrorSavingQuestionMSG"],
+                        Icon = Icon.Error,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    });
+                            
+                msgError.Show(); 
+                return; 
+            }
+        }
     }
 
     private void ExecuteCancelSaveQuestion()

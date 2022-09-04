@@ -132,7 +132,8 @@
                     </DataGrid>
                     <!-- Main Buttos -->
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Name="BtSaveQuestion" Margin="3">
+                        <Button Name="BtSaveQuestion" Margin="3"
+                                Command="{Binding BtSaveQuestionClicked}">
                             <StackPanel Orientation="Horizontal">
                                 <material:MaterialIcon Kind="ContentSave"/>
                                 <TextBlock Text="{Binding StrSave}"/>
