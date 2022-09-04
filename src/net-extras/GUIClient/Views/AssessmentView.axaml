@@ -85,7 +85,7 @@
                                     <DataTemplate DataType="ent:AssessmentQuestion">
                                         <StackPanel>
                                             <TextBlock Text="{Binding Question }"
-                                                       VerticalAlignment="Center" 
+                                                       VerticalAlignment="Bottom" 
                                                        HorizontalAlignment="Left" TextWrapping="Wrap"
                                             />
                                             <ItemsControl Name="Details"  
