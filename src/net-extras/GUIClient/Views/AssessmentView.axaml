@@ -72,7 +72,7 @@
                 <Grid ColumnDefinitions="*, Auto">
                     <!-- DATAGRID -->
                     <DataGrid Grid.Column="0" Name="QuestionsDataGrid" 
-                              Items="{Binding  AssessmentQuestions}" 
+                              Items="{Binding  AssessmentQuestions, Mode=TwoWay}" 
                               AutoGenerateColumns="False"
                               SelectedItem="{Binding SelectedAssessmentQuestion}">
                         <DataGrid.Columns>

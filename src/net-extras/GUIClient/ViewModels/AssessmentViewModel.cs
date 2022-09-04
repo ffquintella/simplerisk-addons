@@ -84,9 +84,9 @@ public class AssessmentViewModel: ViewModelBase
     
     public int SelectedTabIndex { get; set; } = 0;
 
-    private List<AssessmentQuestion> _assessmentQuestions;
+    private ObservableCollection<AssessmentQuestion> _assessmentQuestions;
 
-    public List<AssessmentQuestion> AssessmentQuestions
+    public ObservableCollection<AssessmentQuestion> AssessmentQuestions
     {
         get => _assessmentQuestions;
         set => this.RaiseAndSetIfChanged(ref _assessmentQuestions, value);
@@ -96,7 +96,7 @@ public class AssessmentViewModel: ViewModelBase
     {
         var questions = _assessmentsService.GetAssessmentQuestions(assessmentId);
         if (questions == null) return;
-        AssessmentQuestions = questions;
+        AssessmentQuestions = new ObservableCollection<AssessmentQuestion>(questions);
     }
     
     private List<AssessmentAnswer> _assessmentAnswers;
@@ -152,7 +152,7 @@ public class AssessmentViewModel: ViewModelBase
         
         _assessments = new ObservableCollection<Assessment>();
         _assessmentsService = GetService<IAssessmentsService>();
-        _assessmentQuestions = new List<AssessmentQuestion>();
+        _assessmentQuestions = new ObservableCollection<AssessmentQuestion>(); 
         
         StrAssessments = Localizer["Assessments"];
         _strAnswers = Localizer["Answers"];
@@ -220,7 +220,7 @@ public class AssessmentViewModel: ViewModelBase
         
     }
     
-    public void OnAddQuestionCommand(AssessmentView parentControl)
+    public async void OnAddQuestionCommand(AssessmentView parentControl)
     {
         
         var dialog = new AssessmentQuestionView()
@@ -229,12 +229,15 @@ public class AssessmentViewModel: ViewModelBase
         };
         
         dialog.DataContext = new AssessmentQuestionViewModel(dialog, SelectedAssessment!);
+        await dialog.ShowDialog( parentControl.ParentWindow );
+       
+        AssessmentQuestions.Add(((AssessmentQuestionViewModel)dialog.DataContext!).AssessmentQuestion!);
         
-        dialog.ShowDialog( parentControl.ParentWindow );
-
+        //this.RaiseAndSetIfChanged(ref _selectedAssessmentQuestion, assessmentQuestion);
+        
     }
     
-    public void OnEditQuestionCommand(AssessmentView parentControl)
+    public async void OnEditQuestionCommand(AssessmentView parentControl)
     {
         
         var dialog = new AssessmentQuestionView()
@@ -243,9 +246,9 @@ public class AssessmentViewModel: ViewModelBase
         };
         
         dialog.DataContext = new AssessmentQuestionViewModel(dialog, SelectedAssessment!, 
-            SelectedAssessmentQuestion, AssessmentQuestionAnswers);
+            _selectedAssessmentQuestion, AssessmentQuestionAnswers);
         
-        dialog.ShowDialog( parentControl.ParentWindow );
+        await dialog.ShowDialog( parentControl.ParentWindow );
 
     }
     

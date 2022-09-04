@@ -114,7 +114,8 @@ public class AssessmentQuestionViewModel: ViewModelBase
 
     private IAssessmentsService _assessmentsService;
     private Assessment SelectedAssessment { get; }
-    private AssessmentQuestion? SelectedQuestion { get; }
+
+    public AssessmentQuestion? AssessmentQuestion { get; set; }
     
     public ReactiveCommand<Unit, Unit> BtAddAnswerClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelAddAnswerClicked { get; }
@@ -124,11 +125,11 @@ public class AssessmentQuestionViewModel: ViewModelBase
     public ReactiveCommand<Unit, Unit> BtSaveQuestionClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelSaveQuestionClicked { get; }
     public AssessmentQuestionViewModel(Window displayWindow, Assessment selectedAssessment, 
-        AssessmentQuestion? selectedQuestion = null, List<AssessmentAnswer> selectedQuestionAnswers = null) : base()
+       AssessmentQuestion? assessmentQuestion = null, List<AssessmentAnswer> selectedQuestionAnswers = null) : base()
     {
         DisplayWindow = displayWindow;
         SelectedAssessment = selectedAssessment;
-        SelectedQuestion = selectedQuestion;
+        AssessmentQuestion = assessmentQuestion;
         
         StrQuestion = Localizer["Question"];
         StrAnswers = Localizer["Answers"];
@@ -146,9 +147,9 @@ public class AssessmentQuestionViewModel: ViewModelBase
         BtCancelSaveQuestionClicked = ReactiveCommand.Create(ExecuteCancelSaveQuestion);
 
 
-        if (SelectedQuestion is not null && selectedQuestionAnswers is not null)
+        if (AssessmentQuestion is not null && selectedQuestionAnswers is not null)
         {
-            TxtQuestion = SelectedQuestion.Question;
+            TxtQuestion = AssessmentQuestion.Question;
             Answers = new ObservableCollection<AssessmentAnswer>(selectedQuestionAnswers);
         }
 
@@ -159,7 +160,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
     private void ExecuteSaveQuestion()
     {
         var isUpdate = false;
-        if (SelectedQuestion is not null) isUpdate = true;
+        if (AssessmentQuestion is not null ) isUpdate = true;
 
         if (!isUpdate)
         {
@@ -174,6 +175,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
                 var result = _assessmentsService.SaveQuestion(SelectedAssessment.Id, assessmentQuestion);
                 if (result.Item1 == 0)
                 {
+                    AssessmentQuestion = result.Item2;
                     DisplayWindow.Close();
                 }
 

@@ -73,7 +73,11 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
             
             if (response.IsSuccessful && response.StatusCode == System.Net.HttpStatusCode.Created)
             {
-                var questionResponse = JsonSerializer.Deserialize<AssessmentQuestion>(response.Content);
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var questionResponse = JsonSerializer.Deserialize<AssessmentQuestion>(response.Content, options);
                 return new Tuple<int, AssessmentQuestion?>(0, questionResponse);
             }
 
