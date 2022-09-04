@@ -237,7 +237,9 @@ public class AssessmentsController : ApiBaseController
 
             var result = _assessmentsService.SaveQuestion(assessmentId, question);
             
-            return result;
+            if(result == null) return StatusCode(500, "Error creating question");
+            
+            return Created($"/Assessments/{assessmentId}/Questions/{result.Id}", result);
 
         }catch(Exception ex)
         {

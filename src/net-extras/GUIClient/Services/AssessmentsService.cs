@@ -64,7 +64,7 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
     public Tuple<int, AssessmentQuestion?> SaveQuestion(int assessmentId, AssessmentQuestion question)
     {
         var client = _restService.GetClient();
-        var request = new RestRequest("/Assessments/{assessmentId}/Questions");
+        var request = new RestRequest($"/Assessments/{assessmentId}/Questions");
         request.AddJsonBody(question);
         
         try
