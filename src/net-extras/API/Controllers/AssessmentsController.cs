@@ -327,7 +327,7 @@ public class AssessmentsController : ApiBaseController
             foreach (var answer in answers)
             {
                 var resAnswer = _assessmentsService.SaveAnswer(answer);
-                result.Add(resAnswer);
+                result.Add(resAnswer!);
             }
 
             return Created($"{assessmentId}/questions/{questionId}/answers",result);
@@ -337,10 +337,7 @@ public class AssessmentsController : ApiBaseController
             Logger.Error(ex, "Error creating assessment answers");
             return StatusCode(500, "Error creating assessment answers");
         }
-
-
-        Logger.Error("Unkwon error saving answers");
-        return StatusCode(500, "Unkwown answer");
+        
         
     }
 }

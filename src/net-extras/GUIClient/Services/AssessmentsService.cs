@@ -77,7 +77,7 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                var questionResponse = JsonSerializer.Deserialize<AssessmentQuestion>(response.Content, options);
+                var questionResponse = JsonSerializer.Deserialize<AssessmentQuestion>(response.Content!, options);
                 return new Tuple<int, AssessmentQuestion?>(0, questionResponse);
             }
 

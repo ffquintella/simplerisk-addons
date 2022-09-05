@@ -125,7 +125,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
     public ReactiveCommand<Unit, Unit> BtSaveQuestionClicked { get; }
     public ReactiveCommand<Unit, Unit> BtCancelSaveQuestionClicked { get; }
     public AssessmentQuestionViewModel(Window displayWindow, Assessment selectedAssessment, 
-       AssessmentQuestion? assessmentQuestion = null, List<AssessmentAnswer> selectedQuestionAnswers = null) : base()
+       AssessmentQuestion? assessmentQuestion = null, List<AssessmentAnswer>? selectedQuestionAnswers = null) : base()
     {
         DisplayWindow = displayWindow;
         SelectedAssessment = selectedAssessment;
@@ -248,8 +248,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
     {
         if (update)
         {
-            
-            if ( TxtAnswer != SelectedAnswer.Answer && Answers.Any(ans => ans.Answer == TxtAnswer))
+            if ( TxtAnswer != SelectedAnswer!.Answer && Answers.Any(ans => ans.Answer == TxtAnswer))
             {
                 var msgBox1 = MessageBox.Avalonia.MessageBoxManager
                     .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
@@ -266,9 +265,9 @@ public class AssessmentQuestionViewModel: ViewModelBase
 
             var editAnwser = SelectedAnswer.DeepCopy();
             
-            editAnwser.Answer = TxtAnswer;
-            editAnwser.RiskScore = TxtRisk;
-            editAnwser.RiskSubject = Encoding.UTF8.GetBytes(TxtSubject);
+            editAnwser!.Answer = TxtAnswer;
+            editAnwser!.RiskScore = TxtRisk;
+            editAnwser!.RiskSubject = Encoding.UTF8.GetBytes(TxtSubject);
 
             var location = Answers.IndexOf(SelectedAnswer);
             Answers.RemoveAt(location);

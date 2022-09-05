@@ -48,13 +48,13 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
             srDbContext.SaveChanges();
             if (ass.IsKeySet)
             {
-                return new Tuple<int, Assessment>(0, ass.Entity);
+                return new Tuple<int, Assessment?>(0, ass.Entity);
             }
         }
         catch (Exception ex)
         {
             Logger.Error("Error creating assessment: {0}", ex.Message);
-            return new Tuple<int, Assessment>(1, null);
+            return new Tuple<int, Assessment?>(1, null);
         }
         Logger.Error("Unkown error creating assessment");
         return new Tuple<int, Assessment?>(-1, null);

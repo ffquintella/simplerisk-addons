@@ -71,8 +71,8 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
             if (ValidateToken(token, out username))
             {
                 // Let´s check if we have the client registred... 
-                var client = _dbContext.AddonsClientRegistrations.
-                    Where(cl => cl.ExternalId == clientId && cl.Status == "approved").FirstOrDefault();
+                var client = _dbContext!.AddonsClientRegistrations!
+                    .FirstOrDefault(cl => cl.ExternalId == clientId && cl.Status == "approved");
 
                 if (client == null) // We should not allow an unauthorized client to login
                 {
@@ -82,9 +82,9 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
                     return Task.FromResult(AuthenticateResult.Fail("Invalid Client"));                    
                 }
 
-                var userObj = _userManagementService.GetUser(username);
+                var userObj = _userManagementService.GetUser(username!);
                 
-                var permissions = _userManagementService.GetUserPermissions(userObj.Value);
+                var permissions = _userManagementService.GetUserPermissions(userObj!.Value);
                 
                 // based on username to get more information from database 
                 // in order to build local identity
@@ -102,7 +102,7 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
                 else
                 {
                     var role = _roleManagementService.GetRole(userObj.RoleId);
-                    claims.Add( new Claim(ClaimTypes.Role, role.Name));
+                    claims.Add( new Claim(ClaimTypes.Role, role!.Name));
                 }
 
                 foreach (var permission in permissions)

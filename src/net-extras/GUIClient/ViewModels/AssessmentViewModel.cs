@@ -99,9 +99,9 @@ public class AssessmentViewModel: ViewModelBase
         AssessmentQuestions = new ObservableCollection<AssessmentQuestion>(questions);
     }
     
-    private List<AssessmentAnswer> _assessmentAnswers;
+    private ObservableCollection<AssessmentAnswer> _assessmentAnswers;
 
-    public List<AssessmentAnswer> AssessmentAnswers
+    public ObservableCollection<AssessmentAnswer> AssessmentAnswers
     {
         get => _assessmentAnswers;
         set => this.RaiseAndSetIfChanged(ref _assessmentAnswers, value);
@@ -111,11 +111,11 @@ public class AssessmentViewModel: ViewModelBase
     {
         var answers = _assessmentsService.GetAssessmentAnswers(assessmentId);
         if (answers == null) return;
-        AssessmentAnswers = answers;
+        AssessmentAnswers = new ObservableCollection<AssessmentAnswer>(answers);
     }
     
-    private List<AssessmentAnswer> _assessmentQuestionAnswers;
-    public List<AssessmentAnswer> AssessmentQuestionAnswers
+    private ObservableCollection<AssessmentAnswer> _assessmentQuestionAnswers;
+    public ObservableCollection<AssessmentAnswer> AssessmentQuestionAnswers
     {
         get => _assessmentQuestionAnswers;
         set => this.RaiseAndSetIfChanged(ref _assessmentQuestionAnswers, value);
@@ -123,7 +123,9 @@ public class AssessmentViewModel: ViewModelBase
 
     private void UpdateAssessmentQuestionAnswers(int assessmentQuestionId)
     {
-        AssessmentQuestionAnswers = AssessmentAnswers.Where(answ => answ.QuestionId == assessmentQuestionId).ToList();
+        AssessmentQuestionAnswers = 
+            new ObservableCollection<AssessmentAnswer>(AssessmentAnswers
+                .Where(answ => answ.QuestionId == assessmentQuestionId).ToList());
     }
 
     private bool _assessmentAddBarVisible = false;
@@ -153,6 +155,8 @@ public class AssessmentViewModel: ViewModelBase
         _assessments = new ObservableCollection<Assessment>();
         _assessmentsService = GetService<IAssessmentsService>();
         _assessmentQuestions = new ObservableCollection<AssessmentQuestion>(); 
+        _assessmentAnswers = new ObservableCollection<AssessmentAnswer>();
+        _assessmentQuestionAnswers = new ObservableCollection<AssessmentAnswer>(); 
         
         StrAssessments = Localizer["Assessments"];
         _strAnswers = Localizer["Answers"];
@@ -246,7 +250,7 @@ public class AssessmentViewModel: ViewModelBase
         };
         
         dialog.DataContext = new AssessmentQuestionViewModel(dialog, SelectedAssessment!, 
-            _selectedAssessmentQuestion, AssessmentQuestionAnswers);
+            _selectedAssessmentQuestion, AssessmentQuestionAnswers.ToList());
         
         await dialog.ShowDialog( parentControl.ParentWindow );
 

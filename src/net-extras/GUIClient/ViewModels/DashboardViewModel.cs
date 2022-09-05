@@ -32,7 +32,7 @@ public class DashboardViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _risksOverTime, value);
     }
     
-    public List<Axis>? RisksOverTimeXAxis
+    public List<Axis> RisksOverTimeXAxis
     {
         get => _risksOverTimeXAxis;
         set => this.RaiseAndSetIfChanged(ref _risksOverTimeXAxis, value);

@@ -33,7 +33,7 @@ public class MultiObjectEqualConverter: IMultiValueConverter
             var firstObj = values[0];
             for (var i = 1; i < values.Count; i++)
             {
-                if (!values[i].Equals(firstObj))
+                if (values[i]!.Equals(firstObj))
                 {
                     return false;
                 }
