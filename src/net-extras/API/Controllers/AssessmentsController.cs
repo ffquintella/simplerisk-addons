@@ -18,6 +18,10 @@ public class AssessmentsController : ApiBaseController
         _assessmentsService = assessmentsService;
     }
   
+    /// <summary>
+    /// List all assessments
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     [Route("")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Assessment>))]
@@ -37,20 +41,26 @@ public class AssessmentsController : ApiBaseController
         }
 
     }
+    
+    /// <summary>
+    /// Gets the detail of the assessment
+    /// </summary>
+    /// <param name="assessmentId">The ID of the assessment</param>
+    /// <returns></returns>
     [HttpGet]
-    [Route("{id}")]
+    [Route("{assessmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Assessment))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
-    public ActionResult<Assessment> GetAssessment(int id)
+    public ActionResult<Assessment> GetAssessment(int assessmentId)
     {
 
         try
         {
-            Logger.Debug("Searching assessment with id {id}", id);
-            var assessment = _assessmentsService.Get(id);
+            Logger.Debug("Searching assessment with id {id}", assessmentId);
+            var assessment = _assessmentsService.Get(assessmentId);
             if (assessment == null)
             {
-                Logger.Error("Assessment with id {id} not found", id);
+                Logger.Error("Assessment with id {id} not found", assessmentId);
                 return NotFound("Assessment not found");
             }
             
@@ -64,21 +74,26 @@ public class AssessmentsController : ApiBaseController
 
     }
     
+    /// <summary>
+    /// Deletes the assessment
+    /// </summary>
+    /// <param name="assessmentId">If of the assessment</param>
+    /// <returns></returns>
     [HttpDelete]
-    [Route("{id}")]
+    [Route("{assessmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult DeleteAssessment(int id)
+    public ActionResult DeleteAssessment(int assessmentId)
     {
 
         try
         {
-            Logger.Debug("Searching assessment with id {id}", id);
-            var assessment = _assessmentsService.Get(id);
+            Logger.Debug("Searching assessment with id {id}", assessmentId);
+            var assessment = _assessmentsService.Get(assessmentId);
             if (assessment == null)
             {
-                Logger.Error("Assessment with id {id} not found", id);
+                Logger.Error("Assessment with id {id} not found", assessmentId);
                 return NotFound("Assessment not found");
             }
             
@@ -86,12 +101,12 @@ public class AssessmentsController : ApiBaseController
             
             if(result == 0)
             {
-                Logger.Information("Assessment with id {id} deleted", id);
+                Logger.Information("Assessment with id {id} deleted", assessmentId);
                 return Ok();
             }
             else
             {
-                Logger.Error("Error deleting assessment with id {id}", id);
+                Logger.Error("Error deleting assessment with id {id}", assessmentId);
                 return StatusCode(500, "Error deleting assessment");
             }
 
@@ -103,6 +118,11 @@ public class AssessmentsController : ApiBaseController
 
     }
     
+    /// <summary>
+    /// Creates an assessment
+    /// </summary>
+    /// <param name="assessment">The assessment object</param>
+    /// <returns></returns>
     [HttpPost]
     [Route("")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Assessment))]
@@ -135,21 +155,25 @@ public class AssessmentsController : ApiBaseController
 
     }
     
-    
+    /// <summary>
+    /// Gets all the answers for this assessment
+    /// </summary>
+    /// <param name="assessmentId">the Id of the assessment</param>
+    /// <returns></returns>
     [HttpGet]
-    [Route("{id}/answers")]
+    [Route("{assessmentId}/answers")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AssessmentAnswer>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
-    public ActionResult<List<AssessmentAnswer>> ListAssessmentAnswers(int id)
+    public ActionResult<List<AssessmentAnswer>> ListAssessmentAnswers(int assessmentId)
     {
 
         try
         {
-            Logger.Debug("Searching answers for assessment with id {id}", id);
-            var assessmentAnswers = _assessmentsService.GetAnswers(id);
+            Logger.Debug("Searching answers for assessment with id {id}", assessmentId);
+            var assessmentAnswers = _assessmentsService.GetAnswers(assessmentId);
             if (assessmentAnswers == null)
             {
-                Logger.Error("Answers for assessment with id {id} not found", id);
+                Logger.Error("Answers for assessment with id {id} not found", assessmentId);
                 return NotFound("Assessment not found");
             }
             
@@ -235,7 +259,7 @@ public class AssessmentsController : ApiBaseController
                 return Conflict("Question already exists");
             }
 
-            var result = _assessmentsService.SaveQuestion(assessmentId, question);
+            var result = _assessmentsService.SaveQuestion(question);
             
             if(result == null) return StatusCode(500, "Error creating question");
             
@@ -248,5 +272,75 @@ public class AssessmentsController : ApiBaseController
             return StatusCode(500, "Questions not found");
         }
 
+    }
+
+    /// <summary>
+    /// Creates a new assessment question answers
+    /// </summary>
+    /// <param name="assessmentId">The id of the parent assessment</param>
+    /// <param name="questionId">The id of the parent assessment question</param>
+    /// <param name="answers">The answers to be created</param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("{assessmentId}/questions/{questionId}/answers")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(List<AssessmentAnswer>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(string))]
+    public ActionResult<List<AssessmentQuestion>> CreateAssessmentQuestion(int assessmentId, int questionId,
+        [FromBody] AssessmentAnswer[] answers)
+    {
+
+        try
+        {
+            // First we check if the assessment exists
+            Logger.Debug("Searching for assessment with id {assessmentId}", assessmentId);
+            var assessment = _assessmentsService.Get(assessmentId);
+            if (assessment == null)
+            {
+                Logger.Error("Assessment with id {assessmentId} not found", assessmentId);
+                return NotFound("Assessment not found");
+            }
+            
+            //Now let's check if the question exists 
+            var question = _assessmentsService.GetQuestionById(assessmentId, questionId);
+            if (question == null)
+            {
+                Logger.Error("Assessment question with id {questionId} for and assessment {assessmentId} not found",questionId,assessmentId);
+                return NotFound("Question not found");
+            }
+            
+            //Checking if all of the answers are new
+            foreach (var answer in answers)
+            {
+                // First let's check if it already exists
+                var dbAnswer = _assessmentsService.GetAnswer(assessmentId, questionId, answer.Answer);
+
+                if (dbAnswer is not null)
+                {
+                    Logger.Error("A answer with the same text already exists for {assessmentId} & {questionId}", assessmentId, questionId);
+                    return Conflict("One of the answers already exists");
+                }
+            }
+
+            var result = new List<AssessmentAnswer>();
+            //Saving the answers
+            foreach (var answer in answers)
+            {
+                var resAnswer = _assessmentsService.SaveAnswer(answer);
+                result.Add(resAnswer);
+            }
+
+            return Created($"{assessmentId}/questions/{questionId}/answers",result);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Error creating assessment answers");
+            return StatusCode(500, "Error creating assessment answers");
+        }
+
+
+        Logger.Error("Unkwon error saving answers");
+        return StatusCode(500, "Unkwown answer");
+        
     }
 }

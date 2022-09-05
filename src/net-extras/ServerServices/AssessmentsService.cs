@@ -1,6 +1,7 @@
 ﻿using DAL;
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using Model.Exceptions;
 
 namespace ServerServices;
 using ILogger = Serilog.ILogger;
@@ -64,6 +65,14 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         var srDbContext = DALManager.GetContext();
         return srDbContext.AssessmentAnswers.Where(a => a.AssessmentId == id).ToList();
     }
+    
+    public AssessmentAnswer? GetAnswer(int assessmentId, int questionId, string answerText)
+    {
+        var srDbContext = DALManager.GetContext();
+        return srDbContext.AssessmentAnswers.FirstOrDefault(a => a.AssessmentId == assessmentId
+                                                                 && a.QuestionId == questionId
+                                                                 && a.Answer == answerText);
+    }
 
     public List<AssessmentQuestion>? GetQuestions(int id)
     {
@@ -77,13 +86,38 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         return srDbContext.AssessmentQuestions.FirstOrDefault(a => a.AssessmentId == id && a.Question == question);
     }
     
-    public AssessmentQuestion? SaveQuestion(int assessmentId, AssessmentQuestion question)
+    public AssessmentQuestion? GetQuestionById(int id, int questionId)
     {
         var srDbContext = DALManager.GetContext();
-        question.AssessmentId = assessmentId;
+        return srDbContext.AssessmentQuestions.FirstOrDefault(a => a.AssessmentId == id && a.Id == questionId);
+    }
+    
+    public AssessmentQuestion? SaveQuestion(AssessmentQuestion question)
+    {
+        var srDbContext = DALManager.GetContext();
+        if (srDbContext.Assessments.FirstOrDefault(ass => ass.Id == question.AssessmentId) is null)
+        {
+            throw new InvalidReferenceException($"The assessment {question.AssessmentId} indicated on the question does not exists");
+        }
         srDbContext.AssessmentQuestions.Add(question);
         srDbContext.SaveChanges();
         return question;
+    }
+    
+    public AssessmentAnswer? SaveAnswer(AssessmentAnswer answer)
+    {
+        var srDbContext = DALManager.GetContext();
+        if (srDbContext.Assessments.FirstOrDefault(ass => ass.Id == answer.AssessmentId) is null)
+        {
+            throw new InvalidReferenceException($"The assessment {answer.AssessmentId} indicated on the answer does not exists");
+        }
+        if (srDbContext.AssessmentQuestions.FirstOrDefault(ass => ass.Id == answer.QuestionId) is null)
+        {
+            throw new InvalidReferenceException($"The question {answer.QuestionId} indicated on the answer does not exists");
+        }
+        srDbContext.AssessmentAnswers.Add(answer);
+        srDbContext.SaveChanges();
+        return answer;
     }
     
 }

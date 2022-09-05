@@ -1,6 +1,6 @@
 ﻿namespace Model.Exceptions;
 
-public class InvalidReferenceException: Exception
+public class InvalidReferenceException: DatabaseException
 {
     public InvalidReferenceException(string message) : base(message)
     {
