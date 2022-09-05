@@ -141,7 +141,8 @@ public class AssessmentsController : ApiBaseController
 
             if (operResult.Item1 == 0)
             {
-                return CreatedAtAction(nameof(GetAssessment), new { id = assessment.Id }, assessment);
+                return Created($"/Assessments/{operResult.Item2.Id}", operResult.Item2);
+                //return CreatedAtAction(nameof(GetAssessment), new { id = assessment.Id }, assessment);
             }
             
             return StatusCode(500, "Error creating assessment");
