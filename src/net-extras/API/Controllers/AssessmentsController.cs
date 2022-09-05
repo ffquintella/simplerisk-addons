@@ -309,6 +309,17 @@ public class AssessmentsController : ApiBaseController
                 return NotFound("Question not found");
             }
             
+            //Checking if all of the answers belongs to the assessment question
+            foreach (var answer in answers)
+            {
+                if (answer.AssessmentId != assessmentId || answer.QuestionId != questionId)
+                {
+                    Logger.Error("Trying to save inconsistent answer",questionId,assessmentId);
+                    return Conflict("Trying to save inconsistent answer");
+                }
+
+            }
+
             //Checking if all of the answers are new
             foreach (var answer in answers)
             {
