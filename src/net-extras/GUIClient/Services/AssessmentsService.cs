@@ -71,13 +71,14 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
 
         foreach (var answer in answers)
         {
-            if (answer.AssessmentId != 0) 
+            if (answer.Id != 0) 
                 return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
-            if (answer.AssessmentId != assessmentId) 
-                return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
-            if (answer.QuestionId != questionId) 
-                return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+            answer.AssessmentId = assessmentId;
+            answer.QuestionId = questionId;
+
         }
+        
+        
         
         request.AddJsonBody(answers);
 
@@ -119,12 +120,10 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
 
         foreach (var answer in answers)
         {
-            if (answer.AssessmentId == 0) 
+            if (answer.Id == 0) 
                 return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
-            if (answer.AssessmentId != assessmentId) 
-                return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
-            if (answer.QuestionId != questionId) 
-                return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+            answer.AssessmentId = assessmentId;
+            answer.QuestionId = questionId;
         }
         
         request.AddJsonBody(answers);
