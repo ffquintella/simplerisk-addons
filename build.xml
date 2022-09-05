@@ -5,15 +5,12 @@
     <property name="builddir" value="./build/" override="true" />
     <property name="appdir" value="./build/app" override="true" />
 
-    <property name="version" value="20220704-001" override="true" />
-
-
+    <property name="version" value="20220823-001" override="true" />
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
     <!-- ============================================  -->
     <target name="prepare">
-        
         <echo msg="Making directory ${simpleRiskInstallation}/extras" />
         <mkdir dir="${simpleRiskInstallation}/extras" />
         <echo msg="Making directory ${simpleRiskInstallation}/extras/authentication" />

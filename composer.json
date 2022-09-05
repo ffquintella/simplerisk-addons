@@ -1,5 +1,9 @@
 {
     "require-dev": {
         "phing/phing": "2.*"
+    },
+    "require": {
+        "pear/http_request2": "^2.5",
+        "pear/archive_tar": "^1.4"
     }
 }
