@@ -240,6 +240,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error saving the answers..
+        /// </summary>
+        internal static string ErrorSavingAnswersMSG {
+            get {
+                return ResourceManager.GetString("ErrorSavingAnswersMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A error occurred while saving the question..
         /// </summary>
         internal static string ErrorSavingQuestionMSG {

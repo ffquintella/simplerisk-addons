@@ -171,4 +171,7 @@
     <data name="QuestionAlreadyExistsMSG" xml:space="preserve">
         <value>The question already exists.</value>
     </data>
+    <data name="ErrorSavingAnswersMSG" xml:space="preserve">
+        <value>Error saving the answers.</value>
+    </data>
 </root>

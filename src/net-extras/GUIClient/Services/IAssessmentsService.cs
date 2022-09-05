@@ -30,6 +30,28 @@ public interface IAssessmentsService
     Tuple<int, AssessmentQuestion?> SaveQuestion(int assessmentId, AssessmentQuestion question);
     
     /// <summary>
+    /// Creates new answers on the server
+    /// </summary>
+    /// <param name="assessmentId">Assessment ID of the question</param>
+    /// <param name="questionId">Question ID of the question</param>
+    /// <param name="answers">List of assessment answers</param>
+    /// <returns>0 if ok, -1 if error</returns>
+    Tuple<int, List<AssessmentAnswer>?> CreateAnswers(int assessmentId,
+        int questionId,
+        List<AssessmentAnswer> answers);
+    
+    /// <summary>
+    /// Updates existing answers on the server
+    /// </summary>
+    /// <param name="assessmentId">Assessment ID of the question</param>
+    /// <param name="questionId">Question ID of the question</param>
+    /// <param name="answers">List of assessment answers</param>
+    /// <returns>0 if ok, -1 if error</returns>
+    Tuple<int, List<AssessmentAnswer>?> UpdateAnswers(int assessmentId,
+        int questionId,
+        List<AssessmentAnswer> answers);
+    
+    /// <summary>
     /// Deletes one assessment
     /// </summary>
     /// <param name="assessmentId"></param>

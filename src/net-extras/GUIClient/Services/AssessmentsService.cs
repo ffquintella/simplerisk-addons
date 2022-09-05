@@ -6,6 +6,7 @@ using DAL.Entities;
 using RestSharp;
 using Serilog;
 using System.Text.Json;
+using Avalonia.Logging;
 
 namespace GUIClient.Services;
 
@@ -61,6 +62,101 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         
     }
 
+    public Tuple<int, List<AssessmentAnswer>?> CreateAnswers(int assessmentId,
+        int questionId,
+        List<AssessmentAnswer> answers)
+    {
+        var client = _restService.GetClient();
+        var request = new RestRequest($"/Assessments/{assessmentId}/Questions/{questionId}/Answers");
+
+        foreach (var answer in answers)
+        {
+            if (answer.AssessmentId != 0) 
+                return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+            if (answer.AssessmentId != assessmentId) 
+                return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+            if (answer.QuestionId != questionId) 
+                return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+        }
+        
+        request.AddJsonBody(answers);
+
+        try
+        {
+            var response = client.Post(request);
+            
+            if (response.IsSuccessful && response.StatusCode == System.Net.HttpStatusCode.Created)
+            {
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var questionResponse = JsonSerializer.Deserialize<List<AssessmentAnswer>?>(response.Content!, options);
+                return new Tuple<int, List<AssessmentAnswer>?>(0, questionResponse);
+            }
+
+            if (response.StatusCode == HttpStatusCode.Conflict)
+            {
+                return new Tuple<int, List<AssessmentAnswer>?>(1, null);    
+            }
+            
+            return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error creating answers");
+        }
+        
+        return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+    }
+
+    public Tuple<int, List<AssessmentAnswer>?> UpdateAnswers(int assessmentId,
+        int questionId,
+        List<AssessmentAnswer> answers)
+    {
+        var client = _restService.GetClient();
+        var request = new RestRequest($"/Assessments/{assessmentId}/Questions/{questionId}/Answers");
+
+        foreach (var answer in answers)
+        {
+            if (answer.AssessmentId == 0) 
+                return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+            if (answer.AssessmentId != assessmentId) 
+                return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+            if (answer.QuestionId != questionId) 
+                return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+        }
+        
+        request.AddJsonBody(answers);
+
+        try
+        {
+            var response = client.Put(request);
+            
+            if (response.IsSuccessful && response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var questionResponse = JsonSerializer.Deserialize<List<AssessmentAnswer>?>(response.Content!, options);
+                return new Tuple<int, List<AssessmentAnswer>?>(0, questionResponse);
+            }
+
+            if (response.StatusCode == HttpStatusCode.Conflict)
+            {
+                return new Tuple<int, List<AssessmentAnswer>?>(1, null);    
+            }
+            
+            return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error updating answers");
+        }
+        return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
+    }
+    
     public Tuple<int, AssessmentQuestion?> SaveQuestion(int assessmentId, AssessmentQuestion question)
     {
         var client = _restService.GetClient();

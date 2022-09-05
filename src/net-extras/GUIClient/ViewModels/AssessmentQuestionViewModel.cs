@@ -176,7 +176,66 @@ public class AssessmentQuestionViewModel: ViewModelBase
                 if (result.Item1 == 0)
                 {
                     AssessmentQuestion = result.Item2;
-                    DisplayWindow.Close();
+                    
+                    // Now let´s save the answers
+                    var nAnswers = new List<AssessmentAnswer>();
+                    var upAnswer = new List<AssessmentAnswer>();
+                    foreach (var answer in Answers )
+                    {
+                        if (answer.Id == 0)
+                        {
+                            // new answer
+                            nAnswers.Add(answer);
+                        }
+                        else
+                        {
+                            // update answer
+                            upAnswer.Add(answer);
+                        }
+                    }
+                    
+                    // first let´s add the new ones
+
+                    var crtAnswResult = _assessmentsService
+                        .CreateAnswers(AssessmentQuestion.AssessmentId, AssessmentQuestion.Id, nAnswers);
+                    if (crtAnswResult.Item1 == 0)
+                    {
+                        // Now let´s update the old ones.
+                        var upAnswResult = _assessmentsService
+                            .UpdateAnswers(AssessmentQuestion.AssessmentId, AssessmentQuestion.Id, nAnswers);
+                        if (crtAnswResult.Item1 == 0)
+                        {
+                            DisplayWindow.Close();
+                        }
+                        else
+                        {
+                            Logger.Error("Error updating new answers.");
+                            var msgError = MessageBox.Avalonia.MessageBoxManager
+                                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                                {
+                                    ContentTitle = Localizer["Error"],
+                                    ContentMessage = Localizer["ErrorSavingAnswersMSG"],
+                                    Icon = Icon.Error,
+                                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                                });
+                            
+                            msgError.Show();     
+                        }
+                    }
+                    else
+                    {
+                        Logger.Error("Error saving new answers.");
+                        var msgError = MessageBox.Avalonia.MessageBoxManager
+                            .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                            {
+                                ContentTitle = Localizer["Error"],
+                                ContentMessage = Localizer["ErrorSavingAnswersMSG"],
+                                Icon = Icon.Error,
+                                WindowStartupLocation = WindowStartupLocation.CenterOwner
+                            });
+                            
+                        msgError.Show();   
+                    }
                 }
 
                 if (result.Item1 == 1)
