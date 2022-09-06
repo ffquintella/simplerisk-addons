@@ -32,6 +32,13 @@ public interface IAssessmentsService
     /// <param name="answerText">The answer text</param>
     /// <returns>answer if found null if not</returns>
     AssessmentAnswer? GetAnswer(int assessmentId, int questionId, string answerText);
+
+    /// <summary>
+    /// Get assessment Answer by it
+    /// </summary>
+    /// <param name="answerId">answer id</param>
+    /// <returns>Answer if ok null if error</returns>
+    AssessmentAnswer? GetAnswerById(int answerId);
     
     /// <summary>
     /// Returns the list of questions from one assessment by id
@@ -47,6 +54,14 @@ public interface IAssessmentsService
     /// <param name="question">Question text</param>
     /// <returns>AssessmentQuestion or null</returns>
     AssessmentQuestion? GetQuestion(int id, string question);
+    
+    
+    /// <summary>
+    /// Finds the question using it's ID
+    /// </summary>
+    /// <param name="questionId">Question ID</param>
+    /// <returns>AssessmentQuestion or null</returns>
+    AssessmentQuestion? GetQuestionById(int questionId);
     
     /// <summary>
     /// Finds the question with the given id and question text

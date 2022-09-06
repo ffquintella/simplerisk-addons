@@ -74,6 +74,12 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
                                                                  && a.Answer == answerText);
     }
 
+    public AssessmentAnswer? GetAnswerById(int answerId)
+    {
+        var srDbContext = DALManager.GetContext();
+        return srDbContext.AssessmentAnswers.FirstOrDefault(a => a.Id == answerId);
+    }
+    
     public List<AssessmentQuestion>? GetQuestions(int id)
     {
         var srDbContext = DALManager.GetContext();
@@ -84,6 +90,12 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
     {
         var srDbContext = DALManager.GetContext();
         return srDbContext.AssessmentQuestions.FirstOrDefault(a => a.AssessmentId == id && a.Question == question);
+    }
+
+    public AssessmentQuestion? GetQuestionById(int questionId)
+    {
+        var srDbContext = DALManager.GetContext();
+        return srDbContext.AssessmentQuestions.FirstOrDefault(a => a.Id == questionId);
     }
     
     public AssessmentQuestion? GetQuestionById(int id, int questionId)
@@ -115,7 +127,9 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         {
             throw new InvalidReferenceException($"The question {answer.QuestionId} indicated on the answer does not exists");
         }
-        srDbContext.AssessmentAnswers.Add(answer);
+
+        if (answer.Id == 0) srDbContext.AssessmentAnswers.Add(answer);
+        else srDbContext.AssessmentAnswers.Update(answer);
         srDbContext.SaveChanges();
         return answer;
     }
