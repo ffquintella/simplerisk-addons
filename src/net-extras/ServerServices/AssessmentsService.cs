@@ -32,6 +32,17 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
     public int Delete(Assessment assessment)
     {
         var srDbContext = DALManager.GetContext();
+        //Before we can delete an assessment we need to delete it's questions
+
+        var assQuestions = GetQuestions(assessment.Id);
+
+        foreach (var question in assQuestions)
+        {
+            var qdel = DeleteQuestion(question);
+            if (qdel != 0) return 1;
+        }
+        
+        
         var result= srDbContext.Assessments.Remove(assessment);
         srDbContext.SaveChanges();
         if(result.State == EntityState.Detached)
