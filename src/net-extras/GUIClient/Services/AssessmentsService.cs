@@ -161,6 +161,29 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
     }
     
+    public int DeleteAnswers(int assessmentId,
+        int questionId,
+        List<AssessmentAnswer> answers)
+    {
+
+        if (answers.Count == 0) return 0;
+        
+        var client = _restService.GetClient();
+
+        foreach (var answer in answers)
+        {
+            var request = new RestRequest($"/Assessments/{assessmentId}/Questions/{questionId}/Answers/{answer.Id}");
+            var result = client.Delete<string>(request);
+            if (result != "Ok")
+            {
+                _logger.Error("Error deleting answer {0}" , answer.Id);
+                return -1;
+            }
+        }
+
+        return 0;
+    }
+    
     public Tuple<int, AssessmentQuestion?> CreateQuestion(int assessmentId, AssessmentQuestion question)
     {
         var client = _restService.GetClient();

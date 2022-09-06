@@ -92,6 +92,8 @@ public class AssessmentQuestionViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _answers, value);
     }
 
+    private List<AssessmentAnswer> _answersToDelete = new List<AssessmentAnswer>();
+    
     private AssessmentAnswer? _selectedAnswer = null;
     private AssessmentAnswer? SelectedAnswer
     {
@@ -185,9 +187,18 @@ public class AssessmentQuestionViewModel: ViewModelBase
             // Now let´s update the old ones.
             var upAnswResult = _assessmentsService
                 .UpdateAnswers(AssessmentQuestion.AssessmentId, AssessmentQuestion.Id, upAnswer);
-            if (crtAnswResult.Item1 == 0)
+            if (upAnswResult.Item1 == 0)
             {
-                return 0;
+                //Now let´s delete 
+                var resultDel = _assessmentsService.DeleteAnswers(AssessmentQuestion.AssessmentId, 
+                    AssessmentQuestion.Id,
+                    _answersToDelete);
+                if(resultDel == 0) return 0;
+                else
+                {
+                    Logger.Error("Error deleting answers");
+                    return 1;
+                }
             }
             else
             {
@@ -350,6 +361,7 @@ public class AssessmentQuestionViewModel: ViewModelBase
             Logger.Error("Button delete answer clicked but no answer selected.");
             return;
         }
+        _answersToDelete.Add(SelectedAnswer);
         Answers.Remove(SelectedAnswer);
         SelectedAnswer = null;
         GridEnabled = true;

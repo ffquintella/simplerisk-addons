@@ -58,6 +58,18 @@ public interface IAssessmentsService
     Tuple<int, List<AssessmentAnswer>?> UpdateAnswers(int assessmentId,
         int questionId,
         List<AssessmentAnswer> answers);
+
+
+    /// <summary>
+    /// Delete a list of answers
+    /// </summary>
+    /// <param name="assessmentId">Assessment ID of the answer</param>
+    /// <param name="questionId">Question Id of the answer</param>
+    /// <param name="answers">list of answers</param>
+    /// <returns>0 if ok; -1 if error.</returns>
+    int DeleteAnswers(int assessmentId,
+        int questionId,
+        List<AssessmentAnswer> answers);
     
     /// <summary>
     /// Deletes one assessment
