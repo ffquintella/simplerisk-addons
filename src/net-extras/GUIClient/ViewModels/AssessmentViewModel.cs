@@ -266,6 +266,7 @@ public class AssessmentViewModel: ViewModelBase
             }
             Assessments.Remove(SelectedAssessment);
             SelectedAssessment = null;
+            AssessmentQuestions = new ObservableCollection<AssessmentQuestion>();
         }
         
     }
