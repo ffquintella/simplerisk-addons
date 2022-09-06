@@ -254,6 +254,28 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         }
     }
     
+    public int DeleteQuestion(int assessmentId, int assessmentQuestionId)
+    {
+        var client = _restService.GetClient();
+        var request = new RestRequest($"/Assessments/{assessmentId}/Questions/{assessmentQuestionId}");
+
+        try
+        {
+            var response = client.Delete(request);
+            if(response.IsSuccessful && response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return 0;
+            }
+
+            return -1;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error deleting assessment question: {0} message: {1}", assessmentId, ex.Message);
+            return -1;
+        }
+    }
+    
     public int Delete(int assessmentId)
     {
         var client = _restService.GetClient();

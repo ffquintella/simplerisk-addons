@@ -74,9 +74,17 @@ public interface IAssessmentsService
     /// <summary>
     /// Deletes one assessment
     /// </summary>
-    /// <param name="assessmentId"></param>
+    /// <param name="assessmentId">The asssessment id</param>
     /// <returns>0 if ok, -1 if error</returns>
     int Delete(int assessmentId);
+
+    /// <summary>
+    /// Deletes the assessment question
+    /// </summary>
+    /// <param name="assessmentId">The asssessment id</param>
+    /// <param name="assessmentQuestionId">The assessment question ID</param>
+    /// <returns>0 if ok, -1 if error;</returns>
+    int DeleteQuestion(int assessmentId, int assessmentQuestionId);
     
     /// <summary>
     /// Get the assessment questions from the server

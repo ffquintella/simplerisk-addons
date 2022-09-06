@@ -139,6 +139,7 @@
                             </Button>
                             <Button Grid.Column="2" Name="BtDeleteQuestion"
                                     Margin="3 3 0 0"
+                                    Command="{Binding BtDeleteQuestionClicked}"
                                     IsEnabled="{Binding !!SelectedAssessmentQuestion}"
                                     >
                                 <material:MaterialIcon Kind="Delete"/>

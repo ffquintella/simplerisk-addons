@@ -177,4 +177,10 @@
     <data name="QuestionDoesNotExistsMSG" xml:space="preserve">
         <value>Essa pergunta não existe.</value>
     </data>
+    <data name="ConfirmDeleteAssessmentQuestionMSG" xml:space="preserve">
+        <value>Tem certeza que deseja apagar a pergunta do levantamento: </value>
+    </data>
+    <data name="ErrorDeletingAssessmentQuestionMSG" xml:space="preserve">
+        <value>Erro apagando a pergunta do levantamento.</value>
+    </data>
 </root>

@@ -151,6 +151,7 @@ public class AssessmentViewModel: ViewModelBase
     
     public ReactiveCommand<Unit, Unit> BtDeleteAssessmentClicked { get; }
     public ReactiveCommand<bool, Unit> BtSaveAssessmentClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtDeleteQuestionClicked { get; }
     public AssessmentViewModel() : base()
     {
         
@@ -171,6 +172,7 @@ public class AssessmentViewModel: ViewModelBase
         BtCancelAddAssessmentClicked = ReactiveCommand.Create(ExecuteCancelAddAssessment);
         BtSaveAssessmentClicked = ReactiveCommand.Create<bool>(ExecuteSaveAssessment);
         BtDeleteAssessmentClicked = ReactiveCommand.Create(ExecuteDeleteAssessment);
+        BtDeleteQuestionClicked = ReactiveCommand.Create(ExecuteDeleteQuestion);
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
@@ -182,6 +184,48 @@ public class AssessmentViewModel: ViewModelBase
     {
         TxtAssessmentAddValue = "";
         AssessmentAddBarVisible = true;
+    }
+    
+    private async void ExecuteDeleteQuestion()
+    {
+        if(SelectedAssessmentQuestion == null)
+        {
+            return;
+        }
+        
+        var msgBox1 = MessageBox.Avalonia.MessageBoxManager
+            .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+            {
+                ContentTitle = Localizer["Warning"],
+                ContentMessage = Localizer["ConfirmDeleteAssessmentQuestionMSG"] + SelectedAssessmentQuestion.Question,
+                ButtonDefinitions = ButtonEnum.OkCancel,
+                Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            });
+                            
+        var result = await msgBox1.Show();
+
+        if (result == ButtonResult.Ok)
+        {
+            var delResult = _assessmentsService.DeleteQuestion(SelectedAssessmentQuestion.AssessmentId, SelectedAssessmentQuestion.Id);
+            if (delResult == -1)
+            {
+                var msgBox2 = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                    {
+                        ContentTitle = Localizer["Error"],
+                        ContentMessage = Localizer["ErrorDeletingAssessmentQuestionMSG"],
+                        Icon = MessageBox.Avalonia.Enums.Icon.Error,
+                        WindowStartupLocation = WindowStartupLocation.CenterScreen
+                    });
+                            
+                await msgBox2.Show();
+                return;
+            }
+            AssessmentQuestions.Remove(SelectedAssessmentQuestion);
+            SelectedAssessmentQuestion = null;
+        }
+        
     }
     
     private async void ExecuteDeleteAssessment()

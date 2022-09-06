@@ -195,6 +195,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you shure you want to delete the assessment question: .
+        /// </summary>
+        internal static string ConfirmDeleteAssessmentQuestionMSG {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteAssessmentQuestionMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         internal static string Description {
@@ -236,6 +245,15 @@ namespace GUIClient.Resources {
         internal static string ErrorDeletingAssessmentMSG {
             get {
                 return ResourceManager.GetString("ErrorDeletingAssessmentMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error deleting assessment question..
+        /// </summary>
+        internal static string ErrorDeletingAssessmentQuestionMSG {
+            get {
+                return ResourceManager.GetString("ErrorDeletingAssessmentQuestionMSG", resourceCulture);
             }
         }
         

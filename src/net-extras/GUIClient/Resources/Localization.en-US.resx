@@ -177,4 +177,10 @@
     <data name="QuestionDoesNotExistsMSG" xml:space="preserve">
         <value>This question does not exists.</value>
     </data>
+    <data name="ConfirmDeleteAssessmentQuestionMSG" xml:space="preserve">
+        <value>Are you shure you want to delete the assessment question: </value>
+    </data>
+    <data name="ErrorDeletingAssessmentQuestionMSG" xml:space="preserve">
+        <value>Error deleting assessment question.</value>
+    </data>
 </root>
