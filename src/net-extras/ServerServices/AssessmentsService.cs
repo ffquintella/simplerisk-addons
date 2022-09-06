@@ -141,12 +141,13 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         try
         {
             var srDbContext = DALManager.GetContext();
-            if (srDbContext.AssessmentAnswers.FirstOrDefault(ass => ass.Id == answer.Id) is null)
+            var ent = srDbContext.AssessmentAnswers.FirstOrDefault(ass => ass.Id == answer.Id);
+            if ( ent is null)
             {
                 throw new InvalidReferenceException($"The answer {answer.Id} does not exists");
             }
 
-            srDbContext.AssessmentAnswers.Remove(answer);
+            srDbContext.AssessmentAnswers.Remove(ent);
             srDbContext.SaveChanges();
             return 0;
         }
