@@ -111,7 +111,9 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         {
             throw new InvalidReferenceException($"The assessment {question.AssessmentId} indicated on the question does not exists");
         }
-        srDbContext.AssessmentQuestions.Add(question);
+
+        if (question.Id == 0) srDbContext.AssessmentQuestions.Add(question);
+        else srDbContext.AssessmentQuestions.Update(question);
         srDbContext.SaveChanges();
         return question;
     }
@@ -133,5 +135,26 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         srDbContext.SaveChanges();
         return answer;
     }
-    
+
+    public int DeleteAnswer(AssessmentAnswer answer)
+    {
+        try
+        {
+            var srDbContext = DALManager.GetContext();
+            if (srDbContext.AssessmentAnswers.FirstOrDefault(ass => ass.Id == answer.Id) is null)
+            {
+                throw new InvalidReferenceException($"The answer {answer.Id} does not exists");
+            }
+
+            srDbContext.AssessmentAnswers.Remove(answer);
+            srDbContext.SaveChanges();
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Unkown error: {0}", ex.Message);
+            return -1;
+        }
+
+    }
 }

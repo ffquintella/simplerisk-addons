@@ -84,6 +84,13 @@ public interface IAssessmentsService
     /// <param name="answer">Assessment Answer</param>
     /// <returns></returns>
     AssessmentAnswer? SaveAnswer(AssessmentAnswer answer);
+
+    /// <summary>
+    /// Delete Assessment Answer
+    /// </summary>
+    /// <param name="answer">the object to delete</param>
+    /// <returns>0 if ok; -1 if error</returns>
+    int DeleteAnswer(AssessmentAnswer answer);
     
     /// <summary>
     /// Creates a new assessment on the database
