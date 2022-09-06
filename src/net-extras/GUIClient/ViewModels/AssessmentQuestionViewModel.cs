@@ -339,11 +339,10 @@ public class AssessmentQuestionViewModel: ViewModelBase
             return; 
         }
     }
-
     private void ExecuteCancelSaveQuestion()
     {
+        DisplayWindow.Close();
     }
-    
     private void ExecuteDeleteAnswer()
     {
         if (SelectedAnswer is null)
@@ -424,14 +423,12 @@ public class AssessmentQuestionViewModel: ViewModelBase
         GridEnabled = false;
         CleanAndUpdateButtonStatus(true);
     }
-    
     private void ExecuteCancelAddAnswer()
     {
         SelectedAnswer = null;
         GridEnabled = true;
         CleanAndUpdateButtonStatus(false);
     }
-
     private void CleanAndUpdateButtonStatus(bool enable)
     {
         TxtAnswer = "";

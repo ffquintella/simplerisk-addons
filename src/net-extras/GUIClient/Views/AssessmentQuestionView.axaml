@@ -139,7 +139,8 @@
                                 <TextBlock Text="{Binding StrSave}"/>
                             </StackPanel>
                         </Button>
-                        <Button Name="BtCancelSaveQestion" Margin="3">
+                        <Button Name="BtCancelSaveQestion" Margin="3"
+                                Command="{Binding BtCancelSaveQuestionClicked}">
                             <StackPanel Orientation="Horizontal">
                                 <material:MaterialIcon Kind="Cancel"/>
                                 <TextBlock Text="{Binding StrCancel}"/>
