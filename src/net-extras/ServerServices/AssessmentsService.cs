@@ -66,6 +66,12 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         return srDbContext.AssessmentAnswers.Where(a => a.AssessmentId == id).ToList();
     }
     
+    public List<AssessmentAnswer>? GetQuestionAnswers(int questionId)
+    {
+        var srDbContext = DALManager.GetContext();
+        return srDbContext.AssessmentAnswers.Where(a => a.QuestionId == questionId).ToList();
+    }
+    
     public AssessmentAnswer? GetAnswer(int assessmentId, int questionId, string answerText)
     {
         var srDbContext = DALManager.GetContext();
@@ -168,6 +174,14 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
             if ( ent is null)
             {
                 throw new InvalidReferenceException($"The answer {question.Id} does not exists");
+            }
+            
+            //Before deleting a question we need to delete all the answers it has
+            var answers = GetQuestionAnswers(question.Id);
+            foreach (var answer in answers)
+            {
+                var delAnsrRes = DeleteAnswer(answer);
+                if (delAnsrRes != 0) return 1;
             }
 
             srDbContext.AssessmentQuestions.Remove(ent);

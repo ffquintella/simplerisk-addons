@@ -24,6 +24,14 @@ public interface IAssessmentsService
     /// <returns>AssessmentAnswer List Or Null if not found</returns>
     List<AssessmentAnswer>? GetAnswers(int id);
 
+
+    /// <summary>
+    /// Get all answers from one question
+    /// </summary>
+    /// <param name="questionId">Question id</param>
+    /// <returns>List of answers </returns>
+    List<AssessmentAnswer>? GetQuestionAnswers(int questionId);
+    
     /// <summary>
     /// Gets one answer by it's identifiers
     /// </summary>
