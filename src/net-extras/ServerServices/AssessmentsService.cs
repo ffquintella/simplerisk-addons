@@ -158,4 +158,27 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         }
 
     }
+    
+    public int DeleteQuestion(AssessmentQuestion question)
+    {
+        try
+        {
+            var srDbContext = DALManager.GetContext();
+            var ent = srDbContext.AssessmentQuestions.FirstOrDefault(ass => ass.Id == question.Id);
+            if ( ent is null)
+            {
+                throw new InvalidReferenceException($"The answer {question.Id} does not exists");
+            }
+
+            srDbContext.AssessmentQuestions.Remove(ent);
+            srDbContext.SaveChanges();
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Unkown error: {0}", ex.Message);
+            return -1;
+        }
+
+    }
 }

@@ -545,4 +545,46 @@ public class AssessmentsController : ApiBaseController
         
         
     }
+    
+    [HttpDelete]
+    [Route("{assessmentId}/questions/{questionId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(string))]
+    public ActionResult<string> DeleteAssessmentQuestion(int assessmentId, int questionId)
+    {
+
+        try
+        {
+            // First we check if the assessment exists
+            Logger.Debug("Searching for assessment with id {assessmentId}", assessmentId);
+            var assessment = _assessmentsService.Get(assessmentId);
+            if (assessment == null)
+            {
+                Logger.Error("Assessment with id {assessmentId} not found", assessmentId);
+                return NotFound("Assessment not found");
+            }
+            
+            //Now let's check if the question exists 
+            var question = _assessmentsService.GetQuestionById(assessmentId, questionId);
+            if (question == null)
+            {
+                Logger.Error("Assessment question with id {questionId} for and assessment {assessmentId} not found",questionId,assessmentId);
+                return NotFound("Question not found");
+            }
+            
+            
+            var resAnswer = _assessmentsService.DeleteQuestion(question);
+            
+            var result = resAnswer == 0 ? "Ok" : "Error";
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Error deleting assessment question");
+            return StatusCode(500, "Error deleting assessment question");
+        }
+        
+        
+    }
 }

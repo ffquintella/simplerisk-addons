@@ -91,7 +91,13 @@ public interface IAssessmentsService
     /// <param name="answer">the object to delete</param>
     /// <returns>0 if ok; -1 if error</returns>
     int DeleteAnswer(AssessmentAnswer answer);
-    
+
+    /// <summary>
+    /// Deletes the assessment question
+    /// </summary>
+    /// <param name="question">the question object</param>
+    /// <returns>0 if ok, -1 if error</returns>
+    int DeleteQuestion(AssessmentQuestion question);
     /// <summary>
     /// Creates a new assessment on the database
     /// </summary>
