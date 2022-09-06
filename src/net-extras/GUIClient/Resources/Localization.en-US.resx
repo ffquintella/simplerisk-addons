@@ -183,4 +183,7 @@
     <data name="ErrorDeletingAssessmentQuestionMSG" xml:space="preserve">
         <value>Error deleting assessment question.</value>
     </data>
+    <data name="ErrorOpeningExternalBrowserMSG" xml:space="preserve">
+        <value>Error opening browser: </value>
+    </data>
 </root>

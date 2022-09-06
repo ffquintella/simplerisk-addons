@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -47,6 +48,7 @@ public class LoginViewModel : ViewModelBase
 
     public List<AuthenticationMethod> AuthenticationMethods => AuthenticationService.GetAuthenticationMethods();
 
+    public ReactiveCommand<Unit, Unit> BtSSOClicked { get; }
     public LoginViewModel()
     {
         StrNotAccepted = Localizer["NotAccepted"];
@@ -55,6 +57,8 @@ public class LoginViewModel : ViewModelBase
         StrUsername = Localizer["Username"];
         StrExit = Localizer["Exit"];
         StrEnvironment = Localizer["Environment"];
+        
+        BtSSOClicked = ReactiveCommand.Create(ExecuteSSOLogin);
     }
 
     private bool _isAccepted;
@@ -77,6 +81,26 @@ public class LoginViewModel : ViewModelBase
     public string? Username { get; set;}
     public string? Password { get; set; }
 
+    private async void ExecuteSSOLogin()
+    {
+        string target= "http://www.microsoft.com";
+        try
+        {
+            System.Diagnostics.Process.Start(target);
+        }
+        catch (System.Exception other)
+        {
+            var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Error"],
+                    ContentMessage = Localizer["ErrorOpeningExternalBrowserMSG"]  ,
+                    Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                });
+                        
+            await messageBoxStandardWindow.Show(); 
+        }
+    }
     public async void OnLoginClickCommand(Window? loginWindow)
     {
         ProgressBarValue = 0;
@@ -96,7 +120,7 @@ public class LoginViewModel : ViewModelBase
         {
             if ( AuthenticationMethod.Type == "SAML")
             {
-                var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                /*var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                     .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                     {
                         ContentTitle = Localizer["Warning"],
@@ -104,7 +128,8 @@ public class LoginViewModel : ViewModelBase
                         Icon = MessageBox.Avalonia.Enums.Icon.Warning,
                     });
                             
-                await messageBoxStandardWindow.Show(); 
+                await messageBoxStandardWindow.Show();*/
+                ExecuteSSOLogin();
             }
             else
             {

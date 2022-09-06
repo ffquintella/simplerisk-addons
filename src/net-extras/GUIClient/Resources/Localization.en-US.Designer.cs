@@ -258,6 +258,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error opening browser: .
+        /// </summary>
+        internal static string ErrorOpeningExternalBrowserMSG {
+            get {
+                return ResourceManager.GetString("ErrorOpeningExternalBrowserMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error saving the answers..
         /// </summary>
         internal static string ErrorSavingAnswersMSG {

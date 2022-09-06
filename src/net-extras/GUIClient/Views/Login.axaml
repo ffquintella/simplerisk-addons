@@ -5,6 +5,8 @@
         xmlns:material="using:Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GUIClient.Views.Login"
+        xmlns:convertes="clr-namespace:GUIClient.Converters"
+        xmlns:vm="using:GUIClient.ViewModels"
         Title="Login"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
@@ -12,6 +14,16 @@
         WindowStartupLocation="CenterOwner"
         Name="LoginWindow"
         Opened="OnOpened">
+    
+    <Design.DataContext>
+        <vm:LoginViewModel/>
+    </Design.DataContext>
+    
+    <Window.Resources>
+        <convertes:AuthenticationMethodsContainConverter x:Key="authenticationMethodsContainConverter"/>
+
+    </Window.Resources>
+    
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
@@ -47,7 +59,8 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Width="70" Text="{Binding StrEnvironment}" Margin="10" VerticalAlignment="Center" />
-                        <ComboBox Name="CmbAuthentication" IsEnabled="{Binding IsAccepted, Mode=TwoWay}" SelectedItem="{Binding AuthenticationMethod}" Items="{Binding AuthenticationMethods}" Margin="10" Width="250" >
+                        <ComboBox Name="CmbAuthentication" IsEnabled="{Binding IsAccepted, Mode=TwoWay}" SelectedItem="{Binding AuthenticationMethod}" 
+                                  Items="{Binding AuthenticationMethods}" Margin="10" Width="250" >
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" />
@@ -56,10 +69,26 @@
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button IsEnabled="{Binding IsAccepted , Mode=TwoWay}" Name="BtLogin" 
+                        <Button Name="BtSSO"
+                                IsEnabled="{Binding IsAccepted , Mode=TwoWay}"
+                                IsVisible="{Binding AuthenticationMethods,
+                                Converter={StaticResource authenticationMethodsContainConverter},
+                                    ConverterParameter=SAML}"
+                                Margin="5 0" >
+                            <PathIcon Height="16" Data="{StaticResource accountSSO}" />
+                        </Button>
+                        <Button Name="BtLogin" 
+                                IsEnabled="{Binding IsAccepted , Mode=TwoWay}" 
+                                Margin="5 0"
                                 Command="{Binding OnLoginClickCommand}"
-                                CommandParameter="{Binding ElementName=LoginWindow}"><TextBlock Text="{Binding StrLogin}" /></Button>
-                        <Button  Name="BtExit" Command="{Binding OnExitClickCommand}"><TextBlock Text="{Binding StrExit}" /></Button>
+                                CommandParameter="{Binding ElementName=LoginWindow}">
+                            <TextBlock Text="{Binding StrLogin}" />
+                        </Button>
+                        <Button  Name="BtExit" 
+                                 Margin="5 0"
+                                 Command="{Binding OnExitClickCommand}">
+                            <TextBlock Text="{Binding StrExit}"/>
+                        </Button>
                     </StackPanel>
                     <ProgressBar Name="Progress" Margin="10" IsVisible="{Binding ProgressBarVisibility,  Mode=TwoWay}" Maximum="{Binding ProgressBarMaxValue}" Value="{Binding ProgressBarValue}"/>
                 </StackPanel>
