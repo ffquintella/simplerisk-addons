@@ -174,4 +174,7 @@
     <data name="ErrorSavingAnswersMSG" xml:space="preserve">
         <value>Error saving the answers.</value>
     </data>
+    <data name="QuestionDoesNotExistsMSG" xml:space="preserve">
+        <value>This question does not exists.</value>
+    </data>
 </root>

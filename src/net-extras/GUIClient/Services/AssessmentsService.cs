@@ -66,6 +66,8 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         int questionId,
         List<AssessmentAnswer> answers)
     {
+        if (answers.Count == 0) return new Tuple<int, List<AssessmentAnswer>?>(0, answers);
+        
         var client = _restService.GetClient();
         var request = new RestRequest($"/Assessments/{assessmentId}/Questions/{questionId}/Answers");
 
@@ -115,6 +117,9 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         int questionId,
         List<AssessmentAnswer> answers)
     {
+
+        if (answers.Count == 0) return new Tuple<int, List<AssessmentAnswer>?>(0, answers);
+        
         var client = _restService.GetClient();
         var request = new RestRequest($"/Assessments/{assessmentId}/Questions/{questionId}/Answers");
 
@@ -156,7 +161,7 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
     }
     
-    public Tuple<int, AssessmentQuestion?> SaveQuestion(int assessmentId, AssessmentQuestion question)
+    public Tuple<int, AssessmentQuestion?> CreateQuestion(int assessmentId, AssessmentQuestion question)
     {
         var client = _restService.GetClient();
         var request = new RestRequest($"/Assessments/{assessmentId}/Questions");
@@ -187,6 +192,41 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         catch (Exception ex)
         {
             _logger.Error("Error creating assessment question: {0}", ex.Message);
+            return new Tuple<int, AssessmentQuestion?>(-1, null);
+        }
+    }
+    
+    public Tuple<int, AssessmentQuestion?> UpdateQuestion(int assessmentId, AssessmentQuestion question)
+    {
+        var client = _restService.GetClient();
+        var request = new RestRequest($"/Assessments/{assessmentId}/Questions");
+        request.AddJsonBody(question);
+        
+        try
+        {
+            var response = client.Put(request);
+            
+            if (response.IsSuccessful && response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var questionResponse = JsonSerializer.Deserialize<AssessmentQuestion>(response.Content!, options);
+                return new Tuple<int, AssessmentQuestion?>(0, questionResponse);
+            }
+
+            if (response.StatusCode == HttpStatusCode.Conflict)
+            {
+                return new Tuple<int, AssessmentQuestion?>(1, null);    
+            }
+            
+            return new Tuple<int, AssessmentQuestion?>(-1, null);
+            
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error updating assessment question: {0}", ex.Message);
             return new Tuple<int, AssessmentQuestion?>(-1, null);
         }
     }

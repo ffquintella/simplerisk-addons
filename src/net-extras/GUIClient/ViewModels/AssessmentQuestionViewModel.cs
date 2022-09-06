@@ -157,84 +157,93 @@ public class AssessmentQuestionViewModel: ViewModelBase
 
     }
 
+    private int SaveAnswers()
+    {
+        // Now let´s save the answers
+        var nAnswers = new List<AssessmentAnswer>();
+        var upAnswer = new List<AssessmentAnswer>();
+        foreach (var answer in Answers )
+        {
+            if (answer.Id == 0)
+            {
+                // new answer
+                nAnswers.Add(answer);
+            }
+            else
+            {
+                // update answer
+                upAnswer.Add(answer);
+            }
+        }
+
+
+        // first let´s add the new ones
+        var crtAnswResult = _assessmentsService
+            .CreateAnswers(AssessmentQuestion.AssessmentId, AssessmentQuestion.Id, nAnswers);
+        if (crtAnswResult.Item1 == 0)
+        {
+            // Now let´s update the old ones.
+            var upAnswResult = _assessmentsService
+                .UpdateAnswers(AssessmentQuestion.AssessmentId, AssessmentQuestion.Id, upAnswer);
+            if (crtAnswResult.Item1 == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                Logger.Error("Error updating new answers.");
+                var msgError = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                    {
+                        ContentTitle = Localizer["Error"],
+                        ContentMessage = Localizer["ErrorSavingAnswersMSG"],
+                        Icon = Icon.Error,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    });
+                
+                msgError.Show();
+                return 1;
+            }
+        }
+        else
+        {
+            Logger.Error("Error saving new answers.");
+            var msgError = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Error"],
+                    ContentMessage = Localizer["ErrorSavingAnswersMSG"],
+                    Icon = Icon.Error,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                });
+                
+            msgError.Show();
+            return 1;
+        }
+        
+    }
     private void ExecuteSaveQuestion()
     {
         var isUpdate = false;
         if (AssessmentQuestion is not null ) isUpdate = true;
-
-        if (!isUpdate)
+        try
         {
-            var assessmentQuestion = new AssessmentQuestion()
+            if (!isUpdate)
             {
-                Question = TxtQuestion,
-                AssessmentId = SelectedAssessment.Id
-            };
+                var assessmentQuestion = new AssessmentQuestion()
+                {
+                    Question = TxtQuestion,
+                    AssessmentId = SelectedAssessment.Id
+                };
 
-            try
-            {
-                var result = _assessmentsService.SaveQuestion(SelectedAssessment.Id, assessmentQuestion);
+
+                var result = _assessmentsService.CreateQuestion(SelectedAssessment.Id, assessmentQuestion);
                 if (result.Item1 == 0)
                 {
                     AssessmentQuestion = result.Item2;
-                    
-                    // Now let´s save the answers
-                    var nAnswers = new List<AssessmentAnswer>();
-                    var upAnswer = new List<AssessmentAnswer>();
-                    foreach (var answer in Answers )
+                    if (SaveAnswers() == 0)
                     {
-                        if (answer.Id == 0)
-                        {
-                            // new answer
-                            nAnswers.Add(answer);
-                        }
-                        else
-                        {
-                            // update answer
-                            upAnswer.Add(answer);
-                        }
-                    }
-                    
-                    // first let´s add the new ones
-
-                    var crtAnswResult = _assessmentsService
-                        .CreateAnswers(AssessmentQuestion.AssessmentId, AssessmentQuestion.Id, nAnswers);
-                    if (crtAnswResult.Item1 == 0)
-                    {
-                        // Now let´s update the old ones.
-                        var upAnswResult = _assessmentsService
-                            .UpdateAnswers(AssessmentQuestion.AssessmentId, AssessmentQuestion.Id, nAnswers);
-                        if (crtAnswResult.Item1 == 0)
-                        {
-                            DisplayWindow.Close();
-                        }
-                        else
-                        {
-                            Logger.Error("Error updating new answers.");
-                            var msgError = MessageBox.Avalonia.MessageBoxManager
-                                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
-                                {
-                                    ContentTitle = Localizer["Error"],
-                                    ContentMessage = Localizer["ErrorSavingAnswersMSG"],
-                                    Icon = Icon.Error,
-                                    WindowStartupLocation = WindowStartupLocation.CenterOwner
-                                });
-                            
-                            msgError.Show();     
-                        }
-                    }
-                    else
-                    {
-                        Logger.Error("Error saving new answers.");
-                        var msgError = MessageBox.Avalonia.MessageBoxManager
-                            .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
-                            {
-                                ContentTitle = Localizer["Error"],
-                                ContentMessage = Localizer["ErrorSavingAnswersMSG"],
-                                Icon = Icon.Error,
-                                WindowStartupLocation = WindowStartupLocation.CenterOwner
-                            });
-                            
-                        msgError.Show();   
+                        DisplayWindow.Close();
                     }
                 }
 
@@ -267,23 +276,67 @@ public class AssessmentQuestionViewModel: ViewModelBase
                             
                     msgError.Show(); 
                 }
-                
+                    
             }
-            catch (Exception ex)
+            else
             {
-                Logger.Error(ex, "Error saving question: {0}", ex.Message);
-                var msgError = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                AssessmentQuestion.Question = TxtQuestion;
+                var result = _assessmentsService.UpdateQuestion(SelectedAssessment.Id, AssessmentQuestion);
+                if (result.Item1 == 0)
+                {
+                    AssessmentQuestion = result.Item2;
+                    if (SaveAnswers() == 0)
                     {
-                        ContentTitle = Localizer["Error"],
-                        ContentMessage = Localizer["ErrorSavingQuestionMSG"],
-                        Icon = Icon.Error,
-                        WindowStartupLocation = WindowStartupLocation.CenterOwner
-                    });
+                        DisplayWindow.Close();
+                    }
+                }
+
+                if (result.Item1 == 1)
+                {
+                    Logger.Error("Error updating question: Question does not exists.");
+                    var msgError = MessageBox.Avalonia.MessageBoxManager
+                        .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                        {
+                            ContentTitle = Localizer["Error"],
+                            ContentMessage = Localizer["QuestionDoesNotExistsMSG"],
+                            Icon = Icon.Error,
+                            WindowStartupLocation = WindowStartupLocation.CenterOwner
+                        });
                             
-                msgError.Show(); 
-                return; 
+                    msgError.Show(); 
+                }
+                
+                if (result.Item1 == -1)
+                {
+                    Logger.Error("Internal error updating question");
+                    var msgError = MessageBox.Avalonia.MessageBoxManager
+                        .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                        {
+                            ContentTitle = Localizer["Error"],
+                            ContentMessage = Localizer["ErrorSavingQuestionMSG"],
+                            Icon = Icon.Error,
+                            WindowStartupLocation = WindowStartupLocation.CenterOwner
+                        });
+                            
+                    msgError.Show(); 
+                }
             }
+
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Error saving question: {0}", ex.Message);
+            var msgError = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Error"],
+                    ContentMessage = Localizer["ErrorSavingQuestionMSG"],
+                    Icon = Icon.Error,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                });
+                            
+            msgError.Show(); 
+            return; 
         }
     }
 

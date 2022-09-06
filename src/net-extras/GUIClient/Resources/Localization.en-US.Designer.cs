@@ -393,6 +393,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This question does not exists..
+        /// </summary>
+        internal static string QuestionDoesNotExistsMSG {
+            get {
+                return ResourceManager.GetString("QuestionDoesNotExistsMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Questions.
         /// </summary>
         internal static string Questions {

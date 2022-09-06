@@ -6,7 +6,9 @@ using System.Reactive;
 using Avalonia.Controls;
 using Avalonia.Media.TextFormatting.Unicode;
 using DAL.Entities;
+using DynamicData;
 using GUIClient.Services;
+using GUIClient.Tools;
 using GUIClient.Views;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
@@ -252,7 +254,15 @@ public class AssessmentViewModel: ViewModelBase
         dialog.DataContext = new AssessmentQuestionViewModel(dialog, SelectedAssessment!, 
             _selectedAssessmentQuestion, AssessmentQuestionAnswers.ToList());
         
+        int index = AssessmentQuestions.IndexOf(_selectedAssessmentQuestion);
+        
         await dialog.ShowDialog( parentControl.ParentWindow );
+
+        var saq = ((AssessmentQuestionViewModel)dialog.DataContext!).AssessmentQuestion!.DeepCopy();
+
+        AssessmentQuestions.RemoveAt(index);
+        AssessmentQuestions.Insert(index, saq);
+        SelectedAssessmentQuestion = AssessmentQuestions[index];
 
     }
     
