@@ -282,7 +282,7 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
             
         }
         return defaultResponse;
-
+    
     }
 
     private void NotifyAuthenticationSucceeded()

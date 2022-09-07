@@ -70,7 +70,7 @@ public class RegistrationService: IRegistrationService
             {
                 
                 _mutableConfigurationService.SetConfigurationValue("IsAccepted", "true");
-                
+                NotifyRegistrationSucceeded();
                 return true;
             }
             else
@@ -156,4 +156,11 @@ public class RegistrationService: IRegistrationService
 
 
     }
+    
+    private void NotifyRegistrationSucceeded()
+    {
+        if(RegistrationSucceeded != null) RegistrationSucceeded(this, new EventArgs());
+    }
+    public event EventHandler? RegistrationSucceeded;
+    
 }

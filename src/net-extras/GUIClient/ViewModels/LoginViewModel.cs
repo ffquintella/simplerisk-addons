@@ -64,6 +64,12 @@ public class LoginViewModel : ViewModelBase
         BtSSOClicked = ReactiveCommand.Create<Window?>(ExecuteSSOLogin);
 
         _serverConfiguration = GetService<ServerConfiguration>();
+        
+        /*AuthenticationService.AuthenticationSucceeded += (obj, args) =>
+        {
+            Initialize();
+        };*/
+        
     }
 
     private bool _isAccepted;
