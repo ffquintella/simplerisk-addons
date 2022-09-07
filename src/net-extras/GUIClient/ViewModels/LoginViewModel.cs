@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Reactive;
 using System.Threading;
@@ -86,7 +87,8 @@ public class LoginViewModel : ViewModelBase
         string target= "http://www.microsoft.com";
         try
         {
-            System.Diagnostics.Process.Start(target);
+            Process.Start(new ProcessStartInfo(target) { UseShellExecute = true });
+            //System.Diagnostics.Process.Start(target);
         }
         catch (System.Exception other)
         {
