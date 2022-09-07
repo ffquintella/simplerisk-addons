@@ -85,9 +85,16 @@ public class AuthenticationController : ControllerBase
             SameSite = SameSiteMode.None
         });
         
-        return Redirect("/Authentication/SAMLAssertion");
+        return Redirect("/Authentication/SAMLSingIn");
     }
 
+    [HttpGet]
+    [Route("SAMLSingIn")]
+    public ActionResult SAMLSingIn()
+    {
+        string requestId = Request.Cookies["SAMLReqID"];  
+        return Ok("SAML Assertion for request: " + requestId);
+    }
     
     [HttpPost]
     [Route("SAMLAssertion")]
