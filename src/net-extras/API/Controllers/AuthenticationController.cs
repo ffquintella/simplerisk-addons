@@ -92,9 +92,18 @@ public class AuthenticationController : ControllerBase
     [Route("SAMLAssertion")]
     public ActionResult SAMLAssertion()
     {
+          
+        return Ok();
+    }
+    
+    [HttpGet]
+    [Route("SAMLSignIn")]
+    public ActionResult SAMLSignIn()
+    {
         string requestId = Request.Cookies["SAMLReqID"];  
         return Ok("SAML Assertion for request: " + requestId);
     }
+    
     
     [HttpGet]
     [Route("SAMLLogout")]
