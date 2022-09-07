@@ -90,6 +90,7 @@ public static class AuthenticationBootstrapper
             })
             .AddSaml("saml2", "saml2", options =>
             {
+                options.DefaultRedirectUrl = "/Authentication/SAMLSingIn";
                 options.SignInScheme = "saml2.cookies";
                 options.IdentityProviderName = "stubidp.sustainsys";
             });
