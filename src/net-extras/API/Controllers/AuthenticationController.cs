@@ -68,18 +68,32 @@ public class AuthenticationController : ControllerBase
         return token;
     }
 
+    /// <summary>
+    /// The request to this endpoint will start the SAML authentication process.
+    /// </summary>
+    /// <param name="requestId">Unique id of this request</param>
+    /// <returns></returns>
     [HttpGet]
+    [AllowAnonymous]
     [Route("SAMLRequest")]
     public ActionResult SAMLRequest([FromQuery] string requestId)
     {
-        return Ok("Teste");
+        Response.Cookies.Append("SAMLReqID", requestId, new CookieOptions
+        {
+            Secure = true,
+            HttpOnly = true,
+            SameSite = SameSiteMode.None
+        });
+        
+        return Redirect("/Authentication/SAMLAssertion");
     }
 
     [HttpGet]
     [Route("SAMLAssertion")]
     public ActionResult SAMLAssertion()
     {
-        return Ok("Teste");
+        string requestId = Request.Cookies["SAMLReqID"];  
+        return Ok("SAML Assertion for request: " + requestId);
     }
     
     [HttpGet]
