@@ -6,12 +6,14 @@ using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using GUIClient.Configuration;
 using GUIClient.Models;
 using GUIClient.Services;
 using MessageBox.Avalonia.DTO;
 using Microsoft.Extensions.Localization;
 using Model.Authentication;
 using ReactiveUI;
+using Splat;
 
 namespace GUIClient.ViewModels;
 
@@ -46,9 +48,8 @@ public class LoginViewModel : ViewModelBase
     }
 
     public int ProgressBarMaxValue { get; set; } = 100;
-
+    private ServerConfiguration _serverConfiguration;
     public List<AuthenticationMethod> AuthenticationMethods => AuthenticationService.GetAuthenticationMethods();
-
     public ReactiveCommand<Unit, Unit> BtSSOClicked { get; }
     public LoginViewModel()
     {
@@ -60,6 +61,8 @@ public class LoginViewModel : ViewModelBase
         StrEnvironment = Localizer["Environment"];
         
         BtSSOClicked = ReactiveCommand.Create(ExecuteSSOLogin);
+
+        _serverConfiguration = GetService<ServerConfiguration>();
     }
 
     private bool _isAccepted;
@@ -84,7 +87,10 @@ public class LoginViewModel : ViewModelBase
 
     private async void ExecuteSSOLogin()
     {
-        string target= "http://www.microsoft.com";
+        //string target= "http://www.microsoft.com";
+
+        var target = _serverConfiguration.Url + "Authentication/SAMLRequest";
+        
         try
         {
             Process.Start(new ProcessStartInfo(target) { UseShellExecute = true });
@@ -92,6 +98,7 @@ public class LoginViewModel : ViewModelBase
         }
         catch (System.Exception other)
         {
+            Logger.Error("Error opening browser: {0}", other.Message);
             var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                 {
@@ -183,5 +190,7 @@ public class LoginViewModel : ViewModelBase
     {
         Environment.Exit(0);
     }
+    
+    private static T GetService<T>() => Locator.Current.GetService<T>();
     
 }
