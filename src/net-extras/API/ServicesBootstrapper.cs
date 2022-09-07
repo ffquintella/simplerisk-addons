@@ -24,6 +24,12 @@ public class ServicesBootstrapper
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddAutoMapper(typeof(ClientProfile));
+        services.AddMemoryCache();
+        services.AddMemoryCache(options =>
+        {
+            // Overall 1024 size (no unit)
+            options.SizeLimit = 2048;
+        });
     }
 
     private static void RegisterDIClasses(IServiceCollection services, IConfiguration config)

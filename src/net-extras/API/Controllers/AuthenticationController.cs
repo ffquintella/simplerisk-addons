@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Model.Authentication;
 using Model.Exceptions;
@@ -21,12 +22,15 @@ public class AuthenticationController : ControllerBase
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUserManagementService _userManagementService;
     private readonly IRoleManagementService _roleManagementService;
+    private readonly IMemoryCache _memoryCache;
     public AuthenticationController(ILogger<AuthenticationController> logger, 
         IConfiguration configuration,
         IEnvironmentService environmentService,
         IHttpContextAccessor httpContextAccessor,
         IUserManagementService userManagementService,
-        IRoleManagementService roleManagementService)
+        IRoleManagementService roleManagementService,
+        IMemoryCache memoryCache
+        )
     {
         _logger = logger;
         _configuration = configuration;
@@ -34,6 +38,7 @@ public class AuthenticationController : ControllerBase
         _httpContextAccessor = httpContextAccessor;
         _userManagementService = userManagementService;
         _roleManagementService = roleManagementService;
+        _memoryCache = memoryCache;
     }
 
     [HttpGet]
@@ -85,6 +90,12 @@ public class AuthenticationController : ControllerBase
             SameSite = SameSiteMode.None
         });
         
+        _memoryCache.Set("SAML_REQ_"+requestId, new SAMLRequest
+        {
+            RequestToken = requestId
+        }, TimeSpan.FromMinutes(5));
+        
+        
         return Redirect("/Authentication/SAMLSingIn");
     }
 
@@ -93,7 +104,22 @@ public class AuthenticationController : ControllerBase
     public ActionResult SAMLSingIn()
     {
         string requestId = Request.Cookies["SAMLReqID"];  
-        return Ok("SAML Assertion for request: " + requestId);
+        if(_memoryCache.TryGetValue("SAML_REQ_"+requestId, out SAMLRequest samlRequest))
+        {
+            if (samlRequest.Status == "requested")
+            {
+                samlRequest.Status = "accepted";
+                _memoryCache.Set("SAML_REQ_"+requestId, samlRequest, TimeSpan.FromMinutes(5));
+            }
+            
+            return Ok("<html><body><h1>Authentication successful</h1> <br/>It is now safe to close this window.</body></html>");
+            //return Redirect("/Authentication/SAMLResponse?requestId="+requestId);
+        }
+        else
+        {
+            return BadRequest("Invalid request");
+        }
+        //return Ok("SAML Assertion for request: " + requestId);
     }
     
     
