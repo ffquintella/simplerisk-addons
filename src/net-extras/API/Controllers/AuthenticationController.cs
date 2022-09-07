@@ -76,6 +76,20 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpGet]
+    [Route("SAMLAssertion")]
+    public ActionResult SAMLAssertion()
+    {
+        return Ok("Teste");
+    }
+    
+    [HttpGet]
+    [Route("SAMLLogout")]
+    public ActionResult SAMLLogout()
+    {
+        return Ok("Teste");
+    }
+    
+    [HttpGet]
     [Route("AuthenticatedUserInfo")]
     public AuthenticatedUserInfo GetAuthenticatedUserInfo()
     {
