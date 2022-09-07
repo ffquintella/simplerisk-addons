@@ -29,6 +29,8 @@ namespace GUIClient.Views
         {
             var authenticationService = GetService<IAuthenticationService>();
             if(authenticationService.IsAuthenticated == false) authenticationService.TryAuthenticate(this);
+            
+            
         } 
         public void btn_SettingsOnClick( object? sender, RoutedEventArgs args )
         {

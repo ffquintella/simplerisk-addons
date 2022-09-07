@@ -171,6 +171,7 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
                     AuthenticationCredential.AuthenticationType = AuthenticationType.JWT;
                     AuthenticationCredential.JWTToken = token;
                     IsAuthenticated = true;
+                    NotifyAuthenticationSucceeded();
                     return true;
                 }
             }
