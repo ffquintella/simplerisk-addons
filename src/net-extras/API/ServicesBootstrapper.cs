@@ -28,7 +28,7 @@ public class ServicesBootstrapper
         services.AddMemoryCache(options =>
         {
             // Overall 1024 size (no unit)
-            options.SizeLimit = 2048;
+            options.SizeLimit = 1024;
         });
     }
 

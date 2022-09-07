@@ -93,8 +93,9 @@ public class AuthenticationController : ControllerBase
         _memoryCache.Set("SAML_REQ_"+requestId, new SAMLRequest
         {
             RequestToken = requestId
-        }, TimeSpan.FromMinutes(5));
-        
+        }, new MemoryCacheEntryOptions()
+            .SetSize(1)
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
         
         return Redirect("/Authentication/SAMLSingIn");
     }
@@ -109,7 +110,11 @@ public class AuthenticationController : ControllerBase
             if (samlRequest.Status == "requested")
             {
                 samlRequest.Status = "accepted";
-                _memoryCache.Set("SAML_REQ_"+requestId, samlRequest, TimeSpan.FromMinutes(5));
+
+                //_memoryCache.Set("SAML_REQ_"+requestId, samlRequest, TimeSpan.FromMinutes(5) );
+                _memoryCache.Set("SAML_REQ_"+requestId, samlRequest, new MemoryCacheEntryOptions()
+                    .SetSize(1)
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
             }
             
             return Ok("<html><body><h1>Authentication successful</h1> <br/>It is now safe to close this window.</body></html>");
