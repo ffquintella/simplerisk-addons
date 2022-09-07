@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -45,6 +46,17 @@ public class AuthenticationController : ControllerBase
     [Route("GetToken")]
     public ActionResult<string> GetToken()
     {
+        var token = GenerateToken(_httpContextAccessor.HttpContext!.User!.Identity!.Name!);
+
+        _logger.LogInformation("Authentication token created for user: {0} fromip: {1}", 
+            _httpContextAccessor.HttpContext!.User!.Identity!.Name!,
+            _httpContextAccessor.HttpContext!.Connection.RemoteIpAddress);
+        
+        return token;
+    }
+
+    private string GenerateToken(string username)
+    {
         var symmetricKey = Convert.FromBase64String(_environmentService.ServerSecretToken);
         var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -53,7 +65,7 @@ public class AuthenticationController : ControllerBase
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Name, _httpContextAccessor.HttpContext!.User!.Identity!.Name!)
+                new Claim(ClaimTypes.Name, username)
             }),
 
             Expires = now.AddMinutes(Convert.ToInt32(_configuration["JWT:Timeout"])),
@@ -65,14 +77,9 @@ public class AuthenticationController : ControllerBase
 
         var stoken = tokenHandler.CreateToken(tokenDescriptor);
         var token = tokenHandler.WriteToken(stoken);
-
-        _logger.LogInformation("Authentication token created for user: {0} fromip: {1}", 
-            _httpContextAccessor.HttpContext!.User!.Identity!.Name!,
-            _httpContextAccessor.HttpContext!.Connection.RemoteIpAddress);
-        
         return token;
     }
-
+    
     /// <summary>
     /// The request to this endpoint will start the SAML authentication process.
     /// </summary>
@@ -83,6 +90,9 @@ public class AuthenticationController : ControllerBase
     [Route("SAMLRequest")]
     public ActionResult SAMLRequest([FromQuery] string requestId)
     {
+        Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+        requestId = rgx.Replace(requestId, "");
+        
         Response.Cookies.Append("SAMLReqID", requestId, new CookieOptions
         {
             Secure = true,
@@ -110,24 +120,50 @@ public class AuthenticationController : ControllerBase
             if (samlRequest.Status == "requested")
             {
                 samlRequest.Status = "accepted";
+                samlRequest.UserName = _httpContextAccessor.HttpContext!.User!.Identity!.Name!;
 
                 //_memoryCache.Set("SAML_REQ_"+requestId, samlRequest, TimeSpan.FromMinutes(5) );
                 _memoryCache.Set("SAML_REQ_"+requestId, samlRequest, new MemoryCacheEntryOptions()
                     .SetSize(1)
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
             }
+            _logger.LogInformation("SAML Authentication for user: {0} fromip: {1}", 
+                _httpContextAccessor.HttpContext!.User!.Identity!.Name!,
+                _httpContextAccessor.HttpContext!.Connection.RemoteIpAddress);
             
-            return Ok("<html><body><h1>Authentication successful</h1> <br/>It is now safe to close this window.</body></html>");
+            return base.Content("<html><body><h1>Authentication successful</h1> <br/>It is now safe to close this window.</body></html>", "text/html");
+            
+            //return Ok("<html><body><h1>Authentication successful</h1> <br/>It is now safe to close this window.</body></html>");
             //return Redirect("/Authentication/SAMLResponse?requestId="+requestId);
         }
         else
         {
             return BadRequest("Invalid request");
         }
-        //return Ok("SAML Assertion for request: " + requestId);
+        
     }
+
     
-    
+    [HttpGet]
+    [Route("AppSAMLToken")]
+    public ActionResult GetAppSAMLToken([FromQuery] string requestId)
+    {
+        Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+        requestId = rgx.Replace(requestId, "");
+        if (_memoryCache.TryGetValue("SAML_REQ_" + requestId, out SAMLRequest samlRequest))
+        {
+            if(samlRequest.Status != "accepted")
+            {
+                return Unauthorized("Not accepted");
+            }
+            return Ok(GenerateToken(samlRequest.UserName));
+        }
+        else
+        {
+            return NotFound("Token not found");
+        }
+    }
+
     [HttpGet]
     [Route("SAMLLogout")]
     public ActionResult SAMLLogout()
