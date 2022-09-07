@@ -145,6 +145,7 @@ public class AuthenticationController : ControllerBase
 
     
     [HttpGet]
+    [AllowAnonymous]
     [Route("AppSAMLToken")]
     public ActionResult GetAppSAMLToken([FromQuery] string requestId)
     {
