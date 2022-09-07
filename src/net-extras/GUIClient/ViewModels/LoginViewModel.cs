@@ -14,6 +14,7 @@ using Microsoft.Extensions.Localization;
 using Model.Authentication;
 using ReactiveUI;
 using Splat;
+using Tools;
 
 namespace GUIClient.ViewModels;
 
@@ -89,7 +90,8 @@ public class LoginViewModel : ViewModelBase
     {
         //string target= "http://www.microsoft.com";
 
-        var target = _serverConfiguration.Url + "Authentication/SAMLRequest";
+        var requestId = RandomGenerator.RandomString(20);
+        var target = _serverConfiguration.Url + $"Authentication/SAMLRequest?requestId={requestId}";
         
         try
         {
