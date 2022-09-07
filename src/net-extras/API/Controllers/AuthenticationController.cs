@@ -68,6 +68,12 @@ public class AuthenticationController : ControllerBase
         return token;
     }
 
+    [HttpGet]
+    [Route("SAMLRequest")]
+    public ActionResult SAMLRequest([FromQuery] string requestId)
+    {
+        return Ok("Teste");
+    }
 
     [HttpGet]
     [Route("AuthenticatedUserInfo")]
