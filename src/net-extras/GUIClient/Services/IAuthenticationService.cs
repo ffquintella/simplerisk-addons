@@ -46,6 +46,13 @@ public interface IAuthenticationService
     /// <returns>true of false</returns>
     bool CheckTokenValidTime(string token, int minutesToExpire = 0);
 
+
+    /// <summary>
+    /// Checks if the SAML authentication process is successful
+    /// </summary>
+    /// <param name="requestId"></param>
+    /// <returns>true if ok; false if not</returns>
+    bool CheckSamlAuthentication(string requestId);
     int RefreshToken();
     
     event EventHandler? AuthenticationSucceeded;

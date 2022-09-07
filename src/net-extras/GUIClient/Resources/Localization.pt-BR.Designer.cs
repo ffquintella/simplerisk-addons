@@ -483,6 +483,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A tentativa de autenticação SAML expirou..
+        /// </summary>
+        internal static string SAMLAuthenticationTimeoutMSG {
+            get {
+                return ResourceManager.GetString("SAMLAuthenticationTimeoutMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Guardar.
         /// </summary>
         internal static string Save {

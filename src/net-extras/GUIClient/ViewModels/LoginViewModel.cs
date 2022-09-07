@@ -51,7 +51,7 @@ public class LoginViewModel : ViewModelBase
     public int ProgressBarMaxValue { get; set; } = 100;
     private ServerConfiguration _serverConfiguration;
     public List<AuthenticationMethod> AuthenticationMethods => AuthenticationService.GetAuthenticationMethods();
-    public ReactiveCommand<Unit, Unit> BtSSOClicked { get; }
+    public ReactiveCommand<Window?, Unit> BtSSOClicked { get; }
     public LoginViewModel()
     {
         StrNotAccepted = Localizer["NotAccepted"];
@@ -61,7 +61,7 @@ public class LoginViewModel : ViewModelBase
         StrExit = Localizer["Exit"];
         StrEnvironment = Localizer["Environment"];
         
-        BtSSOClicked = ReactiveCommand.Create(ExecuteSSOLogin);
+        BtSSOClicked = ReactiveCommand.Create<Window?>(ExecuteSSOLogin);
 
         _serverConfiguration = GetService<ServerConfiguration>();
     }
@@ -86,7 +86,7 @@ public class LoginViewModel : ViewModelBase
     public string? Username { get; set;}
     public string? Password { get; set; }
 
-    private async void ExecuteSSOLogin()
+    private async void ExecuteSSOLogin(Window? loginWindow)
     {
         //string target= "http://www.microsoft.com";
 
@@ -96,6 +96,58 @@ public class LoginViewModel : ViewModelBase
         try
         {
             Process.Start(new ProcessStartInfo(target) { UseShellExecute = true });
+            
+            ProgressBarValue = 1;
+            ProgressBarVisibility = true;
+
+            var task = Task.Run<bool>(() =>
+            {
+                var accepted = AuthenticationService.CheckSamlAuthentication(requestId);
+                int i = 0;
+                while (!accepted && i < 60 * 5)
+                {
+                    Thread.Sleep(1000);
+                    i++;
+                    accepted = AuthenticationService.CheckSamlAuthentication(requestId);
+                    if (accepted) return true;
+                }
+                return false;
+            });
+
+            int i = 1;
+            while(!task.IsCompleted && i < 60 * 5)
+            {
+                ProgressBarValue = i;
+                i++;
+                this.RaisePropertyChanged("Progress");
+                await Task.Delay(TimeSpan.FromMilliseconds(1000));
+            }
+
+            if (task.IsCompleted && task.Result == true)
+            {
+                ProgressBarValue = 100;
+                ProgressBarVisibility = false;
+                if (loginWindow != null)
+                {
+                    loginWindow.Close();
+                } 
+            }
+            else
+            {
+                Logger.Error("SAML authentication timeouted");
+                var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                    {
+                        ContentTitle = Localizer["Warning"],
+                        ContentMessage = Localizer["SAMLAuthenticationTimeoutMSG"]  ,
+                        Icon = MessageBox.Avalonia.Enums.Icon.Warning,
+                    });
+                        
+                await messageBoxStandardWindow.Show(); 
+            }
+            
+
+            
             //System.Diagnostics.Process.Start(target);
         }
         catch (System.Exception other)
@@ -140,7 +192,7 @@ public class LoginViewModel : ViewModelBase
                     });
                             
                 await messageBoxStandardWindow.Show();*/
-                ExecuteSSOLogin();
+                ExecuteSSOLogin(loginWindow);
             }
             else
             {

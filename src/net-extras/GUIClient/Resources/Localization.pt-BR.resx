@@ -186,4 +186,7 @@
     <data name="ErrorOpeningExternalBrowserMSG" xml:space="preserve">
         <value>Erro abrindo o browser: </value>
     </data>
+    <data name="SAMLAuthenticationTimeoutMSG" xml:space="preserve">
+        <value>A tentativa de autenticação SAML expirou.</value>
+    </data>
 </root>

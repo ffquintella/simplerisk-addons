@@ -75,6 +75,7 @@
                                 Converter={StaticResource authenticationMethodsContainConverter},
                                     ConverterParameter=SAML}"
                                 Command="{Binding BtSSOClicked}"
+                                CommandParameter="{Binding ElementName=LoginWindow}"
                                 Margin="5 0" >
                             <PathIcon Height="16" Data="{StaticResource accountSSO}" />
                         </Button>

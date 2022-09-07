@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using GUIClient.Models;
@@ -144,13 +146,43 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
         return -1;
     }
 
+    public bool CheckSamlAuthentication(string requestId)
+    {
+        var client = _restService.GetClient();
+        var request = new RestRequest("/Authentication/AppSAMLToken");
+        request.AddParameter("requestId", requestId);
+        try
+        {
+            var response = client.Get(request);
 
-    /// <summary>
-    /// Executes authentication against the server.
-    /// </summary>
-    /// <param name="user"></param>
-    /// <param name="password"></param>
-    /// <returns> 0 if success; -1 if unkown error; 1 if authentication error</returns>
+            if (response.IsSuccessful && response.StatusCode == HttpStatusCode.OK)
+            {
+                if (response.Content == "Not accepted")
+                {
+                    return false;
+                }
+                else
+                {
+                    var token = JsonSerializer.Deserialize<string>(response.Content!);
+                    //var token = response.Content;
+                    _mutableConfigurationService.SetConfigurationValue("IsAuthenticate", "true");
+                    _mutableConfigurationService.SetConfigurationValue("AuthToken", token!);
+                    _mutableConfigurationService.SetConfigurationValue("AuthTokenTime", DateTime.Now.Ticks.ToString());
+                    AuthenticationCredential.AuthenticationType = AuthenticationType.JWT;
+                    AuthenticationCredential.JWTToken = token;
+                    IsAuthenticated = true;
+                    return true;
+                }
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            if(ex.StatusCode != HttpStatusCode.Unauthorized) _logger.Error("Unkown error {0}", ex.Message);
+        }
+
+        return false;
+    }
+
     public int DoServerAuthentication(string user, string password)
     {
         var client = _restService.GetClient();
