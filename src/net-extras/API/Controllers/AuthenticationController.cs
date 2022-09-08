@@ -121,6 +121,11 @@ public class AuthenticationController : ControllerBase
     public ActionResult SAMLSingIn()
     {
         string requestId = Request.Cookies["SAMLReqID"];  
+        if (requestId == null)
+        {
+            return BadRequest("No SAML request id found");
+        }
+        
         if(_memoryCache.TryGetValue("SAML_REQ_"+requestId, out SAMLRequest samlRequest))
         {
             //First we need to know if the user exists on the database and if it´s a SAML user
