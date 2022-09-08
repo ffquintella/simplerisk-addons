@@ -102,7 +102,8 @@ public class AuthenticationController : ControllerBase
         {
             Secure = true,
             HttpOnly = true,
-            SameSite = SameSiteMode.None
+            SameSite = SameSiteMode.None,
+            Expires = DateTimeOffset.Now.AddMinutes(15)
         });
         
         _memoryCache.Set("SAML_REQ_"+requestId, new SAMLRequest
