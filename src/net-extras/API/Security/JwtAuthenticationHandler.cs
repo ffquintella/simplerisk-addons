@@ -18,7 +18,8 @@ namespace API.Security;
 
 public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
 {
-    private SRDbContext? _dbContext = null;
+    //private SRDbContext? _dbContext = null;
+    private DALManager _dalManager;
     private IEnvironmentService _environmentService;
     private ILogger _log;
     private IUserManagementService _userManagementService;
@@ -34,7 +35,8 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
         IRoleManagementService roleManagementService,
         DALManager dalManager) : base(options, logger, encoder, clock)
     {
-        _dbContext = dalManager.GetContext();
+        //_dbContext = dalManager.GetContext();
+        _dalManager = dalManager;
         _environmentService = environmentService;
         _userManagementService = userManagementService;
         _roleManagementService = roleManagementService;
@@ -70,8 +72,9 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
             
             if (ValidateToken(token, out username))
             {
+                var dbContext = _dalManager.GetContext();
                 // Let´s check if we have the client registred... 
-                var client = _dbContext!.AddonsClientRegistrations!
+                var client = dbContext!.AddonsClientRegistrations!
                     .FirstOrDefault(cl => cl.ExternalId == clientId && cl.Status == "approved");
 
                 if (client == null) // We should not allow an unauthorized client to login
@@ -183,9 +186,9 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
 
         // Validate to check whether username exists in system
         var usu = username;
-        
-        var user = _dbContext?.Users?
-            .Where(u => u.Type == "simplerisk" && u.Enabled == true && u.Lockout == 0 && u.Username == Encoding.UTF8.GetBytes(usu))
+        var dbContext = _dalManager.GetContext();
+        var user = dbContext?.Users?
+            .Where(u => u.Enabled == true && u.Lockout == 0 && u.Username == Encoding.UTF8.GetBytes(usu))
             .FirstOrDefault();
 
         if (user == null) return false;

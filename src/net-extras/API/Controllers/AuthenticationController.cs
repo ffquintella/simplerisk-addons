@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
+using DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -24,13 +25,15 @@ public class AuthenticationController : ControllerBase
     private readonly IUserManagementService _userManagementService;
     private readonly IRoleManagementService _roleManagementService;
     private readonly IMemoryCache _memoryCache;
+    private readonly DALManager _dalManager;
     public AuthenticationController(ILogger<AuthenticationController> logger, 
         IConfiguration configuration,
         IEnvironmentService environmentService,
         IHttpContextAccessor httpContextAccessor,
         IUserManagementService userManagementService,
         IRoleManagementService roleManagementService,
-        IMemoryCache memoryCache
+        IMemoryCache memoryCache,
+        DALManager dalManager
         )
     {
         _logger = logger;
@@ -40,12 +43,14 @@ public class AuthenticationController : ControllerBase
         _userManagementService = userManagementService;
         _roleManagementService = roleManagementService;
         _memoryCache = memoryCache;
+        _dalManager = dalManager;
     }
 
     [HttpGet]
     [Route("GetToken")]
     public ActionResult<string> GetToken()
     {
+        
         var token = GenerateToken(_httpContextAccessor.HttpContext!.User!.Identity!.Name!);
 
         _logger.LogInformation("Authentication token created for user: {0} fromip: {1}", 
@@ -117,6 +122,17 @@ public class AuthenticationController : ControllerBase
         string requestId = Request.Cookies["SAMLReqID"];  
         if(_memoryCache.TryGetValue("SAML_REQ_"+requestId, out SAMLRequest samlRequest))
         {
+            //First we need to know if the user exists on the database and if it´s a SAML user
+            var dbContext = _dalManager.GetContext();
+            var reqUser = _httpContextAccessor.HttpContext!.User!.Identity!.Name!;
+            
+            var dbUser = dbContext?.Users?
+                .Where(u => u.Type == "saml" && u.Enabled == true && u.Lockout == 0 && u.Username == Encoding.UTF8.GetBytes(reqUser))
+                .FirstOrDefault();
+
+            if (dbUser is null) return BadRequest("Invalid user");
+            
+            //Now we know the user is valid, we can issue the token.
             if (samlRequest.Status == "requested")
             {
                 samlRequest.Status = "accepted";
