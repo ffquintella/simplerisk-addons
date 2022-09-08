@@ -77,8 +77,9 @@ public class DashboardViewModel: ViewModelBase
                     Labels = riskDays,
                     TextSize = 9,
                     LabelsRotation = 90,
-                    MinLimit = 0,
-                    MaxLimit = 10
+                    MinLimit = 20,
+                    MaxLimit = riskDays.Count 
+                    
                 }
             };
 
