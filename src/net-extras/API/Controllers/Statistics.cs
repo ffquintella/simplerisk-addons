@@ -127,21 +127,6 @@ public class Statistics : ApiBaseController
             TotalDesiredMaturity = st.Sum(m => m.DesireedMaturityId),
         });
         
-        /*var frameworkStats = srDbContext.Frameworks.Join(srDbContext.FrameworkControlMappings,
-            framework => framework.Value,
-            frameworkControlMappings => frameworkControlMappings.Framework,
-            (framework, frameworkControlMappings) => new
-            {
-                Framework = framework.Name,
-                FrameworkId = framework.Value,
-                ControlId = frameworkControlMappings.ControlId,
-                ReferemceName = frameworkControlMappings.ReferenceName,
-            }).GroupBy(f => f.ControlId).Select(g => new
-                {
-                    Framework = g.First().Framework,
-                    Count = g.Count()
-                });*/
-        
         
         var result = new SecurityControlsStatistics
         {
