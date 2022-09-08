@@ -189,4 +189,7 @@
     <data name="SAMLAuthenticationTimeoutMSG" xml:space="preserve">
         <value>The SAML authentication attempt runned out of time</value>
     </data>
+    <data name="LogoutQuit" xml:space="preserve">
+        <value>Logout and Quit</value>
+    </data>
 </root>

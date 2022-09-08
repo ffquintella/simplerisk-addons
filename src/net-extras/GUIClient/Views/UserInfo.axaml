@@ -8,6 +8,7 @@
         Title="UserInfo"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
+        Name="UserInfoWindow"
         Width="600" Height="400">
 
         <Design.DataContext>
@@ -45,6 +46,11 @@
                                 <TextBlock Text=": "/>
                                 <TextBlock Text="{Binding UserInfo.UserRole}"/>
                         </StackPanel>
+                        <Button Name="BtLogout" 
+                                Margin="0 20"
+                                Command="{Binding BtLogoutClicked}">
+                                <TextBlock Text="{Binding StrLogout}" />
+                        </Button>
                 </StackPanel>
                 
         </Panel>

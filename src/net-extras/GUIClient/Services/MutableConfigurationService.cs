@@ -86,6 +86,23 @@ public class MutableConfigurationService: IMutableConfigurationService
         }
     }
 
+    public void RemoveConfigurationValue(string name)
+    {
+        if (!IsInitialized) Initialize();
+        using (var db = new LiteDatabase(_configurationConnectionString))
+        {
+            var col = db.GetCollection<MutableConfiguration>("configuration");
+
+            MutableConfiguration conf = col.FindOne(mo => mo.Name == name);
+
+            if (conf != null)
+            {
+                col.Delete(conf.ID);
+            }
+            
+        }
+    }
+    
     public void SaveAuthenticatedUser(AuthenticatedUserInfo user)
     {
         if (!IsInitialized) Initialize();

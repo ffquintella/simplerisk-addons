@@ -11,6 +11,8 @@ public interface IMutableConfigurationService
     string? GetConfigurationValue(string name);
     
     void SetConfigurationValue(string name, string value);
+
+    void RemoveConfigurationValue(string name);
     
     void SaveAuthenticatedUser(AuthenticatedUserInfo user);
     

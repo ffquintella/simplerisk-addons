@@ -339,6 +339,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Descontectar e Fechar.
+        /// </summary>
+        internal static string LogoutQuit {
+            get {
+                return ResourceManager.GetString("LogoutQuit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Máquina.
         /// </summary>
         internal static string Machine {

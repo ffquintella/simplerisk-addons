@@ -32,6 +32,12 @@ public interface IAuthenticationService
     /// <returns>0 if success; -1 if unkown error; 1 if authentication error</returns>
     int DoServerAuthentication(string user, string password);
 
+
+    /// <summary>
+    /// Logout the user
+    /// </summary>
+    void Logout();
+    
     /// <summary>
     ///  Gets the information about the authenticated user from the server.
     /// </summary>

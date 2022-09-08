@@ -339,6 +339,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logout and Quit.
+        /// </summary>
+        internal static string LogoutQuit {
+            get {
+                return ResourceManager.GetString("LogoutQuit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine.
         /// </summary>
         internal static string Machine {

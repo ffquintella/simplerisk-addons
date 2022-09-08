@@ -285,6 +285,15 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
     
     }
 
+    public void Logout()
+    {
+        _mutableConfigurationService.SetConfigurationValue("IsAuthenticate", "false");
+        _mutableConfigurationService.RemoveConfigurationValue("AuthToken");
+        _mutableConfigurationService.RemoveConfigurationValue("AuthTokenTime");
+
+        IsAuthenticated = false;
+    }
+    
     private void NotifyAuthenticationSucceeded()
     {
         if(AuthenticationSucceeded != null) AuthenticationSucceeded(this, new EventArgs());
