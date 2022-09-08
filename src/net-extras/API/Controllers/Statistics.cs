@@ -1,4 +1,7 @@
-﻿using DAL;
+﻿using System.Linq.Expressions;
+using System.Text;
+using DAL;
+using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Statistics;
@@ -73,6 +76,77 @@ public class Statistics : ApiBaseController
             computingDay = computingDay.AddDays(1);
         }
 
+        return result;
+
+    }
+    
+    [HttpGet]
+    [Route("SecurityControls")]
+    public ActionResult<SecurityControlsStatistics?> GetSecurityControls()
+    {
+      
+        
+        var srDbContext = _dalManager.GetContext();
+       
+        //risk.RiskCatalogMappings.Split(',').Select(int.Parse)
+        
+        var dbControls = srDbContext.Frameworks.Join(srDbContext.FrameworkControlMappings, 
+                framework => framework.Value,
+                frameworkControlMappings => frameworkControlMappings.Framework,
+                (framework, frameworkControlMappings) => new
+                {
+                    Framework = framework.Name,
+                    FrameworkId = framework.Value,
+                    ControlId = frameworkControlMappings.ControlId,
+                    ReferemceName = frameworkControlMappings.ReferenceName,
+                }).Join(srDbContext.FrameworkControls,
+                    frameworkControlMappings => frameworkControlMappings.ControlId,
+                    frameworkControls => frameworkControls.Id,
+                    (framework,  frameworkControls) => new
+                    {
+                        Framework = Encoding.UTF8.GetString(framework.Framework),
+                        FrameworkId = framework.FrameworkId,
+                        ControlId = framework.ControlId,
+                        ReferemceName = framework.ReferemceName,
+                        ControlName = frameworkControls.ShortName,
+                        ClassId = frameworkControls.ControlClass,
+                        MaturityId = frameworkControls.ControlMaturity,
+                        DesireedMaturityId = frameworkControls.DesiredMaturity,
+                        PiorityId = frameworkControls.ControlPriority,
+                        Status = frameworkControls.Status,
+                        Deleted = frameworkControls.Deleted,
+                        ControlNumber = frameworkControls.ControlNumber,
+                    }
+                ).Where(sc => sc.Status == 1 && sc.Deleted == 0).ToList();
+
+        var frameworkStats = dbControls.GroupBy(dc => dc.FrameworkId).Select(st => new
+        {
+            Framework = st.First().Framework,
+            Count = st.Count()
+        });
+        
+        /*var frameworkStats = srDbContext.Frameworks.Join(srDbContext.FrameworkControlMappings,
+            framework => framework.Value,
+            frameworkControlMappings => frameworkControlMappings.Framework,
+            (framework, frameworkControlMappings) => new
+            {
+                Framework = framework.Name,
+                FrameworkId = framework.Value,
+                ControlId = frameworkControlMappings.ControlId,
+                ReferemceName = frameworkControlMappings.ReferenceName,
+            }).GroupBy(f => f.ControlId).Select(g => new
+                {
+                    Framework = g.First().Framework,
+                    Count = g.Count()
+                });*/
+        
+        
+        var result = new SecurityControlsStatistics
+        {
+            SecurityControls = dbControls,
+            FameworkStats = frameworkStats
+        };
+        
         return result;
 
     }
