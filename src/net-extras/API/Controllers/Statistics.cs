@@ -122,7 +122,9 @@ public class Statistics : ApiBaseController
         var frameworkStats = dbControls.GroupBy(dc => dc.FrameworkId).Select(st => new
         {
             Framework = st.First().Framework,
-            Count = st.Count()
+            Count = st.Count(),
+            TotalMaturity = st.Sum(m => m.MaturityId),
+            TotalDesiredMaturity = st.Sum(m => m.DesireedMaturityId),
         });
         
         /*var frameworkStats = srDbContext.Frameworks.Join(srDbContext.FrameworkControlMappings,
