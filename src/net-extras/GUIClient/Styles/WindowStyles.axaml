@@ -1,0 +1,72 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- Add Styles Here -->
+    
+    <Style Selector="Window">
+        <Setter Property="Background" Value="#282928"/>
+    </Style>
+    
+    <Style Selector="TabControl">
+        <Setter Property="Background" Value="#282928"/>
+        <!--Setter Property="Height" Value="20"/-->
+        <!--Setter Property="" Value="0 0 0"/-->
+    </Style>
+
+    <Style Selector="TabControl WrapPanel">
+        <Setter Property="Background" Value="#4f4f52"/>
+        <!--Setter Property="Height" Value="60"/-->
+    </Style>
+
+    <Style Selector="TabItem">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="#4f4f52"/>
+        <Setter Property="Foreground" Value="#F0F0F0"/>
+    </Style>
+
+    <!--Style Selector="TabItem:selected">
+        <Setter Property="Foreground" Value="#d9d7d7"/>
+        <Setter Property="Margin" Value="0 0 0 0"/>
+        <Setter Property="Padding" Value="0 0"/>
+    </Style-->
+    <!--Style Selector="TabItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#124078"/>
+    </Style-->
+
+    <!--Style Selector="TabItem:focus">
+        <Setter Property="Foreground" Value="#2B579A"/>
+        <Setter Property="Margin" Value="0 0 0 0"/>
+        <Setter Property="Padding" Value="10 0"/>
+    </Style-->
+    <!--Style Selector="TabItem:focus /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#3b3a3a"/>
+    </Style-->
+
+    <!--Style Selector="TabItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#f0f0f0"/>
+    </Style-->
+
+    <Style Selector="TextBlock.warning">
+        <Setter Property="Margin" Value="30 5 0 0"/>
+        <Setter Property="Foreground" Value="#bbbbbb"/>
+        <Setter Property="Background" Value="#880000"/>
+    </Style>
+    
+    <Style Selector="TextBlock.header">
+        <Setter Property="Margin" Value="0 5 0 0"/>
+        <Setter Property="Foreground" Value="#bbbbbb"/>
+        <Setter Property="Background" Value="#222222"/>
+    </Style>
+    
+    <Style Selector="Button:is:disabled">
+        <Setter Property="Background" Value="#787878"/>
+    </Style>
+    
+</Styles>

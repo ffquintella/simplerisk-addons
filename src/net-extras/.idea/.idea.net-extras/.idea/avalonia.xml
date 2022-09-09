@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="Client/App.axaml" value="Client/Client.csproj" />
+        <entry key="Client/Icons.axaml" value="Client/Client.csproj" />
+        <entry key="Client/Login.axaml" value="Client/Client.csproj" />
+        <entry key="Client/MainWindow.axaml" value="Client/Client.csproj" />
+        <entry key="Client/Settings.axaml" value="Client/Client.csproj" />
+        <entry key="GUIClient/App.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Icons.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Settings.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Styles/ComponentStyles.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Styles/Icons.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Styles/WindowStyles.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/AssessmentQuestionView.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/AssessmentView.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/Dashboard.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/DashboardView.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/DeviceView.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/Login.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/MainWindow.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/NavigationBar.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/Settings.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/UserInfo.axaml" value="GUIClient/GUIClient.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
