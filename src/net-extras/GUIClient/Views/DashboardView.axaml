@@ -33,6 +33,7 @@
                         MinWidth="400"
                         MinHeight="300"
                         Background="#2e2d2d"
+                        LegendPosition="Right"
                         />
                 <!-- YAxes="{Binding FrameworkControlsYAxis, Mode=OneWay}" -->
             </StackPanel>

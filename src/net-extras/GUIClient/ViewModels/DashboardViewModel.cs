@@ -115,7 +115,7 @@ public class DashboardViewModel: ViewModelBase
             var securityControlsStatistics = _statisticsService.GetSecurityControlStatistics();
 
             var totalMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalMaturity).ToList();
-            var totalDesiredMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalDesiredMaturity).ToList();
+            var totalDesiredMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalDesiredMaturity - s.TotalMaturity).ToList();
             
             FrameworkControls = new ObservableCollection<ISeries>
             {
