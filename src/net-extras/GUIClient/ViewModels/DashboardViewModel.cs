@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using AvaloniaEdit;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
@@ -30,6 +33,12 @@ public class DashboardViewModel : ViewModelBase
     private string StrControlStatistics { get; }
     private string StrControlRisk { get; }
 
+    private string _lastUpdated;
+    private string LastUpdated
+    {
+        get => _lastUpdated;
+        set => this.RaiseAndSetIfChanged(ref _lastUpdated, value); }
+    
     private ObservableCollection<ISeries>? RisksOverTime
     {
         get => _risksOverTime;
@@ -93,6 +102,8 @@ public class DashboardViewModel : ViewModelBase
 
     private void UpdateData()
     {
+        LastUpdated = "Dt: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        
         var risksOverTimeValues = _statisticsService.GetRisksOverTime();
         var riskDays = risksOverTimeValues.Select(r => r.Day.ToShortDateString()).ToList();
         
@@ -190,6 +201,17 @@ public class DashboardViewModel : ViewModelBase
         {
             UpdateData();
             _initialized = true;
+
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(TimeSpan.FromMinutes(1));
+                    UpdateData();
+                }
+               
+                
+            });
         }
     }
     

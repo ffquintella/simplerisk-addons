@@ -6,47 +6,48 @@
              xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.DashboardView"
+             MinHeight="600"
              Initialized="OnInitialized">
     
     <Design.DataContext>
         <vm:DashboardViewModel/>
     </Design.DataContext>
     
-    <Grid RowDefinitions="Auto, *" Margin="5">
-        <TextBlock Grid.Row="0" Text="{Binding StrWelcome}" Margin="6 0" />
-        <Grid Grid.Row="1" ColumnDefinitions=" *, *" RowDefinitions=" * , *" >
-            <StackPanel Grid.Row="0" Grid.Column="0" Margin="3">
-                <TextBlock Classes="header" Text="{Binding StrRisksOverTime}" TextAlignment="Center"/>
-                <lvc:CartesianChart
-                    Series="{Binding RisksOverTime}" 
-                    XAxes="{Binding RisksOverTimeXAxis, Mode=OneWay}"
-                    ZoomMode="X"
-                    MinWidth="400"
-                    MinHeight="300"
-                    Background="#2e2d2d"/>            
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="1" Margin="3">
-                <TextBlock Classes="header" Text="{Binding StrControlStatistics}" TextAlignment="Center"/>
-                    <lvc:CartesianChart 
-                        Series="{Binding FrameworkControls}"
-                        XAxes="{Binding FrameworkControlsXAxis, Mode=OneWay}"
-                        MinWidth="400"
-                        MinHeight="300"
-                        Background="#2e2d2d"
-                        LegendPosition="Right"
-                        />
+    <Grid RowDefinitions="Auto, *, Auto" ColumnDefinitions="*" Margin="5">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding StrWelcome}" Margin="6 0" />
+        <Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions=" *, *" RowDefinitions=" * , *" >
+            <Grid Grid.Row="0" Grid.Column="0" RowDefinitions="Auto,*" Margin="3" >
+                <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrRisksOverTime}" TextAlignment="Center"/>
+                <lvc:CartesianChart Grid.Row="1"
+                                    Series="{Binding RisksOverTime}" 
+                                    XAxes="{Binding RisksOverTimeXAxis, Mode=OneWay}"
+                                    ZoomMode="X"
+                                    MinWidth="400"
+                                    MinHeight="270"
+                                    Background="#2e2d2d"/>            
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="Auto,*" Margin="3">
+                <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrControlStatistics}" TextAlignment="Center"/>
+                    <lvc:CartesianChart Grid.Row="1" 
+                                        Series="{Binding FrameworkControls}"
+                                        XAxes="{Binding FrameworkControlsXAxis, Mode=OneWay}"
+                                        MinWidth="400"
+                                        MinHeight="270"
+                                        Background="#2e2d2d"
+                                        LegendPosition="Right"
+                    />
                 <!-- YAxes="{Binding FrameworkControlsYAxis, Mode=OneWay}" -->
-            </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="0" Margin="3">
-                <TextBlock Classes="header" Text="{Binding StrControlRisk}" TextAlignment="Center"/>
-                <lvc:PieChart Series="{Binding ControlRisks}" 
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="Auto,*"  Margin="3">
+                <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrControlRisk}" TextAlignment="Center"/>
+                <lvc:PieChart Grid.Row="1" Series="{Binding ControlRisks}" 
                               MinWidth="400"
-                              MinHeight="300"
+                              MinHeight="270"
                               Background="#2e2d2d"
                 />
-            </StackPanel>
-            
+            </Grid>
         </Grid>
+        <TextBlock Grid.Row="2" Grid.Column="0" TextAlignment="Right" Text="{Binding LastUpdated}"/> 
     </Grid>
     
 </UserControl>
