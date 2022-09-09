@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Text;
+using AutoMapper;
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -16,9 +17,11 @@ public class Statistics : ApiBaseController
 {
     private readonly DALManager _dalManager;
     
-    public Statistics(ILogger logger, DALManager dalManager) : base(logger)
+    private IMapper _mapper;
+    public Statistics(ILogger logger, DALManager dalManager, IMapper mapper) : base(logger)
     {
         _dalManager = dalManager;
+        _mapper = mapper;
     }
     
 
@@ -119,19 +122,20 @@ public class Statistics : ApiBaseController
                     }
                 ).Where(sc => sc.Status == 1 && sc.Deleted == 0).ToList();
 
-        var frameworkStats = dbControls.GroupBy(dc => dc.FrameworkId).Select(st => new
+        var frameworkStats = dbControls
+            .GroupBy(dc => dc.FrameworkId)
+            .Select(st => new FrameworkStatistic()
         {
             Framework = st.First().Framework,
             Count = st.Count(),
             TotalMaturity = st.Sum(m => m.MaturityId),
             TotalDesiredMaturity = st.Sum(m => m.DesireedMaturityId),
-        });
-        
+        }).ToList();
         
         var result = new SecurityControlsStatistics
         {
             SecurityControls = dbControls,
-            FameworkStats = frameworkStats
+            FameworkStats = frameworkStats 
         };
         
         return result;

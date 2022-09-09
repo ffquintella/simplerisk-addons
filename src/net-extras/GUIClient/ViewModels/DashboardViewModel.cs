@@ -5,9 +5,12 @@ using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using Splat;
 using LiveChartsCore;
+using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Model.Statistics;
 using ReactiveUI;
+using SkiaSharp;
 
 namespace GUIClient.ViewModels;
 
@@ -111,6 +114,20 @@ public class DashboardViewModel: ViewModelBase
             // Security Control 
             var securityControlsStatistics = _statisticsService.GetSecurityControlStatistics();
 
+            //var series1 = securityControlsStatistics.FameworkStats
+            
+            FrameworkControls = new ObservableCollection<ISeries>
+            {
+                new StackedColumnSeries<int>
+                {
+                    Values = new List<int> { 3, 5, -3, 2, 5, -4, -2 },
+                    Stroke = null,
+                    DataLabelsPaint = new SolidColorPaint(new SKColor(45, 45, 45)),
+                    DataLabelsSize = 14,
+                    DataLabelsPosition = DataLabelsPosition.Middle
+                },
+            };
+            
             _initialized = true;
         }
     }
