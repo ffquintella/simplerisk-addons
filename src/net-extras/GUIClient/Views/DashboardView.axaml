@@ -13,9 +13,9 @@
     </Design.DataContext>
     
     <Grid RowDefinitions="Auto, *" Margin="5">
-        <TextBlock Grid.Row="0" Text="{Binding StrWelcome}" />
+        <TextBlock Grid.Row="0" Text="{Binding StrWelcome}" Margin="3" />
         <Grid Grid.Row="1" ColumnDefinitions=" *, *" RowDefinitions=" * , *" >
-            <StackPanel Grid.Row="0" Grid.Column="0" >
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="3">
                 <TextBlock Classes="header" Text="{Binding StrRisksOverTime}" TextAlignment="Center"/>
                 <lvc:CartesianChart
                     Series="{Binding RisksOverTime}" 
@@ -25,13 +25,16 @@
                     MinHeight="300"
                     Background="#2e2d2d"/>            
             </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="1" >
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="3">
                 <TextBlock Classes="header" Text="{Binding StrControlStatistics}" TextAlignment="Center"/>
                     <lvc:CartesianChart 
                         Series="{Binding FrameworkControls}"
                         XAxes="{Binding FrameworkControlsXAxis, Mode=OneWay}"
-                        YAxes="{Binding FrameworkControlsYAxis, Mode=OneWay}"
+                        MinWidth="400"
+                        MinHeight="300"
+                        Background="#2e2d2d"
                         />
+                <!-- YAxes="{Binding FrameworkControlsYAxis, Mode=OneWay}" -->
             </StackPanel>
         </Grid>
     </Grid>

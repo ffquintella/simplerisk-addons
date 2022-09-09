@@ -114,19 +114,42 @@ public class DashboardViewModel: ViewModelBase
             // Security Control 
             var securityControlsStatistics = _statisticsService.GetSecurityControlStatistics();
 
-            //var series1 = securityControlsStatistics.FameworkStats
+            var totalMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalMaturity).ToList();
+            var totalDesiredMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalDesiredMaturity).ToList();
             
             FrameworkControls = new ObservableCollection<ISeries>
             {
                 new StackedColumnSeries<int>
                 {
-                    Values = new List<int> { 3, 5, -3, 2, 5, -4, -2 },
+                    Values = totalMaturity,
+                    Name = Localizer["Maturity"],
                     Stroke = null,
                     DataLabelsPaint = new SolidColorPaint(new SKColor(45, 45, 45)),
                     DataLabelsSize = 14,
                     DataLabelsPosition = DataLabelsPosition.Middle
                 },
+                new StackedColumnSeries<int>
+                {
+                    Values = totalDesiredMaturity,
+                    Name = Localizer["DesiredMaturity"],  
+                    Stroke = null,
+                    DataLabelsPaint = new SolidColorPaint(new SKColor(45, 5, 5)),
+                    DataLabelsSize = 14,
+                    DataLabelsPosition = DataLabelsPosition.Middle
+                },
             };
+            
+            FrameworkControlsXAxis = new List<Axis>
+            {
+                new Axis
+                {
+                    Labels = securityControlsStatistics.FameworkStats.Select(s => s.Framework).ToList(),
+                    TextSize = 9,
+                    LabelsRotation = 0,
+               }
+            };
+            
+
             
             _initialized = true;
         }

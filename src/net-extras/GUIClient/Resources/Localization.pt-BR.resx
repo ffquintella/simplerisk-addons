@@ -195,4 +195,10 @@
     <data name="ControlStatistics" xml:space="preserve">
         <value>Estatísticas dos controles de segurança</value>
     </data>
+    <data name="Maturity" xml:space="preserve">
+        <value>Maturidade</value>
+    </data>
+    <data name="DesiredMaturity" xml:space="preserve">
+        <value>Maturidade Desejada</value>
+    </data>
 </root>

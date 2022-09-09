@@ -222,6 +222,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Desired Maturity.
+        /// </summary>
+        internal static string DesiredMaturity {
+            get {
+                return ResourceManager.GetString("DesiredMaturity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Environment.
         /// </summary>
         internal static string Environment {
@@ -362,6 +371,15 @@ namespace GUIClient.Resources {
         internal static string Machine {
             get {
                 return ResourceManager.GetString("Machine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maturity.
+        /// </summary>
+        internal static string Maturity {
+            get {
+                return ResourceManager.GetString("Maturity", resourceCulture);
             }
         }
         
