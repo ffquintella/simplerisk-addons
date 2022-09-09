@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using AvaloniaEdit;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using Splat;
@@ -64,6 +65,13 @@ public class DashboardViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _frameworkControlsYAxis, value);
     }
     
+    private ObservableCollection<ISeries>? _controlRisks;
+    public ObservableCollection<ISeries>? ControlRisks
+    {
+        get => _controlRisks; 
+        set => this.RaiseAndSetIfChanged(ref _controlRisks, value); 
+    }
+    
     public DashboardViewModel()
     {
         _statisticsService = GetService<IStatisticsService>();
@@ -81,76 +89,105 @@ public class DashboardViewModel: ViewModelBase
         StrRisksOverTime = Localizer["RisksOverTime"];
         StrControlStatistics = Localizer["ControlStatistics"];
     }
+
+    private void UpdateData()
+    {
+        var risksOverTimeValues = _statisticsService.GetRisksOverTime();
+        var riskDays = risksOverTimeValues.Select(r => r.Day.ToShortDateString()).ToList();
+        
+        RisksOverTime = new ObservableCollection<ISeries>
+        {
+            new LineSeries<RisksOnDay>
+            {
+                Name = "Risks Over Time",
+                Values = risksOverTimeValues
+            }
+        };
+
+        RisksOverTimeXAxis = new List<Axis>
+        {
+            new Axis
+            {
+                Labels = riskDays,
+                TextSize = 9,
+                LabelsRotation = 90,
+                MinLimit = 20,
+                MaxLimit = riskDays.Count 
+                
+            }
+        };
+        
+        // Security Control 
+        var securityControlsStatistics = _statisticsService.GetSecurityControlStatistics();
+
+        var totalMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalMaturity).ToList();
+        var totalDesiredMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalDesiredMaturity - s.TotalMaturity).ToList();
+        
+        FrameworkControls = new ObservableCollection<ISeries>
+        {
+            new StackedColumnSeries<int>
+            {
+                Values = totalMaturity,
+                Name = Localizer["Maturity"],
+                Stroke = null,
+                DataLabelsPaint = new SolidColorPaint(new SKColor(45, 45, 45)),
+                DataLabelsSize = 14,
+                DataLabelsPosition = DataLabelsPosition.Middle
+            },
+            new StackedColumnSeries<int>
+            {
+                Values = totalDesiredMaturity,
+                Name = Localizer["DesiredMaturity"],  
+                Stroke = null,
+                DataLabelsPaint = new SolidColorPaint(new SKColor(45, 5, 5)),
+                DataLabelsSize = 14,
+                DataLabelsPosition = DataLabelsPosition.Middle
+            },
+        };
+        
+        FrameworkControlsXAxis = new List<Axis>
+        {
+            new Axis
+            {
+                Labels = securityControlsStatistics.FameworkStats.Select(s => s.Framework).ToList(),
+                TextSize = 9,
+                LabelsRotation = 0,
+           }
+        };
+        
+        var controlRisks = securityControlsStatistics.SecurityControls
+            .Select(sc => new {sc.ControlName, sc.TotalRisk}).ToList();
+
+        ControlRisks = new ObservableCollection<ISeries>();
+
+        foreach (var controlRisk in controlRisks)
+        {
+            ControlRisks.Add(new PieSeries<double>
+            {
+                Values = new double[] {controlRisk.TotalRisk},
+                Name = controlRisk.ControlName,
+                DataLabelsPosition = PolarLabelsPosition.Outer,
+                DataLabelsFormatter = p => $"{p.PrimaryValue} / {p.StackedValue!.Total} ({p.StackedValue.Share:P2})"
+            });
+        }
+        
+
+        
+        /*ControlRisks = controlRisks.AsLiveChartsPieSeries((value, series) =>
+        {
+            // here you can configure the series assigned to each value.
+            series.Name = $"Series for value {value}";
+            series.DataLabelsPaint = new SolidColorPaint(new SKColor(30, 30, 30));
+            series.DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Outer;
+            series.DataLabelsFormatter = p => $"{p.PrimaryValue} / {p.StackedValue!.Total} ({p.StackedValue.Share:P2})";
+        });*/
+    }
     
     public void Initialize()
     {
         if (!_initialized)
         {
-            var risksOverTimeValues = _statisticsService.GetRisksOverTime();
-            var riskDays = risksOverTimeValues.Select(r => r.Day.ToShortDateString()).ToList();
-            
-            RisksOverTime = new ObservableCollection<ISeries>
-            {
-                new LineSeries<RisksOnDay>
-                {
-                    Name = "Risks Over Time",
-                    Values = risksOverTimeValues
-                }
-            };
-
-            RisksOverTimeXAxis = new List<Axis>
-            {
-                new Axis
-                {
-                    Labels = riskDays,
-                    TextSize = 9,
-                    LabelsRotation = 90,
-                    MinLimit = 20,
-                    MaxLimit = riskDays.Count 
-                    
-                }
-            };
-            
-            // Security Control 
-            var securityControlsStatistics = _statisticsService.GetSecurityControlStatistics();
-
-            var totalMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalMaturity).ToList();
-            var totalDesiredMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalDesiredMaturity - s.TotalMaturity).ToList();
-            
-            FrameworkControls = new ObservableCollection<ISeries>
-            {
-                new StackedColumnSeries<int>
-                {
-                    Values = totalMaturity,
-                    Name = Localizer["Maturity"],
-                    Stroke = null,
-                    DataLabelsPaint = new SolidColorPaint(new SKColor(45, 45, 45)),
-                    DataLabelsSize = 14,
-                    DataLabelsPosition = DataLabelsPosition.Middle
-                },
-                new StackedColumnSeries<int>
-                {
-                    Values = totalDesiredMaturity,
-                    Name = Localizer["DesiredMaturity"],  
-                    Stroke = null,
-                    DataLabelsPaint = new SolidColorPaint(new SKColor(45, 5, 5)),
-                    DataLabelsSize = 14,
-                    DataLabelsPosition = DataLabelsPosition.Middle
-                },
-            };
-            
-            FrameworkControlsXAxis = new List<Axis>
-            {
-                new Axis
-                {
-                    Labels = securityControlsStatistics.FameworkStats.Select(s => s.Framework).ToList(),
-                    TextSize = 9,
-                    LabelsRotation = 0,
-               }
-            };
-            
-
-            
+            UpdateData();
             _initialized = true;
         }
     }

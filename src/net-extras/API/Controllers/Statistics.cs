@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Data.Common;
+using System.Linq.Expressions;
 using System.Text;
 using AutoMapper;
 using DAL;
@@ -137,21 +138,23 @@ public class Statistics : ApiBaseController
 
 
         var dbControlRisks = dbControls.Where(fc => fc.ControlNumber != null 
-                                                    && fc.ControlNumber != "").Select(fc => new SecurityControlStatistic
+                                                    && fc.ControlNumber != "")
+            .GroupBy(cr => cr.ControlId)
+            .Select(fc => new SecurityControlStatistic
         {
-            TotalRisk = risks.Where(r => r.ControlNumber == fc.ControlNumber).Select(risk => risk.CalculatedRisk).Sum(),
-            Framework = fc.Framework,
-            FrameworkId = fc.FrameworkId,
-            ControlId = fc.ControlId,
-            ReferemceName = fc.ReferemceName,
-            ControlName = fc.ControlName,
-            ClassId = fc.ClassId,
-            MaturityId = fc.MaturityId,
-            DesireedMaturityId = fc.DesireedMaturityId,
-            PiorityId = fc.PiorityId,
-            Status = fc.Status,
-            Deleted = fc.Deleted,
-            ControlNumber = fc.ControlNumber,
+            TotalRisk = risks.Where(r => r.ControlNumber == fc.FirstOrDefault().ControlNumber).Select(risk => risk.CalculatedRisk).Sum(),
+            Framework = fc.FirstOrDefault().Framework,
+            FrameworkId = fc.FirstOrDefault().FrameworkId,
+            ControlId = fc.FirstOrDefault().ControlId,
+            ReferemceName = fc.FirstOrDefault().ReferemceName,
+            ControlName = fc.FirstOrDefault().ControlName,
+            ClassId = fc.FirstOrDefault().ClassId,
+            MaturityId = fc.FirstOrDefault().MaturityId,
+            DesireedMaturityId = fc.FirstOrDefault().DesireedMaturityId,
+            PiorityId = fc.FirstOrDefault().PiorityId,
+            Status = fc.FirstOrDefault().Status,
+            Deleted = fc.FirstOrDefault().Deleted,
+            ControlNumber = fc.FirstOrDefault().ControlNumber,
         }).OrderBy(sc => sc.TotalRisk).ToList();
         
         var frameworkStats = dbControls
