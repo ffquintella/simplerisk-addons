@@ -81,3 +81,9 @@ src/net-extras/Tools/obj/Debug/net6.0/
 src/net-extras/Tools/obj/
 
 src/net-extras/API/Properties/launchSettings.json
+
+src/net-extras/DAL/bin/Release/net6.0/
+
+src/net-extras/Model/bin/Release/net6.0/
+
+src/net-extras/Tools/bin/Release/net6.0/
