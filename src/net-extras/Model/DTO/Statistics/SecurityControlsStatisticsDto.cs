@@ -1,8 +1,8 @@
-﻿namespace Model.Statistics;
+﻿namespace Model.DTO.Statistics;
 
 public class SecurityControlsStatistics
 {
-    public Object? SecurityControls { get; set; }
+    public List<SecurityControlStatistic> SecurityControls { get; set; }
     public List<FrameworkStatistic>? FameworkStats { get; set; }
 
 }

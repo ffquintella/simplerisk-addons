@@ -1,4 +1,4 @@
-﻿namespace Model.Statistics;
+﻿namespace Model.DTO.Statistics;
 
 public class FrameworkStatistic
 {

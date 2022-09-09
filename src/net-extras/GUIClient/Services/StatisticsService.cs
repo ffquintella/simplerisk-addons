@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Avalonia.Logging;
 using Model.Authentication;
+using Model.DTO.Statistics;
 using Model.Exceptions;
 using Model.Statistics;
 using RestSharp;

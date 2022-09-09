@@ -5,6 +5,7 @@ using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Model.DTO.Statistics;
 using Model.Statistics;
 using ILogger = Serilog.ILogger;
 
@@ -91,6 +92,18 @@ public class Statistics : ApiBaseController
         
         var srDbContext = _dalManager.GetContext();
        
+        var risks = srDbContext.Risks.Join(srDbContext.RiskScorings, 
+            risk => risk.Id,
+            riskScoring => riskScoring.Id,
+            (risk, riskScoring) => new
+            {
+                Id = risk.Id,
+                SubmissionDate = risk.SubmissionDate,
+                CalculatedRisk = riskScoring.CalculatedRisk,
+                Status = risk.Status,
+                ControlNumber = risk.ControlNumber
+            }).Where(risk => risk.Status != "Closed").ToList();
+        
         //risk.RiskCatalogMappings.Split(',').Select(int.Parse)
         
         var dbControls = srDbContext.Frameworks.Join(srDbContext.FrameworkControlMappings, 
@@ -122,6 +135,25 @@ public class Statistics : ApiBaseController
                     }
                 ).Where(sc => sc.Status == 1 && sc.Deleted == 0).ToList();
 
+
+        var dbControlRisks = dbControls.Where(fc => fc.ControlNumber != null 
+                                                    && fc.ControlNumber != "").Select(fc => new SecurityControlStatistic
+        {
+            TotalRisk = risks.Where(r => r.ControlNumber == fc.ControlNumber).Select(risk => risk.CalculatedRisk).Sum(),
+            Framework = fc.Framework,
+            FrameworkId = fc.FrameworkId,
+            ControlId = fc.ControlId,
+            ReferemceName = fc.ReferemceName,
+            ControlName = fc.ControlName,
+            ClassId = fc.ClassId,
+            MaturityId = fc.MaturityId,
+            DesireedMaturityId = fc.DesireedMaturityId,
+            PiorityId = fc.PiorityId,
+            Status = fc.Status,
+            Deleted = fc.Deleted,
+            ControlNumber = fc.ControlNumber,
+        }).OrderBy(sc => sc.TotalRisk).ToList();
+        
         var frameworkStats = dbControls
             .GroupBy(dc => dc.FrameworkId)
             .Select(st => new FrameworkStatistic()
@@ -134,7 +166,7 @@ public class Statistics : ApiBaseController
         
         var result = new SecurityControlsStatistics
         {
-            SecurityControls = dbControls,
+            SecurityControls = dbControlRisks,
             FameworkStats = frameworkStats 
         };
         
