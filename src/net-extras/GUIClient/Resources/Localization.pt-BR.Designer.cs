@@ -204,6 +204,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Risco por controle.
+        /// </summary>
+        internal static string ControlRisk {
+            get {
+                return ResourceManager.GetString("ControlRisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Estatísticas dos controles de segurança.
         /// </summary>
         internal static string ControlStatistics {

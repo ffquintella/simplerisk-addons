@@ -201,4 +201,7 @@
     <data name="DesiredMaturity" xml:space="preserve">
         <value>Maturidade Desejada</value>
     </data>
+    <data name="ControlRisk" xml:space="preserve">
+        <value>Risco por controle</value>
+    </data>
 </root>

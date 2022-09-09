@@ -15,58 +15,58 @@ using SkiaSharp;
 
 namespace GUIClient.ViewModels;
 
-public class DashboardViewModel: ViewModelBase
+public class DashboardViewModel : ViewModelBase
 {
-    
-    public IStatisticsService _statisticsService;
-    
-    
+
+    private IStatisticsService _statisticsService;
+
+
     private bool _initialized = false;
-    
+
     private ObservableCollection<ISeries>? _risksOverTime;
-    public List<Axis> _risksOverTimeXAxis;
-    public string StrWelcome { get; }
-    public string StrRisksOverTime { get;}
-
+    private List<Axis> _risksOverTimeXAxis;
+    private string StrWelcome { get; }
+    private string StrRisksOverTime { get; }
     private string StrControlStatistics { get; }
+    private string StrControlRisk { get; }
 
-    public ObservableCollection<ISeries>? RisksOverTime
+    private ObservableCollection<ISeries>? RisksOverTime
     {
         get => _risksOverTime;
         set => this.RaiseAndSetIfChanged(ref _risksOverTime, value);
     }
     
-    public List<Axis> RisksOverTimeXAxis
+    private List<Axis> RisksOverTimeXAxis
     {
         get => _risksOverTimeXAxis;
         set => this.RaiseAndSetIfChanged(ref _risksOverTimeXAxis, value);
     }
 
     private ObservableCollection<ISeries>? _frameworkControls;
-    public ObservableCollection<ISeries>? FrameworkControls
+    private ObservableCollection<ISeries>? FrameworkControls
     {
         get => _frameworkControls; 
         set => this.RaiseAndSetIfChanged(ref _frameworkControls, value); 
     }
     
     
-    public List<Axis> _frameworkControlsXAxis;
-    public List<Axis> _frameworkControlsYAxis;
+    private List<Axis> _frameworkControlsXAxis;
+    private List<Axis> _frameworkControlsYAxis;
     
-    public List<Axis> FrameworkControlsXAxis
+    private List<Axis> FrameworkControlsXAxis
     {
         get => _frameworkControlsXAxis;
         set => this.RaiseAndSetIfChanged(ref _frameworkControlsXAxis, value);
     }
     
-    public List<Axis> FrameworkControlsYAxis
+    private List<Axis> FrameworkControlsYAxis
     {
         get => _frameworkControlsYAxis;
         set => this.RaiseAndSetIfChanged(ref _frameworkControlsYAxis, value);
     }
     
     private ObservableCollection<ISeries>? _controlRisks;
-    public ObservableCollection<ISeries>? ControlRisks
+    private ObservableCollection<ISeries>? ControlRisks
     {
         get => _controlRisks; 
         set => this.RaiseAndSetIfChanged(ref _controlRisks, value); 
@@ -88,6 +88,7 @@ public class DashboardViewModel: ViewModelBase
         StrWelcome = Localizer["WelcomeMSG"];
         StrRisksOverTime = Localizer["RisksOverTime"];
         StrControlStatistics = Localizer["ControlStatistics"];
+        StrControlRisk = Localizer["ControlRisk"];
     }
 
     private void UpdateData()
