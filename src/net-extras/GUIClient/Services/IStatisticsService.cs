@@ -6,5 +6,6 @@ namespace GUIClient.Services;
 public interface IStatisticsService
 {
     List<RisksOnDay> GetRisksOverTime();
-    
+    SecurityControlsStatistics GetSecurityControlStatistics();
+
 }

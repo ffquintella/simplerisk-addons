@@ -15,7 +15,7 @@
     <Grid RowDefinitions="Auto, *" Margin="5">
         <TextBlock Grid.Row="0" Text="{Binding StrWelcome}" />
         <Grid Grid.Row="1" ColumnDefinitions=" *, *" RowDefinitions=" * , *" >
-            <StackPanel Grid.Column="0" Grid.Row="0">
+            <StackPanel Grid.Row="0" Grid.Column="0" >
                 <TextBlock Classes="header" Text="{Binding StrRisksOverTime}" TextAlignment="Center"/>
                 <lvc:CartesianChart
                     Series="{Binding RisksOverTime}" 
@@ -24,6 +24,14 @@
                     MinWidth="400"
                     MinHeight="300"
                     Background="#2e2d2d"/>            
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" >
+                <TextBlock Classes="header" Text="{Binding StrControlStatistics}" TextAlignment="Center"/>
+                    <lvc:CartesianChart 
+                        Series="{Binding FrameworkControls}"
+                        XAxes="{Binding FrameworkControlsXAxis, Mode=OneWay}"
+                        YAxes="{Binding FrameworkControlsYAxis, Mode=OneWay}"
+                        />
             </StackPanel>
         </Grid>
     </Grid>

@@ -44,6 +44,31 @@ public class StatisticsService: ServiceBase, IStatisticsService
         }
         
     }
-    
-   
+
+    public SecurityControlsStatistics GetSecurityControlStatistics()
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest("/Statistics/SecurityControls");
+        
+        try
+        {
+            var response = client.Get<SecurityControlsStatistics>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting security control statistics");
+                response = new SecurityControlsStatistics();
+            }
+            
+            return response;
+            
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error getting security control statistics message:{0}", ex.Message);
+            throw new RestComunicationException("Error getting risks over time", ex);
+        }
+        
+    }
 }

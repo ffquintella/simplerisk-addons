@@ -192,4 +192,7 @@
     <data name="LogoutQuit" xml:space="preserve">
         <value>Descontectar e Fechar</value>
     </data>
+    <data name="ControlStatistics" xml:space="preserve">
+        <value>Estatísticas dos controles de segurança</value>
+    </data>
 </root>

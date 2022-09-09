@@ -4,7 +4,6 @@ using System.Linq;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using Splat;
-
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using Model.Statistics;
@@ -24,7 +23,8 @@ public class DashboardViewModel: ViewModelBase
     public List<Axis> _risksOverTimeXAxis;
     public string StrWelcome { get; }
     public string StrRisksOverTime { get;}
- 
+
+    private string StrControlStatistics { get; }
 
     public ObservableCollection<ISeries>? RisksOverTime
     {
@@ -37,13 +37,37 @@ public class DashboardViewModel: ViewModelBase
         get => _risksOverTimeXAxis;
         set => this.RaiseAndSetIfChanged(ref _risksOverTimeXAxis, value);
     }
+
+    private ObservableCollection<ISeries>? _frameworkControls;
+    public ObservableCollection<ISeries>? FrameworkControls
+    {
+        get => _frameworkControls; 
+        set => this.RaiseAndSetIfChanged(ref _frameworkControls, value); 
+    }
     
+    
+    public List<Axis> _frameworkControlsXAxis;
+    public List<Axis> _frameworkControlsYAxis;
+    
+    public List<Axis> FrameworkControlsXAxis
+    {
+        get => _frameworkControlsXAxis;
+        set => this.RaiseAndSetIfChanged(ref _frameworkControlsXAxis, value);
+    }
+    
+    public List<Axis> FrameworkControlsYAxis
+    {
+        get => _frameworkControlsYAxis;
+        set => this.RaiseAndSetIfChanged(ref _frameworkControlsYAxis, value);
+    }
     
     public DashboardViewModel()
     {
         _statisticsService = GetService<IStatisticsService>();
 
         _risksOverTimeXAxis = new List<Axis>();
+        _frameworkControlsXAxis = new List<Axis>();
+        _frameworkControlsYAxis = new List<Axis>();
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
@@ -52,6 +76,7 @@ public class DashboardViewModel: ViewModelBase
         
         StrWelcome = Localizer["WelcomeMSG"];
         StrRisksOverTime = Localizer["RisksOverTime"];
+        StrControlStatistics = Localizer["ControlStatistics"];
     }
     
     public void Initialize()
@@ -82,6 +107,9 @@ public class DashboardViewModel: ViewModelBase
                     
                 }
             };
+            
+            // Security Control 
+            var securityControlsStatistics = _statisticsService.GetSecurityControlStatistics();
 
             _initialized = true;
         }

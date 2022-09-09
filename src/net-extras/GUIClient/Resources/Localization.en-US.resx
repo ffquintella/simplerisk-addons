@@ -192,4 +192,7 @@
     <data name="LogoutQuit" xml:space="preserve">
         <value>Logout and Quit</value>
     </data>
+    <data name="ControlStatistics" xml:space="preserve">
+        <value>Security Control Statistics</value>
+    </data>
 </root>

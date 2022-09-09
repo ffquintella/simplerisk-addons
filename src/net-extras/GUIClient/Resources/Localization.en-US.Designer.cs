@@ -204,6 +204,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Security Control Statistics.
+        /// </summary>
+        internal static string ControlStatistics {
+            get {
+                return ResourceManager.GetString("ControlStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         internal static string Description {
