@@ -4,9 +4,12 @@ using System.Linq;
 using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.Execution;
+using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
+using Nuke.Common.Tools.MinVer;
+using Nuke.Common.Tools.NerdbankGitVersioning;
 using Nuke.Common.Utilities.Collections;
 using Serilog;
 using static Nuke.Common.EnvironmentInfo;
@@ -19,6 +22,10 @@ class Build : NukeBuild
     AbsolutePath SourceDirectory => RootDirectory / "src"  / "net-extras";
     AbsolutePath OutputDirectory => RootDirectory / "output";
 
+    [GitRepository] readonly GitRepository Repository;
+    
+    
+    string Version => Repository?.Tags?.FirstOrDefault() ?? "0.dev";
     public static int Main () => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
@@ -45,16 +52,33 @@ class Build : NukeBuild
     Target Restore => _ => _
         .Executes(() =>
         {
-            
+
         });
 
-    Target Compile => _ => _
-        .DependsOn(Restore)
+    Target Print => _ => _
         .Executes(() =>
         {
             Log.Information("STARTING BUILD");
             Log.Information("SOURCE DIR: {0}", SourceDirectory);
             Log.Information("OUTPUT DIR: {0}", OutputDirectory);
+            
+            
+            Log.Information("Commit = {Value}", Repository.Commit);
+            Log.Information("Branch = {Value}", Repository.Branch);
+            Log.Information("Tags = {Value}", Repository.Tags);
+
+            Log.Information("main branch = {Value}", Repository.IsOnMainBranch());
+            Log.Information("main/master branch = {Value}", Repository.IsOnMainOrMasterBranch());
+            
+            Log.Information("VersionInfo = {Value}", Version);
+        });
+    
+    Target Compile => _ => _
+        .DependsOn(Print)
+        .DependsOn(Restore)
+        .Executes(() =>
+        {
+
             
         });
 
