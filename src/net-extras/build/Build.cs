@@ -41,6 +41,7 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
+            Console.WriteLine("Hello!");
         });
 
 }
