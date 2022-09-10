@@ -32,9 +32,6 @@ src/extras/authentication/settings.php
 
 composer.lock
 
-build/app/
-
-build/
 
 src/extras/api/vendor/
 
@@ -99,3 +96,7 @@ src/net-extras/ConsoleClient/bin/Release/net6.0/linux-x64/
 src/net-extras/ConsoleTest/bin/Release/net6.0/linux-x64/
 
 .nuke/
+
+src/net-extras/build/bin/Debug/
+
+src/net-extras/build/obj/
