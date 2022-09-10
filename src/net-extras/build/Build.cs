@@ -13,13 +13,16 @@ using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.IO.CompressionTasks;
 
 class Build : NukeBuild
 {
 
     AbsolutePath SourceDirectory => RootDirectory / "src"  / "net-extras";
     AbsolutePath OutputDirectory => RootDirectory / "output";
-
+    AbsolutePath OutputBuildDirectory => RootDirectory / "output"  / "build";
+    AbsolutePath OutputPublishDirectory => RootDirectory / "output"  / "publish";
+    
     [GitRepository] readonly GitRepository Repository;
     
     
@@ -33,7 +36,7 @@ class Build : NukeBuild
     readonly Solution Solution;
 
     Target Clean => _ => _
-        .Before(Restore)
+        .Before(Prepare)
         .Executes(() =>
         {
             // Collect and delete all /obj and /bin directories in all sub-directories
@@ -47,7 +50,18 @@ class Build : NukeBuild
                 }
                 
             }
-            //deletableDirectories.ForEach(FileSystemTasks.DeleteDirectory);
+            Directory.Delete(OutputBuildDirectory, true);
+            
+        });
+    
+    Target Prepare => _ => _
+        .Before(Restore)
+        .DependsOn(Print)
+        .Executes(() =>
+        {
+            if (!Directory.Exists(OutputDirectory)) Directory.CreateDirectory(OutputDirectory);
+            if (!Directory.Exists(OutputBuildDirectory)) Directory.CreateDirectory(OutputBuildDirectory);
+            if (!Directory.Exists(OutputPublishDirectory)) Directory.CreateDirectory(OutputPublishDirectory);
         });
 
     Target Restore => _ => _
@@ -102,8 +116,38 @@ class Build : NukeBuild
                 .SetProjectFile(Solution)
                 .SetVersion(Version)
                 .SetConfiguration(Configuration)
+                .SetOutputDirectory(OutputBuildDirectory)
                 .SetVerbosity(DotNetVerbosity.Normal));
             
+        });
+    
+    Target PublishApi => _ => _
+        .DependsOn(Clean)
+        //.DependsOn(Compile)
+        .Executes(() =>
+        {
+            var project = Solution.GetProject("API");
+            
+            DotNetPublish(s => s
+                .SetProject(project)
+                .SetVersion(Version)
+                .SetConfiguration(Configuration.Release)
+                .SetRuntime("linux-x64")
+                .EnablePublishTrimmed()
+                .EnablePublishSingleFile()
+                .SetOutput(OutputPublishDirectory / "api")
+                .EnablePublishReadyToRun()
+                .SetVerbosity(DotNetVerbosity.Normal));
+            
+            var archive = OutputPublishDirectory / $"SRNET-Server-${Version}.zip";
+            
+            CompressZip(OutputPublishDirectory / "api", 
+                archive);
+
+            var checksum = GetFileHash(archive);
+            var checksumFile = OutputPublishDirectory / $"SRNET-Server-${Version}.sha256";  
+            File.WriteAllText(checksumFile, checksum);
+
         });
 
 }

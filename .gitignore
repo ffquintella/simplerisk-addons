@@ -102,3 +102,7 @@ src/net-extras/ConsoleTest/bin/Release/net6.0/linux-x64/
 src/net-extras/build/bin/Debug/
 
 src/net-extras/build/obj/
+
+output/publish/api/
+
+output/publish/
