@@ -130,6 +130,9 @@ class Build : NukeBuild
         {
             var project = Solution.GetProject("API");
             
+            if(Directory.Exists(OutputPublishDirectory / "api"))
+                Directory.Delete(OutputPublishDirectory / "api", true);
+            
             DotNetPublish(s => s
                 .SetProject(project)
                 .SetVersion(Version)
@@ -141,13 +144,18 @@ class Build : NukeBuild
                 .EnablePublishReadyToRun()
                 .SetVerbosity(DotNetVerbosity.Normal));
             
-            var archive = OutputPublishDirectory / $"SRNET-Server-${Version}.zip";
+            var archive = OutputPublishDirectory / $"SRNET-Server-lin-x64-${Version}.zip";
+            
+            if(File.Exists(archive)) File.Delete(archive);
             
             CompressZip(OutputPublishDirectory / "api", 
                 archive);
 
             var checksum = GetFileHash(archive);
-            var checksumFile = OutputPublishDirectory / $"SRNET-Server-${Version}.sha256";  
+            var checksumFile = OutputPublishDirectory / $"SRNET-Server-lin-x64-${Version}.sha256";
+            
+            if(File.Exists(checksumFile)) File.Delete(checksumFile);
+            
             File.WriteAllText(checksumFile, checksum);
 
         });
@@ -158,6 +166,9 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var project = Solution.GetProject("ConsoleClient");
+            
+            if(Directory.Exists(OutputPublishDirectory / "consoleClient"))
+                Directory.Delete(OutputPublishDirectory / "consoleClient", true);
             
             DotNetPublish(s => s
                 .SetProject(project)
@@ -170,15 +181,105 @@ class Build : NukeBuild
                 .EnablePublishReadyToRun()
                 .SetVerbosity(DotNetVerbosity.Normal));
             
-            var archive = OutputPublishDirectory / $"SRNET-ConsoleClient-${Version}.zip";
+            var archive = OutputPublishDirectory / $"SRNET-ConsoleClient-lin-x64-${Version}.zip";
+            
+            if(File.Exists(archive)) File.Delete(archive);
             
             CompressZip(OutputPublishDirectory / "consoleClient", 
                 archive);
 
             var checksum = GetFileHash(archive);
-            var checksumFile = OutputPublishDirectory / $"SRNET-ConsoleClient-${Version}.sha256";  
+            var checksumFile = OutputPublishDirectory / $"SRNET-ConsoleClient-lin-x64-${Version}.sha256";
+            
+            if(File.Exists(checksumFile)) File.Delete(checksumFile);
+            
             File.WriteAllText(checksumFile, checksum);
 
         });
     
+    Target PublishGUIClientLinux => _ => _
+        .DependsOn(Clean)
+        .DependsOn(Restore)
+        .Executes(() =>
+        {
+            var project = Solution.GetProject("GUIClient");
+            
+            if(Directory.Exists(OutputPublishDirectory / "guiClient-lin"))
+                Directory.Delete(OutputPublishDirectory / "guiClient-lin", true);
+
+            
+            DotNetPublish(s => s
+                .SetProject(project)
+                .SetVersion(Version)
+                .SetConfiguration(Configuration.Release)
+                .SetRuntime("linux-x64")
+                .EnablePublishTrimmed()
+                .EnablePublishSingleFile()
+                .SetOutput(OutputPublishDirectory / "guiClient-lin")
+                .EnablePublishReadyToRun()
+                .SetVerbosity(DotNetVerbosity.Normal));
+            
+            var archive = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-${Version}.zip";
+            
+            if(File.Exists(archive)) File.Delete(archive);
+            
+            CompressZip(OutputPublishDirectory / "guiClient-lin", 
+                archive);
+
+            var checksum = GetFileHash(archive);
+            var checksumFile = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-${Version}.sha256";  
+            
+            if(File.Exists(checksumFile)) File.Delete(checksumFile);
+            
+            File.WriteAllText(checksumFile, checksum);
+        });   
+    
+    Target PublishGUIClientWin => _ => _
+        .DependsOn(Clean)
+        .DependsOn(Restore)
+        .Executes(() =>
+        {
+            var project = Solution.GetProject("GUIClient");
+            
+            if(Directory.Exists(OutputPublishDirectory / "guiClient-win"))
+                Directory.Delete(OutputPublishDirectory / "guiClient-win", true);
+            
+            DotNetPublish(s => s
+                .SetProject(project)
+            .SetVersion(Version)
+                .SetConfiguration(Configuration.Release)
+                .SetRuntime("win-x64")
+                .EnablePublishTrimmed()
+                .EnablePublishSingleFile()
+                .SetOutput(OutputPublishDirectory / "guiClient-win")
+                .EnablePublishReadyToRun()
+                .SetVerbosity(DotNetVerbosity.Normal));
+                    
+            var archive = OutputPublishDirectory / $"SRNET-GUIClient-win-x64-${Version}.zip";
+            
+            if(File.Exists(archive)) File.Delete(archive);
+                    
+            CompressZip(OutputPublishDirectory / "guiClient-win", 
+                archive);
+
+            var checksum = GetFileHash(archive);
+            var checksumFile = OutputPublishDirectory / $"SRNET-GUIClient-win-x64-${Version}.sha256";  
+            
+            if(File.Exists(checksumFile)) File.Delete(checksumFile);
+            
+            File.WriteAllText(checksumFile, checksum);
+        });
+
+    Target PublishGUIClient => _ => _
+        .DependsOn(PublishGUIClientWin, PublishGUIClientLinux)
+        .Executes(() =>
+        {
+        });
+    
+    Target Publish => _ => _
+        .DependsOn(PublishApi, PublishConsoleClient, PublishGUIClient)
+        .Executes(() =>
+        {
+        });
+
 }
