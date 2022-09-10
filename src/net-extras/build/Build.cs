@@ -50,7 +50,8 @@ class Build : NukeBuild
                 }
                 
             }
-            Directory.Delete(OutputBuildDirectory, true);
+            if(Directory.Exists(OutputBuildDirectory))
+                Directory.Delete(OutputBuildDirectory, true);
             
         });
     
@@ -123,6 +124,7 @@ class Build : NukeBuild
     
     Target PublishApi => _ => _
         .DependsOn(Clean)
+        .DependsOn(Restore)
         //.DependsOn(Compile)
         .Executes(() =>
         {
@@ -150,4 +152,33 @@ class Build : NukeBuild
 
         });
 
+    Target PublishConsoleClient => _ => _
+        .DependsOn(Clean)
+        .DependsOn(Restore)
+        .Executes(() =>
+        {
+            var project = Solution.GetProject("ConsoleClient");
+            
+            DotNetPublish(s => s
+                .SetProject(project)
+                .SetVersion(Version)
+                .SetConfiguration(Configuration.Release)
+                .SetRuntime("linux-x64")
+                .EnablePublishTrimmed()
+                .EnablePublishSingleFile()
+                .SetOutput(OutputPublishDirectory / "consoleClient")
+                .EnablePublishReadyToRun()
+                .SetVerbosity(DotNetVerbosity.Normal));
+            
+            var archive = OutputPublishDirectory / $"SRNET-ConsoleClient-${Version}.zip";
+            
+            CompressZip(OutputPublishDirectory / "consoleClient", 
+                archive);
+
+            var checksum = GetFileHash(archive);
+            var checksumFile = OutputPublishDirectory / $"SRNET-ConsoleClient-${Version}.sha256";  
+            File.WriteAllText(checksumFile, checksum);
+
+        });
+    
 }
