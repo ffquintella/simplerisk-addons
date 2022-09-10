@@ -87,3 +87,9 @@ src/net-extras/DAL/bin/Release/net6.0/
 src/net-extras/Model/bin/Release/net6.0/
 
 src/net-extras/Tools/bin/Release/net6.0/
+
+src/net-extras/API/bin/Release/net6.0/linux-x64/
+
+*.dll
+
+src/net-extras/ServerServices/bin/Release/net6.0/
