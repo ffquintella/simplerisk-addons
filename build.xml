@@ -4,13 +4,16 @@
 
     <property name="builddir" value="./build/" override="true" />
     <property name="appdir" value="./build/app" override="true" />
+    <property name="srnet-dir" value="./build/srnet" override="true" />
 
     <property name="version" value="20220823-001" override="true" />
+    <property name="srnet-version" value="0.10.1" override="true" />
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
     <!-- ============================================  -->
     <target name="prepare">
+        <input propertyname="simpleRiskInstallation" defaultValue="../../www/simplerisk/"> Enter Simple Risk Installation dir:</input>
         <echo msg="Making directory ${simpleRiskInstallation}/extras" />
         <mkdir dir="${simpleRiskInstallation}/extras" />
         <echo msg="Making directory ${simpleRiskInstallation}/extras/authentication" />
@@ -77,6 +80,10 @@
         <delete dir="${builddir}" />
         <mkdir dir="${builddir}" />
 
+        <mkdir dir="${srnet-dir}" />
+
+        <mkdir dir="${appdir}" />
+        <mkdir dir="${appdir}/simplerisk" />
         <echo msg="Making directory ${appdir}/simplerisk/extras" />
         <mkdir dir="${appdir}/simplerisk/extras" />
         <echo msg="Making directory ${appdir}/simplerisk/extras/authentication" />
@@ -98,7 +105,7 @@
         <input propertyname="dblanguage" defaultValue="en"> Enter Simple Risk db language (en|bp):</input>
         <input propertyname="release" defaultValue="dev"> Enter the release name (dev):</input>
 
-        <mkdir dir="${appdir}" />
+       
         <httpget url="https://github.com/ffquintella/simplerisk/archive/refs/tags/${version}.tar.gz" 
             dir="${appdir}" followRedirects="true" />
         <untar file="${appdir}/${version}.tar.gz" todir="${appdir}"/>
@@ -141,7 +148,21 @@
         <copy file="./src/extras/authentication/settings-example.php" tofile="${appdir}/simplerisk/extras/authentication/settings.php" overwrite="true" />
 
         <copy todir="${builddir}" file="configs/Dockerfile" /> 
-        
+
+        <!-- SRNET block-->
+        <property name="srnet-guiclient-lin-file" value="guiclient-linux-x64-${srnet-version}.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/names/SRNET-GUIClient-lin-x64/versions/${srnet-version}/${srnet-guiclient-lin-file}" 
+            dir="${srnet-dir}" followRedirects="true" />
+        <property name="srnet-guiclient-win-file" value="v${srnet-version}.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/names/SRNET-GUIClient-win-x64/versions/${srnet-version}/${srnet-guiclient-win-file}" 
+            dir="${srnet-dir}" followRedirects="true" />
+        <property name="srnet-api-file" value="api-${srnet-version}.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/names/SRNET-API/versions/${srnet-version}/${srnet-api-file}" 
+            dir="${srnet-dir}" followRedirects="true" />
+        <property name="srnet-consoleclient-file" value="console-client-${srnet-version}.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/names/SRNET-ConsoleClient-linux-x64/versions/${srnet-version}/${srnet-consoleclient-file}" 
+            dir="${srnet-dir}" followRedirects="true" />
+
         <copy todir="${builddir}/common">
             <fileset dir="configs/common/">
                 <include name="*.conf" />
