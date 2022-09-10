@@ -97,3 +97,5 @@ src/net-extras/ServerServices/bin/Release/net6.0/
 src/net-extras/ConsoleClient/bin/Release/net6.0/linux-x64/
 
 src/net-extras/ConsoleTest/bin/Release/net6.0/linux-x64/
+
+.nuke/

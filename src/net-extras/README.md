@@ -20,3 +20,12 @@ To setup .net user secretes you can follow the steps bellow or search here for m
 
 - First init the secret on the project root dir with the following command: dotnet user-secrets init
 - The add a new secret in our case we need a datasource so: dotnet user-secrets set "Database:ConnectionString" "server=X.X.X.X;uid=YYYY;pwd=JDHFI;database=simplerisk;ConvertZeroDateTime=True"
+
+## BUILD
+
+We use nuke build to prepare the artifacts of the .net projects. 
+
+To use it you need to first install the nuke build tool on your machine with the following command: dotnet tool install Nuke.GlobalTool --global
+
+Then you can run the build with the following command: nuke build
+
