@@ -7,14 +7,12 @@ using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Common.Tooling;
-using Nuke.Common.Tools.MinVer;
-using Nuke.Common.Tools.NerdbankGitVersioning;
-using Nuke.Common.Utilities.Collections;
+using Nuke.Common.Tools.DotNet;
 using Serilog;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
+using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 class Build : NukeBuild
 {
@@ -25,11 +23,14 @@ class Build : NukeBuild
     [GitRepository] readonly GitRepository Repository;
     
     
-    string Version => Repository?.Tags?.FirstOrDefault() ?? "0.dev";
+    string Version => Repository?.Tags?.FirstOrDefault() ?? "0.0.0";
     public static int Main () => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    
+    [Solution]
+    readonly Solution Solution;
 
     Target Clean => _ => _
         .Before(Restore)
@@ -50,9 +51,13 @@ class Build : NukeBuild
         });
 
     Target Restore => _ => _
+        .DependsOn(Print)
         .Executes(() =>
         {
-
+            
+            DotNetRestore(s => s
+                .SetProjectFile(Solution)
+                .SetVerbosity(DotNetVerbosity.Normal));
         });
 
     Target Print => _ => _
@@ -71,6 +76,21 @@ class Build : NukeBuild
             Log.Information("main/master branch = {Value}", Repository.IsOnMainOrMasterBranch());
             
             Log.Information("VersionInfo = {Value}", Version);
+            
+            Log.Information("Solution path = {Value}", Solution);
+            Log.Information("Solution directory = {Value}", Solution.Directory);
+
+            Log.Information("-- PROJECTS --");
+            foreach (var project in Solution.Projects)
+            {
+                Log.Information("=> {Value}", project.Name);
+                Log.Information("=> Frameworks:");
+                foreach (var framework in project.GetTargetFrameworks())
+                {
+                    Log.Information("-=> {Value}", framework);    
+                }
+                
+            }
         });
     
     Target Compile => _ => _
@@ -78,7 +98,11 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-
+            DotNetBuild(s => s
+                .SetProjectFile(Solution)
+                .SetVersion(Version)
+                .SetConfiguration(Configuration)
+                .SetVerbosity(DotNetVerbosity.Normal));
             
         });
 
