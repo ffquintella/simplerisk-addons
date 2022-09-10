@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -7,17 +8,16 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Utilities.Collections;
+using Serilog;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 
 class Build : NukeBuild
 {
-    /// Support plugins are available for:
-    ///   - JetBrains ReSharper        https://nuke.build/resharper
-    ///   - JetBrains Rider            https://nuke.build/rider
-    ///   - Microsoft VisualStudio     https://nuke.build/visualstudio
-    ///   - Microsoft VSCode           https://nuke.build/vscode
+
+    AbsolutePath SourceDirectory => RootDirectory / "src"  / "net-extras";
+    AbsolutePath OutputDirectory => RootDirectory / "output";
 
     public static int Main () => Execute<Build>(x => x.Compile);
 
@@ -28,7 +28,18 @@ class Build : NukeBuild
         .Before(Restore)
         .Executes(() =>
         {
-            
+            // Collect and delete all /obj and /bin directories in all sub-directories
+            var deletableDirectories = SourceDirectory.GlobDirectories("**/obj", "**/bin");
+            foreach (var deletableDirectory in deletableDirectories)
+            {
+                if(!deletableDirectory.ToString().Contains("build"))
+                {
+                    Logger.Info($"Deleting {deletableDirectory}");
+                    Directory.Delete(deletableDirectory, true);
+                }
+                
+            }
+            //deletableDirectories.ForEach(FileSystemTasks.DeleteDirectory);
         });
 
     Target Restore => _ => _
@@ -41,7 +52,10 @@ class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            Console.WriteLine("Hello!");
+            Log.Information("STARTING BUILD");
+            Log.Information("SOURCE DIR: {0}", SourceDirectory);
+            Log.Information("OUTPUT DIR: {0}", OutputDirectory);
+            
         });
 
 }
