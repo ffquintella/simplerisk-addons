@@ -333,7 +333,7 @@ class Build : NukeBuild
             syncRequest.AddHeader("Content-Type", "application/json");
             syncRequest.RequestFormat = DataFormat.Json;
             string body = @"{ ""package_file"": """ + uploadResponse.Data.Identifier + @""",
-                ""name"": """ + filename + @"""
+                ""name"": """ + filename + @""",
                 ""description"": """ + description + @""",
                 ""summary"": """ + summary + @""",
                 ""version"": """ + version + @"""
