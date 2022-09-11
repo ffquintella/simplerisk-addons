@@ -99,10 +99,6 @@ RUN mkdir -p /scripts/dbmgmt/
 COPY restore_db.sh /scripts/dbmgmt/restore_db.sh
 RUN chmod +x /scripts/dbmgmt/restore_db.sh
 
-# Database PWD
-#RUN mysql < /scripts/db/mysql-init.sql
-#RUN mysqld_safe --init-file=/scripts/db/mysql-init.sql &
-
 # Permissions
 RUN chown -R www-data:www-data /var/www/simplerisk && chown -R :www-data /var/log/apache2 && chmod g+rwx /var/log/apache2
 
@@ -110,6 +106,15 @@ RUN chown -R www-data:www-data /var/www/simplerisk && chown -R :www-data /var/lo
 RUN echo "* * * * * /usr/bin/php -f /var/www/simplerisk/cron/cron.php > /dev/null 2>&1" >> /etc/cron.d/backup-cron && \
     chmod 0644 /etc/cron.d/backup-cron && \
     crontab /etc/cron.d/backup-cron
+
+
+# Puppet stuff 
+RUN mkdir /etc/puppet; mkdir /etc/puppet/manifests ; mkdir /etc/puppet/modules ; mkdir /opt/scripts
+COPY puppet/manifests /etc/puppet/manifests/
+COPY puppet/modules /etc/puppet/modules/
+RUN /opt/puppetlabs/puppet/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests/base.pp ; \
+    yum clean all ; rm -rf /tmp/* ; rm -rf /var/cache/* ; rm -rf /var/tmp/* ; rm -rf /var/opt/staging
+
 
 EXPOSE 80
 EXPOSE 443
