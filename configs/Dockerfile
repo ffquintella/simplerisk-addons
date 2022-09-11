@@ -109,10 +109,10 @@ RUN echo "* * * * * /usr/bin/php -f /var/www/simplerisk/cron/cron.php > /dev/nul
 
 
 # Puppet stuff 
-RUN mkdir /etc/puppet; mkdir /etc/puppet/manifests ; mkdir /etc/puppet/modules ; mkdir /opt/scripts
+RUN mkdir  mkdir /etc/puppet/manifests ; mkdir /etc/puppet/modules ; mkdir /opt/scripts
 COPY puppet/manifests /etc/puppet/manifests/
 COPY puppet/modules /etc/puppet/modules/
-RUN /opt/puppetlabs/puppet/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests/base.pp ; \
+RUN /usr/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests/base.pp ; \
     yum clean all ; rm -rf /tmp/* ; rm -rf /var/cache/* ; rm -rf /var/tmp/* ; rm -rf /var/opt/staging
 
 

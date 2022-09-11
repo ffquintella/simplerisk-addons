@@ -147,6 +147,12 @@
 
         <copy file="./src/extras/authentication/settings-example.php" tofile="${appdir}/simplerisk/extras/authentication/settings.php" overwrite="true" />
 
+        <copy todir="${builddir}/puppet" overwrite="true" >
+            <fileset dir="scripts/puppet">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
         <copy todir="${builddir}" file="configs/Dockerfile" /> 
 
         <!-- SRNET block-->
