@@ -315,8 +315,10 @@ class Build : NukeBuild
         
         var request = new RestRequest($"/uox/srnet/{filename}", Method.Put);
         request.AddHeader("Content-Sha256", SHA256CheckSum(filePath));
-        request.RequestFormat = DataFormat.Binary;
-        request.AddFile("content", filePath);
+        var documentBytes = File.ReadAllBytes(filePath);
+        request.AddParameter("application/zip", documentBytes, ParameterType.RequestBody);
+        //request.RequestFormat = DataFormat.Binary;
+        //request.AddFile("content", filePath);
 
         try
         {
