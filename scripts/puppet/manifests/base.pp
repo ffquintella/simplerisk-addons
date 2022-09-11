@@ -4,15 +4,15 @@ package{'zip':
 }
 
 file{'/srnet/SRNET-ConsoleClient/ConsoleClient':
-  mode => 755
+  mode => '755'
 }
 
 file{'/srnet/SRNET-Server/API':
-  mode => 755
+  mode => '755'
 }
 
 file{'/srnet/SRNET-GUIClient-lin/GUIClient':
-  mode => 755
+  mode => '755'
 }
 
 
