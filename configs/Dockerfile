@@ -34,6 +34,7 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
                                                       ufw \
                                                       sudo \
                                                       fish \
+                                                      puppet \
                                                       supervisor && \
     rm -rf /var/lib/apt/lists
 
