@@ -1,6 +1,11 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
+using DefaultNamespace;
 using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.Execution;
@@ -8,6 +13,7 @@ using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using RestSharp;
 using Serilog;
 using static Nuke.Common.EnvironmentInfo;
 using static Nuke.Common.IO.FileSystemTasks;
@@ -25,6 +31,7 @@ class Build : NukeBuild
     
     [GitRepository] readonly GitRepository Repository;
     
+    [Parameter] [Secret] readonly string CloudsmithApiKey;
     
     string Version => Repository?.Tags?.FirstOrDefault() ?? "0.0.0";
     public static int Main () => Execute<Build>(x => x.Compile);
@@ -45,7 +52,7 @@ class Build : NukeBuild
             {
                 if(!deletableDirectory.ToString().Contains("build"))
                 {
-                    Logger.Info($"Deleting {deletableDirectory}");
+                    Log.Information($"Deleting {deletableDirectory}");
                     Directory.Delete(deletableDirectory, true);
                 }
                 
@@ -122,7 +129,7 @@ class Build : NukeBuild
             
         });
     
-    Target PublishApi => _ => _
+    Target PackageApi => _ => _
         .DependsOn(Clean)
         .DependsOn(Restore)
         //.DependsOn(Compile)
@@ -144,15 +151,15 @@ class Build : NukeBuild
                 .EnablePublishReadyToRun()
                 .SetVerbosity(DotNetVerbosity.Normal));
             
-            var archive = OutputPublishDirectory / $"SRNET-Server-lin-x64-${Version}.zip";
+            var archive = OutputPublishDirectory / $"SRNET-Server-lin-x64-{Version}.zip";
             
             if(File.Exists(archive)) File.Delete(archive);
             
             CompressZip(OutputPublishDirectory / "api", 
                 archive);
 
-            var checksum = GetFileHash(archive);
-            var checksumFile = OutputPublishDirectory / $"SRNET-Server-lin-x64-${Version}.sha256";
+            var checksum = SHA256CheckSum(archive);
+            var checksumFile = OutputPublishDirectory / $"SRNET-Server-lin-x64-{Version}.sha256";
             
             if(File.Exists(checksumFile)) File.Delete(checksumFile);
             
@@ -160,7 +167,7 @@ class Build : NukeBuild
 
         });
 
-    Target PublishConsoleClient => _ => _
+    Target PackageConsoleClient => _ => _
         .DependsOn(Clean)
         .DependsOn(Restore)
         .Executes(() =>
@@ -181,15 +188,15 @@ class Build : NukeBuild
                 .EnablePublishReadyToRun()
                 .SetVerbosity(DotNetVerbosity.Normal));
             
-            var archive = OutputPublishDirectory / $"SRNET-ConsoleClient-lin-x64-${Version}.zip";
+            var archive = OutputPublishDirectory / $"SRNET-ConsoleClient-lin-x64${Version}.zip";
             
             if(File.Exists(archive)) File.Delete(archive);
             
             CompressZip(OutputPublishDirectory / "consoleClient", 
                 archive);
 
-            var checksum = GetFileHash(archive);
-            var checksumFile = OutputPublishDirectory / $"SRNET-ConsoleClient-lin-x64-${Version}.sha256";
+            var checksum = SHA256CheckSum(archive);
+            var checksumFile = OutputPublishDirectory / $"SRNET-ConsoleClient-lin-x64-{Version}.sha256";
             
             if(File.Exists(checksumFile)) File.Delete(checksumFile);
             
@@ -197,7 +204,7 @@ class Build : NukeBuild
 
         });
     
-    Target PublishGUIClientLinux => _ => _
+    Target PackageGUIClientLinux => _ => _
         .DependsOn(Clean)
         .DependsOn(Restore)
         .Executes(() =>
@@ -219,22 +226,22 @@ class Build : NukeBuild
                 .EnablePublishReadyToRun()
                 .SetVerbosity(DotNetVerbosity.Normal));
             
-            var archive = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-${Version}.zip";
+            var archive = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-{Version}.zip";
             
             if(File.Exists(archive)) File.Delete(archive);
             
             CompressZip(OutputPublishDirectory / "guiClient-lin", 
                 archive);
 
-            var checksum = GetFileHash(archive);
-            var checksumFile = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-${Version}.sha256";  
+            var checksum = SHA256CheckSum(archive);
+            var checksumFile = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-{Version}.sha256";  
             
             if(File.Exists(checksumFile)) File.Delete(checksumFile);
             
             File.WriteAllText(checksumFile, checksum);
         });   
     
-    Target PublishGUIClientWin => _ => _
+    Target PackageGUIClientWin => _ => _
         .DependsOn(Clean)
         .DependsOn(Restore)
         .Executes(() =>
@@ -255,31 +262,113 @@ class Build : NukeBuild
                 .EnablePublishReadyToRun()
                 .SetVerbosity(DotNetVerbosity.Normal));
                     
-            var archive = OutputPublishDirectory / $"SRNET-GUIClient-win-x64-${Version}.zip";
+            var archive = OutputPublishDirectory / $"SRNET-GUIClient-win-x64-{Version}.zip";
             
             if(File.Exists(archive)) File.Delete(archive);
                     
             CompressZip(OutputPublishDirectory / "guiClient-win", 
                 archive);
 
-            var checksum = GetFileHash(archive);
-            var checksumFile = OutputPublishDirectory / $"SRNET-GUIClient-win-x64-${Version}.sha256";  
+            var checksum = SHA256CheckSum(archive);
+            var checksumFile = OutputPublishDirectory / $"SRNET-GUIClient-win-x64-{Version}.sha256";  
             
             if(File.Exists(checksumFile)) File.Delete(checksumFile);
             
             File.WriteAllText(checksumFile, checksum);
         });
 
-    Target PublishGUIClient => _ => _
-        .DependsOn(PublishGUIClientWin, PublishGUIClientLinux)
+    Target PackageGUIClient => _ => _
+        .DependsOn(PackageGUIClientWin, PackageGUIClientLinux)
         .Executes(() =>
         {
         });
     
-    Target Publish => _ => _
-        .DependsOn(PublishApi, PublishConsoleClient, PublishGUIClient)
+    Target PackageAll => _ => _
+        .DependsOn(PackageApi, PackageConsoleClient, PackageGUIClient)
         .Executes(() =>
         {
         });
+    
+    Target PublishApi => _ => _
+        //.DependsOn(PackageApi)
+        .Requires(() => CloudsmithApiKey)
+        .Executes(() =>
+        {
+            var filepath = OutputPublishDirectory / $"SRNET-Server-lin-x64-{Version}.zip";
+            UploadFile($"SRNET-Server-lin-x64-{Version}.zip", filepath, 
+                "SRNET Server Linux x64", 
+                "This is the SRNET Server binary for linux x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
+                Version);
+            
+        });
 
+
+    private void UploadFile(string filename, string filePath, string summary, string description, string version)
+    {
+        var restOptions  = new RestClientOptions("https://upload.cloudsmith.io") {
+            //RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+        };
+        
+        var client = new RestClient(restOptions);
+        client.AddDefaultHeader("X-Api-Key", CloudsmithApiKey);
+        
+        
+        var request = new RestRequest($"/uox/srnet/{filename}", Method.Put);
+        request.AddHeader("Content-Sha256", SHA256CheckSum(filePath));
+        request.RequestFormat = DataFormat.Binary;
+        request.AddFile("content", filePath);
+
+        try
+        {
+            var uploadResponse = client.Execute<CloudsmithResponse>(request);
+            
+            if(uploadResponse.StatusCode != HttpStatusCode.OK) throw new Exception($"Upload failed: {uploadResponse.Content}");
+
+            client = new RestClient(new RestClientOptions("https://api-prd.cloudsmith.io"));
+            client.AddDefaultHeader("X-Api-Key", CloudsmithApiKey);
+            
+            var syncRequest = new RestRequest("/v1/packages/uox/srnet/upload/raw/", Method.Post);
+            syncRequest.AddHeader("Content-Type", "application/json");
+            syncRequest.RequestFormat = DataFormat.Json;
+            string body = @"{ ""package_file"": """ + uploadResponse.Data.Identifier + @""",
+                ""name"": """ + filename + @"""
+                ""description"": """ + description + @""",
+                ""summary"": """ + summary + @""",
+                ""version"": """ + version + @"""
+                }";
+            
+            syncRequest.AddParameter("text/json", body, ParameterType.RequestBody);            
+            
+            var syncResponse = client.Execute(syncRequest);
+            if(syncResponse.StatusCode != HttpStatusCode.Created) throw new Exception($"Upload failed: {uploadResponse.Content}");
+        }
+        catch (HttpRequestException exception)
+        {
+            Log.Error("Error uploading file {0}", exception.Message);
+        }
+        
+        
+    }
+    
+    private string SHA256CheckSum(string filePath)
+    {
+        using (SHA256 SHA256 = SHA256.Create())
+        {
+            using (FileStream fileStream = File.OpenRead(filePath))
+            {
+                var bytes = SHA256.ComputeHash(fileStream);
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();  
+                for (int i = 0; i < bytes.Length; i++)  
+                {  
+                    builder.Append(bytes[i].ToString("x2"));  
+                }  
+                return builder.ToString();  
+            }
+                
+                
+                //return Convert.ToBase64String(SHA256.ComputeHash(fileStream));
+                //return BitConverter.ToString(SHA256.ComputeHash(fileStream)).Replace("-", String.Empty).ToLowerInvariant();
+        }
+    }
 }
