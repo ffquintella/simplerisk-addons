@@ -43,7 +43,6 @@ class Build : NukeBuild
     readonly Solution Solution;
 
     Target Clean => _ => _
-        .Before(Prepare)
         .Executes(() =>
         {
             // Collect and delete all /obj and /bin directories in all sub-directories
@@ -57,8 +56,9 @@ class Build : NukeBuild
                 }
                 
             }
-            if(Directory.Exists(OutputBuildDirectory))
-                Directory.Delete(OutputBuildDirectory, true);
+            if(Directory.Exists(OutputDirectory))
+                Directory.Delete(OutputDirectory, true);
+            
             
         });
     
@@ -117,6 +117,7 @@ class Build : NukeBuild
     
     Target Compile => _ => _
         .DependsOn(Print)
+        .DependsOn(Prepare)
         .DependsOn(Restore)
         .Executes(() =>
         {
@@ -131,6 +132,7 @@ class Build : NukeBuild
     
     Target PackageApi => _ => _
         .DependsOn(Clean)
+        .DependsOn(Prepare)
         .DependsOn(Restore)
         //.DependsOn(Compile)
         .Executes(() =>
@@ -169,6 +171,7 @@ class Build : NukeBuild
 
     Target PackageConsoleClient => _ => _
         .DependsOn(Clean)
+        .DependsOn(Prepare)
         .DependsOn(Restore)
         .Executes(() =>
         {
@@ -188,7 +191,7 @@ class Build : NukeBuild
                 .EnablePublishReadyToRun()
                 .SetVerbosity(DotNetVerbosity.Normal));
             
-            var archive = OutputPublishDirectory / $"SRNET-ConsoleClient-lin-x64${Version}.zip";
+            var archive = OutputPublishDirectory / $"SRNET-ConsoleClient-lin-x64-{Version}.zip";
             
             if(File.Exists(archive)) File.Delete(archive);
             
@@ -206,6 +209,7 @@ class Build : NukeBuild
     
     Target PackageGUIClientLinux => _ => _
         .DependsOn(Clean)
+        .DependsOn(Prepare)
         .DependsOn(Restore)
         .Executes(() =>
         {
@@ -243,6 +247,7 @@ class Build : NukeBuild
     
     Target PackageGUIClientWin => _ => _
         .DependsOn(Clean)
+        .DependsOn(Prepare)
         .DependsOn(Restore)
         .Executes(() =>
         {
@@ -289,8 +294,54 @@ class Build : NukeBuild
         {
         });
     
+    Target PublishGUIClientWin => _ => _
+        .DependsOn(PackageGUIClientWin)
+        .Requires(() => CloudsmithApiKey)
+        .Executes(() =>
+        {
+            var filepath = OutputPublishDirectory / $"SRNET-GUIClient-win-x64-{Version}.zip";
+            //var filepath = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-{Version}.zip";
+            UploadFile($"SRNET-GUIClient-win-x64-{Version}.zip", filepath, 
+                "SRNET GUI client for Windows x64", 
+                "This is the SRNET GUI client binary for windows x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
+                Version);
+            
+        });
+    
+    Target PublishGUIClientLinux => _ => _
+        .DependsOn(PackageGUIClientLinux)
+        .Requires(() => CloudsmithApiKey)
+        .Executes(() =>
+        {
+            var filepath = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-{Version}.zip";
+            UploadFile($"SRNET-GUIClient-lin-x64-{Version}.zip", filepath, 
+                "SRNET GUI client for Linux x64", 
+                "This is the SRNET GUI client binary for linux x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
+                Version);
+            
+        });
+
+    Target PublishGUIClient => _ => _
+        .DependsOn(PublishGUIClientLinux, PublishGUIClientWin)
+        .Executes(() =>
+        {
+        });
+
+    Target PublishConsoleClient => _ => _
+        .DependsOn(PackageConsoleClient)
+        .Requires(() => CloudsmithApiKey)
+        .Executes(() =>
+        {
+            var filepath = OutputPublishDirectory / $"SRNET-ConsoleClient-lin-x64-{Version}.zip";
+            UploadFile($"SRNET-ConsoleClient-lin-x64-{Version}.zip", filepath, 
+                "SRNET Console client for Linux x64", 
+                "This is the SRNET console client binary for linux x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
+                Version);
+            
+        });
+
     Target PublishApi => _ => _
-        //.DependsOn(PackageApi)
+        .DependsOn(PackageApi)
         .Requires(() => CloudsmithApiKey)
         .Executes(() =>
         {
@@ -301,7 +352,12 @@ class Build : NukeBuild
                 Version);
             
         });
-
+    
+    Target PublishAll => _ => _
+        .DependsOn(PublishGUIClientLinux, PublishGUIClientWin, PublishApi, PublishConsoleClient)
+        .Executes(() =>
+        {
+        });
 
     private void UploadFile(string filename, string filePath, string summary, string description, string version)
     {
