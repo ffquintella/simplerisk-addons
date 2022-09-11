@@ -169,15 +169,19 @@
         <!-- UNZIPING -->
         <property name="srnet-guiclient-lin-dir" value="${srnet-dir}/SRNET-GUIClient-lin" override="true" />
         <unzip file="${srnet-dir}/${srnet-guiclient-lin-file}" todir="${srnet-guiclient-lin-dir}/" />
+        <delete file="${srnet-dir}/${srnet-guiclient-lin-file}" />
 
         <property name="srnet-guiclient-win-dir" value="${srnet-dir}/SRNET-GUIClient-win" override="true" />
         <unzip file="${srnet-dir}/${srnet-guiclient-win-file}" todir="${srnet-guiclient-win-dir}/" />
+        <delete file="${srnet-dir}/${srnet-guiclient-win-file}" />
 
         <property name="srnet-server-dir" value="${srnet-dir}/SRNET-Server" override="true" />
         <unzip file="${srnet-dir}/${srnet-server-file}" todir="${srnet-server-dir}/" />
+        <delete file="${srnet-dir}/${srnet-server-file}" />
 
         <property name="srnet-consoleclient-dir" value="${srnet-dir}/SRNET-ConsoleClient" override="true" />
         <unzip file="${srnet-dir}/${srnet-consoleclient-file}" todir="${srnet-consoleclient-dir}/" />
+        <delete file="${srnet-dir}/${srnet-consoleclient-file}" />
 
 
         <copy todir="${builddir}/common">

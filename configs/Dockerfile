@@ -5,7 +5,7 @@ FROM ubuntu:jammy
 LABEL maintainer="ffquintella"
 
 # Make necessary directories
-RUN mkdir -p /configurations /etc/apache2/ssl /passwords /var/{log,lib/mysql,www/simplerisk}
+RUN mkdir -p /configurations /etc/apache2/ssl /passwords /var/{log,lib/mysql,www/simplerisk} /srnet
                                                                     
 # Installing apt dependencies     
 RUN dpkg-divert --local --rename /usr/bin/ischroot && \
@@ -85,14 +85,14 @@ RUN sed -i 's/ServerSignature On/ServerSignature Off/g' /etc/apache2/conf-enable
 RUN echo %sudo  ALL=NOPASSWD: ALL >> /etc/sudoers && \
     echo "20220401-001" > /tmp/version
 
-# Download SimpleRisk
-#RUN rm -rf /var/www/html && \
-#    curl -sL https://github.com/simplerisk/database/raw/master/simplerisk-en-20220401-001.sql > /simplerisk.sql && \
-#    curl -sL https://github.com/simplerisk/bundles/raw/master/simplerisk-20220401-001.tgz | tar xz -C /var/www
+# COPY SRNET
+COPY srnet/ /srnet
 
+# COPY Simple risk
 WORKDIR /var/www/
 COPY app/simplerisk /var/www/simplerisk
 COPY simplerisk.sql /scripts/db/simplerisk.sql
+
 
 RUN mkdir -p /scripts/dbmgmt/ 
 COPY restore_db.sh /scripts/dbmgmt/restore_db.sh
