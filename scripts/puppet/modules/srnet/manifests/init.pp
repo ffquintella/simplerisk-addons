@@ -37,11 +37,10 @@ if($n_srvdbver != $srnetmaxdbver) {
   }
 }
 
-/bin/bash MYSQL_PWD=123 mysql
 
 file{'/srnet/SRNET-ConsoleClient/appsettings.json': 
   ensure  => file,
-  content => epp('srnet/consoleClient/appsettings.epp', {
+  content => epp('srnet/consoleClient/appsettings.json.epp', {
     'db_server'   => $dbserver,
     'db_user'     => $dbuser,
     'db_port'     => $dport ,
@@ -50,6 +49,18 @@ file{'/srnet/SRNET-ConsoleClient/appsettings.json':
   })
 }
 
+file{'/srnet/SRNET-GUIClient-lin/appsettings.json': 
+  ensure  => file,
+  content => epp('srnet/guiClient/appsettings.json.epp', {
+    'server_url'   => $base_url
+  })
+}
 
+file{'/srnet/SRNET-GUIClient-win/appsettings.json': 
+  ensure  => file,
+  content => epp('srnet/guiClient/appsettings.json.epp', {
+    'server_url'   => $base_url
+  })
+}
 
 }
