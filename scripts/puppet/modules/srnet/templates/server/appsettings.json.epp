@@ -1,6 +1,6 @@
 <%- | String  $server_url,
       String  $server_logging,
-      Bool    $enable_saml,
+      Boolean $enable_saml,
       String  $server_certificate_file,
       String  $server_certificate_pwd,
       String  $idp_entity_id,
@@ -10,6 +10,7 @@
       String  $idp_artifact_resolve_srvc,
       String  $idp_certificate_file,
       String  $db_server,
+      String  $db_user,
       String  $db_port,
       String  $db_password,
       String  $db_schema

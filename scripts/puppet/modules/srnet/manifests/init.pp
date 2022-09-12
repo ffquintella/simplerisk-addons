@@ -16,7 +16,7 @@ class srnet (
   $idp_sso_service   = 'https://stubidp.sustainsys.com/',
   $idp_ssout_service = 'https://stubidp.sustainsys.com/Logout',
   $idp_artifact_resolve_srvc = 'https://stubidp.sustainsys.com/ArtifactResolve',
-  $idp_certificate_file      = 'Certificates/stubidp.sustainsys.com.cer'
+  $idp_certificate_file      = 'Certificates/stubidp.sustainsys.com.cer',
 
   #Server
   $server_logging          = 'Information',
