@@ -80,10 +80,15 @@ unset_variables() {
 	unset SIMPLERISK_USER_PASS
 }
 
+start_srnet(){
+	/usr/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests/start.pp 
+}
+
 _main() {
 	set_config
 	configure_db
 	unset_variables
+	start_srnet
 	service cron start
 	exec "$@"
 }

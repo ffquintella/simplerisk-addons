@@ -117,4 +117,12 @@ exec{'Compress GUIClient - windows':
   creates => '/var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip'
 }
 
+exec{'Starting SRNet Server':
+  cwd       => '/srnet/SRNET-Server/',
+  command   => 'cd /srnet/SRNET-Server/ && exec ./API &',
+  provider  => shell,
+  logoutput => true
+}
+
+
 }

@@ -12,7 +12,8 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
     ln -sf /bin/true /usr/bin/ischroot && \
     apt-get update && \
     apt-get upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install apt-utils \
+                                                      apache2 \
                                                       php \
                                                       php-mysql \
                                                       php-json \
@@ -34,9 +35,14 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
                                                       ufw \
                                                       sudo \
                                                       fish \
-                                                      puppet \
-                                                      supervisor && \
-    rm -rf /var/lib/apt/lists
+                                                      supervisor \
+                                                      wget && \
+                                    cd /tmp && wget https://apt.puppet.com/puppet7-release-jammy.deb && \
+                                    dpkg -i puppet7-release-jammy.deb && \
+                                    apt-get update && \
+            DEBIAN_FRONTEND=noninteractive apt-get -y install puppet-agent && \
+                                    rm -rf /var/lib/apt/lists
+
 
 # Create the OpenSSL password
 RUN < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c21 > /passwords/pass_openssl.txt
