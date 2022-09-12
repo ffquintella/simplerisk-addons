@@ -4,8 +4,6 @@
       String  $db_password,
       String  $db_schema
 | -%>
-<%# Parameter tag ↑ -%>
-
 {
     "Logging": {
         "LogLevel": {
@@ -13,9 +11,9 @@
             "System": "Information",
             "Microsoft": "Information"
         }
-    }
+    },
     "Database":{
-        "ConnectionString": "server=<%= $db_server %>;port=<%= $db_port %>;uid=<%= $db_user %>;pwd=<%= $db_password %>;database=<%= $db_schema %>;ConvertZeroDateTime=True"
+        "ConnectionString": "server=<%= $db_server -%>;port=<%= $db_port -%>;uid=<%= $db_user -%>;pwd=<%= $db_password -%>;database=<%= $db_schema -%>;ConvertZeroDateTime=True"
     }
 }
 

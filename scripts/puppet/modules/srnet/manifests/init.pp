@@ -4,7 +4,7 @@ class srnet (
 
   # Database Settings
   $dbserver     = '127.0.0.1',
-  $dbuser       = 'srnet',
+  $dbuser       = 'simplerisk',
   $dport        = '3306',
   $dbpassword   = '',
   $dbschema     = 'simplerisk',
@@ -14,10 +14,13 @@ class srnet (
 
 ) inherits srnet::params {
 
-$dbpwd = file('/passwords/pass_simplerisk.txt')
+$dbpwd = String(file('/passwords/pass_simplerisk.txt'), "%t")
+
 
 if ( $dbpassword == '') {
-  $dbpassword = $dbpwd
+  $dbpw_fin = $dbpwd
+}else{
+  $dbpw_fin = $dbpassword
 }
 
 #notice($dbpwd)
@@ -28,7 +31,7 @@ file{'/srnet/SRNET-ConsoleClient/appsettings.json':
     'db_server'   => $dbserver,
     'db_user'     => $dbuser,
     'db_port'     => $dport ,
-    'db_password' => $dbpassword ,
+    'db_password' => $dbpw_fin ,
     'db_schema'   => $dbschema
   })
 }
