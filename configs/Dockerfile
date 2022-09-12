@@ -109,7 +109,14 @@ RUN echo "* * * * * /usr/bin/php -f /var/www/simplerisk/cron/cron.php > /dev/nul
 
 
 # Puppet stuff 
-RUN mkdir  mkdir /etc/puppet/manifests ; mkdir /etc/puppet/modules ; mkdir /opt/scripts
+ENV BASE_HOST "127.0.0.1"
+ENV BASE_URL "https://${BASE_HOST}/"
+
+ENV FACTER_BASE_HOST $BASE_HOST
+ENV FACTER_BASE_URL $BASE_URL
+
+
+RUN  mkdir /etc/puppet/manifests ; mkdir /etc/puppet/modules ; mkdir /opt/scripts
 COPY puppet/manifests /etc/puppet/manifests/
 COPY puppet/modules /etc/puppet/modules/
 RUN /usr/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests/base.pp ; \
@@ -118,6 +125,7 @@ RUN /usr/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests
 
 EXPOSE 80
 EXPOSE 443
+EXPOSE 7072
 
 # Create the start script and set permissions
 COPY common/entrypoint.sh /entrypoint.sh
