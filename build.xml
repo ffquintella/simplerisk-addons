@@ -176,7 +176,7 @@
         <mkdir dir="${builddir}/srnet-db" />
         <copy todir="${builddir}/srnet-db" overwrite="true" >
             <fileset dir="src/net-extras/DAL/Scripts/DB">
-                <include name="**/*.sql" />
+                <include name="**/*" />
             </fileset>
         </copy>
 
