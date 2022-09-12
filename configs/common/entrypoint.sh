@@ -81,7 +81,7 @@ unset_variables() {
 }
 
 start_srnet(){
-	/usr/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests/start.pp 
+	/opt/puppetlabs/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests/start.pp 
 }
 
 _main() {
