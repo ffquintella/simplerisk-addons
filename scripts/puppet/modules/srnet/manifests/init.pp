@@ -14,7 +14,17 @@ class srnet (
 
 ) inherits srnet::params {
 
+# UPDATE THIS EVERY RELEASE
+$srnetmaxdbver = 2
+
 $dbpwd = String(file('/passwords/pass_simplerisk.txt'), "%t")
+$srnetdbver = String(file('/configurations/srnetdb.version'), "%t")
+
+$n_srvdbver = 0 + $srnetdbver
+
+Integer[$n_srvdbver, $srnetmaxdbver].each |$x| {
+  notice("updating DB version ${x}")
+}
 
 
 if ( $dbpassword == '') {
