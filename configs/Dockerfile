@@ -88,6 +88,8 @@ RUN echo %sudo  ALL=NOPASSWD: ALL >> /etc/sudoers && \
 
 # COPY SRNET
 COPY srnet/ /srnet
+COPY srnet-db/ /scripts/srnet-db
+COPY srnet-db/srnetdb.version /configurations/srnetdb.version
 
 # COPY Simple risk
 WORKDIR /var/www/
