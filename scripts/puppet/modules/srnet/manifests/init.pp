@@ -22,18 +22,20 @@ $srnetdbver = String(file('/configurations/srnetdb.version'), "%t")
 
 $n_srvdbver = 0 + $srnetdbver
 
-Integer[$n_srvdbver, $srnetmaxdbver].each |$x| {
-  notice("updating DB version ${x}")
-}
-
-
 if ( $dbpassword == '') {
   $dbpw_fin = $dbpwd
 }else{
   $dbpw_fin = $dbpassword
 }
 
-#notice($dbpwd)
+Integer[$n_srvdbver, $srnetmaxdbver].each |$x| {
+  #notice("updating DB version ${x}")
+  exec{"updating DB version ${x}":
+    command => "/bin/bash -c 'MYSQL_PWD=${dbpw_fin} mysql -u${dbuser} -e \"use simplerisk; \. /scripts/srnet-db/DB-SQL-${x}.sql\" && echo ${x} >> /configurations/srnetdb.version'"
+  }
+}
+
+/bin/bash MYSQL_PWD=123 mysql
 
 file{'/srnet/SRNET-ConsoleClient/appsettings.json': 
   ensure  => file,
