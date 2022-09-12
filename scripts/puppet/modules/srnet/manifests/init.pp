@@ -96,4 +96,25 @@ file{'/srnet/SRNET-Server/appsettings.json':
   })
 }
 
+# Compressing the pagages 
+package{'zip':
+  ensure => present
+}
+
+file {'/var/www/simplerisk/extras/srnet':
+  ensure => directory
+} 
+
+exec{'Compress GUIClient - linux':
+  require => [Package['zip'],File['/var/www/simplerisk/extras/srnet']],
+  command => "/usr/bin/zip -r /var/www/simplerisk/extras/srnet/SRNET-GUIClient-lin.zip /srnet/SRNET-GUIClient-lin && chown www-data:www-data /var/www/simplerisk/extras/srnet/SRNET-GUIClient-lin.zip",
+  creates => '/var/www/simplerisk/extras/srnet/SRNET-GUIClient-lin.zip',
+}
+
+exec{'Compress GUIClient - windows':
+  require => [Package['zip'],File['/var/www/simplerisk/extras/srnet']],
+  command => "/usr/bin/zip -r /var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip /srnet/SRNET-GUIClient-win && chown www-data:www-data /var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip",
+  creates => '/var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip'
+}
+
 }
