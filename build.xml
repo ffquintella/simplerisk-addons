@@ -172,6 +172,14 @@
         <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-consoleclient-file}" 
             dir="${srnet-dir}" followRedirects="true" />
 
+
+        <mkdir dir="${builddir}/srnet-db" />
+        <copy todir="${builddir}/srnet-db" overwrite="true" >
+            <fileset dir="src/net-extras/DAL/Scripts/DB">
+                <include name="**/*.sql" />
+            </fileset>
+        </copy>
+
         <!-- UNZIPING -->
         <property name="srnet-guiclient-lin-dir" value="${srnet-dir}/SRNET-GUIClient-lin" override="true" />
         <unzip file="${srnet-dir}/${srnet-guiclient-lin-file}" todir="${srnet-guiclient-lin-dir}/" />
