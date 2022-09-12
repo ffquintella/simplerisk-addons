@@ -5,7 +5,7 @@ FROM ubuntu:jammy
 LABEL maintainer="ffquintella"
 
 # Make necessary directories
-RUN mkdir -p /configurations /etc/apache2/ssl /passwords /var/{log,lib/mysql,www/simplerisk} /srnet
+RUN mkdir -p /configurations /etc/apache2/ssl /passwords /var/log /var/log/lib/mysql /var/log/www/simplerisk /srnet
                                                                     
 # Installing apt dependencies     
 RUN dpkg-divert --local --rename /usr/bin/ischroot && \
