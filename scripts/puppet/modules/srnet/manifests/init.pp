@@ -28,10 +28,12 @@ if ( $dbpassword == '') {
   $dbpw_fin = $dbpassword
 }
 
-Integer[$n_srvdbver, $srnetmaxdbver].each |$x| {
-  #notice("updating DB version ${x}")
-  exec{"updating DB version ${x}":
-    command => "/bin/bash -c 'MYSQL_PWD=${dbpw_fin} mysql -u${dbuser} -e \"use simplerisk; \. /scripts/srnet-db/DB-SQL-${x}.sql\" && echo ${x} >> /configurations/srnetdb.version'"
+if($n_srvdbver != $srnetmaxdbver) {
+  Integer[$n_srvdbver, $srnetmaxdbver].each |$x| {
+    #notice("updating DB version ${x}")
+    exec{"updating DB version ${x}":
+      command => "/bin/bash -c 'MYSQL_PWD=${dbpw_fin} mysql -u${dbuser} -e \"use simplerisk; \. /scripts/srnet-db/DB-SQL-${x}.sql\" && echo ${x} > /configurations/srnetdb.version'"
+    }
   }
 }
 
