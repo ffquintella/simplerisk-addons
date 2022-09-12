@@ -116,6 +116,7 @@ ENV BASE_URL "https://${BASE_HOST}/"
 
 ENV FACTER_BASE_HOST $BASE_HOST
 ENV FACTER_BASE_URL $BASE_URL
+ENV FACTER_SRNET_URL "https://${BASE_HOST}:7072/"
 
 
 RUN  mkdir /etc/puppet/manifests ; mkdir /etc/puppet/modules ; mkdir /opt/scripts

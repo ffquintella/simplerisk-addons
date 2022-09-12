@@ -1,6 +1,6 @@
 class srnet (
   # SRNet Settings
-  $base_url     = '',
+  $srnet_url     = '',
 
   # Database Settings
   $dbserver     = '127.0.0.1',
@@ -10,7 +10,18 @@ class srnet (
   $dbschema     = 'simplerisk',
 
   #SAML Settings
-  $enable_saml  = false,
+  $enable_saml       = false,
+  $idp_entity_id     = 'https://stubidp.sustainsys.com',
+  $idp_name          = 'stubidp.sustainsys',
+  $idp_sso_service   = 'https://stubidp.sustainsys.com/',
+  $idp_ssout_service = 'https://stubidp.sustainsys.com/Logout',
+  $idp_artifact_resolve_srvc = 'https://stubidp.sustainsys.com/ArtifactResolve',
+  $idp_certificate_file      = 'Certificates/stubidp.sustainsys.com.cer'
+
+  #Server
+  $server_logging          = 'Information',
+  $server_certificate_file = 'Certificates/demowebapp.local.pfx',
+  $server_certificate_pwd  = 'pass',
 
 ) inherits srnet::params {
 
@@ -52,14 +63,36 @@ file{'/srnet/SRNET-ConsoleClient/appsettings.json':
 file{'/srnet/SRNET-GUIClient-lin/appsettings.json': 
   ensure  => file,
   content => epp('srnet/guiClient/appsettings.json.epp', {
-    'server_url'   => $base_url
+    'server_url'   => $srnet_url
   })
 }
 
 file{'/srnet/SRNET-GUIClient-win/appsettings.json': 
   ensure  => file,
   content => epp('srnet/guiClient/appsettings.json.epp', {
-    'server_url'   => $base_url
+    'server_url'   => $srnet_url
+  })
+}
+
+file{'/srnet/SRNET-Server/appsettings.json': 
+  ensure  => file,
+  content => epp('srnet/server/appsettings.json.epp', {
+    'server_url'     => $srnet_url,
+    'enable_saml'    => $enable_saml,
+    'server_logging' => $server_logging,
+    'server_certificate_file'   => $server_certificate_file,
+    'server_certificate_pwd'    => $server_certificate_pwd,
+    'idp_entity_id'             => $idp_entity_id,
+    'idp_name'                  => $idp_name,
+    'idp_sso_service'           => $idp_sso_service,
+    'idp_ssout_service'         => $idp_ssout_service,
+    'idp_artifact_resolve_srvc' => $idp_artifact_resolve_srvc,
+    'idp_certificate_file'      => $idp_certificate_file,
+    'db_server'   => $dbserver,
+    'db_user'     => $dbuser,
+    'db_port'     => $dport ,
+    'db_password' => $dbpw_fin ,
+    'db_schema'   => $dbschema
   })
 }
 

@@ -1,0 +1,59 @@
+<%- | String  $server_url,
+      String  $server_logging,
+      Bool    $enable_saml,
+      String  $server_certificate_file,
+      String  $server_certificate_pwd,
+      String  $idp_entity_id,
+      String  $idp_sso_service,
+      String  $idp_ssout_service,
+      String  $idp_name,
+      String  $idp_artifact_resolve_srvc,
+      String  $idp_certificate_file,
+      String  $db_server,
+      String  $db_port,
+      String  $db_password,
+      String  $db_schema
+| -%>
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "<%= $server_logging -%>",
+      "Microsoft": "Warning"
+    }
+  },
+  "JWT": {
+    "Timeout": 1440
+  },
+  "Database":{
+        "ConnectionString": "server=<%= $db_server -%>;port=<%= $db_port -%>;uid=<%= $db_user -%>;pwd=<%= $db_password -%>;database=<%= $db_schema -%>;ConvertZeroDateTime=True"
+  },
+  "Saml2": {
+    "Enabled": <%= $enable_saml -%>,
+    "ServiceProviderConfiguration": {
+      "EntityId": "<%= $server_url -%>",
+      "Name": "Saml2.auth",
+      "AssertionConsumerServiceUrl": "Saml2/AssertionConsumerService",
+      "SingleLogoutResponseServiceUrl": "Saml2/SingleLogoutService",
+      "OmitAssertionSignatureCheck": true,
+      "Certificate": {
+        "FileName": "<%= $server_certificate_file -%>",
+        "Password": "<%= $server_certificate_pwd -%>"
+      }
+    },
+    "IdentityProviderConfiguration": [
+      {
+        "EntityId": "<%= $idp_entity_id -%>",
+        "Name": "<%= $idp_name -%>",
+        "ForceAuth": "false",
+        "IsPassive": "false",
+        "SingleSignOnService": "<%= $idp_sso_service -%>",
+        "SingleSignOutService": "<%= $idp_ssout_service -%>",
+        "ArtifactResolveService": "<%= $idp_artifact_resolve_srvc -%>",
+        "Certificate": {
+          "FileName": "<%= $idp_certificate_file -%>"
+        }
+      }
+    ]
+  },
+  "AllowedHosts": "*"
+}
