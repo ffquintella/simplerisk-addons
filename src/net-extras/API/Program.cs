@@ -1,11 +1,18 @@
 using API;
 using Serilog;
 
-
+#if DEBUG
 var configuration =  new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddUserSecrets<Program>()
     .AddJsonFile($"appsettings.json");
+#else 
+var configuration =  new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddUserSecrets<Program>()
+    .AddJsonFile($"appsettings.json");
+#endif
+
 var config = configuration.Build();
 
 var builder = WebApplication.CreateBuilder(args);
