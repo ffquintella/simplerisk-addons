@@ -133,7 +133,7 @@ ENV FACTER_BASE_URL $BASE_URL
 ENV FACTER_SRNET_URL "https://${BASE_HOST}:7072/"
 
 
-RUN  mkdir /etc/puppet/manifests ; mkdir /etc/puppet/modules ; mkdir /opt/scripts
+RUN  mkdir /etc/puppet/ ; mkdir /etc/puppet/manifests ; mkdir /etc/puppet/modules ; mkdir /opt/scripts
 COPY puppet/manifests /etc/puppet/manifests/
 COPY puppet/modules /etc/puppet/modules/
 RUN /usr/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests/base.pp ; \
