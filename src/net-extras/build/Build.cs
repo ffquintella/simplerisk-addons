@@ -300,7 +300,7 @@ class Build : NukeBuild
         {
             var filepath = OutputPublishDirectory / $"SRNET-GUIClient-win-x64-{Version}.zip";
             //var filepath = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-{Version}.zip";
-            UploadFile($"SRNET-GUIClient-win-x64-{Version}.zip", filepath, 
+            UploadFile($"SRNET-GUIClient-win-x64.zip", filepath, 
                 "SRNET GUI client for Windows x64", 
                 "This is the SRNET GUI client binary for windows x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
                 Version);
@@ -313,7 +313,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var filepath = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-{Version}.zip";
-            UploadFile($"SRNET-GUIClient-lin-x64-{Version}.zip", filepath, 
+            UploadFile($"SRNET-GUIClient-lin-x64.zip", filepath, 
                 "SRNET GUI client for Linux x64", 
                 "This is the SRNET GUI client binary for linux x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
                 Version);
@@ -332,7 +332,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var filepath = OutputPublishDirectory / $"SRNET-ConsoleClient-lin-x64-{Version}.zip";
-            UploadFile($"SRNET-ConsoleClient-lin-x64-{Version}.zip", filepath, 
+            UploadFile($"SRNET-ConsoleClient-lin-x64.zip", filepath, 
                 "SRNET Console client for Linux x64", 
                 "This is the SRNET console client binary for linux x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
                 Version);
@@ -345,7 +345,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var filepath = OutputPublishDirectory / $"SRNET-Server-lin-x64-{Version}.zip";
-            UploadFile($"SRNET-Server-lin-x64-{Version}.zip", filepath, 
+            UploadFile($"SRNET-Server-lin-x64.zip", filepath, 
                 "SRNET Server Linux x64", 
                 "This is the SRNET Server binary for linux x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
                 Version);
