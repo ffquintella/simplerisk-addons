@@ -9,7 +9,6 @@ var configuration =  new ConfigurationBuilder()
 #else 
 var configuration =  new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddUserSecrets<Program>()
     .AddJsonFile($"appsettings.json");
 #endif
 
