@@ -116,7 +116,7 @@ exec{'Compress GUIClient - windows':
 
 exec{'Starting SRNet Server':
   cwd         => '/srnet/SRNET-Server/',
-  command     => '/srnet/SRNET-Server/StartServer.sh',
+  command     => '/srnet/SRNET-Server/API',
   environment => ['ASPNETCORE_ENVIRONMENT=production','DOTNET_USER_SECRETS_FALLBACK_DIR=/root/.dotnet'],
   user        => root,
   logoutput   => true
