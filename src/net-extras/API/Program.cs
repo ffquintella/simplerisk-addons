@@ -19,15 +19,17 @@ var config = configuration.Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
-#if !DEBUG
+int httpsPort = Int32.Parse(config["https:port"]);
+string certificateFile = config["https:certificate:file"];
+string certificatePassword = config["https:certificate:password"];
+
 builder.Services.Configure<KestrelServerOptions>(options =>
 {
-    options.Listen(IPAddress.Any, 1443, listenOptions =>
+    options.Listen(IPAddress.Any, 5443, listenOptions =>
     {
         listenOptions.UseHttps(certificateFile, certificatePassword);
     } );
 });
-#endif
 
 Bootstrapper.Register(builder.Services, config);
 

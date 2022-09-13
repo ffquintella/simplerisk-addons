@@ -35,6 +35,10 @@
       <Content Include="Certificates\stubidp.sustainsys.com.cer">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Certificates\localhost.pfx" />
+      <Content Include="Certificates\localhost.pfx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
