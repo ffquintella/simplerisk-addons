@@ -10,9 +10,13 @@ SCRIPT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 ###########################################################################
 
 BUILD_PROJECT_FILE="$SCRIPT_DIR/build/_build.csproj"
-TEMP_DIRECTORY="$SCRIPT_DIR/../../.nuke/temp"
+NUKE_DIRECTORY="$SCRIPT_DIR/.nuke"
+TEMP_DIRECTORY="$NUKE_DIRECTORY/temp"
 
-DOTNET_GLOBAL_FILE="$SCRIPT_DIR/../../global.json"
+mkdir -p $NUKE_DIRECTORY
+mkdir -p $TEMP_DIRECTORY
+
+DOTNET_GLOBAL_FILE="$SCRIPT_DIR/global.json"
 DOTNET_INSTALL_URL="https://dot.net/v1/dotnet-install.sh"
 DOTNET_CHANNEL="Current"
 

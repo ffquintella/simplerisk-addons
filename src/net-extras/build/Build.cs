@@ -39,7 +39,7 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
     
-    [Solution]
+    [Solution("net-extras.sln")]
     readonly Solution Solution;
 
     Target Clean => _ => _
@@ -76,7 +76,6 @@ class Build : NukeBuild
         .DependsOn(Print)
         .Executes(() =>
         {
-            
             DotNetRestore(s => s
                 .SetProjectFile(Solution)
                 .SetVerbosity(DotNetVerbosity.Normal));
