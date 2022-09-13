@@ -1,4 +1,7 @@
+using System.Net;
 using API;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Serilog;
 
 #if DEBUG
@@ -16,8 +19,17 @@ var config = configuration.Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
-Bootstrapper.Register(builder.Services, config);
+#if !DEBUG
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.Listen(IPAddress.Any, 1443, listenOptions =>
+    {
+        listenOptions.UseHttps(certificateFile, certificatePassword);
+    } );
+});
+#endif
 
+Bootstrapper.Register(builder.Services, config);
 
 var app = builder.Build();
 
