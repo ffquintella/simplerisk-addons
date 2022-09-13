@@ -108,3 +108,13 @@ output/publish/
 src/net-extras/API/bin/Release/net6.0/
 
 src/net-extras/.nuke/
+
+src/net-extras/output/publish/api/
+
+src/net-extras/output/publish/consoleClient/
+
+src/net-extras/output/publish/guiClient-lin/
+
+src/net-extras/output/publish/guiClient-win/
+
+src/net-extras/output/publish/

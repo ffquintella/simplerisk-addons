@@ -7,7 +7,7 @@
     <property name="srnet-dir" value="./build/srnet" override="true" />
 
     <property name="version" value="20220823-001" override="true" />
-    <property name="srnet-version" value="0.10.4" override="true" />
+    <property name="srnet-version" value="0.10.7" override="true" />
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
@@ -156,19 +156,19 @@
         <copy todir="${builddir}" file="configs/Dockerfile" /> 
 
         <!-- SRNET block-->
-        <property name="srnet-guiclient-lin-file" value="SRNET-GUIClient-lin-x64-${srnet-version}.zip" override="true" />
+        <property name="srnet-guiclient-lin-file" value="SRNET-GUIClient-lin-x64.zip" override="true" />
         <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-guiclient-lin-file}" 
             dir="${srnet-dir}" followRedirects="true" />
 
-        <property name="srnet-guiclient-win-file" value="SRNET-GUIClient-win-x64-${srnet-version}.zip" override="true" />
+        <property name="srnet-guiclient-win-file" value="SRNET-GUIClient-win-x64.zip" override="true" />
         <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-guiclient-win-file}" 
             dir="${srnet-dir}" followRedirects="true" />
 
-        <property name="srnet-server-file" value="SRNET-Server-lin-x64-${srnet-version}.zip" override="true" />
+        <property name="srnet-server-file" value="SRNET-Server-lin-x64.zip" override="true" />
         <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-server-file}" 
             dir="${srnet-dir}" followRedirects="true" />
 
-        <property name="srnet-consoleclient-file" value="SRNET-ConsoleClient-lin-x64-${srnet-version}.zip" override="true" />
+        <property name="srnet-consoleclient-file" value="SRNET-ConsoleClient-lin-x64.zip" override="true" />
         <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-consoleclient-file}" 
             dir="${srnet-dir}" followRedirects="true" />
 
