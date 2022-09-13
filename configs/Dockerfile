@@ -35,6 +35,7 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
                                                       ufw \
                                                       sudo \
                                                       fish \
+                                                      zip \
                                                       supervisor \
                                                       wget && \
                                     cd /tmp && wget https://apt.puppet.com/puppet7-release-jammy.deb && \
@@ -43,6 +44,8 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
             DEBIAN_FRONTEND=noninteractive apt-get -y install puppet-agent && \
                                     rm -rf /var/lib/apt/lists
 
+
+RUN ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
 # Create the OpenSSL password
 RUN < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c21 > /passwords/pass_openssl.txt
@@ -94,6 +97,11 @@ RUN echo %sudo  ALL=NOPASSWD: ALL >> /etc/sudoers && \
 
 # COPY SRNET
 COPY srnet/ /srnet
+
+RUN chmod +x /srnet/SRNET-GUIClient-lin/GUIClient
+RUN chmod +x /srnet/SRNET-ConsoleClient/ConsoleClient
+RUN chmod +x /srnet/SRNET-Server/API
+
 COPY srnet-db/ /scripts/srnet-db
 COPY srnet-db/srnetdb.version /configurations/srnetdb.version
 

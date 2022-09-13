@@ -97,31 +97,29 @@ file{'/srnet/SRNET-Server/appsettings.json':
 }
 
 # Compressing the pagages 
-package{'zip':
-  ensure => present
-}
 
 file {'/var/www/simplerisk/extras/srnet':
   ensure => directory
 } 
 
 exec{'Compress GUIClient - linux':
-  require => [Package['zip'],File['/var/www/simplerisk/extras/srnet']],
+  require => [File['/var/www/simplerisk/extras/srnet']],
   command => "/usr/bin/zip -r /var/www/simplerisk/extras/srnet/SRNET-GUIClient-lin.zip /srnet/SRNET-GUIClient-lin && chown www-data:www-data /var/www/simplerisk/extras/srnet/SRNET-GUIClient-lin.zip",
   creates => '/var/www/simplerisk/extras/srnet/SRNET-GUIClient-lin.zip',
 }
 
 exec{'Compress GUIClient - windows':
-  require => [Package['zip'],File['/var/www/simplerisk/extras/srnet']],
+  require => [File['/var/www/simplerisk/extras/srnet']],
   command => "/usr/bin/zip -r /var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip /srnet/SRNET-GUIClient-win && chown www-data:www-data /var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip",
   creates => '/var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip'
 }
 
 exec{'Starting SRNet Server':
-  cwd       => '/srnet/SRNET-Server/',
-  command   => 'cd /srnet/SRNET-Server/ && exec ./API &',
-  provider  => shell,
-  logoutput => true
+  cwd         => '/srnet/SRNET-Server/',
+  command     => '/srnet/SRNET-Server/StartServer.sh',
+  environment => ['ASPNETCORE_ENVIRONMENT=production','DOTNET_USER_SECRETS_FALLBACK_DIR=/root/.dotnet'],
+  user        => root,
+  logoutput   => true
 }
 
 
