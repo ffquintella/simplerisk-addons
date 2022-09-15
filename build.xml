@@ -7,7 +7,7 @@
     <property name="srnet-dir" value="./build/srnet" override="true" />
 
     <property name="version" value="20220823-001" override="true" />
-    <property name="srnet-version" value="0.10.9" override="true" />
+    <property name="srnet-version" value="0.10.10" override="true" />
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
@@ -172,8 +172,8 @@
         <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-consoleclient-file}" 
             dir="${srnet-dir}" followRedirects="true" />
 
-        <property name="srnet-consoleclient-file" value="SRNET-ConsoleClient-osx-x64.zip" override="true" />
-        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-consoleclient-file}" 
+        <property name="srnet-guiclient-owx-file" value="SRNET-GUIClient-osx-x64.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-guiclient-owx-file}" 
             dir="${srnet-dir}" followRedirects="true" />
 
 
