@@ -172,8 +172,8 @@
         <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-consoleclient-file}" 
             dir="${srnet-dir}" followRedirects="true" />
 
-        <property name="srnet-guiclient-owx-file" value="SRNET-GUIClient-osx-x64.zip" override="true" />
-        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-guiclient-owx-file}" 
+        <property name="srnet-guiclient-osx-file" value="SRNET-GUIClient-osx-x64.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-guiclient-osx-file}" 
             dir="${srnet-dir}" followRedirects="true" />
 
 
@@ -192,6 +192,10 @@
         <property name="srnet-guiclient-win-dir" value="${srnet-dir}/SRNET-GUIClient-win" override="true" />
         <unzip file="${srnet-dir}/${srnet-guiclient-win-file}" todir="${srnet-guiclient-win-dir}/" />
         <delete file="${srnet-dir}/${srnet-guiclient-win-file}" />
+
+        <property name="srnet-guiclient-osx-dir" value="${srnet-dir}/SRNET-GUIClient-osx" override="true" />
+        <unzip file="${srnet-dir}/${srnet-guiclient-osx-file}" todir="${srnet-guiclient-osx-dir}/" />
+        <delete file="${srnet-dir}/${srnet-guiclient-osx-file}" />
 
         <property name="srnet-server-dir" value="${srnet-dir}/SRNET-Server" override="true" />
         <unzip file="${srnet-dir}/${srnet-server-file}" todir="${srnet-server-dir}/" />
