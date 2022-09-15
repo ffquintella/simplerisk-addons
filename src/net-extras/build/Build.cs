@@ -405,7 +405,7 @@ class Build : NukeBuild
         });
     
     Target PublishAll => _ => _
-        .DependsOn(PublishGUIClientLinux, PublishGUIClientWin, PublishApi, PublishConsoleClient)
+        .DependsOn(PublishGUIClient, PublishApi, PublishConsoleClient)
         .Executes(() =>
         {
         });
