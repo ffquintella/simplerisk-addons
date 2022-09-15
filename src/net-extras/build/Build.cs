@@ -243,6 +243,45 @@ class Build : NukeBuild
             
             File.WriteAllText(checksumFile, checksum);
         });   
+
+    Target PackageGUIClientOSX => _ => _
+        .DependsOn(Clean)
+        .DependsOn(Prepare)
+        .DependsOn(Restore)
+        .Executes(() =>
+        {
+            var project = Solution.GetProject("GUIClient");
+            
+            if(Directory.Exists(OutputPublishDirectory / "guiClient-osx"))
+                Directory.Delete(OutputPublishDirectory / "guiClient-osx", true);
+
+            
+            DotNetPublish(s => s
+                .SetProject(project)
+                .SetVersion(Version)
+                .SetConfiguration(Configuration.Release)
+                .SetRuntime("osx.10.11-x64")
+                .EnablePublishTrimmed()
+                .EnablePublishSingleFile()
+                .SetOutput(OutputPublishDirectory / "guiClient-osx")
+                .EnablePublishReadyToRun()
+                .SetVerbosity(DotNetVerbosity.Normal));
+            
+            var archive = OutputPublishDirectory / $"SRNET-GUIClient-osx-x64-{Version}.zip";
+            
+            if(File.Exists(archive)) File.Delete(archive);
+            
+            CompressZip(OutputPublishDirectory / "guiClient-osx", 
+                archive);
+
+            var checksum = SHA256CheckSum(archive);
+            var checksumFile = OutputPublishDirectory / $"SRNET-GUIClient-osx-x64-{Version}.sha256";  
+            
+            if(File.Exists(checksumFile)) File.Delete(checksumFile);
+            
+            File.WriteAllText(checksumFile, checksum);
+        });  
+    
     
     Target PackageGUIClientWin => _ => _
         .DependsOn(Clean)
@@ -282,7 +321,7 @@ class Build : NukeBuild
         });
 
     Target PackageGUIClient => _ => _
-        .DependsOn(PackageGUIClientWin, PackageGUIClientLinux)
+        .DependsOn(PackageGUIClientWin, PackageGUIClientLinux, PackageGUIClientOSX)
         .Executes(() =>
         {
         });
@@ -314,14 +353,27 @@ class Build : NukeBuild
         {
             var filepath = OutputPublishDirectory / $"SRNET-GUIClient-lin-x64-{Version}.zip";
             UploadFile($"SRNET-GUIClient-lin-x64.zip", filepath, 
-                "SRNET GUI client for Linux x64", 
-                "This is the SRNET GUI client binary for linux x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
+                "SRNET GUI client for OSX x64", 
+                "This is the SRNET GUI client binary for osx x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
                 Version);
             
         });
 
+    Target PublishGUIClientOSX => _ => _
+        .DependsOn(PackageGUIClientOSX)
+        .Requires(() => CloudsmithApiKey)
+        .Executes(() =>
+        {
+            var filepath = OutputPublishDirectory / $"SRNET-GUIClient-osx-x64-{Version}.zip";
+            UploadFile($"SRNET-GUIClient-osx-x64.zip", filepath, 
+                "SRNET GUI client for OSX x64", 
+                "This is the SRNET GUI client binary for osx x64. The sugested installation method is using docker but if you know what you are doing you can use this binary.",
+                Version);
+            
+        });
+    
     Target PublishGUIClient => _ => _
-        .DependsOn(PublishGUIClientLinux, PublishGUIClientWin)
+        .DependsOn(PublishGUIClientLinux, PublishGUIClientWin, PublishGUIClientOSX)
         .Executes(() =>
         {
         });
