@@ -46,7 +46,7 @@ if($n_srvdbver != $srnetmaxdbver) {
   Integer[$n_srvdbver, $srnetmaxdbver].each |$x| {
     #notice("updating DB version ${x}")
     exec{"updating DB version ${x}":
-      command => "/bin/bash -c 'MYSQL_PWD=${dbpw_fin} mysql -u${dbuser} -e \"use simplerisk; \. /scripts/srnet-db/DB-SQL-${x}.sql\" && echo ${x} > /configurations/srnetdb.version'"
+      command => "/bin/bash -c 'MYSQL_PWD=${dbpw_fin} mysql -u${dbuser} -e \"use simplerisk; \\. /scripts/srnet-db/DB-SQL-${x}.sql\" && echo ${x} > /configurations/srnetdb.version'"
     }
   }
 }
@@ -57,7 +57,7 @@ file{'/srnet/SRNET-ConsoleClient/appsettings.json':
   content => epp('srnet/consoleClient/appsettings.json.epp', {
     'db_server'   => $dbserver,
     'db_user'     => $dbuser,
-    'db_port'     => $dport ,
+    'db_port'     => $dbport ,
     'db_password' => $dbpw_fin ,
     'db_schema'   => $dbschema
   })
@@ -100,7 +100,7 @@ file{'/srnet/SRNET-Server/appsettings.json':
     'idp_certificate_file'      => $idp_certificate_file,
     'db_server'   => $dbserver,
     'db_user'     => $dbuser,
-    'db_port'     => $dport ,
+    'db_port'     => $dbport ,
     'db_password' => $dbpw_fin ,
     'db_schema'   => $dbschema,
     'server_https_port'       => $server_https_port,
