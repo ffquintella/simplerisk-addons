@@ -1,8 +1,8 @@
 <%- | String  $server_url,
       String  $server_logging,
       Boolean $enable_saml,
-      String  $server_certificate_file,
-      String  $server_certificate_pwd,
+      String  $sp_certificate_file,
+      String  $sp_certificate_pwd,
       String  $idp_entity_id,
       String  $idp_sso_service,
       String  $idp_ssout_service,
@@ -13,14 +13,17 @@
       String  $db_user,
       String  $db_port,
       String  $db_password,
-      String  $db_schema
+      String  $db_schema,
+      Integer $server_https_port,
+      String  $server_certificate_file,
+      String  $server_certificate_pwd,
 | -%>
 {
   "https": {
-    "port": 5443,
+    "port": <%= $server_https_port -%>,
     "certificate": {
-      "file": "Certificates/localhost.pfx",
-      "password": "localhost"
+      "file": "<%= $server_certificate_file -%>",
+      "password": "<%= $server_certificate_pwd -%>"
     }
   },
   "Logging": {
@@ -44,8 +47,8 @@
       "SingleLogoutResponseServiceUrl": "Saml2/SingleLogoutService",
       "OmitAssertionSignatureCheck": true,
       "Certificate": {
-        "FileName": "<%= $server_certificate_file -%>",
-        "Password": "<%= $server_certificate_pwd -%>"
+        "FileName": "<%= $sp_certificate_file -%>",
+        "Password": "<%= $sp_certificate_pwd -%>"
       }
     },
     "IdentityProviderConfiguration": [

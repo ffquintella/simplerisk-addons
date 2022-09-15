@@ -17,11 +17,14 @@ class srnet (
   $idp_ssout_service = 'https://stubidp.sustainsys.com/Logout',
   $idp_artifact_resolve_srvc = 'https://stubidp.sustainsys.com/ArtifactResolve',
   $idp_certificate_file      = 'Certificates/stubidp.sustainsys.com.cer',
+  $sp_certificate_file = 'Certificates/demowebapp.local.pfx',
+  $sp_certificate_pwd  = 'pass',
 
   #Server
   $server_logging          = 'Information',
-  $server_certificate_file = 'Certificates/demowebapp.local.pfx',
-  $server_certificate_pwd  = 'pass',
+  $server_https_port       = 5443,
+  $server_certificate_file = "Certificates/certificate.pfx",
+  $server_certificate_pwd  = "pass"
 
 ) inherits srnet::params {
 
@@ -80,8 +83,8 @@ file{'/srnet/SRNET-Server/appsettings.json':
     'server_url'     => $srnet_url,
     'enable_saml'    => $enable_saml,
     'server_logging' => $server_logging,
-    'server_certificate_file'   => $server_certificate_file,
-    'server_certificate_pwd'    => $server_certificate_pwd,
+    'sp_certificate_file'   => $sp_certificate_file,
+    'sp_certificate_pwd'    => $sp_certificate_pwd,
     'idp_entity_id'             => $idp_entity_id,
     'idp_name'                  => $idp_name,
     'idp_sso_service'           => $idp_sso_service,
@@ -92,7 +95,10 @@ file{'/srnet/SRNET-Server/appsettings.json':
     'db_user'     => $dbuser,
     'db_port'     => $dport ,
     'db_password' => $dbpw_fin ,
-    'db_schema'   => $dbschema
+    'db_schema'   => $dbschema,
+    'server_https_port'       => $server_https_port,
+    'server_certificate_file' => $server_certificate_file,
+    'server_certificate_pwd'  => $server_certificate_pwd
   })
 }
 
