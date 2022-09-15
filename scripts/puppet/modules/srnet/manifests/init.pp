@@ -77,6 +77,13 @@ file{'/srnet/SRNET-GUIClient-win/appsettings.json':
   })
 }
 
+file{'/srnet/SRNET-GUIClient-osx/appsettings.json': 
+  ensure  => file,
+  content => epp('srnet/guiClient/appsettings.json.epp', {
+    'server_url'   => $srnet_url
+  })
+}
+
 file{'/srnet/SRNET-Server/appsettings.json': 
   ensure  => file,
   content => epp('srnet/server/appsettings.json.epp', {
@@ -119,6 +126,13 @@ exec{'Compress GUIClient - windows':
   command => "/usr/bin/zip -r /var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip /srnet/SRNET-GUIClient-win && chown www-data:www-data /var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip",
   creates => '/var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip'
 }
+
+exec{'Compress GUIClient - osx':
+  require => [File['/var/www/simplerisk/extras/srnet']],
+  command => "/usr/bin/zip -r /var/www/simplerisk/extras/srnet/SRNET-GUIClient-osx.zip /srnet/SRNET-GUIClient-osx && chown www-data:www-data /var/www/simplerisk/extras/srnet/SRNET-GUIClient-osx.zip",
+  creates => '/var/www/simplerisk/extras/srnet/SRNET-GUIClient-osx.zip'
+}
+
 
 exec{'Starting SRNet Server':
   cwd         => '/srnet/SRNET-Server/',
