@@ -3,11 +3,11 @@ class srnet (
   $srnet_url     = '',
 
   # Database Settings
-  $dbserver     = '127.0.0.1',
-  $dbuser       = 'simplerisk',
-  $dport        = '3306',
-  $dbpassword   = '',
-  $dbschema     = 'simplerisk',
+  $dbserver   = '127.0.0.1',
+  $dbuser     = 'simplerisk',
+  $dbport     = '3306',
+  $dbpassword = '',
+  $dbschema   = 'simplerisk',
 
   #SAML Settings
   $enable_saml       = false,

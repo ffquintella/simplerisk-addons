@@ -11,7 +11,7 @@ class { 'srnet':
   srnet_url  => $srnet_url,
   dbserver   => $dbserver,
   dbuser     => $dbuser,
-  dport      => $dport,
+  dbport     => $dbport,
   dbpassword => $dbpassword,
   dbschema   => $dbschema,
   enable_saml               => $samlen,
