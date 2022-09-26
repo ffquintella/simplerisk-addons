@@ -113,22 +113,28 @@ file{'/srnet/SRNET-Server/appsettings.json':
 
 file {'/var/www/simplerisk/extras/srnet':
   ensure => directory
-} 
+}-> 
+file {'/var/www/simplerisk/extras/srnet/index.html':
+  ensure => file,
+  source => "puppet:///modules/srnet/index.html",
+}
+
+
 
 exec{'Compress GUIClient - linux':
-  require => [File['/var/www/simplerisk/extras/srnet']],
+  require => [File['/var/www/simplerisk/extras/srnet'],File['/srnet/SRNET-GUIClient-lin/appsettings.json']],
   command => "/usr/bin/zip -r /var/www/simplerisk/extras/srnet/SRNET-GUIClient-lin.zip /srnet/SRNET-GUIClient-lin && chown www-data:www-data /var/www/simplerisk/extras/srnet/SRNET-GUIClient-lin.zip",
   creates => '/var/www/simplerisk/extras/srnet/SRNET-GUIClient-lin.zip',
 }
 
 exec{'Compress GUIClient - windows':
-  require => [File['/var/www/simplerisk/extras/srnet']],
+  require => [File['/var/www/simplerisk/extras/srnet'],File['/srnet/SRNET-GUIClient-win/appsettings.json']],
   command => "/usr/bin/zip -r /var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip /srnet/SRNET-GUIClient-win && chown www-data:www-data /var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip",
   creates => '/var/www/simplerisk/extras/srnet/SRNET-GUIClient-win.zip'
 }
 
 exec{'Compress GUIClient - osx':
-  require => [File['/var/www/simplerisk/extras/srnet']],
+  require => [File['/var/www/simplerisk/extras/srnet'],File['/srnet/SRNET-GUIClient-osx/appsettings.json']],
   command => "/usr/bin/zip -r /var/www/simplerisk/extras/srnet/SRNET-GUIClient-osx.zip /srnet/SRNET-GUIClient-osx && chown www-data:www-data /var/www/simplerisk/extras/srnet/SRNET-GUIClient-osx.zip",
   creates => '/var/www/simplerisk/extras/srnet/SRNET-GUIClient-osx.zip'
 }
