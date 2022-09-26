@@ -179,7 +179,7 @@ RUN  mkdir /etc/puppet/ ; mkdir /etc/puppet/manifests ; mkdir /etc/puppet/module
 COPY puppet/manifests /etc/puppet/manifests/
 COPY puppet/modules /etc/puppet/modules/
 RUN /usr/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests/base.pp ; \
-    yum clean all ; rm -rf /tmp/* ; rm -rf /var/cache/* ; rm -rf /var/tmp/* ; rm -rf /var/opt/staging
+    apt-get clean ; rm -rf /tmp/* ; rm -rf /var/cache/* ; rm -rf /var/tmp/* ; rm -rf /var/opt/staging
 
 
 EXPOSE 80
