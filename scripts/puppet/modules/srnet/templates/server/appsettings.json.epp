@@ -54,7 +54,7 @@
     "IdentityProviderConfiguration": [
       {
         "EntityId": "<%= $idp_entity_id -%>",
-        "Name": "<%= $idp_name -%>",
+        "Name": "saml2.provider",
         "ForceAuth": "false",
         "IsPassive": "false",
         "SingleSignOnService": "<%= $idp_sso_service -%>",
