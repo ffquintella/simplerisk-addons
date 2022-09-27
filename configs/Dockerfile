@@ -41,7 +41,8 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
                                     cd /tmp && wget https://apt.puppet.com/puppet7-release-jammy.deb && \
                                     dpkg -i puppet7-release-jammy.deb && \
                                     apt-get update && \
-            DEBIAN_FRONTEND=noninteractive apt-get -y install puppet-agent && \
+            DEBIAN_FRONTEND=noninteractive apt-get -y install puppet-agent \
+                                                              facter && \
                                     rm -rf /var/lib/apt/lists
 
 
