@@ -38,7 +38,10 @@ public class RestService: IRestService
         _authenticationService = Locator.Current.GetService<IAuthenticationService>();
         //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
         _options = new RestClientOptions(_serverConfiguration.Url) {
-            RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+            RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+            ThrowOnAnyError = true,
+            Timeout = 10000  // 10 second
+        
         };
     }
     
