@@ -6,8 +6,8 @@
     <property name="appdir" value="./build/app" override="true" />
     <property name="srnet-dir" value="./build/srnet" override="true" />
 
-    <property name="version" value="20220823-001" override="true" />
-    <property name="srnet-version" value="0.10.11" override="true" />
+    <property name="version" value="20220909-001" override="true" />
+    <property name="srnet-version" value="0.10.12" override="true" />
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
