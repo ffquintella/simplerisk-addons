@@ -1,8 +1,10 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
 using DAL;
 using DAL.Context;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Security;
 
@@ -21,6 +23,12 @@ public class ValidUserRequirementHandler: AuthorizationHandler<ValidUserRequirem
         var userClaimPrincipal = context.User;
 
         string? userName = userClaimPrincipal.Identities.FirstOrDefault()?.Name;
+
+        if (userName.Contains('@'))
+        {
+            userName = userName.Split('@')[0];
+        }
+        
         if (userName == null)
         {
             context.Fail(new AuthorizationFailureReason(this, "User do not exists"));
