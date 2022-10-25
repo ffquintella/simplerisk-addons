@@ -24,9 +24,10 @@ public class ValidUserRequirementHandler: AuthorizationHandler<ValidUserRequirem
 
         string? userName = userClaimPrincipal.Identities.FirstOrDefault()?.Name;
 
-        if (userName is null)
+        if (userName == null)
         {
-            throw new Exception("Error retrieving identity");
+            context.Fail(new AuthorizationFailureReason(this, "User do not exists"));
+            return Task.CompletedTask;
         }
 
         if (userName.Contains('@'))
@@ -34,11 +35,6 @@ public class ValidUserRequirementHandler: AuthorizationHandler<ValidUserRequirem
             userName = userName.Split('@')[0];
         }
         
-        if (userName == null)
-        {
-            context.Fail(new AuthorizationFailureReason(this, "User do not exists"));
-            return Task.CompletedTask;
-        }
 
         User? user;
 

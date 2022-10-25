@@ -113,6 +113,8 @@ public class AuthenticationController : ControllerBase
             .SetSize(1)
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
         
+        _logger.LogDebug("Starting SAML REQUEST for id:{RequestId}", requestId);
+        
         return Redirect("/Authentication/SAMLSingIn");
     }
 
@@ -122,12 +124,14 @@ public class AuthenticationController : ControllerBase
     {
         if (!Request.Cookies.ContainsKey("SAMLReqID"))
         {
+            _logger.LogError("No SAML request id found");
             return BadRequest("No SAML request id found");
         }
         
         string? requestId = Request.Cookies["SAMLReqID"];  
         if (requestId == null)
         {
+            _logger.LogError("No SAML request id found");
             return BadRequest("No SAML request id found");
         }
         
@@ -146,6 +150,7 @@ public class AuthenticationController : ControllerBase
             //Now we know the user is valid, we can issue the token.
             if (samlRequest.Status == "requested")
             {
+                _logger.LogInformation("SAML request accepted for user {User}", dbUser.Name);
                 samlRequest.Status = "accepted";
                 samlRequest.UserName = _httpContextAccessor.HttpContext!.User!.Identity!.Name!;
 
