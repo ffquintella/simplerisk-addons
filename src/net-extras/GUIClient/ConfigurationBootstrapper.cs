@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.IO;
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Splat;
 using GUIClient.Configuration;
 using GUIClient.Models;
@@ -21,10 +23,11 @@ public static  class ConfigurationBootstrapper
 
     }
     
+    private static string BaseDirectory { get; set; } = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+    
     private static IConfiguration BuildConfiguration() =>
         new ConfigurationBuilder()
-            
-            .AddJsonFile("appsettings.json")
+            .AddJsonFile(Path.Combine(BaseDirectory, "appsettings.json"))
             .AddUserSecrets<Program>()
             .Build();
 
