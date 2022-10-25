@@ -140,9 +140,17 @@ public class AuthenticationController : ControllerBase
             //First we need to know if the user exists on the database and if it´s a SAML user
             var dbContext = _dalManager.GetContext();
             var reqUser = _httpContextAccessor.HttpContext!.User!.Identity!.Name!;
+
+            if (!reqUser.Contains('@'))
+            {
+                _logger.LogError("User not in email format");
+                return BadRequest("SAML user not in email format");
+            }
+            
+            var user = reqUser.Split('@')[0];
             
             var dbUser = dbContext?.Users?
-                .Where(u => u.Type == "saml" && u.Enabled == true && u.Lockout == 0 && u.Username == Encoding.UTF8.GetBytes(reqUser))
+                .Where(u => u.Type == "saml" && u.Enabled == true && u.Lockout == 0 && u.Username == Encoding.UTF8.GetBytes(user))
                 .FirstOrDefault();
 
             if (dbUser is null) return BadRequest("Invalid user");
