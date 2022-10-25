@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Splat;
 using GUIClient.Configuration;
 using GUIClient.Models;
 using GUIClient.Services;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GUIClient;
 
@@ -22,12 +24,13 @@ public static  class ConfigurationBootstrapper
         RegisterMutableConfiguration(services, configuration);
 
     }
+
+    //private static string BaseDirectory { get; set; } = Path.GetDirectoryName( typeof(ConfigurationBootstrapper).Assembly.Location )!;
     
-    private static string BaseDirectory { get; set; } = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
     
     private static IConfiguration BuildConfiguration() =>
         new ConfigurationBuilder()
-            .AddJsonFile(Path.Combine(BaseDirectory, "appsettings.json"))
+            .AddJsonFile(Path.Combine(AppContext.BaseDirectory , "appsettings.json"))
             .AddUserSecrets<Program>()
             .Build();
 
