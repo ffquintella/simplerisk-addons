@@ -120,7 +120,12 @@ public class AuthenticationController : ControllerBase
     [Route("SAMLSingIn")]
     public ActionResult SAMLSingIn()
     {
-        string requestId = Request.Cookies["SAMLReqID"];  
+        if (!Request.Cookies.ContainsKey("SAMLReqID"))
+        {
+            return BadRequest("No SAML request id found");
+        }
+        
+        string? requestId = Request.Cookies["SAMLReqID"];  
         if (requestId == null)
         {
             return BadRequest("No SAML request id found");

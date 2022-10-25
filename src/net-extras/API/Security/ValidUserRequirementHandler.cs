@@ -24,6 +24,11 @@ public class ValidUserRequirementHandler: AuthorizationHandler<ValidUserRequirem
 
         string? userName = userClaimPrincipal.Identities.FirstOrDefault()?.Name;
 
+        if (userName is null)
+        {
+            throw new Exception("Error retrieving identity");
+        }
+
         if (userName.Contains('@'))
         {
             userName = userName.Split('@')[0];
