@@ -7,7 +7,7 @@
     <property name="srnet-dir" value="./build/srnet" override="true" />
 
     <property name="version" value="20220909-001" override="true" />
-    <property name="srnet-version" value="0.11.2" override="true" />
+    <property name="srnet-version" value="0.11.3" override="true" />
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
