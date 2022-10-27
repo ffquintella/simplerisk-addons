@@ -15,12 +15,6 @@ public static class LoggingBootstrapper
         Directory.CreateDirectory(logDir);
         var logPath = logDir + "/logs";
 
-        /*Log.Logger = new LoggerConfiguration()
-            .WriteTo.RollingFile(logPath, outputTemplate: "{Timestamp:dd/MM/yy HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}", 
-                restrictedToMinimumLevel: LogEventLevel.Debug)
-            .MinimumLevel.Verbose()
-            .CreateLogger();*/
-
         LoggingLevelSwitch defaultLoggingLevel = new LoggingLevelSwitch();
         switch (config["Logging:LogLevel:Default"])
         {
@@ -74,6 +68,7 @@ public static class LoggingBootstrapper
         }
         
         var logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
             .MinimumLevel.Override("Default", defaultLoggingLevel)
             .MinimumLevel.Override("Microsoft", microsoftLoggingLevel)
             .WriteTo.Console()
