@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Core;
@@ -11,9 +12,15 @@ public static class LoggingBootstrapper
 {
     public static void RegisterLogging(IServiceCollection services,IConfiguration config)
     {
-        var logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/SRAPIServer";
+        string logDir = "";
+        if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/SRServer";
+        if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            logDir = Path.Combine( "/var/log/" , "SRServer");
+        if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            logDir = Path.Combine( "/tmp/" , "SRServer");
         Directory.CreateDirectory(logDir);
-        var logPath = logDir + "/logs";
+        
 
         LoggingLevelSwitch defaultLoggingLevel = new LoggingLevelSwitch();
         switch (config["Logging:LogLevel:Default"])
@@ -66,14 +73,31 @@ public static class LoggingBootstrapper
                 microsoftLoggingLevel.MinimumLevel = LogEventLevel.Warning;
                 break;
         }
+
+        Logger? logger;
+        if (defaultLoggingLevel.MinimumLevel == LogEventLevel.Debug)
+        {
+            logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Default", defaultLoggingLevel)
+                .MinimumLevel.Override("Microsoft", microsoftLoggingLevel)
+                .WriteTo.Console()
+                .WriteTo.RollingFile(logDir, fileSizeLimitBytes: 10000)
+                .CreateLogger();
+        }
+        else
+        {
+            logger = new LoggerConfiguration()
+                .MinimumLevel.Override("Default", defaultLoggingLevel)
+                .MinimumLevel.Override("Microsoft", microsoftLoggingLevel)
+                .WriteTo.Console()
+                .WriteTo.RollingFile(logDir, fileSizeLimitBytes: 10000)
+                .CreateLogger();
+        }
+
         
-        var logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .MinimumLevel.Override("Default", defaultLoggingLevel)
-            .MinimumLevel.Override("Microsoft", microsoftLoggingLevel)
-            .WriteTo.Console()
-            .WriteTo.RollingFile(logPath, fileSizeLimitBytes: 10000)
-            .CreateLogger();
+        
+        
         var factory = new SerilogLoggerFactory(logger);
 
         Log.Logger = logger;
