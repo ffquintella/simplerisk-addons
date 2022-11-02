@@ -8,7 +8,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Spectre;
 using ServerServices;
-using Spectre.Cli.Extensions.DependencyInjection;
+using Spectre.Console.Cli.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 using System.IO;
 
