@@ -14,7 +14,7 @@ public class MutableConfigurationService: IMutableConfigurationService
     public MutableConfigurationService(IEnvironmentService environmentService )
     {
         _environmentService = environmentService;
-        _configurationFilePath = Path.Combine(_environmentService.ApplicationDataFolder, @"\configuration.db");
+        _configurationFilePath = Path.Combine(_environmentService.ApplicationDataFolder, @"configuration.db");
         _configurationConnectionString = "Filename=" + _configurationFilePath + ";Upgrade=true;Password="+_environmentService.DeviceToken + "-" + _environmentService.DeviceID;
     }
 
