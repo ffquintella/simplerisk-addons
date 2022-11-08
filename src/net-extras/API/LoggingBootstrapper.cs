@@ -20,7 +20,8 @@ public static class LoggingBootstrapper
         if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             logDir = Path.Combine( "/tmp/" , "SRServer");
         Directory.CreateDirectory(logDir);
-        
+
+        var logFile = Path.Combine(logDir, "srlog");
 
         LoggingLevelSwitch defaultLoggingLevel = new LoggingLevelSwitch();
         switch (config["Logging:LogLevel:Default"])
@@ -82,7 +83,7 @@ public static class LoggingBootstrapper
                 .MinimumLevel.Override("Default", defaultLoggingLevel)
                 .MinimumLevel.Override("Microsoft", microsoftLoggingLevel)
                 .WriteTo.Console()
-                .WriteTo.RollingFile(logDir, fileSizeLimitBytes: 10000)
+                .WriteTo.RollingFile(logFile, fileSizeLimitBytes: 10000)
                 .CreateLogger();
         }
         else
@@ -91,7 +92,7 @@ public static class LoggingBootstrapper
                 .MinimumLevel.Override("Default", defaultLoggingLevel)
                 .MinimumLevel.Override("Microsoft", microsoftLoggingLevel)
                 .WriteTo.Console()
-                .WriteTo.RollingFile(logDir, fileSizeLimitBytes: 10000)
+                .WriteTo.RollingFile(logFile, fileSizeLimitBytes: 10000)
                 .CreateLogger();
         }
 
