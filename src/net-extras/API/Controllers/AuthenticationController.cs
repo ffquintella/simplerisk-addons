@@ -197,6 +197,9 @@ public class AuthenticationController : ControllerBase
             {
                 return Unauthorized("Not accepted");
             }
+            _logger.LogInformation("Authentication token created for user: {0} fromip: {1}", 
+                samlRequest.UserName,
+                _httpContextAccessor.HttpContext!.Connection.RemoteIpAddress);
             return Ok(GenerateToken(samlRequest.UserName));
         }
         else
@@ -223,6 +226,8 @@ public class AuthenticationController : ControllerBase
             _logger.LogError("Authenticated userAccount not found");
             throw new UserNotFoundException();
         }
+
+        if (userAccount.Contains('@')) userAccount = userAccount.Split('@')[0];
 
         var user = _userManagementService.GetUser(userAccount);
         if (user == null )
