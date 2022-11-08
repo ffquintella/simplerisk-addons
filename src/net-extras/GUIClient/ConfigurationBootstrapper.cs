@@ -27,13 +27,20 @@ public static  class ConfigurationBootstrapper
 
     //private static string BaseDirectory { get; set; } = Path.GetDirectoryName( typeof(ConfigurationBootstrapper).Assembly.Location )!;
     
-    
+#if DEBUG
+    private static IConfiguration BuildConfiguration() =>
+        new ConfigurationBuilder()
+            .AddJsonFile(Path.Combine(AppContext.BaseDirectory , "appsettings.development.json"))
+            .AddUserSecrets<Program>()
+            .Build();
+#else
     private static IConfiguration BuildConfiguration() =>
         new ConfigurationBuilder()
             .AddJsonFile(Path.Combine(AppContext.BaseDirectory , "appsettings.json"))
             .AddUserSecrets<Program>()
             .Build();
-
+#endif
+    
     private static void RegisterMutableConfiguration(IMutableDependencyResolver services,
         IConfiguration configuration)
     {
