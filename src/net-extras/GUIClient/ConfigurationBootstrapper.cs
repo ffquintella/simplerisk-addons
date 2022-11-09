@@ -30,13 +30,15 @@ public static  class ConfigurationBootstrapper
 #if DEBUG
     private static IConfiguration BuildConfiguration() =>
         new ConfigurationBuilder()
-            .AddJsonFile(Path.Combine(AppContext.BaseDirectory , "appsettings.development.json"))
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.development.json")
             .AddUserSecrets<Program>()
             .Build();
 #else
     private static IConfiguration BuildConfiguration() =>
         new ConfigurationBuilder()
-            .AddJsonFile(Path.Combine(AppContext.BaseDirectory , "appsettings.json"))
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
             .AddUserSecrets<Program>()
             .Build();
 #endif
