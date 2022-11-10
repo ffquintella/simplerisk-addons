@@ -120,3 +120,5 @@ src/net-extras/output/publish/guiClient-win/
 src/net-extras/output/publish/
 
 src/net-extras/GUIClient/appsettings.development.json
+
+.nuke/

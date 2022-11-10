@@ -39,7 +39,6 @@ public static  class ConfigurationBootstrapper
         new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
-            .AddUserSecrets<Program>()
             .Build();
 #endif
     
