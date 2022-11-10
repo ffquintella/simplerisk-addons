@@ -39,9 +39,14 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
     
+#if (LINUX)
     [Solution("net-extras.sln")]
     readonly Solution Solution;
-
+#elif (WINDOWS)
+    [Solution("src/net-extras/net-extras.sln")]
+    readonly Solution Solution;
+#endif
+    
     Target Clean => _ => _
         .Executes(() =>
         {
