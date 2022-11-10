@@ -18,6 +18,7 @@
         <mkdir dir="${simpleRiskInstallation}/extras" />
         <echo msg="Making directory ${simpleRiskInstallation}/extras/authentication" />
         <mkdir dir="${simpleRiskInstallation}/extras/authentication" />
+        <mkdir dir="${simpleRiskInstallation}/extras/notification" />
     </target>
 
     <!-- ============================================  -->
@@ -92,6 +93,8 @@
         <mkdir dir="${appdir}/simplerisk/extras/api" />
         <echo msg="Making directory ${appdir}/simplerisk/extras/notification" />
         <mkdir dir="${appdir}/simplerisk/extras/notification" />
+        <echo msg="Making directory ${appdir}/simplerisk/extras/srnet" />
+        <mkdir dir="${appdir}/simplerisk/extras/srnet" />
     </target>
 
     <property name="dblanguage" value="en" />
