@@ -111,6 +111,10 @@ WORKDIR /var/www/
 COPY app/simplerisk /var/www/simplerisk
 COPY simplerisk.sql /scripts/db/simplerisk.sql
 
+RUN mkdir -p /var/log/apache2
+RUN chown -R www-data:www-data /var/log/apache2
+RUN mkdir -p /var/log/SRServer
+RUN chown -R www-data:www-data /var/log/SRServer
 
 RUN mkdir -p /scripts/dbmgmt/ 
 COPY restore_db.sh /scripts/dbmgmt/restore_db.sh
