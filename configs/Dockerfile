@@ -5,7 +5,9 @@ FROM ubuntu:jammy
 LABEL maintainer="ffquintella"
 
 # Make necessary directories
-RUN mkdir -p /configurations /etc/apache2/ssl /passwords /var/log /var/log/lib/mysql /var/log/www/simplerisk /srnet
+RUN mkdir -p /configurations /etc/apache2/ssl /passwords /var/log /var/log/lib/mysql /var/log/www/simplerisk /srnet 
+RUN mkdir -p /var/log/apache2
+RUN mkdir -p /var/log/SRServer
                                                                     
 # Installing apt dependencies     
 RUN dpkg-divert --local --rename /usr/bin/ischroot && \
@@ -111,17 +113,18 @@ WORKDIR /var/www/
 COPY app/simplerisk /var/www/simplerisk
 COPY simplerisk.sql /scripts/db/simplerisk.sql
 
-RUN mkdir -p /var/log/apache2
-RUN chown -R www-data:www-data /var/log/apache2
-RUN mkdir -p /var/log/SRServer
-RUN chown -R www-data:www-data /var/log/SRServer
 
 RUN mkdir -p /scripts/dbmgmt/ 
 COPY restore_db.sh /scripts/dbmgmt/restore_db.sh
 RUN chmod +x /scripts/dbmgmt/restore_db.sh
 
+
+
+
 # Permissions
 RUN chown -R www-data:www-data /var/www/simplerisk && chown -R :www-data /var/log/apache2 && chmod g+rwx /var/log/apache2
+RUN chown -R www-data:www-data /var/log/SRServer
+
 
 # Setting up cronjob
 RUN echo "* * * * * /usr/bin/php -f /var/www/simplerisk/cron/cron.php > /dev/null 2>&1" >> /etc/cron.d/backup-cron && \
