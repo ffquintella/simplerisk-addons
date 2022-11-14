@@ -119,8 +119,6 @@ COPY restore_db.sh /scripts/dbmgmt/restore_db.sh
 RUN chmod +x /scripts/dbmgmt/restore_db.sh
 
 
-
-
 # Permissions
 RUN chown -R www-data:www-data /var/www/simplerisk && chown -R :www-data /var/log/apache2 && chmod g+rwx /var/log/apache2
 RUN chown -R www-data:www-data /var/log/SRServer
@@ -201,7 +199,8 @@ RUN chmod 755 /entrypoint.sh
 # Data to save
 VOLUME /passwords
 VOLUME /configurations
-VOLUME /var/log
+VOLUME /var/log/apache2
+VOLUME /var/log/SRServer
 VOLUME /var/lib/mysql
 VOLUME /etc/apache2/ssl
 VOLUME /var/www/simplerisk
