@@ -11,4 +11,13 @@ public interface IRiskManagementService
     /// <returns>List of risks</returns>
     /// <throws>UserNotAuthorizedException</throws>
     List<Risk> GetUserRisks(User user);
+
+    /// <summary>
+    /// Gets all risks
+    /// </summary>
+    /// <returns></returns>
+    List<Risk> GetAll();
+    
+    
+    
 }

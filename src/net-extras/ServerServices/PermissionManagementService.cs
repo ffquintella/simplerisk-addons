@@ -14,8 +14,12 @@ public class PermissionManagementService: IPermissionManagementService
         _dalManager = dalManager;
         _roleManagementService = roleManagementService;
     }
-    public bool UserHasPermission(User user, string Permission)
+    public bool UserHasPermission(User user, string permission)
     {
+        var permissions = GetUserPermissions(user);
+
+        if (permissions.Contains(permission)) return true;
+        
         return false;
     }
     
