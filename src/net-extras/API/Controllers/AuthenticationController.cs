@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
+using API.Tools;
 using DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -219,16 +220,14 @@ public class AuthenticationController : ControllerBase
     [Route("AuthenticatedUserInfo")]
     public AuthenticatedUserInfo GetAuthenticatedUserInfo()
     {
-        var userAccount = _httpContextAccessor.HttpContext!.User!.Identity!.Name!;
+        var userAccount =  UserHelper.GetUserName(_httpContextAccessor.HttpContext!.User.Identity);
         
         if (userAccount == null)
         {
             _logger.LogError("Authenticated userAccount not found");
             throw new UserNotFoundException();
         }
-
-        if (userAccount.Contains('@')) userAccount = userAccount.Split('@')[0];
-
+        
         var user = _userManagementService.GetUser(userAccount);
         if (user == null )
         {
