@@ -13,15 +13,18 @@ public class UserManagementService: IUserManagementService
     private DALManager? _dalManager;
     private ILogger _log;
     private IRoleManagementService _roleManagementService;
+    private readonly IPermissionManagementService _permissionManagement;
 
     public UserManagementService(DALManager dalManager,
         ILoggerFactory logger,
-        IRoleManagementService roleManagementService)
+        IRoleManagementService roleManagementService,
+        IPermissionManagementService permissionManagementService)
     {
         //_dbContext = dalManager.GetContext();
         _dalManager = dalManager;
         _log = logger.CreateLogger(nameof(UserManagementService));
         _roleManagementService = roleManagementService;
+        _permissionManagement = permissionManagementService;
     }
 
     public User? GetUser(string userName)
@@ -51,27 +54,9 @@ public class UserManagementService: IUserManagementService
         {
             throw new UserNotFoundException();
         }
-            
-        var permissions = new List<string>();
 
-        if (user.RoleId > 0)
-        {
-            var rolePermissions = _roleManagementService.GetRolePermissions(user.RoleId);
-            permissions = rolePermissions;
-        }
-        
-        var dbContext = _dalManager!.GetContext();
-        
-        var userPermissionsCon = dbContext!.PermissionToUsers.Where(pu => pu.UserId == userId).ToList();
-        
-        var userPermissions = dbContext!.Permissions.Where(p => userPermissionsCon.Select(upc=> upc.PermissionId ).Contains(p.Id)).ToList();
-
-        var strUserPermissions = userPermissions.Select(up=>up.Key).ToList();
-
-        var finalPermissions = permissions.Concat(strUserPermissions).ToList();
-        
-        return finalPermissions;
+        return _permissionManagement.GetUserPermissions(user);
     }
-    
-    
+
+
 }

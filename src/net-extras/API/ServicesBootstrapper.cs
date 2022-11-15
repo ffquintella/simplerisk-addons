@@ -48,5 +48,6 @@ public class ServicesBootstrapper
         services.AddTransient<IRiskManagementService, RiskManagementService>();
         services.AddTransient<IUserManagementService, UserManagementService>();
         services.AddTransient<IRoleManagementService, RoleManagementService>();
+        services.AddTransient<IPermissionManagementService, PermissionManagementService>();
     }
 }
