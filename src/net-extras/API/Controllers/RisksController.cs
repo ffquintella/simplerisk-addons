@@ -54,6 +54,8 @@ public class RisksController : ApiBaseController
             throw new UserNotFoundException();
         }
         
+        // We have the logged user... Now we can list the risks it has access to
+        
         var risks = new List<Risk>();
         
         
