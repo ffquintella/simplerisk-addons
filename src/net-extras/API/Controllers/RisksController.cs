@@ -37,7 +37,7 @@ public class RisksController : ApiBaseController
     [Route("")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<List<Risk>> GetAll()
+    public ActionResult<List<Risk>> GetAll([FromQuery] string? status = null)
     {
         var userAccount =  UserHelper.GetUserName(_httpContextAccessor.HttpContext!.User.Identity);
         
@@ -60,7 +60,7 @@ public class RisksController : ApiBaseController
 
         try
         {
-            risks = _riskManagement.GetUserRisks(user);
+            risks = _riskManagement.GetUserRisks(user, status);
 
             return Ok(risks);
         }
