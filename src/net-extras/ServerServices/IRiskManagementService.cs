@@ -9,5 +9,6 @@ public interface IRiskManagementService
     /// </summary>
     /// <param name="user"></param>
     /// <returns>List of risks</returns>
+    /// <throws>UserNotAuthorizedException</throws>
     List<Risk> GetUserRisks(User user);
 }

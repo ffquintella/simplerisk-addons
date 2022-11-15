@@ -57,9 +57,20 @@ public class RisksController : ApiBaseController
         // We have the logged user... Now we can list the risks it has access to
         
         var risks = new List<Risk>();
+
+        try
+        {
+            risks = _riskManagement.GetUserRisks(user);
+
+            return Ok(risks);
+        }
+        catch (UserNotAuthorizedException ex)
+        {
+            _logger.Warning($"The user {user.Name} is not authorized to see risks");
+            return this.Unauthorized();
+        }
         
         
-        return risks;
     }
     
 }
