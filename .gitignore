@@ -24,6 +24,8 @@
 /app/Config/database.php
 /vendors/*
 
+/build/*
+
 src/extras/authentication/vendor/
 
 src/extras/authentication/composer.lock
@@ -32,9 +34,6 @@ src/extras/authentication/settings.php
 
 composer.lock
 
-build/app/
-
-build/
 
 src/extras/api/vendor/
 
@@ -97,3 +96,29 @@ src/net-extras/ServerServices/bin/Release/net6.0/
 src/net-extras/ConsoleClient/bin/Release/net6.0/linux-x64/
 
 src/net-extras/ConsoleTest/bin/Release/net6.0/linux-x64/
+
+src/net-extras/build/bin/Debug/
+
+src/net-extras/build/obj/
+
+output/publish/api/
+
+output/publish/
+
+src/net-extras/API/bin/Release/net6.0/
+
+src/net-extras/.nuke/
+
+src/net-extras/output/publish/api/
+
+src/net-extras/output/publish/consoleClient/
+
+src/net-extras/output/publish/guiClient-lin/
+
+src/net-extras/output/publish/guiClient-win/
+
+src/net-extras/output/publish/
+
+src/net-extras/GUIClient/appsettings.development.json
+
+.nuke/

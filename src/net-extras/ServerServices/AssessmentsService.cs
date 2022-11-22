@@ -36,6 +36,12 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
 
         var assQuestions = GetQuestions(assessment.Id);
 
+        if (assQuestions is null)
+        {
+            Logger.Error("Error loading assessment questions");
+            return -1;
+        }
+
         foreach (var question in assQuestions)
         {
             var qdel = DeleteQuestion(question);
@@ -189,6 +195,13 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
             
             //Before deleting a question we need to delete all the answers it has
             var answers = GetQuestionAnswers(question.Id);
+
+            if (answers is null)
+            {
+                Logger.Error("Error loading asnswers from database");
+                return -1;
+            }
+            
             foreach (var answer in answers)
             {
                 var delAnsrRes = DeleteAnswer(answer);

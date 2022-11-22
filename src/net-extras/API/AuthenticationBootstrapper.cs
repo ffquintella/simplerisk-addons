@@ -1,8 +1,12 @@
+using System;
 using System.Text;
 using API.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Saml2.Authentication.Core.Configuration;
 using Serilog;
@@ -63,7 +67,7 @@ public static class AuthenticationBootstrapper
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         RequireExpirationTime = true,
-                        ValidateIssuerSigningKey = true,
+                        //ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
                         ValidateAudience = false
@@ -92,7 +96,8 @@ public static class AuthenticationBootstrapper
             {
                 options.DefaultRedirectUrl = "/Authentication/SAMLSingIn";
                 options.SignInScheme = "saml2.cookies";
-                options.IdentityProviderName = "stubidp.sustainsys";
+                options.IdentityProviderName = "saml2.provider";
+                
             });
         
         

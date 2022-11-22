@@ -59,6 +59,13 @@ if ($needsAuth) {
             $_SESSION['samlUserdata'] = $auth->getAttributes();
 
             $userName = $auth->getNameId();
+
+            if(str_contains($userName, "@")){
+                $mstr = explode("@", $userName);
+                $userName = $mstr[0];
+            }
+
+
             $_SESSION['samlUsername'] = $userName;
             Analog::log ('SAML authentication from user: '.$_SESSION['samlUsername'], Analog::INFO);
 

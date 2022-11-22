@@ -6,8 +6,8 @@
     <property name="appdir" value="./build/app" override="true" />
     <property name="srnet-dir" value="./build/srnet" override="true" />
 
-    <property name="version" value="20220823-001" override="true" />
-    <property name="srnet-version" value="0.10.1" override="true" />
+    <property name="version" value="20221013-001" override="true" />
+    <property name="srnet-version" value="0.15.1" override="true" />
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
@@ -18,6 +18,7 @@
         <mkdir dir="${simpleRiskInstallation}/extras" />
         <echo msg="Making directory ${simpleRiskInstallation}/extras/authentication" />
         <mkdir dir="${simpleRiskInstallation}/extras/authentication" />
+        <mkdir dir="${simpleRiskInstallation}/extras/notification" />
     </target>
 
     <!-- ============================================  -->
@@ -92,6 +93,8 @@
         <mkdir dir="${appdir}/simplerisk/extras/api" />
         <echo msg="Making directory ${appdir}/simplerisk/extras/notification" />
         <mkdir dir="${appdir}/simplerisk/extras/notification" />
+        <echo msg="Making directory ${appdir}/simplerisk/extras/srnet" />
+        <mkdir dir="${appdir}/simplerisk/extras/srnet" />
     </target>
 
     <property name="dblanguage" value="en" />
@@ -147,21 +150,64 @@
 
         <copy file="./src/extras/authentication/settings-example.php" tofile="${appdir}/simplerisk/extras/authentication/settings.php" overwrite="true" />
 
+        <copy todir="${builddir}/puppet" overwrite="true" >
+            <fileset dir="scripts/puppet">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
         <copy todir="${builddir}" file="configs/Dockerfile" /> 
 
         <!-- SRNET block-->
-        <property name="srnet-guiclient-lin-file" value="guiclient-linux-x64-${srnet-version}.zip" override="true" />
-        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/names/SRNET-GUIClient-lin-x64/versions/${srnet-version}/${srnet-guiclient-lin-file}" 
+        <property name="srnet-guiclient-lin-file" value="SRNET-GUIClient-lin-x64.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-guiclient-lin-file}" 
             dir="${srnet-dir}" followRedirects="true" />
-        <property name="srnet-guiclient-win-file" value="v${srnet-version}.zip" override="true" />
-        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/names/SRNET-GUIClient-win-x64/versions/${srnet-version}/${srnet-guiclient-win-file}" 
+
+        <property name="srnet-guiclient-win-file" value="SRNET-GUIClient-win-x64.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-guiclient-win-file}" 
             dir="${srnet-dir}" followRedirects="true" />
-        <property name="srnet-api-file" value="api-${srnet-version}.zip" override="true" />
-        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/names/SRNET-API/versions/${srnet-version}/${srnet-api-file}" 
+
+        <property name="srnet-server-file" value="SRNET-Server-lin-x64.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-server-file}" 
             dir="${srnet-dir}" followRedirects="true" />
-        <property name="srnet-consoleclient-file" value="console-client-${srnet-version}.zip" override="true" />
-        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/names/SRNET-ConsoleClient-linux-x64/versions/${srnet-version}/${srnet-consoleclient-file}" 
+
+        <property name="srnet-consoleclient-file" value="SRNET-ConsoleClient-lin-x64.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-consoleclient-file}" 
             dir="${srnet-dir}" followRedirects="true" />
+
+        <property name="srnet-guiclient-osx-file" value="SRNET-GUIClient-osx-x64.zip" override="true" />
+        <httpget url="https://dl.cloudsmith.io/public/uox/srnet/raw/versions/${srnet-version}/${srnet-guiclient-osx-file}" 
+            dir="${srnet-dir}" followRedirects="true" />
+
+
+        <mkdir dir="${builddir}/srnet-db" />
+        <copy todir="${builddir}/srnet-db" overwrite="true" >
+            <fileset dir="src/net-extras/DAL/Scripts/DB">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
+        <!-- UNZIPING -->
+        <property name="srnet-guiclient-lin-dir" value="${srnet-dir}/SRNET-GUIClient-lin" override="true" />
+        <unzip file="${srnet-dir}/${srnet-guiclient-lin-file}" todir="${srnet-guiclient-lin-dir}/" />
+        <delete file="${srnet-dir}/${srnet-guiclient-lin-file}" />
+
+        <property name="srnet-guiclient-win-dir" value="${srnet-dir}/SRNET-GUIClient-win" override="true" />
+        <unzip file="${srnet-dir}/${srnet-guiclient-win-file}" todir="${srnet-guiclient-win-dir}/" />
+        <delete file="${srnet-dir}/${srnet-guiclient-win-file}" />
+
+        <property name="srnet-guiclient-osx-dir" value="${srnet-dir}/SRNET-GUIClient-osx" override="true" />
+        <unzip file="${srnet-dir}/${srnet-guiclient-osx-file}" todir="${srnet-guiclient-osx-dir}/" />
+        <delete file="${srnet-dir}/${srnet-guiclient-osx-file}" />
+
+        <property name="srnet-server-dir" value="${srnet-dir}/SRNET-Server" override="true" />
+        <unzip file="${srnet-dir}/${srnet-server-file}" todir="${srnet-server-dir}/" />
+        <delete file="${srnet-dir}/${srnet-server-file}" />
+
+        <property name="srnet-consoleclient-dir" value="${srnet-dir}/SRNET-ConsoleClient" override="true" />
+        <unzip file="${srnet-dir}/${srnet-consoleclient-file}" todir="${srnet-consoleclient-dir}/" />
+        <delete file="${srnet-dir}/${srnet-consoleclient-file}" />
+
 
         <copy todir="${builddir}/common">
             <fileset dir="configs/common/">

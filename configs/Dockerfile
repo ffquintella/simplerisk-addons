@@ -5,14 +5,17 @@ FROM ubuntu:jammy
 LABEL maintainer="ffquintella"
 
 # Make necessary directories
-RUN mkdir -p /configurations /etc/apache2/ssl /passwords /var/{log,lib/mysql,www/simplerisk}
+RUN mkdir -p /configurations /etc/apache2/ssl /passwords /var/log /var/log/lib/mysql /var/log/www/simplerisk /srnet 
+RUN mkdir -p /var/log/apache2
+RUN mkdir -p /var/log/SRServer
                                                                     
 # Installing apt dependencies     
 RUN dpkg-divert --local --rename /usr/bin/ischroot && \
     ln -sf /bin/true /usr/bin/ischroot && \
     apt-get update && \
     apt-get upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install apt-utils \
+                                                      apache2 \
                                                       php \
                                                       php-mysql \
                                                       php-json \
@@ -34,8 +37,18 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
                                                       ufw \
                                                       sudo \
                                                       fish \
-                                                      supervisor && \
-    rm -rf /var/lib/apt/lists
+                                                      zip \
+                                                      supervisor \
+                                                      wget && \
+                                    cd /tmp && wget https://apt.puppet.com/puppet7-release-jammy.deb && \
+                                    dpkg -i puppet7-release-jammy.deb && \
+                                    apt-get update && \
+            DEBIAN_FRONTEND=noninteractive apt-get -y install puppet-agent \
+                                                              facter && \
+                                    rm -rf /var/lib/apt/lists
+
+
+RUN ln -s /opt/puppetlabs/bin/puppet /usr/bin/puppet
 
 # Create the OpenSSL password
 RUN < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c21 > /passwords/pass_openssl.txt
@@ -85,33 +98,99 @@ RUN sed -i 's/ServerSignature On/ServerSignature Off/g' /etc/apache2/conf-enable
 RUN echo %sudo  ALL=NOPASSWD: ALL >> /etc/sudoers && \
     echo "20220401-001" > /tmp/version
 
-# Download SimpleRisk
-#RUN rm -rf /var/www/html && \
-#    curl -sL https://github.com/simplerisk/database/raw/master/simplerisk-en-20220401-001.sql > /simplerisk.sql && \
-#    curl -sL https://github.com/simplerisk/bundles/raw/master/simplerisk-20220401-001.tgz | tar xz -C /var/www
+# COPY SRNET
+COPY srnet/ /srnet
 
+RUN chmod +x /srnet/SRNET-GUIClient-lin/GUIClient
+RUN chmod +x /srnet/SRNET-ConsoleClient/ConsoleClient
+RUN chmod +x /srnet/SRNET-Server/API
+
+COPY srnet-db/ /scripts/srnet-db
+COPY srnet-db/srnetdb.version /configurations/srnetdb.version
+
+# COPY Simple risk
 WORKDIR /var/www/
 COPY app/simplerisk /var/www/simplerisk
 COPY simplerisk.sql /scripts/db/simplerisk.sql
+
 
 RUN mkdir -p /scripts/dbmgmt/ 
 COPY restore_db.sh /scripts/dbmgmt/restore_db.sh
 RUN chmod +x /scripts/dbmgmt/restore_db.sh
 
-# Database PWD
-#RUN mysql < /scripts/db/mysql-init.sql
-#RUN mysqld_safe --init-file=/scripts/db/mysql-init.sql &
 
 # Permissions
 RUN chown -R www-data:www-data /var/www/simplerisk && chown -R :www-data /var/log/apache2 && chmod g+rwx /var/log/apache2
+RUN chown -R www-data:www-data /var/log/SRServer
+
 
 # Setting up cronjob
 RUN echo "* * * * * /usr/bin/php -f /var/www/simplerisk/cron/cron.php > /dev/null 2>&1" >> /etc/cron.d/backup-cron && \
     chmod 0644 /etc/cron.d/backup-cron && \
     crontab /etc/cron.d/backup-cron
 
+
+# Puppet stuff 
+ENV BASE_HOST "127.0.0.1"
+ENV BASE_URL "https://${BASE_HOST}/"
+ENV DBSERVER "127.0.0.1"
+ENV DBUSER "simplerisk"
+ENV DBPASSWORD ""
+ENV DBPORT "3306"
+ENV DBSCHEMA "simplerisk"
+
+ENV ENABLE_SAML "false"
+ENV IDP_ENTITY_ID "https://stubidp.sustainsys.com"
+ENV IDP_NAME "stubidp.sustainsys"
+ENV IDP_SSO_SERVICE "https://stubidp.sustainsys.com/"
+ENV IDP_SSOUT_SERVICE "https://stubidp.sustainsys.com/Logout"
+ENV IDP_ARTIFACT_RESOLVE_SRVC "https://stubidp.sustainsys.com/ArtifactResolve"
+ENV IDP_CERTIFICATE_FILE "Certificates/stubidp.sustainsys.com.cer"
+ENV SP_CERTIFICATE_FILE "Certificates/demowebapp.local.pfx"
+ENV SP_CERTIFICATE_PWD "pass"
+
+ENV SERVER_LOGGING "Information"
+ENV SERVER_HTTPS_PORT "5443"
+ENV SERVER_CERTIFICATE_FILE "Certificates/certificate.pfx"
+ENV SERVER_CERTIFICATE_PWD "pass"
+
+
+ENV FACTER_BASE_HOST $BASE_HOST
+ENV FACTER_BASE_URL $BASE_URL
+ENV FACTER_SRNET_URL "https://${BASE_HOST}:${SERVER_HTTPS_PORT}/"
+
+ENV FACTER_DBSERVER $DBSERVER
+ENV FACTER_DBUSER $DBUSER
+ENV FACTER_DBPASSWORD $DBPASSWORD
+ENV FACTER_DBPORT $DBPORT
+ENV FACTER_DBSCHEMA $DBSCHEMA
+
+ENV FACTER_ENABLE_SAML $ENABLE_SAML
+ENV FACTER_IDP_ENTITY_ID $IDP_ENTITY_ID
+ENV FACTER_IDP_NAME $IDP_NAME
+ENV FACTER_IDP_SSO_SERVICE $IDP_SSO_SERVICE
+ENV FACTER_IDP_SSOUT_SERVICE $IDP_SSOUT_SERVICE
+ENV FACTER_IDP_ARTIFACT_RESOLVE_SRVC $IDP_ARTIFACT_RESOLVE_SRVC
+ENV FACTER_IDP_CERTIFICATE_FILE $IDP_CERTIFICATE_FILE
+ENV FACTER_SP_CERTIFICATE_FILE $SP_CERTIFICATE_FILE
+ENV FACTER_SP_CERTIFICATE_PWD $SP_CERTIFICATE_PWD
+
+ENV FACTER_SERVER_LOGGING $SERVER_LOGGING
+ENV FACTER_SERVER_HTTPS_PORT $SERVER_HTTPS_PORT
+ENV FACTER_SERVER_CERTIFICATE_FILE $SERVER_CERTIFICATE_FILE
+ENV FACTER_SERVER_CERTIFICATE_PWD $SERVER_CERTIFICATE_PWD
+
+
+RUN  mkdir /etc/puppet/ ; mkdir /etc/puppet/manifests ; mkdir /etc/puppet/modules ; mkdir /opt/scripts
+COPY puppet/manifests /etc/puppet/manifests/
+COPY puppet/modules /etc/puppet/modules/
+RUN /usr/bin/puppet apply --modulepath=/etc/puppet/modules /etc/puppet/manifests/base.pp ; \
+    apt-get clean ; rm -rf /tmp/* ; rm -rf /var/cache/* ; rm -rf /var/tmp/* ; rm -rf /var/opt/staging
+
+
 EXPOSE 80
 EXPOSE 443
+EXPOSE 7072
 
 # Create the start script and set permissions
 COPY common/entrypoint.sh /entrypoint.sh
@@ -120,7 +199,8 @@ RUN chmod 755 /entrypoint.sh
 # Data to save
 VOLUME /passwords
 VOLUME /configurations
-VOLUME /var/log
+VOLUME /var/log/apache2
+VOLUME /var/log/SRServer
 VOLUME /var/lib/mysql
 VOLUME /etc/apache2/ssl
 VOLUME /var/www/simplerisk

@@ -2,7 +2,7 @@
 
 public class SecurityControlsStatistics
 {
-    public List<SecurityControlStatistic> SecurityControls { get; set; }
+    public List<SecurityControlStatistic> SecurityControls { get; set; } = new List<SecurityControlStatistic>();
     public List<FrameworkStatistic>? FameworkStats { get; set; }
 
 }

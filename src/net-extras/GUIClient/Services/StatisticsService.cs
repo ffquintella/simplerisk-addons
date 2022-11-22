@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using Avalonia.Logging;
 using Model.Authentication;
 using Model.DTO.Statistics;
@@ -9,14 +11,14 @@ using RestSharp;
 
 namespace GUIClient.Services;
 
-public class StatisticsService: ServiceBase, IStatisticsService 
+public class StatisticsService: ServiceBase, IStatisticsService
 {
-    
-    
 
-    public StatisticsService(IRestService restService): base(restService)
+    private IAuthenticationService _authenticationService;
+
+    public StatisticsService(IRestService restService, IAuthenticationService authenticationService): base(restService)
     {
-        
+        _authenticationService = authenticationService;
     }
     
     public List<RisksOnDay> GetRisksOverTime()
@@ -38,8 +40,12 @@ public class StatisticsService: ServiceBase, IStatisticsService
             return response;
             
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
         {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
             _logger.Error("Error getting risks over time message:{0}", ex.Message);
             throw new RestComunicationException("Error getting risks over time", ex);
         }

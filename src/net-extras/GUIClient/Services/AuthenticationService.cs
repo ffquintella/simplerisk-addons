@@ -184,6 +184,12 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
         return false;
     }
 
+    public void DiscardAuthenticationToken()
+    {
+        _mutableConfigurationService.SetConfigurationValue("IsAuthenticate", "false");
+        _mutableConfigurationService.RemoveConfigurationValue("AuthToken");
+        _mutableConfigurationService.RemoveConfigurationValue("AuthTokenTime");
+    }
     public int DoServerAuthentication(string user, string password)
     {
         var client = _restService.GetClient();

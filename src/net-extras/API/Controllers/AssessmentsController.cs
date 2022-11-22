@@ -134,6 +134,11 @@ public class AssessmentsController : ApiBaseController
         {
             Logger.Debug("Creating new assessment");
             var operResult = _assessmentsService.Create(assessment);
+            if (operResult.Item2 is null)
+            {
+                return StatusCode(500, "Error creating assessment");
+            }
+            
             if (operResult.Item1 == 1)
             {
                 return Conflict("Assessment already exists");

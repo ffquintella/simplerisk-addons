@@ -1,8 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Splat;
 using GUIClient.Configuration;
 using GUIClient.Models;
 using GUIClient.Services;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GUIClient;
 
@@ -20,14 +24,24 @@ public static  class ConfigurationBootstrapper
         RegisterMutableConfiguration(services, configuration);
 
     }
+
+    //private static string BaseDirectory { get; set; } = Path.GetDirectoryName( typeof(ConfigurationBootstrapper).Assembly.Location )!;
     
+#if DEBUG
     private static IConfiguration BuildConfiguration() =>
         new ConfigurationBuilder()
-            
-            .AddJsonFile("appsettings.json")
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.development.json")
             .AddUserSecrets<Program>()
             .Build();
-
+#else
+    private static IConfiguration BuildConfiguration() =>
+        new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+#endif
+    
     private static void RegisterMutableConfiguration(IMutableDependencyResolver services,
         IConfiguration configuration)
     {

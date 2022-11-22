@@ -85,7 +85,11 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
                     return Task.FromResult(AuthenticateResult.Fail("Invalid Client"));                    
                 }
 
-                var userObj = _userManagementService.GetUser(username!);
+                string usu = "";
+                if (username.Contains('@')) usu = username.Split('@')[0];
+                else usu = username;
+                
+                var userObj = _userManagementService.GetUser(usu);
                 
                 var permissions = _userManagementService.GetUserPermissions(userObj!.Value);
                 
@@ -184,8 +188,13 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
         if (string.IsNullOrEmpty(username))
             return false;
 
+        string usu;
+        if (username.Contains('@'))
+        {
+            usu = username.Split('@')[0];
+        } else usu = username;
+        
         // Validate to check whether username exists in system
-        var usu = username;
         var dbContext = _dalManager.GetContext();
         var user = dbContext?.Users?
             .Where(u => u.Enabled == true && u.Lockout == 0 && u.Username == Encoding.UTF8.GetBytes(usu))

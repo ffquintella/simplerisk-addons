@@ -614,7 +614,7 @@ function notify_risk_comment($risk_id, $comment){
 
 
 
-function notify_new_risk($risk_id, $risk_name){
+function notify_new_risk($risk_id){
     global $escaper ;
 
     if(get_notification_message_status("new_risk") == "enabled"){
@@ -624,9 +624,9 @@ function notify_new_risk($risk_id, $risk_name){
         Analog::log ('Sending notification for new risk:'.$risk_id + 1000, Analog::INFO);
 
         // Set up the test email
-        $name = "[SR] New risk - ".$escaper->escapeHtml($risk_name);
+        $name = "[SR] New risk - ".$escaper->escapeHtml($risk["subject"]);
         
-        $subject = "[SR] New risk - ".$escaper->escapeHtml($risk_name);
+        $subject = "[SR] New risk - ".$escaper->escapeHtml($risk["subject"]);
         $full_message = replace_notification_variables(get_notification_message("new_risk"), ["risk"=>$risk]);
 
 

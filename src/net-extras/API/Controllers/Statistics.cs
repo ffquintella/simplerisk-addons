@@ -142,19 +142,19 @@ public class Statistics : ApiBaseController
             .GroupBy(cr => cr.ControlId)
             .Select(fc => new SecurityControlStatistic
         {
-            TotalRisk = risks.Where(r => r.ControlNumber == fc.FirstOrDefault().ControlNumber).Select(risk => risk.CalculatedRisk).Sum(),
-            Framework = fc.FirstOrDefault().Framework,
-            FrameworkId = fc.FirstOrDefault().FrameworkId,
-            ControlId = fc.FirstOrDefault().ControlId,
-            ReferemceName = fc.FirstOrDefault().ReferemceName,
-            ControlName = fc.FirstOrDefault().ControlName,
-            ClassId = fc.FirstOrDefault().ClassId,
-            MaturityId = fc.FirstOrDefault().MaturityId,
-            DesireedMaturityId = fc.FirstOrDefault().DesireedMaturityId,
-            PiorityId = fc.FirstOrDefault().PiorityId,
-            Status = fc.FirstOrDefault().Status,
-            Deleted = fc.FirstOrDefault().Deleted,
-            ControlNumber = fc.FirstOrDefault().ControlNumber,
+            TotalRisk = risks.Where(r => r.ControlNumber == fc.FirstOrDefault()!.ControlNumber).Select(risk => risk.CalculatedRisk).Sum(),
+            Framework = fc.FirstOrDefault()!.Framework,
+            FrameworkId = fc.FirstOrDefault()!.FrameworkId,
+            ControlId = fc.FirstOrDefault()!.ControlId,
+            ReferemceName = fc.FirstOrDefault()!.ReferemceName,
+            ControlName = fc.FirstOrDefault()!.ControlName!,
+            ClassId = fc.FirstOrDefault()!.ClassId,
+            MaturityId = fc.FirstOrDefault()!.MaturityId,
+            DesireedMaturityId = fc.FirstOrDefault()!.DesireedMaturityId,
+            PiorityId = fc.FirstOrDefault()!.PiorityId,
+            Status = fc.FirstOrDefault()!.Status,
+            Deleted = fc.FirstOrDefault()!.Deleted,
+            ControlNumber = fc.FirstOrDefault()!.ControlNumber!,
         }).OrderBy(sc => sc.TotalRisk).ToList();
         
         var frameworkStats = dbControls

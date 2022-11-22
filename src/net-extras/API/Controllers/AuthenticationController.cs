@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
+using API.Tools;
 using DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -113,6 +114,8 @@ public class AuthenticationController : ControllerBase
             .SetSize(1)
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
         
+        _logger.LogDebug("Starting SAML REQUEST for id:{RequestId}", requestId);
+        
         return Redirect("/Authentication/SAMLSingIn");
     }
 
@@ -120,9 +123,16 @@ public class AuthenticationController : ControllerBase
     [Route("SAMLSingIn")]
     public ActionResult SAMLSingIn()
     {
-        string requestId = Request.Cookies["SAMLReqID"];  
+        if (!Request.Cookies.ContainsKey("SAMLReqID"))
+        {
+            _logger.LogError("No SAML request id found");
+            return BadRequest("No SAML request id found");
+        }
+        
+        string? requestId = Request.Cookies["SAMLReqID"];  
         if (requestId == null)
         {
+            _logger.LogError("No SAML request id found");
             return BadRequest("No SAML request id found");
         }
         
@@ -131,9 +141,17 @@ public class AuthenticationController : ControllerBase
             //First we need to know if the user exists on the database and if it´s a SAML user
             var dbContext = _dalManager.GetContext();
             var reqUser = _httpContextAccessor.HttpContext!.User!.Identity!.Name!;
+
+            if (!reqUser.Contains('@'))
+            {
+                _logger.LogError("User not in email format");
+                return BadRequest("SAML user not in email format");
+            }
+            
+            var user = reqUser.Split('@')[0];
             
             var dbUser = dbContext?.Users?
-                .Where(u => u.Type == "saml" && u.Enabled == true && u.Lockout == 0 && u.Username == Encoding.UTF8.GetBytes(reqUser))
+                .Where(u => u.Type == "saml" && u.Enabled == true && u.Lockout == 0 && u.Username == Encoding.UTF8.GetBytes(user))
                 .FirstOrDefault();
 
             if (dbUser is null) return BadRequest("Invalid user");
@@ -141,6 +159,7 @@ public class AuthenticationController : ControllerBase
             //Now we know the user is valid, we can issue the token.
             if (samlRequest.Status == "requested")
             {
+                _logger.LogInformation("SAML request accepted for user {User}", dbUser.Name);
                 samlRequest.Status = "accepted";
                 samlRequest.UserName = _httpContextAccessor.HttpContext!.User!.Identity!.Name!;
 
@@ -179,6 +198,9 @@ public class AuthenticationController : ControllerBase
             {
                 return Unauthorized("Not accepted");
             }
+            _logger.LogInformation("Authentication token created for user: {0} fromip: {1}", 
+                samlRequest.UserName,
+                _httpContextAccessor.HttpContext!.Connection.RemoteIpAddress);
             return Ok(GenerateToken(samlRequest.UserName));
         }
         else
@@ -198,14 +220,14 @@ public class AuthenticationController : ControllerBase
     [Route("AuthenticatedUserInfo")]
     public AuthenticatedUserInfo GetAuthenticatedUserInfo()
     {
-        var userAccount = _httpContextAccessor.HttpContext!.User!.Identity!.Name!;
+        var userAccount =  UserHelper.GetUserName(_httpContextAccessor.HttpContext!.User.Identity);
         
         if (userAccount == null)
         {
             _logger.LogError("Authenticated userAccount not found");
             throw new UserNotFoundException();
         }
-
+        
         var user = _userManagementService.GetUser(userAccount);
         if (user == null )
         {

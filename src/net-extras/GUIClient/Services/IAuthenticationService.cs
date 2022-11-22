@@ -60,6 +60,12 @@ public interface IAuthenticationService
     /// <returns>true if ok; false if not</returns>
     bool CheckSamlAuthentication(string requestId);
     int RefreshToken();
+
+
+    /// <summary>
+    /// Discards the authentication token
+    /// </summary>
+    void DiscardAuthenticationToken();
     
     event EventHandler? AuthenticationSucceeded;
 }

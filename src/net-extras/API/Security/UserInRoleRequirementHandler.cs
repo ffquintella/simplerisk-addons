@@ -27,7 +27,9 @@ public class UserInRoleRequirementHandler: AuthorizationHandler<UserInRoleRequir
             context.Fail(new AuthorizationFailureReason(this, "User do not exists"));
             return Task.CompletedTask;
         }
-            
+
+        if (userName.Contains('@')) userName = userName.Split('@')[0];
+        
         var user = _dbContext?.Users
             .FirstOrDefault<User>(u => u.Username ==  Encoding.UTF8.GetBytes(userName));
         
