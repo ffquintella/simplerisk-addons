@@ -61,6 +61,7 @@ public class RiskManagementService: IRiskManagementService
 
         using (var contex = _dalManager.GetContext())
         {
+            
             if (status != null)
             {
                 risks = contex.Risks.Where(r => r.Status == status).ToList();
@@ -72,6 +73,31 @@ public class RiskManagementService: IRiskManagementService
         return risks;
     }
 
+    public List<Risk> GetRisksNeedingReview(string? status = null)
+    {
+        var risks = new List<Risk>();
+
+        using (var contex = _dalManager.GetContext())
+        {
+            if (status != null)
+            {
+                risks = contex.Risks.Where(r => r.Status == status)
+                    .Where(r => !contex.MgmtReviews
+                        .Select(mr => mr.RiskId)
+                        .Contains(r.Id)
+                    ).ToList();
+                
+            } else risks = contex.Risks
+                .Where(r => !contex.MgmtReviews
+                    .Select(mr => mr.RiskId)
+                    .Contains(r.Id)
+                ).ToList();
+            
+        }
+        
+        return risks;
+    }
+    
     private bool UserHasRisksPermission(User user, string permission = "riskmanagement")
     {
         if (user.Admin) return true;

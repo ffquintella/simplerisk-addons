@@ -120,6 +120,15 @@ public static class AuthenticationBootstrapper
                     .Requirements.Add(new ValidUserRequirement());
                 policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"assessments"}));
             });
+            options.AddPolicy("RequireMgmtReviewAccess", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+                policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []
+                {
+                    "review_insignificant", "review_low", "review_medium", "review_high", "review_veryhigh", "comment_risk_management"
+                }));
+            });
             options.AddPolicy("RequireAdminOnly", policy =>
             {
                 policy.RequireAuthenticatedUser()

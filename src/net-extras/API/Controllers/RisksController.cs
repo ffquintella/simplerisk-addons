@@ -32,12 +32,8 @@ public class RisksController : ApiBaseController
         _httpContextAccessor = httpContextAccessor;
         _userManagementService = userManagementService;
     }
-    
-    [HttpGet]
-    [Route("")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<List<Risk>> GetAll([FromQuery] string? status = null)
+
+    private User GetUser()
     {
         var userAccount =  UserHelper.GetUserName(_httpContextAccessor.HttpContext!.User.Identity);
         
@@ -53,9 +49,19 @@ public class RisksController : ApiBaseController
             _logger.Error("Authenticated user not found");
             throw new UserNotFoundException();
         }
-        
-        // We have the logged user... Now we can list the risks it has access to
-        
+
+        return user;
+    }
+    
+    [HttpGet]
+    [Route("")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<Risk>> GetAll([FromQuery] string? status = null)
+    {
+
+        var user = GetUser();
+
         var risks = new List<Risk>();
 
         try
@@ -71,6 +77,43 @@ public class RisksController : ApiBaseController
         }
         
         
+    }
+
+    [HttpGet]
+    [Authorize(Policy = "RequireMgmtReviewAccess")]
+    [Route("ManagementReviews")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<MgmtReview>> GetAllMangementReviews([FromQuery] string? status = null)
+    {
+        var reviews = new List<MgmtReview>();
+
+
+        return reviews;
+    }
+
+    [HttpGet]
+    [Route("NeedingMgmtReviews")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<Risk>> GetRisksNeedingMgmtReviews([FromQuery] string? status = null)
+    {
+        var user = GetUser();
+
+        var risks = new List<Risk>();
+        try
+        {
+            risks = _riskManagement.GetRisksNeedingReview(status);
+
+            return Ok(risks);
+        }
+        catch (UserNotAuthorizedException ex)
+        {
+            _logger.Warning($"The user {user.Name} is not authorized to see risks");
+            return this.Unauthorized();
+        }
+
+        return risks;
     }
     
 }

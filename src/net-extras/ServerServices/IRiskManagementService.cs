@@ -19,7 +19,12 @@ public interface IRiskManagementService
     /// <param name="status">the status to use as filter</param>
     /// <returns></returns>
     List<Risk> GetAll(string? status = null);
-    
-    
-    
+
+
+    /// <summary>
+    /// Gets all the risks that needs a mgmtReview
+    /// </summary>
+    /// <param name="status">Filter risk status</param>
+    /// <returns>List of risks</returns>
+    List<Risk> GetRisksNeedingReview(string? status = null);
 }
