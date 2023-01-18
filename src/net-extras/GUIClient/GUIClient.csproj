@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
         <TrimMode>copyused</TrimMode>
@@ -9,11 +9,15 @@
       <UserSecretsId>0980864f-6d7c-49e8-bbe0-a6022c335350</UserSecretsId>
       <AssemblyVersion>0.10.1</AssemblyVersion>
       <FileVersion>0.10.1</FileVersion>
+      <LangVersion>11</LangVersion>
   </PropertyGroup>
     <ItemGroup>
         <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
         <None Remove=".gitignore" />
+        <None Update="appsettings.development.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup><!--This helps with theme dll-s trimming.
         If you will publish your application in self-contained mode with p:PublishTrimmed=true and it will use Fluent theme Default theme will be trimmed from the output and vice versa.
@@ -37,7 +41,7 @@
         <PackageReference Include="MessageBox.Avalonia" Version="2.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.2" />
         <PackageReference Include="RestSharp" Version="108.0.3" />
         <PackageReference Include="Serilog" Version="2.12.0" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
@@ -45,7 +49,7 @@
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
         <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
         <PackageReference Include="System.ComponentModel" Version="4.3.0" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
         <PackageReference Include="System.Text.Json" Version="7.0.1" />
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
     </ItemGroup>
