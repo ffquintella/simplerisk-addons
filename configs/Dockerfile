@@ -27,6 +27,7 @@ RUN dpkg-divert --local --rename /usr/bin/ischroot && \
                                                       php-curl \
                                                       php-zip \
                                                       php-gd \
+                                                      php-intl \
                                                       nfs-common \
                                                       chrony \
                                                       cron \
@@ -87,6 +88,7 @@ RUN openssl x509 -req -days 365 -in /etc/apache2/ssl/ssl.crt/simplerisk.csr -sig
 
 # Activate Apache modules
 RUN phpenmod ldap
+RUN phpenmod intl
 RUN a2enmod rewrite
 RUN a2enmod ssl
 RUN a2enconf security
