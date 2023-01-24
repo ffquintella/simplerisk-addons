@@ -122,3 +122,5 @@ src/net-extras/output/publish/
 src/net-extras/GUIClient/appsettings.development.json
 
 .nuke/
+
+src/net-extras/DAL/bin/Debug/net7.0/

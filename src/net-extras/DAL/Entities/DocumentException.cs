@@ -8,6 +8,7 @@ namespace DAL.Entities
         public int Value { get; set; }
         public string Name { get; set; } = null!;
         public int? PolicyDocumentId { get; set; }
+        public int FrameworkId { get; set; }
         public int? ControlFrameworkId { get; set; }
         public int? Owner { get; set; }
         public string AdditionalStakeholders { get; set; } = null!;
