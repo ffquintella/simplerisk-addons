@@ -54,9 +54,10 @@ public class NavigationBarViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _loggedUser, value);
     }
 
-    public ReactiveCommand<Button, Unit> BtDashboardClicked { get; }
+    public ReactiveCommand<MainWindow, Unit> BtDashboardClicked { get; }
     public ReactiveCommand<Window, Unit> BtSettingsClicked { get; }
     public ReactiveCommand<MainWindow, Unit> BtDeviceClicked { get; }
+    public ReactiveCommand<MainWindow, Unit> BtAssessmentClicked { get; }
     
     public NavigationBarViewModel(
         ServerConfiguration configuration)
@@ -71,9 +72,10 @@ public class NavigationBarViewModel: ViewModelBase
             Initialize();
         };
         
-        BtDashboardClicked = ReactiveCommand.Create<Button>(ExecuteOpenDashboard);
+        BtDashboardClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenDashboard);
         BtSettingsClicked = ReactiveCommand.Create<Window>(ExecuteOpenSettings);
         BtDeviceClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenDevice);
+        BtAssessmentClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAssessment);
     }
 
     public void Initialize()
@@ -105,18 +107,7 @@ public class NavigationBarViewModel: ViewModelBase
         dialog.ShowDialog( sender );
 
     }
-
-    public void OnSettingsCommand(NavigationBar parentControl)
-    {
-        
-        var dialog = new Settings()
-        {
-            DataContext = new SettingsViewModel(_configuration),
-            WindowStartupLocation = WindowStartupLocation.CenterOwner
-        };
-        dialog.ShowDialog( parentControl.ParentWindow );
-
-    }
+    
     
     public void OnAccountCommand(NavigationBar parentControl)
     {
@@ -141,31 +132,17 @@ public class NavigationBarViewModel: ViewModelBase
         
     }
     
-    public void OnDeviceCommand(NavigationBar parentControl)
+    public void  ExecuteOpenDashboard(MainWindow window)
     {
-        ((MainWindowViewModel)parentControl.ParentWindow.DataContext!)
-            .NavigateTo(AvaliableViews.Devices);
-        
-    }
-    
-    public void  ExecuteOpenDashboard(Button sender)
-    {
-        var button = ( sender as Button )!;
-        
-        ((MainWindowViewModel)(button.Parent).Parent.DataContext!)
+
+        ((MainWindowViewModel)window.DataContext!)
             .NavigateTo(AvaliableViews.Dashboard);
     }
-    
-    public void OnDashboardCommand(NavigationBar parentControl)
+
+    public void ExecuteOpenAssessment(MainWindow window)
     {
-        ((MainWindowViewModel)parentControl.ParentWindow.DataContext!)
-            .NavigateTo(AvaliableViews.Dashboard);
-        
-    }
-    public void OnAssessmentCommand(NavigationBar parentControl)
-    {
-        ((MainWindowViewModel)parentControl.ParentWindow.DataContext!)
+        ((MainWindowViewModel)window.DataContext!)
             .NavigateTo(AvaliableViews.Assessment);
-        
     }
+    
 }
