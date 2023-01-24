@@ -44,6 +44,7 @@ public class GeneralServicesBootstrapper
             resolver.GetService<IEnvironmentService>()
         ));
         
+        services.RegisterLazySingleton<IRisksService>(() => new RisksService(resolver.GetService<IRestService>()));
     }
 
 }
