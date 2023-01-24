@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using GUIClient.Configuration;
 using GUIClient.Models;
 using GUIClient.Services;
@@ -51,6 +54,13 @@ public class NavigationBarViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _loggedUser, value);
     }
 
+    public ReactiveCommand<MainWindow, Unit> BtDashboardClicked { get; }
+    public ReactiveCommand<Window, Unit> BtSettingsClicked { get; }
+    public ReactiveCommand<MainWindow, Unit> BtDeviceClicked { get; }
+    public ReactiveCommand<MainWindow, Unit> BtAssessmentClicked { get; }
+    
+    public ReactiveCommand<MainWindow, Unit> BtAccountClicked { get; }
+    
     public NavigationBarViewModel(
         ServerConfiguration configuration)
     {
@@ -63,6 +73,12 @@ public class NavigationBarViewModel: ViewModelBase
         {
             Initialize();
         };
+        
+        BtDashboardClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenDashboard);
+        BtSettingsClicked = ReactiveCommand.Create<Window>(ExecuteOpenSettings);
+        BtDeviceClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenDevice);
+        BtAssessmentClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAssessment);
+        BtAccountClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAccount);
     }
 
     public void Initialize()
@@ -72,10 +88,6 @@ public class NavigationBarViewModel: ViewModelBase
     
     public void UpdateAuthenticationStatus()
     {
-        /*while (!_authenticationService.IsAuthenticated)
-        {
-            Task.Delay(1000);
-        }*/
 
         IsEnabled = true;
         if (AuthenticationService!.AuthenticatedUserInfo == null) AuthenticationService.GetAuthenticatedUserInfo();
@@ -83,20 +95,19 @@ public class NavigationBarViewModel: ViewModelBase
         if (AuthenticationService.AuthenticatedUserInfo.UserRole == "Administrator") IsAdmin = true;
         if (AuthenticationService.AuthenticatedUserInfo.UserPermissions!.Contains("assessments")) HasAssessmentPermission = true;
     }
-    
-    public void OnSettingsCommand(NavigationBar parentControl)
+
+    public void ExecuteOpenSettings(Window sender)
     {
-        
         var dialog = new Settings()
         {
             DataContext = new SettingsViewModel(_configuration),
             WindowStartupLocation = WindowStartupLocation.CenterOwner
         };
-        dialog.ShowDialog( parentControl.ParentWindow );
+        dialog.ShowDialog( sender );
 
     }
-    
-    public void OnAccountCommand(NavigationBar parentControl)
+
+    public void ExecuteOpenAccount(MainWindow window)
     {
         if (AuthenticationService == null)
         {
@@ -108,27 +119,28 @@ public class NavigationBarViewModel: ViewModelBase
             DataContext = new UserInfoViewModel(AuthenticationService.AuthenticatedUserInfo!),
             WindowStartupLocation = WindowStartupLocation.CenterOwner
         };
-        dialog.ShowDialog( parentControl.ParentWindow );
-
+        dialog.ShowDialog( window );
     }
     
-    public void OnDeviceCommand(NavigationBar parentControl)
+    
+    public void ExecuteOpenDevice(MainWindow window)
     {
-        ((MainWindowViewModel)parentControl.ParentWindow.DataContext!)
+        ((MainWindowViewModel)window.DataContext!)
             .NavigateTo(AvaliableViews.Devices);
         
     }
     
-    public void OnDashboardCommand(NavigationBar parentControl)
+    public void  ExecuteOpenDashboard(MainWindow window)
     {
-        ((MainWindowViewModel)parentControl.ParentWindow.DataContext!)
+
+        ((MainWindowViewModel)window.DataContext!)
             .NavigateTo(AvaliableViews.Dashboard);
-        
     }
-    public void OnAssessmentCommand(NavigationBar parentControl)
+
+    public void ExecuteOpenAssessment(MainWindow window)
     {
-        ((MainWindowViewModel)parentControl.ParentWindow.DataContext!)
+        ((MainWindowViewModel)window.DataContext!)
             .NavigateTo(AvaliableViews.Assessment);
-        
     }
+    
 }

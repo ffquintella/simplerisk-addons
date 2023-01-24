@@ -125,14 +125,14 @@
                         <StackPanel Grid.Row="0" IsEnabled="{Binding !!SelectedAssessment}">
                             <Button Grid.Column="0" Name="BtAddQuestion" 
                                     Margin="3 3 0 0"
-                                    Command="{Binding OnAddQuestionCommand}"
+                                    Command="{Binding BtAddQuestionClicked}"
                                     CommandParameter="{Binding ElementName=AssessmentViewName}"
                                     >
                                 <material:MaterialIcon Kind="Add"/>
                             </Button>
                             <Button Grid.Column="2" Name="BtEditQuestion"
                                     Margin="3 3 0 0"
-                                    Command="{Binding OnEditQuestionCommand}"
+                                    Command="{Binding BtEditQuestionClicked}"
                                     CommandParameter="{Binding ElementName=AssessmentViewName}"
                                     IsEnabled="{Binding !!SelectedAssessmentQuestion}">
                                 <material:MaterialIcon Kind="Edit"/>

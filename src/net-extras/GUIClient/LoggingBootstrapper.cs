@@ -14,6 +14,7 @@ public static class LoggingBootstrapper
     public static void RegisterLogging(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
     {
         var config = resolver.GetService<LoggingConfiguration>();
+        if (config == null) throw new Exception("Could not load configuration");
         var logFilePath = GetLogFileName(config, resolver);
         var logger = new LoggerConfiguration()
             .MinimumLevel.Override("Default", config.DefaultLogLevel)

@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using GUIClient.Configuration;
@@ -30,5 +31,10 @@ public partial class NavigationBar : UserControl
     {
         AvaloniaXamlLoader.Load(this);
     }
-    private static T GetService<T>() => Locator.Current.GetService<T>();
+    private static T GetService<T>()
+    {
+        var result = Locator.Current.GetService<T>();
+        if (result == null) throw new Exception("Could not find service of class: " + typeof(T).Name);
+        return result;
+    } 
 }

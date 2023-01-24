@@ -153,6 +153,10 @@ public class AssessmentViewModel: ViewModelBase
     public ReactiveCommand<Unit, Unit> BtDeleteAssessmentClicked { get; }
     public ReactiveCommand<bool, Unit> BtSaveAssessmentClicked { get; }
     public ReactiveCommand<Unit, Unit> BtDeleteQuestionClicked { get; }
+    
+    public ReactiveCommand<AssessmentView, Unit> BtAddQuestionClicked { get; }
+    public ReactiveCommand<AssessmentView, Unit> BtEditQuestionClicked { get; }
+    
     public AssessmentViewModel() : base()
     {
         
@@ -174,6 +178,8 @@ public class AssessmentViewModel: ViewModelBase
         BtSaveAssessmentClicked = ReactiveCommand.Create<bool>(ExecuteSaveAssessment);
         BtDeleteAssessmentClicked = ReactiveCommand.Create(ExecuteDeleteAssessment);
         BtDeleteQuestionClicked = ReactiveCommand.Create(ExecuteDeleteQuestion);
+        BtAddQuestionClicked = ReactiveCommand.Create<AssessmentView>(ExecuteAddQuestion);
+        BtEditQuestionClicked = ReactiveCommand.Create<AssessmentView>(ExecuteEditQuestion);
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
@@ -272,7 +278,7 @@ public class AssessmentViewModel: ViewModelBase
         
     }
     
-    public async void OnAddQuestionCommand(AssessmentView parentControl)
+    public async void ExecuteAddQuestion(AssessmentView parentControl)
     {
         
         var dialog = new AssessmentQuestionView()
@@ -289,7 +295,7 @@ public class AssessmentViewModel: ViewModelBase
         
     }
     
-    public async void OnEditQuestionCommand(AssessmentView parentControl)
+    public async void ExecuteEditQuestion(AssessmentView parentControl)
     {
 
         if (_selectedAssessmentQuestion == null) throw new Exception("_selectedAssessmentQuestion cannot be null here");

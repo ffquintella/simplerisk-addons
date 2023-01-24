@@ -1,4 +1,5 @@
-﻿using GUIClient.Exceptions;
+﻿using System;
+using GUIClient.Exceptions;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using ReactiveUI;
@@ -46,7 +47,12 @@ namespace GUIClient.ViewModels
 
         }
         
-        protected static T GetService<T>() => Locator.Current.GetService<T>();
+        protected static T GetService<T>()
+        {
+            var result = Locator.Current.GetService<T>();
+            if (result == null) throw new Exception("Could not find service of class: " + typeof(T).Name);
+            return result;
+        } 
     }
     
     
