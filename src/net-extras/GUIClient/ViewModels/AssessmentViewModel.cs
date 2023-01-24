@@ -155,7 +155,7 @@ public class AssessmentViewModel: ViewModelBase
     public ReactiveCommand<Unit, Unit> BtDeleteQuestionClicked { get; }
     
     public ReactiveCommand<AssessmentView, Unit> BtAddQuestionClicked { get; }
-    
+    public ReactiveCommand<AssessmentView, Unit> BtEditQuestionClicked { get; }
     
     public AssessmentViewModel() : base()
     {
@@ -179,6 +179,7 @@ public class AssessmentViewModel: ViewModelBase
         BtDeleteAssessmentClicked = ReactiveCommand.Create(ExecuteDeleteAssessment);
         BtDeleteQuestionClicked = ReactiveCommand.Create(ExecuteDeleteQuestion);
         BtAddQuestionClicked = ReactiveCommand.Create<AssessmentView>(ExecuteAddQuestion);
+        BtEditQuestionClicked = ReactiveCommand.Create<AssessmentView>(ExecuteEditQuestion);
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
@@ -294,7 +295,7 @@ public class AssessmentViewModel: ViewModelBase
         
     }
     
-    public async void OnEditQuestionCommand(AssessmentView parentControl)
+    public async void ExecuteEditQuestion(AssessmentView parentControl)
     {
 
         if (_selectedAssessmentQuestion == null) throw new Exception("_selectedAssessmentQuestion cannot be null here");
