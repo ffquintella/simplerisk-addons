@@ -72,7 +72,7 @@ public class RisksController : ApiBaseController
         }
         catch (UserNotAuthorizedException ex)
         {
-            _logger.Warning($"The user {user.Name} is not authorized to see risks");
+            _logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
             return this.Unauthorized();
         }
         
@@ -109,11 +109,10 @@ public class RisksController : ApiBaseController
         }
         catch (UserNotAuthorizedException ex)
         {
-            _logger.Warning($"The user {user.Name} is not authorized to see risks");
+            _logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
             return this.Unauthorized();
         }
 
-        return risks;
     }
     
 }

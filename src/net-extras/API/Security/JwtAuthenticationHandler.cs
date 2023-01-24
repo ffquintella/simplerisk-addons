@@ -85,8 +85,9 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
                     return Task.FromResult(AuthenticateResult.Fail("Invalid Client"));                    
                 }
 
+                if (username == null) throw new Exception("Invalid username");
                 string usu = "";
-                if (username.Contains('@')) usu = username.Split('@')[0];
+                if (username!.Contains('@')) usu = username.Split('@')[0];
                 else usu = username;
                 
                 var userObj = _userManagementService.GetUser(usu);

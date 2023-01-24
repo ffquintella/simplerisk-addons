@@ -136,8 +136,10 @@ public class AuthenticationController : ControllerBase
             return BadRequest("No SAML request id found");
         }
         
-        if(_memoryCache.TryGetValue("SAML_REQ_"+requestId, out SAMLRequest samlRequest))
+        if(_memoryCache.TryGetValue("SAML_REQ_"+requestId, out SAMLRequest? samlRequest))
         {
+            if (samlRequest == null) throw new Exception("Error loading SAML Request");
+            
             //First we need to know if the user exists on the database and if it´s a SAML user
             var dbContext = _dalManager.GetContext();
             var reqUser = _httpContextAccessor.HttpContext!.User!.Identity!.Name!;
@@ -192,8 +194,9 @@ public class AuthenticationController : ControllerBase
     {
         Regex rgx = new Regex("[^a-zA-Z0-9 -]");
         requestId = rgx.Replace(requestId, "");
-        if (_memoryCache.TryGetValue("SAML_REQ_" + requestId, out SAMLRequest samlRequest))
+        if (_memoryCache.TryGetValue("SAML_REQ_" + requestId, out SAMLRequest? samlRequest))
         {
+            if (samlRequest == null) throw new Exception("Error loading SAML request");
             if(samlRequest.Status != "accepted")
             {
                 return Unauthorized("Not accepted");
