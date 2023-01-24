@@ -59,6 +59,8 @@ public class NavigationBarViewModel: ViewModelBase
     public ReactiveCommand<MainWindow, Unit> BtDeviceClicked { get; }
     public ReactiveCommand<MainWindow, Unit> BtAssessmentClicked { get; }
     
+    public ReactiveCommand<MainWindow, Unit> BtAccountClicked { get; }
+    
     public NavigationBarViewModel(
         ServerConfiguration configuration)
     {
@@ -76,6 +78,7 @@ public class NavigationBarViewModel: ViewModelBase
         BtSettingsClicked = ReactiveCommand.Create<Window>(ExecuteOpenSettings);
         BtDeviceClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenDevice);
         BtAssessmentClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAssessment);
+        BtAccountClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAccount);
     }
 
     public void Initialize()
@@ -85,10 +88,6 @@ public class NavigationBarViewModel: ViewModelBase
     
     public void UpdateAuthenticationStatus()
     {
-        /*while (!_authenticationService.IsAuthenticated)
-        {
-            Task.Delay(1000);
-        }*/
 
         IsEnabled = true;
         if (AuthenticationService!.AuthenticatedUserInfo == null) AuthenticationService.GetAuthenticatedUserInfo();
@@ -107,9 +106,8 @@ public class NavigationBarViewModel: ViewModelBase
         dialog.ShowDialog( sender );
 
     }
-    
-    
-    public void OnAccountCommand(NavigationBar parentControl)
+
+    public void ExecuteOpenAccount(MainWindow window)
     {
         if (AuthenticationService == null)
         {
@@ -121,9 +119,9 @@ public class NavigationBarViewModel: ViewModelBase
             DataContext = new UserInfoViewModel(AuthenticationService.AuthenticatedUserInfo!),
             WindowStartupLocation = WindowStartupLocation.CenterOwner
         };
-        dialog.ShowDialog( parentControl.ParentWindow );
-
+        dialog.ShowDialog( window );
     }
+    
     
     public void ExecuteOpenDevice(MainWindow window)
     {
