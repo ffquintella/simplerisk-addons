@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using GUIClient.Configuration;
 using GUIClient.Models;
 using GUIClient.Services;
@@ -51,6 +54,10 @@ public class NavigationBarViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _loggedUser, value);
     }
 
+    public ReactiveCommand<Button, Unit> BtDashboardClicked { get; }
+    public ReactiveCommand<Window, Unit> BtSettingsClicked { get; }
+    public ReactiveCommand<MainWindow, Unit> BtDeviceClicked { get; }
+    
     public NavigationBarViewModel(
         ServerConfiguration configuration)
     {
@@ -63,6 +70,10 @@ public class NavigationBarViewModel: ViewModelBase
         {
             Initialize();
         };
+        
+        BtDashboardClicked = ReactiveCommand.Create<Button>(ExecuteOpenDashboard);
+        BtSettingsClicked = ReactiveCommand.Create<Window>(ExecuteOpenSettings);
+        BtDeviceClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenDevice);
     }
 
     public void Initialize()
@@ -83,7 +94,18 @@ public class NavigationBarViewModel: ViewModelBase
         if (AuthenticationService.AuthenticatedUserInfo.UserRole == "Administrator") IsAdmin = true;
         if (AuthenticationService.AuthenticatedUserInfo.UserPermissions!.Contains("assessments")) HasAssessmentPermission = true;
     }
-    
+
+    public void ExecuteOpenSettings(Window sender)
+    {
+        var dialog = new Settings()
+        {
+            DataContext = new SettingsViewModel(_configuration),
+            WindowStartupLocation = WindowStartupLocation.CenterOwner
+        };
+        dialog.ShowDialog( sender );
+
+    }
+
     public void OnSettingsCommand(NavigationBar parentControl)
     {
         
@@ -112,11 +134,26 @@ public class NavigationBarViewModel: ViewModelBase
 
     }
     
+    public void ExecuteOpenDevice(MainWindow window)
+    {
+        ((MainWindowViewModel)window.DataContext!)
+            .NavigateTo(AvaliableViews.Devices);
+        
+    }
+    
     public void OnDeviceCommand(NavigationBar parentControl)
     {
         ((MainWindowViewModel)parentControl.ParentWindow.DataContext!)
             .NavigateTo(AvaliableViews.Devices);
         
+    }
+    
+    public void  ExecuteOpenDashboard(Button sender)
+    {
+        var button = ( sender as Button )!;
+        
+        ((MainWindowViewModel)(button.Parent).Parent.DataContext!)
+            .NavigateTo(AvaliableViews.Dashboard);
     }
     
     public void OnDashboardCommand(NavigationBar parentControl)

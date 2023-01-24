@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using Avalonia.Controls;
-using Avalonia.Styling;
+//using Avalonia.Styling;
 using DAL.Entities;
 using DynamicData;
 using GUIClient.Services;
