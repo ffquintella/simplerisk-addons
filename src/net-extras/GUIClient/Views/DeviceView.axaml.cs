@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using GUIClient.Services;
@@ -23,5 +24,10 @@ public partial class DeviceView : UserControl
         AvaloniaXamlLoader.Load(this);
     }
     
-    private static T GetService<T>() => Locator.Current.GetService<T>();
+    protected static T GetService<T>()
+    {
+        var result = Locator.Current.GetService<T>();
+        if (result == null) throw new Exception("Could not find service of class: " + typeof(T).Name);
+        return result;
+    } 
 }

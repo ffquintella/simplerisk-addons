@@ -7,44 +7,45 @@ using ILogger = Serilog.ILogger;
 
 namespace GUIClient;
 
-public class GeneralServicesBootstrapper
+public class GeneralServicesBootstrapper: BaseBootstrapper
 {
     
     public static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
     {
-        services.RegisterLazySingleton<ILocalizationService>(() => new LocalizationService(resolver.GetService<ILoggerFactory>()));
+
+        services.RegisterLazySingleton<ILocalizationService>(() => new LocalizationService(GetService<ILoggerFactory>()));
         
         services.RegisterLazySingleton<IRegistrationService>(() => 
-            new RegistrationService(resolver.GetService<ILoggerFactory>(), 
-                resolver.GetService<IMutableConfigurationService>(),
-                resolver.GetService<IRestService>()
+            new RegistrationService(GetService<ILoggerFactory>(), 
+                GetService<IMutableConfigurationService>(),
+                GetService<IRestService>()
                 ));
         
         services.RegisterLazySingleton<IAuthenticationService>(() => new AuthenticationService(
-            resolver.GetService<IRegistrationService>(),
-            resolver.GetService<IRestService>(),
-            resolver.GetService<IMutableConfigurationService>(),
-            resolver.GetService<IEnvironmentService>()
+            GetService<IRegistrationService>(),
+            GetService<IRestService>(),
+            GetService<IMutableConfigurationService>(),
+            GetService<IEnvironmentService>()
             ));
 
         services.RegisterLazySingleton<IClientService>(() => new ClientService(
-            resolver.GetService<IRestService>()
+            GetService<IRestService>()
         ));
         
         services.RegisterLazySingleton<IStatisticsService>(() => new StatisticsService(
-            resolver.GetService<IRestService>(), 
-            resolver.GetService<IAuthenticationService>()
+            GetService<IRestService>(), 
+            GetService<IAuthenticationService>()
         ));
         
-        services.RegisterLazySingleton<IAssessmentsService>(() => new AssessmentsService(resolver.GetService<IRestService>()));
+        services.RegisterLazySingleton<IAssessmentsService>(() => new AssessmentsService(GetService<IRestService>()));
 
         services.RegisterLazySingleton<IRestService>(() => new RestService(
-            resolver.GetService<ILoggerFactory>(),
-            resolver.GetService<ServerConfiguration>(),
-            resolver.GetService<IEnvironmentService>()
+            GetService<ILoggerFactory>(),
+            GetService<ServerConfiguration>(),
+            GetService<IEnvironmentService>()
         ));
         
-        services.RegisterLazySingleton<IRisksService>(() => new RisksService(resolver.GetService<IRestService>()));
+        services.RegisterLazySingleton<IRisksService>(() => new RisksService(GetService<IRestService>()));
     }
 
 }

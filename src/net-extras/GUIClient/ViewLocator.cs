@@ -7,9 +7,10 @@ namespace GUIClient
 {
     public class ViewLocator : IDataTemplate
     {
-        public IControl Build(object data)
+        public IControl Build(object? data)
         {
-            var name = data.GetType().FullName!.Replace("ViewModel", "View");
+            if (data == null) throw new Exception("Invalid data parameter");
+            var name = data!.GetType().FullName!.Replace("ViewModel", "View");
             var type = Type.GetType(name);
 
             if (type != null)
@@ -20,7 +21,7 @@ namespace GUIClient
             return new TextBlock {Text = "Not Found: " + name};
         }
 
-        public bool Match(object data)
+        public bool Match(object? data)
         {
             return data is ViewModelBase;
         }

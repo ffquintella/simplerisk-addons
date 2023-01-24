@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GUIClient;
 
-public static  class ConfigurationBootstrapper
+public  class ConfigurationBootstrapper: BaseBootstrapper
 {
     
     public static void RegisterConfiguration(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
@@ -79,6 +79,5 @@ public static  class ConfigurationBootstrapper
         services.RegisterConstant(config);
     }
     
-    private static T GetService<T>() => Locator.Current.GetService<T>();
 
 }
