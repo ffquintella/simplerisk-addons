@@ -204,4 +204,7 @@
     <data name="ControlRisk" xml:space="preserve">
         <value>Risk by Control</value>
     </data>
+    <data name="StrRiskPanel" xml:space="preserve">
+        <value>Risk Panel</value>
+    </data>
 </root>

@@ -32,6 +32,8 @@ public class DashboardViewModel : ViewModelBase
     private string StrRisksOverTime { get; }
     private string StrControlStatistics { get; }
     private string StrControlRisk { get; }
+    
+    private string StrRiskPanel { get; }
 
     private string? _lastUpdated;
     private string? LastUpdated
@@ -98,6 +100,7 @@ public class DashboardViewModel : ViewModelBase
         StrRisksOverTime = Localizer["RisksOverTime"];
         StrControlStatistics = Localizer["ControlStatistics"];
         StrControlRisk = Localizer["ControlRisk"];
+        StrRiskPanel = Localizer["StrRiskPanel"]; 
     }
 
     private void UpdateData()

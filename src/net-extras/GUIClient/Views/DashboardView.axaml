@@ -48,7 +48,7 @@
                 />
             </Grid>
             <Grid Grid.Row="1" Grid.Column="1" RowDefinitions="Auto,*"  Margin="3">
-                <TextBlock Grid.Row="0" Classes="header" Text="Risks" TextAlignment="Center"/>
+                <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrRiskPanel}" TextAlignment="Center"/>
                 <views:RisksPanelView Grid.Row="1"  
                                 MinWidth="400"
                                 MinHeight="270"
