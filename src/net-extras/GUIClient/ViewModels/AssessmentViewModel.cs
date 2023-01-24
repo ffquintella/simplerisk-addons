@@ -153,6 +153,10 @@ public class AssessmentViewModel: ViewModelBase
     public ReactiveCommand<Unit, Unit> BtDeleteAssessmentClicked { get; }
     public ReactiveCommand<bool, Unit> BtSaveAssessmentClicked { get; }
     public ReactiveCommand<Unit, Unit> BtDeleteQuestionClicked { get; }
+    
+    public ReactiveCommand<AssessmentView, Unit> BtAddQuestionClicked { get; }
+    
+    
     public AssessmentViewModel() : base()
     {
         
@@ -174,6 +178,7 @@ public class AssessmentViewModel: ViewModelBase
         BtSaveAssessmentClicked = ReactiveCommand.Create<bool>(ExecuteSaveAssessment);
         BtDeleteAssessmentClicked = ReactiveCommand.Create(ExecuteDeleteAssessment);
         BtDeleteQuestionClicked = ReactiveCommand.Create(ExecuteDeleteQuestion);
+        BtAddQuestionClicked = ReactiveCommand.Create<AssessmentView>(ExecuteAddQuestion);
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
@@ -272,7 +277,7 @@ public class AssessmentViewModel: ViewModelBase
         
     }
     
-    public async void OnAddQuestionCommand(AssessmentView parentControl)
+    public async void ExecuteAddQuestion(AssessmentView parentControl)
     {
         
         var dialog = new AssessmentQuestionView()
