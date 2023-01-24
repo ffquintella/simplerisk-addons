@@ -49,6 +49,6 @@ public class UserInfoViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _userInfo, value);
     }
     
-    private static T GetService<T>() => Locator.Current.GetService<T>();
+    //private static T GetService<T>() => Locator.Current.GetService<T>();
     
 }

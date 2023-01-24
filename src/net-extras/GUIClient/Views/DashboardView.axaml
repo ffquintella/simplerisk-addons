@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:GUIClient.ViewModels"
              xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+             xmlns:views="clr-namespace:GUIClient.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.DashboardView"
              MinHeight="600"
@@ -44,6 +45,14 @@
                               MinWidth="400"
                               MinHeight="270"
                               Background="#2e2d2d"
+                />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="1" RowDefinitions="Auto,*"  Margin="3">
+                <TextBlock Grid.Row="0" Classes="header" Text="Risks" TextAlignment="Center"/>
+                <views:RisksPanelView Grid.Row="1"  
+                                MinWidth="400"
+                                MinHeight="270"
+                                Background="#2e2d2d"
                 />
             </Grid>
         </Grid>

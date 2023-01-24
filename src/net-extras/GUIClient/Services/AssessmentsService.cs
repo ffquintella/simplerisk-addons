@@ -107,7 +107,7 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         }
         catch (Exception ex)
         {
-            _logger.Error("Error creating answers");
+            _logger.Error("Error creating answers: {0}", ex.Message);
         }
         
         return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
@@ -156,7 +156,7 @@ public class AssessmentsService: ServiceBase, IAssessmentsService
         }
         catch (Exception ex)
         {
-            _logger.Error("Error updating answers");
+            _logger.Error("Error updating answers: {0}", ex.Message);
         }
         return new Tuple<int, List<AssessmentAnswer>?>(-1, null);
     }

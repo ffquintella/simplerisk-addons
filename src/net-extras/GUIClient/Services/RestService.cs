@@ -40,7 +40,7 @@ public class RestService: IRestService
         _options = new RestClientOptions(_serverConfiguration.Url) {
             RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
             ThrowOnAnyError = true,
-            Timeout = 10000  // 10 second
+            MaxTimeout = 10000  // 10 second
         
         };
     }

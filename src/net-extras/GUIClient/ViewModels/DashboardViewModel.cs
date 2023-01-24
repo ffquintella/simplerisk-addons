@@ -33,8 +33,8 @@ public class DashboardViewModel : ViewModelBase
     private string StrControlStatistics { get; }
     private string StrControlRisk { get; }
 
-    private string _lastUpdated;
-    private string LastUpdated
+    private string? _lastUpdated;
+    private string? LastUpdated
     {
         get => _lastUpdated;
         set => this.RaiseAndSetIfChanged(ref _lastUpdated, value); }
@@ -132,8 +132,10 @@ public class DashboardViewModel : ViewModelBase
         // Security Control 
         var securityControlsStatistics = _statisticsService.GetSecurityControlStatistics();
 
-        var totalMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalMaturity).ToList();
-        var totalDesiredMaturity = securityControlsStatistics.FameworkStats.Select(s => s.TotalDesiredMaturity - s.TotalMaturity).ToList();
+        if (securityControlsStatistics.FameworkStats == null) throw new Exception("Error collecting statistics");
+        
+        var totalMaturity = securityControlsStatistics.FameworkStats!.Select(s => s.TotalMaturity).ToList();
+        var totalDesiredMaturity = securityControlsStatistics.FameworkStats!.Select(s => s.TotalDesiredMaturity - s.TotalMaturity).ToList();
         
         FrameworkControls = new ObservableCollection<ISeries>
         {

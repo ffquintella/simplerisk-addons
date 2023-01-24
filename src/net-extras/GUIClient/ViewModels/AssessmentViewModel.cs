@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -290,6 +291,8 @@ public class AssessmentViewModel: ViewModelBase
     
     public async void OnEditQuestionCommand(AssessmentView parentControl)
     {
+
+        if (_selectedAssessmentQuestion == null) throw new Exception("_selectedAssessmentQuestion cannot be null here");
         
         var dialog = new AssessmentQuestionView()
         {
@@ -297,16 +300,16 @@ public class AssessmentViewModel: ViewModelBase
         };
         
         dialog.DataContext = new AssessmentQuestionViewModel(dialog, SelectedAssessment!, 
-            _selectedAssessmentQuestion, AssessmentQuestionAnswers.ToList());
+            _selectedAssessmentQuestion!, AssessmentQuestionAnswers.ToList());
         
-        int index = AssessmentQuestions.IndexOf(_selectedAssessmentQuestion);
+        int index = AssessmentQuestions.IndexOf(_selectedAssessmentQuestion!);
         
         await dialog.ShowDialog( parentControl.ParentWindow );
 
-        var saq = ((AssessmentQuestionViewModel)dialog.DataContext!).AssessmentQuestion!.DeepCopy();
+        var saq = ((AssessmentQuestionViewModel)dialog!.DataContext!).AssessmentQuestion!.DeepCopy();
 
         AssessmentQuestions.RemoveAt(index);
-        AssessmentQuestions.Insert(index, saq);
+        AssessmentQuestions.Insert(index, saq!);
         SelectedAssessmentQuestion = AssessmentQuestions[index];
 
     }

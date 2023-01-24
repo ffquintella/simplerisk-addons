@@ -251,6 +251,6 @@ public class LoginViewModel : ViewModelBase
         Environment.Exit(0);
     }
     
-    private static T GetService<T>() => Locator.Current.GetService<T>();
+    //private static T GetService<T>() =>  Locator.Current.GetService<T>();
     
 }

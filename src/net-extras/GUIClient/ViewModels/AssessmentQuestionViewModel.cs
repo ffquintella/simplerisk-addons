@@ -154,6 +154,8 @@ public class AssessmentQuestionViewModel: ViewModelBase
             TxtQuestion = AssessmentQuestion.Question;
             Answers = new ObservableCollection<AssessmentAnswer>(selectedQuestionAnswers);
         }
+        
+        
 
         _assessmentsService = GetService<IAssessmentsService>();
 
@@ -181,17 +183,17 @@ public class AssessmentQuestionViewModel: ViewModelBase
 
         // first let´s add the new ones
         var crtAnswResult = _assessmentsService
-            .CreateAnswers(AssessmentQuestion.AssessmentId, AssessmentQuestion.Id, nAnswers);
+            .CreateAnswers(AssessmentQuestion!.AssessmentId, AssessmentQuestion!.Id, nAnswers);
         if (crtAnswResult.Item1 == 0)
         {
             // Now let´s update the old ones.
             var upAnswResult = _assessmentsService
-                .UpdateAnswers(AssessmentQuestion.AssessmentId, AssessmentQuestion.Id, upAnswer);
+                .UpdateAnswers(AssessmentQuestion!.AssessmentId, AssessmentQuestion!.Id, upAnswer);
             if (upAnswResult.Item1 == 0)
             {
                 //Now let´s delete 
-                var resultDel = _assessmentsService.DeleteAnswers(AssessmentQuestion.AssessmentId, 
-                    AssessmentQuestion.Id,
+                var resultDel = _assessmentsService.DeleteAnswers(AssessmentQuestion!.AssessmentId, 
+                    AssessmentQuestion!.Id,
                     _answersToDelete);
                 if(resultDel == 0) return 0;
                 else
@@ -291,8 +293,8 @@ public class AssessmentQuestionViewModel: ViewModelBase
             }
             else
             {
-                AssessmentQuestion.Question = TxtQuestion;
-                var result = _assessmentsService.UpdateQuestion(SelectedAssessment.Id, AssessmentQuestion);
+                AssessmentQuestion!.Question = TxtQuestion;
+                var result = _assessmentsService.UpdateQuestion(SelectedAssessment.Id, AssessmentQuestion!);
                 if (result.Item1 == 0)
                 {
                     AssessmentQuestion = result.Item2;
