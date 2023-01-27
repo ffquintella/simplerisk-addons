@@ -8,12 +8,24 @@
     <NukeRootDirectory>..</NukeRootDirectory>
     <NukeScriptDirectory>..\src\net-extras</NukeScriptDirectory>
     <NukeTelemetryVersion>1</NukeTelemetryVersion>
+    <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
+    <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
+    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
   </PropertyGroup>
-
+  <PropertyGroup Condition="'$(IsWindows)'=='true'">
+    <DefineConstants>Windows</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsOSX)'=='true'">
+    <DefineConstants>OSX</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsLinux)'=='true'">
+    <DefineConstants>Linux</DefineConstants>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Glob" Version="1.1.9" />
-    <PackageReference Include="Nuke.Common" Version="6.2.1" />
-    <PackageReference Include="RestSharp" Version="108.0.1" />
+    <PackageReference Include="Nuke.Common" Version="6.3.0" />
+    <PackageReference Include="RestSharp" Version="108.0.3" />
   </ItemGroup>
 
 </Project>

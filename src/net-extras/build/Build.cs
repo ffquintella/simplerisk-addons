@@ -39,7 +39,7 @@ class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
     
-#if LINUX
+#if Linux
     [Solution("net-extras.sln")]
     readonly Solution Solution;
 #else
