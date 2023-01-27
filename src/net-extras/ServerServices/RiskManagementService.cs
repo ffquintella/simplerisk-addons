@@ -22,8 +22,18 @@ public class RiskManagementService: IRiskManagementService
         _roleManagement = roleManagementService;
     }
 
+    /// <summary>
+    /// Gets the risks associated to a user
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="status"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidParameterException"></exception>
+    /// <exception cref="UserNotAuthorizedException"></exception>
     public List<Risk> GetUserRisks(User user, string? status = null)
     {
+        if (user == null) throw new InvalidParameterException("user","User cannot be null");
+        
         if (!UserHasRisksPermission(user)) throw new UserNotAuthorizedException(user.Name, user.Value, "risks");
         var risks = new List<Risk>();
 
@@ -37,8 +47,8 @@ public class RiskManagementService: IRiskManagementService
         {
             if (status != null)
             {
-                risks = context.Risks.Where(r => r.Status == status && (r.Owner == user.Value
-                                                 || r.SubmittedBy == user.Value
+                risks = context.Risks.Where(r => r.Status == status && (r.Owner == user.Value 
+                                                                        || r.SubmittedBy == user.Value
                                                  || r.Manager == user.Value)).ToList();
             }
             else
@@ -72,6 +82,7 @@ public class RiskManagementService: IRiskManagementService
         
         return risks;
     }
+
 
     public List<Risk> GetRisksNeedingReview(string? status = null)
     {

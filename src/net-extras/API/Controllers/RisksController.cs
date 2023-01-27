@@ -93,6 +93,34 @@ public class RisksController : ApiBaseController
     }
 
     [HttpGet]
+    [Route("MyRisks")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<Risk>> GetMyRisks([FromQuery] string? status = null)
+    {
+        var user = GetUser();
+
+        var risks = new List<Risk>();
+
+        try
+        {
+            risks = _riskManagement.GetUserRisks(user, status);
+
+            return Ok(risks);
+        }
+        catch (UserNotAuthorizedException ex)
+        {
+            _logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
+            return this.Unauthorized();
+        }
+        
+
+        return NotFound(risks);
+    }
+
+
+    [HttpGet]
     [Route("NeedingMgmtReviews")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
