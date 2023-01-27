@@ -107,7 +107,8 @@ public class RisksController : ApiBaseController
         {
             risks = _riskManagement.GetUserRisks(user, status);
 
-            return Ok(risks);
+            if(risks.Count > 0) return Ok(risks);
+            return NotFound(risks);
         }
         catch (UserNotAuthorizedException ex)
         {
@@ -115,8 +116,6 @@ public class RisksController : ApiBaseController
             return this.Unauthorized();
         }
         
-
-        return NotFound(risks);
     }
 
 
