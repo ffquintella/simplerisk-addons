@@ -123,4 +123,10 @@ src/net-extras/GUIClient/appsettings.development.json
 
 .nuke/
 
-src/net-extras/DAL/bin/Debug/net7.0/
+src/net-extras/*/bin
+
+src/net-extras/*/obj
+
+src/net-extras/*/Debug
+
+src/net-extras/*/net7.0
