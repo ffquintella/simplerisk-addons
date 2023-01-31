@@ -83,7 +83,7 @@ public class DashboardViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _controlRisks, value); 
     }
 
-    private RisksPanelViewModel _risksPanelViewModel;
+    public RisksPanelViewModel _risksPanelViewModel;
     
     public DashboardViewModel()
     {

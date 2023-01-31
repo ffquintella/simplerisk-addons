@@ -9,11 +9,11 @@
     <Design.DataContext>
         <vm:RisksPanelViewModel/>
     </Design.DataContext>
-    
-    <DataGrid  Name="QuestionsDataGrid" 
-                              Items="{Binding  Risks, Mode=TwoWay}" 
-                              AutoGenerateColumns="True"
-                              >
-
-    </DataGrid>
+    <Grid ColumnDefinitions="*">
+        <DataGrid Grid.Column="0" Name="QuestionsDataGrid" 
+                                  Items="{Binding  Risks, Mode=TwoWay}" 
+                                  AutoGenerateColumns="True"
+                                  >
+        </DataGrid>
+    </Grid>
 </UserControl>
