@@ -52,6 +52,9 @@ public class LoginViewModel : ViewModelBase
     private ServerConfiguration _serverConfiguration;
     public List<AuthenticationMethod> AuthenticationMethods => AuthenticationService.GetAuthenticationMethods();
     public ReactiveCommand<Window?, Unit> BtSSOClicked { get; }
+    public ReactiveCommand<Window?, Unit> BtLoginClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtExitClicked { get; }
+    
     public LoginViewModel()
     {
         StrNotAccepted = Localizer["NotAccepted"];
@@ -62,6 +65,8 @@ public class LoginViewModel : ViewModelBase
         StrEnvironment = Localizer["Environment"];
         
         BtSSOClicked = ReactiveCommand.Create<Window?>(ExecuteSSOLogin);
+        BtLoginClicked = ReactiveCommand.Create<Window?>(ExecuteLogin);
+        BtExitClicked = ReactiveCommand.Create(ExecuteExit);
 
         _serverConfiguration = GetService<ServerConfiguration>();
         
@@ -170,7 +175,7 @@ public class LoginViewModel : ViewModelBase
             await messageBoxStandardWindow.Show(); 
         }
     }
-    public async void OnLoginClickCommand(Window? loginWindow)
+    public async void ExecuteLogin(Window? loginWindow)
     {
         ProgressBarValue = 0;
         if (AuthenticationMethod == null)
@@ -246,7 +251,7 @@ public class LoginViewModel : ViewModelBase
         }
     }
     
-    public void OnExitClickCommand()
+    public void ExecuteExit()
     {
         Environment.Exit(0);
     }

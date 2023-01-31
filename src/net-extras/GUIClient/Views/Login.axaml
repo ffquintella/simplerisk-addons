@@ -82,13 +82,13 @@
                         <Button Name="BtLogin" 
                                 IsEnabled="{Binding IsAccepted , Mode=TwoWay}" 
                                 Margin="5 0"
-                                Command="{Binding OnLoginClickCommand}"
+                                Command="{Binding BtLoginClicked}"
                                 CommandParameter="{Binding ElementName=LoginWindow}">
                             <TextBlock Text="{Binding StrLogin}" />
                         </Button>
                         <Button  Name="BtExit" 
                                  Margin="5 0"
-                                 Command="{Binding OnExitClickCommand}">
+                                 Command="{Binding BtExitClicked}">
                             <TextBlock Text="{Binding StrExit}"/>
                         </Button>
                     </StackPanel>
