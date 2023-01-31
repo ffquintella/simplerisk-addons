@@ -207,4 +207,10 @@
     <data name="StrRiskPanel" xml:space="preserve">
         <value>Risk Panel</value>
     </data>
+    <data name="Status" xml:space="preserve">
+        <value>Status</value>
+    </data>
+    <data name="SubmissionDate" xml:space="preserve">
+        <value>Submission Date</value>
+    </data>
 </root>

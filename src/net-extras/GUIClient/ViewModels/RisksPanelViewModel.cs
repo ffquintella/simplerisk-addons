@@ -12,6 +12,8 @@ public class RisksPanelViewModel: ViewModelBase
     private bool _initialized = false;
 
     private string StrSubject { get;  }
+    private string StrStatus { get;  }
+    private string StrSubmissionDate { get;  }
     
     private ObservableCollection<Risk> _risks;
 
@@ -32,6 +34,8 @@ public class RisksPanelViewModel: ViewModelBase
         BtTesteClicked = ReactiveCommand.Create(ExecuteTest);
         
         StrSubject= Localizer["Subject"];
+        StrStatus = Localizer["Status"];
+        StrSubmissionDate = Localizer["SubmissionDate"];
     }
     
     public void ExecuteTest()

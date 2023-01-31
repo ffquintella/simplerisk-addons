@@ -422,5 +422,17 @@ namespace GUIClient.Resources {
                 return ResourceManager.GetString("StrRiskPanel", resourceCulture);
             }
         }
+        
+        internal static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        internal static string SubmissionDate {
+            get {
+                return ResourceManager.GetString("SubmissionDate", resourceCulture);
+            }
+        }
     }
 }
