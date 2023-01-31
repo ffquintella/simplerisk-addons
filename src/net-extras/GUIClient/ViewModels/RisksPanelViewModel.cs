@@ -11,6 +11,8 @@ public class RisksPanelViewModel: ViewModelBase
 {
     private bool _initialized = false;
 
+    private string StrSubject { get;  }
+    
     private ObservableCollection<Risk> _risks;
 
     public ObservableCollection<Risk> Risks
@@ -28,6 +30,8 @@ public class RisksPanelViewModel: ViewModelBase
         _risksService = GetService<IRisksService>();
         _risks =  new ObservableCollection<Risk>(new List<Risk>());
         BtTesteClicked = ReactiveCommand.Create(ExecuteTest);
+        
+        StrSubject= Localizer["Subject"];
     }
     
     public void ExecuteTest()

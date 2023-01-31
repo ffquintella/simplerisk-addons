@@ -22,7 +22,7 @@
                                     Header="ID" 
                                     Binding="{Binding Id}"/>
                 <DataGridTextColumn IsReadOnly="True" 
-                                    Header="Subject" 
+                                    Header="{Binding StrSubject}" 
                                     Binding="{Binding Subject}"/>
             </DataGrid.Columns>
         </DataGrid>
