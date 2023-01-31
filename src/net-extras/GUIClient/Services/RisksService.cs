@@ -1,22 +1,83 @@
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using DAL.Entities;
+using Model.Exceptions;
+using RestSharp;
 
 namespace GUIClient.Services;
 
-public class RisksService: IRisksService
+public class RisksService: ServiceBase, IRisksService
 {
-    private IRestService _restService;
+    private IAuthenticationService _authenticationService;
     
     
-    public RisksService(IRestService restService)
+    public RisksService(IRestService restService, 
+        IAuthenticationService authenticationService): base(restService)
     {
-        _restService = restService;
+        _authenticationService = authenticationService;
     }
     
     public List<Risk> GetAllRisks()
     {
-        var result = new List<Risk>();
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest("/Risks");
+        
+        try
+        {
+            var response = client.Get<List<Risk>>(request);
 
-        return result;
+            if (response == null)
+            {
+                _logger.Error("Error getting risks");
+                response = new List<Risk>();
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting all risks message:{0}", ex.Message);
+            throw new RestComunicationException("Error getting all risks", ex);
+        }
+    }
+    
+    public List<Risk> GetUserRisks()
+    {
+
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest("/Risks/MyRisks");
+        
+        try
+        {
+            var response = client.Get<List<Risk>>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting my risks ");
+                response = new List<Risk>();
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting my risks message:{0}", ex.Message);
+            throw new RestComunicationException("Error getting my risks", ex);
+        }
+
+
     }
 }
