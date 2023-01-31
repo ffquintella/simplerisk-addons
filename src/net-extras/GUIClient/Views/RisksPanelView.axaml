@@ -18,7 +18,7 @@
                                   MinHeight="270"
                                   >
         </DataGrid>
-        <Button Grid.Column="0" Grid.Row="1" Name="btteste"
+        <Button Grid.Column="1" Grid.Row="1" Name="btteste"
                 IsVisible="True"
                 IsEnabled="True"
                 Command="{Binding BtTesteClicked}"
