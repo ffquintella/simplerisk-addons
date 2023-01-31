@@ -37,7 +37,6 @@
                                         Background="#2e2d2d"
                                         LegendPosition="Right"
                     />
-                <!-- YAxes="{Binding FrameworkControlsYAxis, Mode=OneWay}" -->
             </Grid>
             <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="Auto,*"  Margin="3">
                 <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrControlRisk}" TextAlignment="Center"/>

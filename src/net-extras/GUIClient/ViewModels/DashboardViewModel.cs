@@ -62,7 +62,7 @@ public class DashboardViewModel : ViewModelBase
     
     
     private List<Axis> _frameworkControlsXAxis;
-    private List<Axis> _frameworkControlsYAxis;
+    //private List<Axis> _frameworkControlsYAxis;
     
     private List<Axis> FrameworkControlsXAxis
     {
@@ -70,11 +70,11 @@ public class DashboardViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _frameworkControlsXAxis, value);
     }
     
-    private List<Axis> FrameworkControlsYAxis
+    /*private List<Axis> FrameworkControlsYAxis
     {
         get => _frameworkControlsYAxis;
         set => this.RaiseAndSetIfChanged(ref _frameworkControlsYAxis, value);
-    }
+    }*/
     
     private ObservableCollection<ISeries>? _controlRisks;
     private ObservableCollection<ISeries>? ControlRisks
@@ -82,14 +82,50 @@ public class DashboardViewModel : ViewModelBase
         get => _controlRisks; 
         set => this.RaiseAndSetIfChanged(ref _controlRisks, value); 
     }
+
+    //private RisksPanelViewModel _risksPanelViewModel;
     
     public DashboardViewModel()
     {
         _statisticsService = GetService<IStatisticsService>();
 
         _risksOverTimeXAxis = new List<Axis>();
-        _frameworkControlsXAxis = new List<Axis>();
-        _frameworkControlsYAxis = new List<Axis>();
+        //_frameworkControlsXAxis = new List<Axis>();
+        //_frameworkControlsYAxis = new List<Axis>();
+
+        _frameworkControlsXAxis = new List<Axis>
+        {
+            new Axis
+            {
+                Labels = new List<string>(),
+                TextSize = 9,
+                LabelsRotation = 0,
+            }
+        };
+        
+        _frameworkControls = new ObservableCollection<ISeries>
+        {
+            new StackedColumnSeries<int>
+            {
+                Values = new List<int>(),
+                Name = Localizer["Maturity"],
+                Stroke = null,
+                DataLabelsPaint = new SolidColorPaint(new SKColor(45, 45, 45)),
+                DataLabelsSize = 14,
+                DataLabelsPosition = DataLabelsPosition.Middle
+            },
+            new StackedColumnSeries<int>
+            {
+                Values = new List<int>(),
+                Name = Localizer["DesiredMaturity"],  
+                Stroke = null,
+                DataLabelsPaint = new SolidColorPaint(new SKColor(45, 5, 5)),
+                DataLabelsSize = 14,
+                DataLabelsPosition = DataLabelsPosition.Middle
+            },
+        };
+        
+        //_risksPanelViewModel = new RisksPanelViewModel();
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
