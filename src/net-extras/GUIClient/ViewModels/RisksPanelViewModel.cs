@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reactive;
 using DAL.Entities;
 using GUIClient.Services;
 using ReactiveUI;
@@ -20,10 +21,19 @@ public class RisksPanelViewModel: ViewModelBase
     
     private IRisksService _risksService;
     
+    public ReactiveCommand<Unit, Unit> BtTesteClicked { get; }
+    
     public RisksPanelViewModel()
     {
         _risksService = GetService<IRisksService>();
         _risks =  new ObservableCollection<Risk>(new List<Risk>());
+        BtTesteClicked = ReactiveCommand.Create(ExecuteTest);
+    }
+    
+    public void ExecuteTest()
+    {
+        return;
+        //Environment.Exit(0);
     }
     
     public void Initialize()

@@ -10,10 +10,19 @@
         <vm:RisksPanelViewModel/>
     </Design.DataContext>
     <Grid ColumnDefinitions="*">
-        <DataGrid Grid.Column="0" Name="QuestionsDataGrid" 
+        <DataGrid Grid.Column="0" Grid.Row="0" Name="RisksDataGrid" 
                                   Items="{Binding  Risks, Mode=TwoWay}" 
                                   AutoGenerateColumns="True"
+                                  IsVisible="True"
+                                  MinWidth="400"
+                                  MinHeight="270"
                                   >
         </DataGrid>
+        <Button Grid.Column="0" Grid.Row="1" Name="btteste"
+                IsVisible="True"
+                IsEnabled="True"
+                Command="{Binding BtTesteClicked}"
+                Margin="5 0" 
+                > Teste </Button>
     </Grid>
 </UserControl>
