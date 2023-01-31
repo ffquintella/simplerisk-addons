@@ -83,7 +83,7 @@ public class DashboardViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _controlRisks, value); 
     }
 
-    //private RisksPanelViewModel _risksPanelViewModel;
+    private RisksPanelViewModel _risksPanelViewModel;
     
     public DashboardViewModel()
     {
@@ -125,7 +125,7 @@ public class DashboardViewModel : ViewModelBase
             },
         };
         
-        //_risksPanelViewModel = new RisksPanelViewModel();
+        _risksPanelViewModel = new RisksPanelViewModel();
         
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
@@ -242,6 +242,7 @@ public class DashboardViewModel : ViewModelBase
         {
             UpdateData();
             _initialized = true;
+            _risksPanelViewModel.Initialize();
 
             Task.Run(() =>
             {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
 using DAL.Entities;
@@ -10,8 +11,7 @@ namespace GUIClient.Services;
 public class RisksService: ServiceBase, IRisksService
 {
     private IAuthenticationService _authenticationService;
-    
-    
+
     public RisksService(IRestService restService, 
         IAuthenticationService authenticationService): base(restService)
     {

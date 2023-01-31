@@ -3,11 +3,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:GUIClient.ViewModels"
+             xmlns:entities="clr-namespace:DAL.Entities;assembly=DAL"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.RisksPanelView">
     <Design.DataContext>
         <vm:RisksPanelViewModel/>
     </Design.DataContext>
     
-    Welcome to Avalonia!
+    <DataGrid  Name="QuestionsDataGrid" 
+                              Items="{Binding  Risks, Mode=TwoWay}" 
+                              AutoGenerateColumns="True"
+                              >
+
+    </DataGrid>
 </UserControl>
