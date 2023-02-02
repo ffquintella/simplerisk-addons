@@ -1,14 +1,17 @@
+using System.Collections.ObjectModel;
 using System.Reactive;
 using DAL.Entities;
+using GUIClient.Services;
 using ReactiveUI;
 
 namespace GUIClient.ViewModels;
 
 public class RiskViewModel: ViewModelBase
 {
+    private bool _initialized = false;
+    
     public string StrRisk { get; }
-    
-    
+
     private Risk? _selectedRisk;
     
     public Risk? SelectedRisk
@@ -33,6 +36,19 @@ public class RiskViewModel: ViewModelBase
     
     public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtDeleteRiskClicked { get; }
+    
+    public IRisksService _risksService;
+    public IAuthenticationService _autenticationService;
+    
+    
+    private ObservableCollection<Risk> _risks;
+    
+    public ObservableCollection<Risk> Risks
+    {
+        get => _risks;
+        set => this.RaiseAndSetIfChanged(ref _risks, value);
+    }
+    
     public RiskViewModel() : base()
     {
         StrRisk = Localizer["Risk"];
@@ -40,6 +56,15 @@ public class RiskViewModel: ViewModelBase
         BtAddRiskClicked = ReactiveCommand.Create(ExecuteAddRisk);
         BtDeleteRiskClicked = ReactiveCommand.Create(ExecuteDeleteRisk);
         BtReloadRiskClicked = ReactiveCommand.Create(ExecuteReloadRisk);
+
+        _risksService = GetService<IRisksService>();
+        _autenticationService = GetService<IAuthenticationService>();
+        
+        _autenticationService.AuthenticationSucceeded += (obj, args) =>
+        {
+            Initialize();
+        };
+        
     }
     
     private void ExecuteAddRisk()
@@ -53,5 +78,15 @@ public class RiskViewModel: ViewModelBase
     private void ExecuteReloadRisk()
     {
 
+    }
+
+    private void Initialize()
+    {
+        if (_initialized)
+        {
+            Risks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
+            
+            _initialized = true;
+        }
     }
 }
