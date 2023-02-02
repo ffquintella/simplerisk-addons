@@ -46,6 +46,8 @@
                 </Button>
             </Grid>
         </Grid>
+        <!-- RIGHT SIDE AREA -->
+        
     </Grid>
         
 </UserControl>
