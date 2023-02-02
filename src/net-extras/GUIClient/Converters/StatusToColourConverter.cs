@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Text;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
+using Avalonia.Media;
 using GUIClient.Exceptions;
 
 namespace GUIClient.Converters;
@@ -18,18 +19,20 @@ public class StatusToColourConverter: IValueConverter
     {
         if (value is null) return "";
         
-        if (value is string sourceData && targetType.IsAssignableTo(typeof(string)))
+        if (value is string sourceData && targetType.IsAssignableTo(typeof(Avalonia.Media.IBrush)))
         {
             if (sourceData.Length == 0) throw new InvalidStatusException("Invalid empty status to convert", sourceData);
 
             switch (sourceData)
             {
                 case "New":
-                    return "#40ff40";
+                    return new SolidColorBrush(Colors.LightGreen);
                 case "Management Review":
-                    return "#ffb940";
+                    return new SolidColorBrush(Colors.Orange);
+                case "Mitigation Planned":
+                    return new SolidColorBrush(Colors.LightSalmon);
                 default:
-                    return "#cee4eb";
+                    return new SolidColorBrush(Colors.Turquoise);
                     //throw new InvalidStatusException("Unrecognized status", sourceData);
                     //break;
             }
