@@ -85,7 +85,7 @@ public class NavigationBarViewModel: ViewModelBase
         BtSettingsClicked = ReactiveCommand.Create<Window>(ExecuteOpenSettings);
         BtDeviceClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenDevice);
         BtAssessmentClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAssessment);
-        BtRiskClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAssessment);
+        BtRiskClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenRisk);
         BtAccountClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAccount);
     }
 
@@ -150,6 +150,12 @@ public class NavigationBarViewModel: ViewModelBase
     {
         ((MainWindowViewModel)window.DataContext!)
             .NavigateTo(AvaliableViews.Assessment);
+    }
+    
+    public void ExecuteOpenRisk(MainWindow window)
+    {
+        ((MainWindowViewModel)window.DataContext!)
+            .NavigateTo(AvaliableViews.Risk);
     }
     
 }
