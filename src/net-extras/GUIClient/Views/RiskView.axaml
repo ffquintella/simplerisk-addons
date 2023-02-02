@@ -47,7 +47,8 @@
             </Grid>
         </Grid>
         <!-- RIGHT SIDE AREA -->
-        
+        <Grid Grid.Column="1" RowDefinitions="Auto, *" >
+            <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrDetails, Mode=OneTime}" TextAlignment="Center"/>
+        </Grid>
     </Grid>
-        
 </UserControl>

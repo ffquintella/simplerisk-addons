@@ -434,5 +434,11 @@ namespace GUIClient.Resources {
                 return ResourceManager.GetString("SubmissionDate", resourceCulture);
             }
         }
+        
+        internal static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
     }
 }

@@ -213,4 +213,7 @@
     <data name="SubmissionDate" xml:space="preserve">
         <value>Data de criação</value>
     </data>
+    <data name="Details" xml:space="preserve">
+        <value>Detalhes</value>
+    </data>
 </root>
