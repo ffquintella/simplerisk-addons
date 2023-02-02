@@ -216,4 +216,7 @@
     <data name="Details" xml:space="preserve">
         <value>Details</value>
     </data>
+    <data name="Source" xml:space="preserve">
+        <value>Source</value>
+    </data>
 </root>

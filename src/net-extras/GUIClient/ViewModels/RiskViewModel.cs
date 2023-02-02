@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using DAL.Entities;
 using GUIClient.Services;
+using LiveChartsCore.Defaults;
 using ReactiveUI;
 
 namespace GUIClient.ViewModels;
@@ -15,9 +16,13 @@ public class RiskViewModel: ViewModelBase
     public string StrSubject { get; }
     
     public string StrStatus { get; }
-
-    private Risk? _selectedRisk;
     
+    public string StrSource { get; }
+
+    public DAL.Hydrated.Risk HdRisk { get; set; }
+    
+    private Risk? _selectedRisk;
+
     public Risk? SelectedRisk
     {
         get
@@ -28,10 +33,10 @@ public class RiskViewModel: ViewModelBase
         {
             if (value != null)
             {
-
+                HdRisk = new DAL.Hydrated.Risk(value);
                 //UpdateAssessmentQuestionAnswers( value.Id);
-            
             }
+            else HdRisk = null;
             this.RaiseAndSetIfChanged(ref _selectedRisk, value);
         }
     }
@@ -57,8 +62,9 @@ public class RiskViewModel: ViewModelBase
     {
         StrRisk = Localizer["Risk"];
         StrDetails= Localizer["Details"];
-        StrSubject= Localizer["Subject"] + ": ";
-        StrStatus= Localizer["Status"] + ": ";
+        StrSubject = Localizer["Subject"] + ": ";
+        StrStatus = Localizer["Status"] + ": ";
+        StrSource = Localizer["Source"] + ": ";
         
         
         BtAddRiskClicked = ReactiveCommand.Create(ExecuteAddRisk);

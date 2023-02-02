@@ -59,7 +59,7 @@
                     <StackPanel Orientation="Horizontal" Width="150"><TextBlock Text="{Binding StrStatus}" Classes="label"/><TextBlock Text="{Binding SelectedRisk.Status}" Foreground="{Binding SelectedRisk.Status, Converter={StaticResource statusToColourConverter}}" Classes="formData"/></StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding StrSubject}" Classes="label"/><TextBlock Text="{Binding SelectedRisk.Subject}" Classes="formData"/></StackPanel>
-                <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding StrStatus}" Classes="label"/><TextBlock Text="{Binding SelectedRisk.Status}" Classes="formData"/></StackPanel>
+                <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding StrSource}" Classes="label"/><TextBlock Text="{Binding HdRisk.Source}" Classes="formData"/></StackPanel>
             </StackPanel>
         </Grid>
     </Grid>
