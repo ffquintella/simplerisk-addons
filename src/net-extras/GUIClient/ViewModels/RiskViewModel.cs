@@ -30,6 +30,8 @@ public class RiskViewModel: ViewModelBase
     }
     
     public ReactiveCommand<Unit, Unit> BtAddRiskClicked { get; }
+    
+    public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtDeleteRiskClicked { get; }
     public RiskViewModel() : base()
     {
@@ -37,6 +39,7 @@ public class RiskViewModel: ViewModelBase
         
         BtAddRiskClicked = ReactiveCommand.Create(ExecuteAddRisk);
         BtDeleteRiskClicked = ReactiveCommand.Create(ExecuteDeleteRisk);
+        BtReloadRiskClicked = ReactiveCommand.Create(ExecuteReloadRisk);
     }
     
     private void ExecuteAddRisk()
@@ -44,6 +47,10 @@ public class RiskViewModel: ViewModelBase
 
     }
     private void ExecuteDeleteRisk()
+    {
+
+    }
+    private void ExecuteReloadRisk()
     {
 
     }
