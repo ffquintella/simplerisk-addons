@@ -3,6 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:GUIClient.ViewModels"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:convertes="clr-namespace:GUIClient.Converters"
+             xmlns:sys="using:System"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.RiskView">
     
@@ -11,5 +14,34 @@
     </Design.DataContext>
     
     
-    Welcome to the risk view!
+    <Grid ColumnDefinitions="Auto, *" >
+        <!-- LEFT SIDE AREA -->
+        <Grid Grid.Column="0" RowDefinitions="Auto, *, Auto" >
+            <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrRisk, Mode=OneTime}" TextAlignment="Center"/>
+            <!-- Assessment List -->
+            <ListBox Grid.Row="1" Name="LstAssessments"  
+                     Items="" SelectionMode="Single"
+                     SelectedItem=""
+                     HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
+                     ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <!-- Assessment Control Bar -->
+            <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto">
+                <Button Grid.Column="0" Name="BtAddAssessment" 
+                        Command="{Binding BtAddRiskClicked}">
+                    <material:MaterialIcon Kind="Add"/>
+                </Button>
+                <Button Grid.Column="2" IsEnabled="{Binding !!SelectedRisk}"
+                        Command="{Binding BtDeleteRiskClicked}">
+                    <material:MaterialIcon Kind="Delete"/>
+                </Button>
+            </Grid>
+        </Grid>
+    </Grid>
+        
 </UserControl>
