@@ -12,6 +12,9 @@ public class RiskViewModel: ViewModelBase
     
     public string StrRisk { get; }
     public string StrDetails { get; }
+    public string StrSubject { get; }
+    
+    public string StrStatus { get; }
 
     private Risk? _selectedRisk;
     
@@ -54,6 +57,9 @@ public class RiskViewModel: ViewModelBase
     {
         StrRisk = Localizer["Risk"];
         StrDetails= Localizer["Details"];
+        StrSubject= Localizer["Subject"] + ": ";
+        StrStatus= Localizer["Status"] + ": ";
+        
         
         BtAddRiskClicked = ReactiveCommand.Create(ExecuteAddRisk);
         BtDeleteRiskClicked = ReactiveCommand.Create(ExecuteDeleteRisk);

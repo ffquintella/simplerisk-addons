@@ -65,6 +65,16 @@
         <Setter Property="Background" Value="#222222"/>
     </Style>
     
+    <Style Selector="TextBlock.label">
+        <Setter Property="Margin" Value="0 5 0 0"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    
+    <Style Selector="TextBlock.formData">
+        <Setter Property="Margin" Value="0 5 0 0"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    
     <Style Selector="Button:is:disabled">
         <Setter Property="Background" Value="#787878"/>
     </Style>

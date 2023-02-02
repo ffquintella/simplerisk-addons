@@ -13,6 +13,9 @@
         <viewModels:RiskViewModel/>
     </Design.DataContext>
     
+    <UserControl.Resources>
+        <convertes:StatusToColourConverter x:Key="statusToColourConverter"/>
+    </UserControl.Resources>
     
     <Grid ColumnDefinitions="Auto, *" >
         <!-- LEFT SIDE AREA -->
@@ -49,6 +52,15 @@
         <!-- RIGHT SIDE AREA -->
         <Grid Grid.Column="1" RowDefinitions="Auto, *" >
             <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrDetails, Mode=OneTime}" TextAlignment="Center"/>
+            <StackPanel Grid.Row="1" Orientation="Vertical" Spacing="5" Margin="5 5 0 0">
+                <StackPanel Orientation="Horizontal" Background="#666666">
+                    <StackPanel Orientation="Horizontal" Width="100"><TextBlock Text="ID: " Classes="label"/><TextBlock Text="{Binding SelectedRisk.Id}" Classes="formData"/></StackPanel>
+                    <StackPanel Orientation="Horizontal" Width="120"><TextBlock Text="Ctrl #: " Classes="label"/><TextBlock Text="{Binding SelectedRisk.ControlNumber}" Classes="formData"/></StackPanel>
+                    <StackPanel Orientation="Horizontal" Width="150"><TextBlock Text="{Binding StrStatus}" Classes="label"/><TextBlock Text="{Binding SelectedRisk.Status}" Foreground="{Binding SelectedRisk.Status, Converter={StaticResource statusToColourConverter}}" Classes="formData"/></StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding StrSubject}" Classes="label"/><TextBlock Text="{Binding SelectedRisk.Subject}" Classes="formData"/></StackPanel>
+                <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding StrStatus}" Classes="label"/><TextBlock Text="{Binding SelectedRisk.Status}" Classes="formData"/></StackPanel>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>
