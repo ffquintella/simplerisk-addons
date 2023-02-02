@@ -67,7 +67,7 @@ public class NavigationBarViewModel: ViewModelBase
     public ReactiveCommand<Window, Unit> BtSettingsClicked { get; }
     public ReactiveCommand<MainWindow, Unit> BtDeviceClicked { get; }
     public ReactiveCommand<MainWindow, Unit> BtAssessmentClicked { get; }
-    
+    public ReactiveCommand<MainWindow, Unit> BtRiskClicked { get; }
     public ReactiveCommand<MainWindow, Unit> BtAccountClicked { get; }
     
     public NavigationBarViewModel(
@@ -75,8 +75,6 @@ public class NavigationBarViewModel: ViewModelBase
     {
         
         _configuration = configuration;
-        
-        //Task.Run(() => UpdateAuthenticationStatus());
 
         AuthenticationService.AuthenticationSucceeded += (obj, args) =>
         {
@@ -87,6 +85,7 @@ public class NavigationBarViewModel: ViewModelBase
         BtSettingsClicked = ReactiveCommand.Create<Window>(ExecuteOpenSettings);
         BtDeviceClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenDevice);
         BtAssessmentClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAssessment);
+        BtRiskClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAssessment);
         BtAccountClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAccount);
     }
 
