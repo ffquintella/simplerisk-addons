@@ -20,13 +20,13 @@
             <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrRisk, Mode=OneTime}" TextAlignment="Center"/>
             <!-- Assessment List -->
             <ListBox Grid.Row="1" Name="LstAssessments"  
-                     Items="" SelectionMode="Single"
-                     SelectedItem=""
+                     Items="{Binding Risks}" SelectionMode="Single"
+                     SelectedItem="{Binding SelectedRisk, Mode=TwoWay}"
                      HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
                      ScrollViewer.HorizontalScrollBarVisibility="Visible">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding Subject}" TextWrapping="Wrap"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

@@ -77,12 +77,12 @@ public class RiskViewModel: ViewModelBase
     }
     private void ExecuteReloadRisk()
     {
-
+        Risks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
     }
 
     private void Initialize()
     {
-        if (_initialized)
+        if (!_initialized)
         {
             Risks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
             
