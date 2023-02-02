@@ -20,6 +20,7 @@ public class NavigationBarViewModel: ViewModelBase
     private bool _isEnabled = false;
     private bool _isAdmin = false;
     private bool _hasAssessmentPermission = false;
+    private bool _hasRiskPermission = false;
     public string? _loggedUser;
 
     public Boolean IsAdmin
@@ -46,7 +47,15 @@ public class NavigationBarViewModel: ViewModelBase
         }
         set => this.RaiseAndSetIfChanged(ref _hasAssessmentPermission, value);
     }
-
+    public Boolean HasRiskPermission
+    {
+        get
+        {
+            if (!_isEnabled) return false;
+            return _hasRiskPermission;
+        }
+        set => this.RaiseAndSetIfChanged(ref _hasRiskPermission, value);
+    }
     
     public String? LoggedUser
     {
@@ -94,6 +103,7 @@ public class NavigationBarViewModel: ViewModelBase
         LoggedUser = AuthenticationService!.AuthenticatedUserInfo!.UserName!;
         if (AuthenticationService.AuthenticatedUserInfo.UserRole == "Administrator") IsAdmin = true;
         if (AuthenticationService.AuthenticatedUserInfo.UserPermissions!.Contains("assessments")) HasAssessmentPermission = true;
+        if (AuthenticationService.AuthenticatedUserInfo.UserPermissions!.Contains("riskmanagement")) HasRiskPermission = true;
     }
 
     public void ExecuteOpenSettings(Window sender)
