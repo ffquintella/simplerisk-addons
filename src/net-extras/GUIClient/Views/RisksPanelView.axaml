@@ -18,7 +18,7 @@
     <Grid ColumnDefinitions="*">
         <DataGrid Grid.Column="0" Grid.Row="0" Name="RisksDataGrid" 
                                   Items="{Binding  Risks, Mode=TwoWay}" 
-                                  AutoGenerateColumns="True"
+                                  AutoGenerateColumns="False"
                                   IsVisible="True"
                                   MinWidth="400"
                                   MinHeight="270"
