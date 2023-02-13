@@ -19,7 +19,7 @@ public class RiskViewModel: ViewModelBase
     
     public string StrSource { get; }
 
-    public DAL.Hydrated.Risk HdRisk { get; set; }
+    public Hydrated.Risk HdRisk { get; set; }
     
     private Risk? _selectedRisk;
 
@@ -33,7 +33,7 @@ public class RiskViewModel: ViewModelBase
         {
             if (value != null)
             {
-                HdRisk = new DAL.Hydrated.Risk(value);
+                HdRisk = new Hydrated.Risk(value);
                 //UpdateAssessmentQuestionAnswers( value.Id);
             }
             else HdRisk = null;
