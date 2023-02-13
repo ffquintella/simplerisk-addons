@@ -22,6 +22,13 @@ public interface IRiskManagementService
 
 
     /// <summary>
+    /// Gets the risk category
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Category GetRiskCategory(int id);
+
+    /// <summary>
     /// Gets all the risks that needs a mgmtReview
     /// </summary>
     /// <param name="status">Filter risk status</param>

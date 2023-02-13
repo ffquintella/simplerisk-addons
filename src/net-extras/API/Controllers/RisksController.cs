@@ -118,6 +118,29 @@ public class RisksController : ApiBaseController
         
     }
 
+    [HttpGet]
+    [Route("Category/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<Category> GetRiskCategory(int id)
+    {
+        
+        try
+        {
+            var cat  = _riskManagement.GetRiskCategory(id);
+            return Ok(cat);
+            
+        }
+        catch (DataNotFoundException ex)
+        {
+            _logger.Warning($"The category {id} was not found: {ex.Message}");
+            return NotFound();
+
+        }
+        
+    }
+    
 
     [HttpGet]
     [Route("NeedingMgmtReviews")]

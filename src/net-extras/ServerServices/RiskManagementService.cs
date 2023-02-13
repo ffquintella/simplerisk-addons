@@ -83,6 +83,21 @@ public class RiskManagementService: IRiskManagementService
         return risks;
     }
 
+    public Category GetRiskCategory(int id)
+    {
+        using (var contex = _dalManager.GetContext())
+        {
+            
+            var cat = contex.Categories.Where(c => c.Value == id).FirstOrDefault();
+
+            if (cat == null)
+            {
+                throw new DataNotFoundException("Category", id.ToString());
+            }
+
+            return cat;
+        }
+    }
 
     public List<Risk> GetRisksNeedingReview(string? status = null)
     {
