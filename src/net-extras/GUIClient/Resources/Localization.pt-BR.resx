@@ -222,4 +222,7 @@
     <data name="Category" xml:space="preserve">
         <value>Categoria</value>
     </data>
+    <data name="Notes" xml:space="preserve">
+        <value>Notas</value>
+    </data>
 </root>

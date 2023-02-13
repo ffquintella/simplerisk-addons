@@ -109,4 +109,33 @@ public class RisksService: ServiceBase, IRisksService
             throw new RestComunicationException("Error getting risk category", ex);
         }
     }
+    
+    public string GetRiskSource(int id)
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/Source/{id}");
+        
+        try
+        {
+            var response = client.Get<Source>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting source ");
+            }
+            
+            return response.Name;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk source message:{0}", ex.Message);
+            throw new RestComunicationException("Error getting risk source", ex);
+        }
+    }
 }

@@ -17,6 +17,7 @@ public class RiskViewModel: ViewModelBase
     public string StrStatus { get; }
     public string StrSource { get; }
     public string StrCategory { get; }
+    public string StrNotes { get; }
 
     private Hydrated.Risk _hdRisk;
     public Hydrated.Risk HdRisk
@@ -72,6 +73,7 @@ public class RiskViewModel: ViewModelBase
         StrStatus = Localizer["Status"] + ": ";
         StrSource = Localizer["Source"] + ": ";
         StrCategory = Localizer["Category"] + ": ";
+        StrNotes = Localizer["Notes"] + ": ";
         
         
         BtAddRiskClicked = ReactiveCommand.Create(ExecuteAddRisk);

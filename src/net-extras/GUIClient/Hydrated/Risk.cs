@@ -20,7 +20,7 @@ public class Risk: BaseHydrated
 
     public string Subject => _baseRisk.Subject;
 
-    public string Source { get; } = "Teste";
+    public string Source => _risksService.GetRiskSource(_baseRisk.Source);
 
     public string Category => _risksService.GetRiskCategory(_baseRisk.Category);
 
