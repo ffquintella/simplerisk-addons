@@ -98,6 +98,22 @@ public class RiskManagementService: IRiskManagementService
             return cat;
         }
     }
+    
+    public Source GetRiskSource(int id)
+    {
+        using (var contex = _dalManager.GetContext())
+        {
+            
+            var src = contex.Sources.Where(c => c.Value == id).FirstOrDefault();
+
+            if (src == null)
+            {
+                throw new DataNotFoundException("Source", id.ToString());
+            }
+
+            return src;
+        }
+    }
 
     public List<Risk> GetRisksNeedingReview(string? status = null)
     {
