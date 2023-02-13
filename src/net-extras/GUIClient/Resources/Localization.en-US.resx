@@ -219,4 +219,7 @@
     <data name="Source" xml:space="preserve">
         <value>Source</value>
     </data>
+    <data name="Category" xml:space="preserve">
+        <value>Category</value>
+    </data>
 </root>

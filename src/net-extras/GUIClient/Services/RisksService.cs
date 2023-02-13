@@ -80,4 +80,33 @@ public class RisksService: ServiceBase, IRisksService
 
 
     }
+
+    public string GetRiskCategory(int id)
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/Category/{id}");
+        
+        try
+        {
+            var response = client.Get<Category>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting category ");
+            }
+            
+            return response.Name;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk category message:{0}", ex.Message);
+            throw new RestComunicationException("Error getting risk category", ex);
+        }
+    }
 }

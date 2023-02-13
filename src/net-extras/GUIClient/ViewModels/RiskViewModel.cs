@@ -14,13 +14,20 @@ public class RiskViewModel: ViewModelBase
     public string StrRisk { get; }
     public string StrDetails { get; }
     public string StrSubject { get; }
-    
     public string StrStatus { get; }
-    
     public string StrSource { get; }
+    public string StrCategory { get; }
 
-    public Hydrated.Risk HdRisk { get; set; }
-    
+    private Hydrated.Risk _hdRisk;
+    public Hydrated.Risk HdRisk
+    {
+        get { return _hdRisk; }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _hdRisk, value);
+        }
+    }
+
     private Risk? _selectedRisk;
 
     public Risk? SelectedRisk
@@ -34,7 +41,6 @@ public class RiskViewModel: ViewModelBase
             if (value != null)
             {
                 HdRisk = new Hydrated.Risk(value);
-                //UpdateAssessmentQuestionAnswers( value.Id);
             }
             else HdRisk = null;
             this.RaiseAndSetIfChanged(ref _selectedRisk, value);
@@ -65,6 +71,7 @@ public class RiskViewModel: ViewModelBase
         StrSubject = Localizer["Subject"] + ": ";
         StrStatus = Localizer["Status"] + ": ";
         StrSource = Localizer["Source"] + ": ";
+        StrCategory = Localizer["Category"] + ": ";
         
         
         BtAddRiskClicked = ReactiveCommand.Create(ExecuteAddRisk);

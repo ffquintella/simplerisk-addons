@@ -446,5 +446,11 @@ namespace GUIClient.Resources {
                 return ResourceManager.GetString("Source", resourceCulture);
             }
         }
+        
+        internal static string Category {
+            get {
+                return ResourceManager.GetString("Category", resourceCulture);
+            }
+        }
     }
 }

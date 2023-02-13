@@ -8,4 +8,6 @@ public interface IRisksService
     public List<Risk> GetAllRisks();
     
     public List<Risk> GetUserRisks();
+
+    public string GetRiskCategory(int id);
 }
