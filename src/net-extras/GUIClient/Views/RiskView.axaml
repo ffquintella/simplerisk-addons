@@ -56,7 +56,8 @@
                 <StackPanel Orientation="Horizontal" Background="#666666">
                     <StackPanel Orientation="Horizontal" Width="100"><TextBlock Text="ID: " Classes="label"/><TextBlock Text="{Binding SelectedRisk.Id}" Classes="formData"/></StackPanel>
                     <StackPanel Orientation="Horizontal" Width="120"><TextBlock Text="Ctrl #: " Classes="label"/><TextBlock Text="{Binding SelectedRisk.ControlNumber}" Classes="formData"/></StackPanel>
-                    <StackPanel Orientation="Horizontal" Width="150"><TextBlock Text="{Binding StrStatus}" Classes="label"/><TextBlock Text="{Binding SelectedRisk.Status}" Foreground="{Binding SelectedRisk.Status, Converter={StaticResource statusToColourConverter}}" Classes="formData"/></StackPanel>
+                    <StackPanel Orientation="Horizontal" Width="200"><TextBlock Text="{Binding StrStatus}" Classes="label"/><TextBlock Text="{Binding SelectedRisk.Status}" Foreground="{Binding SelectedRisk.Status, Converter={StaticResource statusToColourConverter}}" Classes="formData"/></StackPanel>
+                    <StackPanel Orientation="Horizontal" Width="120"><TextBlock Text="Dt. " Classes="label"/><TextBlock Text="{Binding StrCreation}" Classes="label"/><TextBlock Text="{Binding SelectedRisk.SubmissionDate}" Classes="formData"/></StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding StrSubject}" Classes="label"/><TextBlock Text="{Binding SelectedRisk.Subject}" Classes="formData"/></StackPanel>
                 <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding StrSource}" Classes="label"/><TextBlock Text="{Binding HdRisk.Source}" Classes="formData"/></StackPanel>

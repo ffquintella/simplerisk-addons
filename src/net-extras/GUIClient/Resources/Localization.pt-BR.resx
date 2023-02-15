@@ -231,4 +231,7 @@
     <data name="Manager" xml:space="preserve">
         <value>Gerente</value>
     </data>
+    <data name="Creation" xml:space="preserve">
+        <value>Criação</value>
+    </data>
 </root>

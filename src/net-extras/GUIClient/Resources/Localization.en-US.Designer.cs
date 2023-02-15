@@ -470,5 +470,11 @@ namespace GUIClient.Resources {
                 return ResourceManager.GetString("Manager", resourceCulture);
             }
         }
+        
+        internal static string Creation {
+            get {
+                return ResourceManager.GetString("Creation", resourceCulture);
+            }
+        }
     }
 }

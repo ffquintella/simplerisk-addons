@@ -21,6 +21,7 @@ public class RiskViewModel: ViewModelBase
     public string StrNotes { get; }
     public string StrOwner { get; }
     public string StrManager { get; }
+    public string StrCreation { get; }
     
     private Hydrated.Risk _hdRisk;
     public Hydrated.Risk HdRisk
@@ -79,6 +80,7 @@ public class RiskViewModel: ViewModelBase
         StrNotes = Localizer["Notes"] + ": ";
         StrOwner = Localizer["Owner"] + ":";
         StrManager = Localizer["Manager"] + ":";
+        StrCreation = Localizer["Creation"] + ":";
         
         
         BtAddRiskClicked = ReactiveCommand.Create(ExecuteAddRisk);
