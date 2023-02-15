@@ -63,6 +63,25 @@
                 <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding StrSource}" Classes="label"/><TextBlock Text="{Binding HdRisk.Source}" Classes="formData"/></StackPanel>
                 <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding StrCategory}" Classes="label"/><TextBlock Text="{Binding HdRisk.Category}" Classes="formData"/></StackPanel>
                 <StackPanel Orientation="Horizontal"><TextBlock Text="{Binding StrSubmittedBy}" Classes="label"/><TextBlock Text="{Binding HdRisk.SubmittedBy}" Width="150" Classes="formData"/><TextBlock Text="{Binding StrOwner}" Classes="label"/><TextBlock Text="{Binding HdRisk.Owner}" Width="150" Classes="formData"/><TextBlock Text="{Binding StrManager}" Classes="label"/><TextBlock Text="{Binding HdRisk.Manager}" Width="150" Classes="formData"/></StackPanel>
+                
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding StrRiskType}" Classes="label"/>
+                        <!-- Risk Catalog List -->
+                        <ListBox Grid.Row="1" Name="LstCatalogs"  
+                                 Items="{Binding Risks}" SelectionMode="Single"
+                                 SelectedItem="{Binding SelectedRisk, Mode=TwoWay}"
+                                 HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Subject}" TextWrapping="Wrap"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                
+                </StackPanel>
                 <StackPanel Orientation="Vertical"><TextBlock Text="{Binding StrNotes}" Classes="label"/><TextBox Text="{Binding SelectedRisk.Notes}" IsReadOnly="True" TextWrapping="Wrap" Height="60"/></StackPanel>
             </StackPanel>
         </Grid>

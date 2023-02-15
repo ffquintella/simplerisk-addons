@@ -482,5 +482,11 @@ namespace GUIClient.Resources {
                 return ResourceManager.GetString("SubmittedBy", resourceCulture);
             }
         }
+        
+        internal static string RiskType {
+            get {
+                return ResourceManager.GetString("RiskType", resourceCulture);
+            }
+        }
     }
 }

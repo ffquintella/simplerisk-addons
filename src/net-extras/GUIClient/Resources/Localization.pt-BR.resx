@@ -237,4 +237,7 @@
     <data name="SubmittedBy" xml:space="preserve">
         <value>Enviado por </value>
     </data>
+    <data name="RiskType" xml:space="preserve">
+        <value>Tipo de Risco</value>
+    </data>
 </root>
