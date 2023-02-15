@@ -29,6 +29,20 @@ public interface IRiskManagementService
     Category GetRiskCategory(int id);
     
     /// <summary>
+    /// Gets the risk catalog item
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    RiskCatalog GetRiskCatalog(int id);
+
+    /// <summary>
+    /// Gets a list of risk catalogs
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    List<RiskCatalog> GetRiskCatalogs(List<int> ids);
+    
+    /// <summary>
     /// Gets the risk source
     /// </summary>
     /// <param name="id"></param>

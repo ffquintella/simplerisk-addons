@@ -98,6 +98,43 @@ public class RiskManagementService: IRiskManagementService
             return cat;
         }
     }
+
+    public RiskCatalog GetRiskCatalog(int id)
+    {
+        using (var contex = _dalManager.GetContext())
+        {
+            
+            var cat = contex.RiskCatalogs.Where(c => c.Id == id).FirstOrDefault();
+
+            if (cat == null)
+            {
+                throw new DataNotFoundException("Catalog", id.ToString());
+            }
+
+            return cat;
+        }
+    }
+    
+    public List<RiskCatalog> GetRiskCatalogs(List<int> ids)
+    {
+        using (var contex = _dalManager.GetContext())
+        {
+
+            var cats = contex.RiskCatalogs.Where(c => ids.Contains(c.Id)).ToList();
+
+            if (cats == null)
+            {
+                string sids = "";
+                foreach (var id in ids)
+                {
+                    sids += id + ",";
+                }
+                throw new DataNotFoundException("Catalog", sids);
+            }
+
+            return cats;
+        }
+    }
     
     public Source GetRiskSource(int id)
     {

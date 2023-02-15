@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using API.Tools;
 using DAL;
 using DAL.Entities;
@@ -138,6 +139,69 @@ public class RisksController : ApiBaseController
         
     }
     
+    [HttpGet]
+    [Route("Catalogs/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<RiskCatalog> GetRiskCatalog(int id)
+    {
+        
+        try
+        {
+            var cat  = _riskManagement.GetRiskCatalog(id);
+            return Ok(cat);
+            
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning($"The catalog {id} was not found: {ex.Message}");
+            return NotFound();
+
+        }
+        
+    }
+    
+    [HttpGet]
+    [Route("Catalogs")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<RiskCatalog>> GetRisksCatalog([FromQuery] string list = "")
+    {
+        var regex = @"^\d+(,\d+)*$";
+        var match = Regex.Match(list, regex, RegexOptions.IgnoreCase);
+
+        if (!match.Success)
+        {
+            Logger.Warning($"Invalid catalog list format");
+            return StatusCode(409);
+        }
+        
+        try
+        {
+            var sids = list.Split(',').ToList();
+
+            var ids = new List<int>();
+
+            foreach (var sid in sids)
+            {
+                ids.Add(Int32.Parse(sid));
+            }
+            
+            var cat  = _riskManagement.GetRiskCatalogs(ids);
+            return Ok(cat);
+            
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning($"The catalogs {list} was not found: {ex.Message}");
+            return NotFound();
+
+        }
+        
+    }
     
     [HttpGet]
     [Route("Source/{id}")]
