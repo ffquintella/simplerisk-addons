@@ -458,5 +458,17 @@ namespace GUIClient.Resources {
                 return ResourceManager.GetString("Notes", resourceCulture);
             }
         }
+        
+        internal static string Owner {
+            get {
+                return ResourceManager.GetString("Owner", resourceCulture);
+            }
+        }
+        
+        internal static string Manager {
+            get {
+                return ResourceManager.GetString("Manager", resourceCulture);
+            }
+        }
     }
 }

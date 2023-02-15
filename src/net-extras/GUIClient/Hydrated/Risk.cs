@@ -1,4 +1,7 @@
+using System;
 using GUIClient.Services;
+using Serilog;
+using Serilog.Core;
 
 namespace GUIClient.Hydrated;
 
@@ -8,10 +11,13 @@ public class Risk: BaseHydrated
 
     private IRisksService _risksService;
     
+    private IUsersService _usersService;
+    
     public Risk(DAL.Entities.Risk risk)
     {
         _baseRisk = risk;
         _risksService = GetService<IRisksService>();
+        _usersService = GetService<IUsersService>();
     }
 
     public int Id => _baseRisk.Id;
@@ -23,5 +29,23 @@ public class Risk: BaseHydrated
     public string Source => _risksService.GetRiskSource(_baseRisk.Source);
 
     public string Category => _risksService.GetRiskCategory(_baseRisk.Category);
+
+    public string Owner => _usersService.GetUserName(_baseRisk.Owner);
+
+    public string Manager
+    {
+        get
+        {
+            try
+            {
+                return _usersService.GetUserName(_baseRisk.Manager);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning("Error loading manager: {0}", ex.Message);
+                return "";
+            }
+        }
+    } 
 
 }

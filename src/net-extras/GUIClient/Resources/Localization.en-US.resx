@@ -225,4 +225,10 @@
     <data name="Notes" xml:space="preserve">
         <value>Notes</value>
     </data>
+    <data name="Owner" xml:space="preserve">
+        <value>Owner</value>
+    </data>
+    <data name="Manager" xml:space="preserve">
+        <value>Manager</value>
+    </data>
 </root>
