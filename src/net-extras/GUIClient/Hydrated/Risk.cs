@@ -31,6 +31,8 @@ public class Risk: BaseHydrated
     public string Category => _risksService.GetRiskCategory(_baseRisk.Category);
 
     public string Owner => _usersService.GetUserName(_baseRisk.Owner);
+    
+    public string SubmittedBy => _usersService.GetUserName(_baseRisk.SubmittedBy);
 
     public string Manager
     {

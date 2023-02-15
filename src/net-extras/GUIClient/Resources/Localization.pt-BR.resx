@@ -234,4 +234,7 @@
     <data name="Creation" xml:space="preserve">
         <value>Criação</value>
     </data>
+    <data name="SubmittedBy" xml:space="preserve">
+        <value>Enviado por </value>
+    </data>
 </root>
