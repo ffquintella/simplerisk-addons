@@ -14,20 +14,17 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class RisksController : ApiBaseController
 {
-    private readonly DALManager _dalManager;
+
     private IRiskManagementService _riskManagement;
-    private ILogger _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUserManagementService _userManagementService;
     
     public RisksController(
-        ILogger logger, DALManager dalManager,
+        ILogger logger,
         IHttpContextAccessor httpContextAccessor,
         IUserManagementService userManagementService,
         IRiskManagementService riskManagement) : base(logger)
     {
-        _logger = logger;
-        _dalManager = dalManager;
         _riskManagement = riskManagement;
         _httpContextAccessor = httpContextAccessor;
         _userManagementService = userManagementService;
@@ -39,14 +36,14 @@ public class RisksController : ApiBaseController
         
         if (userAccount == null)
         {
-            _logger.Error("Authenticated userAccount not found");
+            Logger.Error("Authenticated userAccount not found");
             throw new UserNotFoundException();
         }
         
         var user = _userManagementService.GetUser(userAccount);
         if (user == null )
         {
-            _logger.Error("Authenticated user not found");
+            Logger.Error("Authenticated user not found");
             throw new UserNotFoundException();
         }
 
@@ -72,7 +69,7 @@ public class RisksController : ApiBaseController
         }
         catch (UserNotAuthorizedException ex)
         {
-            _logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
+            Logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
             return this.Unauthorized();
         }
         
@@ -112,7 +109,7 @@ public class RisksController : ApiBaseController
         }
         catch (UserNotAuthorizedException ex)
         {
-            _logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
+            Logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
             return this.Unauthorized();
         }
         
@@ -134,7 +131,7 @@ public class RisksController : ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            _logger.Warning($"The category {id} was not found: {ex.Message}");
+            Logger.Warning($"The category {id} was not found: {ex.Message}");
             return NotFound();
 
         }
@@ -158,7 +155,7 @@ public class RisksController : ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            _logger.Warning($"The category {id} was not found: {ex.Message}");
+            Logger.Warning($"The category {id} was not found: {ex.Message}");
             return NotFound();
 
         }
@@ -182,7 +179,7 @@ public class RisksController : ApiBaseController
         }
         catch (UserNotAuthorizedException ex)
         {
-            _logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
+            Logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
             return this.Unauthorized();
         }
 

@@ -47,6 +47,16 @@ public class UserManagementService: IUserManagementService
         return user;
     }
 
+    public String GetUserName(int id)
+    {
+        var user = GetUserById(id);
+        if (user == null)
+        {
+            throw new DataNotFoundException("user", id.ToString());
+        }
+        return user.Name;
+    }
+    
     public List<string> GetUserPermissions(int userId)
     {
         var user = GetUserById(userId);
