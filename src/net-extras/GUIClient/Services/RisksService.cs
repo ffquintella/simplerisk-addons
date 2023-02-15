@@ -138,4 +138,35 @@ public class RisksService: ServiceBase, IRisksService
             throw new RestComunicationException("Error getting risk source", ex);
         }
     }
+
+    public List<RiskCatalog> GetRiskTypes(string ids)
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/Catalogs");
+
+        request.AddParameter("list", ids);
+        
+        try
+        {
+            var response = client.Get<List<RiskCatalog>>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting risk catalogs ");
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk catalogs message:{0}", ex.Message);
+            throw new RestComunicationException("Error getting risk catalogs", ex);
+        }
+    }
 }

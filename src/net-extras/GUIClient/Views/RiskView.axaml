@@ -69,13 +69,14 @@
                         <TextBlock Text="{Binding StrRiskType}" Classes="label"/>
                         <!-- Risk Catalog List -->
                         <ListBox Grid.Row="1" Name="LstCatalogs"  
-                                 Items="{Binding Risks}" SelectionMode="Single"
-                                 SelectedItem="{Binding SelectedRisk, Mode=TwoWay}"
+                                 Items="{Binding HdRisk.Types}" SelectionMode="Single"
                                  HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
                                  ScrollViewer.HorizontalScrollBarVisibility="Visible">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Subject}" TextWrapping="Wrap"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Number}"/><TextBlock Text=": "/><TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

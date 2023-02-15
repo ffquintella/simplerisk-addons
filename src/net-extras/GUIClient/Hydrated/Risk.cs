@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using DAL.Entities;
 using GUIClient.Services;
 using Serilog;
 using Serilog.Core;
@@ -49,5 +51,7 @@ public class Risk: BaseHydrated
             }
         }
     } 
+    
+    public List<RiskCatalog> Types => _risksService.GetRiskTypes(_baseRisk.RiskCatalogMapping);
 
 }
