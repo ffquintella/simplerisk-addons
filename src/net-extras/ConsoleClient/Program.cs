@@ -53,7 +53,7 @@ app.Configure(config =>
     config.ValidateExamples();
 #endif
     
-    config.AddCommand<SelfTestCommand>("selfTest");
+    //config.AddCommand<SelfTestCommand>("selfTest");
     config.AddCommand<RegistrationCommand>("registration");
 
 });
