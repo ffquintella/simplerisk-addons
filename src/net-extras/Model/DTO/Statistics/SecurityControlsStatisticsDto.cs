@@ -1,4 +1,6 @@
-﻿namespace Model.DTO.Statistics;
+﻿using System.Collections.Generic;
+
+namespace Model.DTO.Statistics;
 
 public class SecurityControlsStatistics
 {

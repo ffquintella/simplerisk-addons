@@ -1,4 +1,6 @@
-﻿namespace Model.Authentication;
+﻿using System.Collections.Generic;
+
+namespace Model.Authentication;
 
 public class AuthenticatedUserInfo
 {

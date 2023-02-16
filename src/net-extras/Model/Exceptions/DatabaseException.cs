@@ -1,3 +1,5 @@
+using System;
+
 namespace Model.Exceptions;
 
 public class DatabaseException: Exception

@@ -1,4 +1,6 @@
-﻿namespace Model.Statistics;
+﻿using System;
+
+namespace Model.Statistics;
 
 public class RisksOnDay
 {
