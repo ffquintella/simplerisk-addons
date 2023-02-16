@@ -42,6 +42,10 @@ src/extras/*/vendor
 
 */output/publish/
 
+output/publish/*
+
+src/net-extras/build
+
 src/net-extras/*/net6.0
 
 src/net-extras/.nuke
