@@ -52,8 +52,7 @@ app.Configure(config =>
     config.PropagateExceptions();
     config.ValidateExamples();
 #endif
-
-
+    
     config.AddCommand<SelfTestCommand>("selfTest");
     config.AddCommand<RegistrationCommand>("registration");
 

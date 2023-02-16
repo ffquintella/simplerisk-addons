@@ -7,7 +7,7 @@ namespace ServerServices;
 
 public class RiskManagementService: IRiskManagementService
 {
-    private DALManager? _dalManager;
+    private DALManager _dalManager;
     private ILogger _log;
     private readonly IRoleManagementService _roleManagement;
 
