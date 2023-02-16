@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System;
 using ConsoleClient.Commands;
 using DAL;
 using Microsoft.Extensions.Configuration;

@@ -1,6 +1,8 @@
-﻿using DAL;
+﻿using System;
+using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.Registration;
 using Serilog;

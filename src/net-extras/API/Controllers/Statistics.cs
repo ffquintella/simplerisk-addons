@@ -1,13 +1,17 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq.Expressions;
 using System.Text;
 using AutoMapper;
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO.Statistics;
 using Model.Statistics;
+using System.Linq;
 using ILogger = Serilog.ILogger;
 
 namespace API.Controllers;

@@ -1,9 +1,11 @@
 ﻿using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using DAL;
 using DAL.Context;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Security;
