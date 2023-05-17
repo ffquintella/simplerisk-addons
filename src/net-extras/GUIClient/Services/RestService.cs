@@ -45,9 +45,15 @@ public class RestService: IRestService
         };
     }
     
-    public RestClient GetClient(bool ignoreTimeVerification = false)
+    public RestClient GetClient(IAuthenticator? autenticator = null, bool ignoreTimeVerification = false)
     {
         Initialize();
+
+        if (autenticator != null)
+        {
+            _options.Authenticator = autenticator;
+        }
+        
         if (_authenticationService == null)
         {
             var client = new RestClient(_options!);

@@ -192,10 +192,8 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
     }
     public int DoServerAuthentication(string user, string password)
     {
-        //var client = _restService.GetClient();
-        var options = new RestClientOptions();
-        options.Authenticator  = new HttpBasicAuthenticator(user, password);
-        var client = new RestClient(options);
+        var client = _restService.GetClient(new HttpBasicAuthenticator(user, password));
+
         
         var request = new RestRequest("/Authentication/GetToken");
         
