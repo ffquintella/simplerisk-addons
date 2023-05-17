@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AvaloniaEdit;
+
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using Splat;
