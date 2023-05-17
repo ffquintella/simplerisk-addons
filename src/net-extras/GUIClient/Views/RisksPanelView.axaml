@@ -7,7 +7,9 @@
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:converters="clr-namespace:GUIClient.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="GUIClient.Views.RisksPanelView">
+             x:Class="GUIClient.Views.RisksPanelView"
+            >
+    
     <Design.DataContext>
         <vm:RisksPanelViewModel/>
     </Design.DataContext>
@@ -17,7 +19,7 @@
     </UserControl.Resources>
     <Grid ColumnDefinitions="*">
         <DataGrid Grid.Column="0" Grid.Row="0" Name="RisksDataGrid" 
-                                  Items="{Binding  Risks, Mode=TwoWay}" 
+                                  ItemsSource="{Binding  Risks, Mode=TwoWay}" 
                                   AutoGenerateColumns="False"
                                   IsVisible="True"
                                   MinWidth="400"

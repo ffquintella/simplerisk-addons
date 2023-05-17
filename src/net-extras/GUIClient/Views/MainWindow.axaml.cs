@@ -20,7 +20,7 @@ namespace GUIClient.Views
              
         }
         
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }

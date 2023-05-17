@@ -5,6 +5,7 @@
         xmlns:material="using:Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GUIClient.Views.Login"
+        Opened="OnOpened"
         xmlns:convertes="clr-namespace:GUIClient.Converters"
         xmlns:vm="using:GUIClient.ViewModels"
         Title="Login"
@@ -13,7 +14,7 @@
         Width="400" Height="300"
         WindowStartupLocation="CenterOwner"
         Name="LoginWindow"
-        Opened="OnOpened">
+        >
     
     <Design.DataContext>
         <vm:LoginViewModel/>
@@ -60,7 +61,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Width="70" Text="{Binding StrEnvironment}" Margin="10" VerticalAlignment="Center" />
                         <ComboBox Name="CmbAuthentication" IsEnabled="{Binding IsAccepted, Mode=TwoWay}" SelectedItem="{Binding AuthenticationMethod}" 
-                                  Items="{Binding AuthenticationMethods}" Margin="10" Width="250" >
+                                  ItemsSource="{Binding AuthenticationMethods}" Margin="10" Width="250" >
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" />

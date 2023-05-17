@@ -7,8 +7,9 @@
              xmlns:views="clr-namespace:GUIClient.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.DashboardView"
+             Initialized="OnInitialized"
              MinHeight="600"
-             Initialized="OnInitialized">
+             >
     
     <Design.DataContext>
         <vm:DashboardViewModel/>

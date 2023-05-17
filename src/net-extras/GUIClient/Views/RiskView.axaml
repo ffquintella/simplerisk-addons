@@ -7,7 +7,8 @@
              xmlns:convertes="clr-namespace:GUIClient.Converters"
              xmlns:sys="using:System"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="GUIClient.Views.RiskView">
+             x:Class="GUIClient.Views.RiskView"
+             >
     
     <Design.DataContext>
         <viewModels:RiskViewModel/>
@@ -23,7 +24,7 @@
             <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrRisk, Mode=OneTime}" TextAlignment="Center"/>
             <!-- Assessment List -->
             <ListBox Grid.Row="1" Name="LstAssessments"  
-                     Items="{Binding Risks}" SelectionMode="Single"
+                     ItemsSource="{Binding Risks}" SelectionMode="Single"
                      SelectedItem="{Binding SelectedRisk, Mode=TwoWay}"
                      HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
                      ScrollViewer.HorizontalScrollBarVisibility="Visible">
@@ -69,7 +70,7 @@
                         <TextBlock Text="{Binding StrRiskType}" Classes="label"/>
                         <!-- Risk Catalog List -->
                         <ListBox Grid.Row="1" Name="LstCatalogs"  
-                                 Items="{Binding HdRisk.Types}" SelectionMode="Single"
+                                 ItemsSource="{Binding HdRisk.Types}" SelectionMode="Single"
                                  HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
                                  ScrollViewer.HorizontalScrollBarVisibility="Visible">
                             <ListBox.ItemTemplate>

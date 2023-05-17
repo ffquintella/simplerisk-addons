@@ -22,7 +22,7 @@
     
     <Grid>
         <DataGrid Name="DevicesDataGrid" 
-                  Items="{Binding  Clients}" 
+                  ItemsSource="{Binding  Clients}" 
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" 

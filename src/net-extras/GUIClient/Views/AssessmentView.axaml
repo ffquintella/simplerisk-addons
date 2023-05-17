@@ -9,7 +9,8 @@
              xmlns:convertes="clr-namespace:GUIClient.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.AssessmentView"
-             Name="AssessmentViewName">
+             Name="AssessmentViewName"
+             >
     
     <Design.DataContext>
         <vm:AssessmentViewModel/>
@@ -26,7 +27,7 @@
             <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrAssessments, Mode=OneTime}" TextAlignment="Center"/>
             <!-- Assessment List -->
             <ListBox Grid.Row="1" Name="LstAssessments"  
-                     Items="{Binding Assessments}" SelectionMode="Single"
+                     ItemsSource="{Binding Assessments}" SelectionMode="Single"
                      SelectedItem="{Binding SelectedAssessment}"
                      HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
                      ScrollViewer.HorizontalScrollBarVisibility="Visible">
@@ -72,7 +73,7 @@
                 <Grid ColumnDefinitions="*, Auto">
                     <!-- DATAGRID -->
                     <DataGrid Grid.Column="0" Name="QuestionsDataGrid" 
-                              Items="{Binding  AssessmentQuestions, Mode=TwoWay}" 
+                              ItemsSource="{Binding  AssessmentQuestions, Mode=TwoWay}" 
                               AutoGenerateColumns="False"
                               SelectedItem="{Binding SelectedAssessmentQuestion}">
                         <DataGrid.Columns>
@@ -89,7 +90,7 @@
                                                        HorizontalAlignment="Left" TextWrapping="Wrap"
                                             />
                                             <ItemsControl Name="Details"  
-                                                          Items="{Binding #AssessmentViewName.DataContext.AssessmentQuestionAnswers}" >
+                                                          ItemsSource="{Binding #AssessmentViewName.DataContext.AssessmentQuestionAnswers}" >
                                                 
                                                 <ItemsControl.IsVisible>
                                                     <MultiBinding Converter="{StaticResource multiObjectEqualConverter}">

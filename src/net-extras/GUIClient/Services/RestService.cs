@@ -62,9 +62,9 @@ public class RestService: IRestService
                 {
                     _authenticationService.RefreshToken();
                 }
-                
+                _options.Authenticator =  new JwtAuthenticator(_authenticationService.AuthenticationCredential.JWTToken!);
                 var client = new RestClient(_options!);
-                client.Authenticator = new JwtAuthenticator(_authenticationService.AuthenticationCredential.JWTToken!);
+                //client.Authenticator = new JwtAuthenticator(_authenticationService.AuthenticationCredential.JWTToken!);
                 client.AddDefaultHeader("ClientId", _environmentService.DeviceID);
                 //client.AddDefaultHeader("Authorization", $"Jwt {_authenticationService.AuthenticationCredential.JWTToken}");
                 

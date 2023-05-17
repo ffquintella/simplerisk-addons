@@ -7,7 +7,7 @@ namespace GUIClient
 {
     public class ViewLocator : IDataTemplate
     {
-        public IControl Build(object? data)
+        public Control Build(object? data)
         {
             if (data == null) throw new Exception("Invalid data parameter");
             var name = data!.GetType().FullName!.Replace("ViewModel", "View");

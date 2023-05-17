@@ -112,7 +112,7 @@
                     <DataGrid Grid.Row="1" Name="AnswersDataGrid" 
                               IsEnabled="{Binding GridEnabled}"
                               SelectedItem="{Binding SelectedAnswer}"
-                              Items="{Binding  Answers, Mode=OneWay}"
+                              ItemsSource="{Binding  Answers, Mode=OneWay}"
                               AutoGenerateColumns="False">
                         <DataGrid.Columns >
                             <DataGridTextColumn IsReadOnly="True" 

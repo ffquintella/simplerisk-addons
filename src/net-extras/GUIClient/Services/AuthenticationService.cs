@@ -192,9 +192,15 @@ public class AuthenticationService: ServiceBase, IAuthenticationService
     }
     public int DoServerAuthentication(string user, string password)
     {
-        var client = _restService.GetClient();
+        //var client = _restService.GetClient();
+        var options = new RestClientOptions();
+        options.Authenticator  = new HttpBasicAuthenticator(user, password);
+        var client = new RestClient(options);
+        
         var request = new RestRequest("/Authentication/GetToken");
-        client.Authenticator = new HttpBasicAuthenticator(user, password);
+        
+
+        //client.Authenticator = new HttpBasicAuthenticator(user, password);
         client.AddDefaultHeader("ClientId", _environmentService.DeviceID);
         
         try

@@ -1,8 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using DAL.Entities;
-using GUIClient.ViewModels;
 
 namespace GUIClient.Views;
 
@@ -17,9 +15,10 @@ public partial class AssessmentQuestionView : Window
         this.AttachDevTools();
 #endif
     }
-
+    
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
     }
+    
 }
