@@ -66,7 +66,7 @@
     </Style>
     
     <Style Selector="TextBlock.label">
-        <Setter Property="Margin" Value="0 5 0 0"/>
+        <Setter Property="Margin" Value="0 5 3 0"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
     
