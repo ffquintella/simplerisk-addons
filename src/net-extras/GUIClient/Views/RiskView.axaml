@@ -37,7 +37,9 @@
             <!-- Assessment Control Bar -->
             <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto,Auto">
                 <Button Grid.Column="0" Name="BtAddRisk" 
-                        Command="{Binding BtAddRiskClicked}">
+                        Command="{Binding BtAddRiskClicked}"
+                        CommandParameter="{Binding $parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent}"
+                >
                     <material:MaterialIcon Kind="Add"/>
                 </Button>
                 <Button Grid.Column="2" Name="BtReloadRisk" 

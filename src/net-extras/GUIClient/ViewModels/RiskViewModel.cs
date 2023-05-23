@@ -1,8 +1,10 @@
 using System.Collections.ObjectModel;
 using System.Reactive;
+using Avalonia.Controls;
 using DAL.Entities;
 using GUIClient.Services;
 using GUIClient.Tools;
+using GUIClient.Views;
 using LiveChartsCore.Defaults;
 using ReactiveUI;
 
@@ -55,7 +57,7 @@ public class RiskViewModel: ViewModelBase
         }
     }
     
-    public ReactiveCommand<Unit, Unit> BtAddRiskClicked { get; }
+    public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
     
     public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtDeleteRiskClicked { get; }
@@ -88,7 +90,7 @@ public class RiskViewModel: ViewModelBase
         StrRiskType = Localizer["RiskType"] ;
         
         
-        BtAddRiskClicked = ReactiveCommand.Create(ExecuteAddRisk);
+        BtAddRiskClicked = ReactiveCommand.Create<Window>(ExecuteAddRisk);
         BtDeleteRiskClicked = ReactiveCommand.Create(ExecuteDeleteRisk);
         BtReloadRiskClicked = ReactiveCommand.Create(ExecuteReloadRisk);
 
@@ -102,9 +104,16 @@ public class RiskViewModel: ViewModelBase
         
     }
     
-    private void ExecuteAddRisk()
+    private void ExecuteAddRisk(Window openWindow)
     {
-
+        // OPENS a new window to create the risk
+        
+        var dialog = new EditRisk()
+        {
+            //DataContext = new UserInfoViewModel(AuthenticationService.AuthenticatedUserInfo!),
+            WindowStartupLocation = WindowStartupLocation.CenterOwner
+        };
+        dialog.ShowDialog( openWindow );
     }
     private void ExecuteDeleteRisk()
     {
