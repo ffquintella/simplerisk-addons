@@ -115,7 +115,7 @@ public class RiskViewModel: ViewModelBase
     {
         // OPENS a new window to create the risk
         
-        var dialog = new EditRisk()
+        var dialog = new EditRiskView()
         {
             //DataContext = new UserInfoViewModel(AuthenticationService.AuthenticatedUserInfo!),
             WindowStartupLocation = WindowStartupLocation.CenterOwner

@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media.TextFormatting.Unicode;
+using Avalonia.VisualTree;
 using DAL.Entities;
 using DynamicData;
 using GUIClient.Services;
@@ -287,8 +289,12 @@ public class AssessmentViewModel: ViewModelBase
         };
         
         dialog.DataContext = new AssessmentQuestionViewModel(dialog, SelectedAssessment!);
-        await dialog.ShowDialog( parentControl.ParentWindow );
-       
+
+        if (Avalonia.Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            if (desktop.MainWindow != null) await dialog.ShowDialog(desktop.MainWindow);
+        }
+        
         AssessmentQuestions.Add(((AssessmentQuestionViewModel)dialog.DataContext!).AssessmentQuestion!);
         
         //this.RaiseAndSetIfChanged(ref _selectedAssessmentQuestion, assessmentQuestion);
@@ -310,7 +316,11 @@ public class AssessmentViewModel: ViewModelBase
         
         int index = AssessmentQuestions.IndexOf(_selectedAssessmentQuestion!);
         
-        await dialog.ShowDialog( parentControl.ParentWindow );
+        if (Avalonia.Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            if (desktop.MainWindow != null) await dialog.ShowDialog(desktop.MainWindow);
+        }
+        //await dialog.ShowDialog( parentControl.ParentWindow );
 
         var saq = ((AssessmentQuestionViewModel)dialog!.DataContext!).AssessmentQuestion!.DeepCopy();
 

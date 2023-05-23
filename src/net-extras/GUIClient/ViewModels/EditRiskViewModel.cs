@@ -1,6 +1,6 @@
 ﻿namespace GUIClient.ViewModels;
 
-public class EditRiskModel
+public class EditRiskViewModel: ViewModelBase
 {
     
 }

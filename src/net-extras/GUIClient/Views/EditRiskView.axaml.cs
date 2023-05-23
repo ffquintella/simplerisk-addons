@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace GUIClient.Views;
 
-public partial class EditRisk : Window
+public partial class EditRiskView : Window
 {
-    public EditRisk()
+    public EditRiskView()
     {
         InitializeComponent();
 #if DEBUG
