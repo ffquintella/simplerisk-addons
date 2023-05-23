@@ -2,8 +2,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:GUIClient.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GUIClient.Views.EditRiskView"
         Title="EditRisk">
-    Welcome to Avalonia!
+        
+        <Design.DataContext>
+                <vm:EditRiskViewModel/>
+        </Design.DataContext>
+        <Panel>
+                <ExperimentalAcrylicBorder IsHitTestVisible="False">
+                        <ExperimentalAcrylicBorder.Material>
+                                <ExperimentalAcrylicMaterial
+                                        BackgroundSource="Digger"
+                                        TintColor="Black"
+                                        TintOpacity="1"
+                                        MaterialOpacity="0.65" />
+                        </ExperimentalAcrylicBorder.Material>
+                </ExperimentalAcrylicBorder>
+                <Panel Margin="10 30">
+                        <Grid RowDefinitions="Auto, Auto, Auto, *" ColumnDefinitions="*">
+                                <TextBlock>TESTE</TextBlock>
+                        </Grid>
+                </Panel>
+                
+        </Panel>
 </Window>
