@@ -40,7 +40,7 @@ public class RisksPanelViewModel: ViewModelBase
     
     public void ExecuteTest()
     {
-        var a = 1;
+        //var a = 1;
         return;
         //Environment.Exit(0);
     }

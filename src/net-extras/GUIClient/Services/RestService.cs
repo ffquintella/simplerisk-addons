@@ -51,7 +51,7 @@ public class RestService: IRestService
 
         if (autenticator != null)
         {
-            _options.Authenticator = autenticator;
+            _options!.Authenticator = autenticator;
         }
         
         if (_authenticationService == null)
@@ -68,7 +68,7 @@ public class RestService: IRestService
                 {
                     _authenticationService.RefreshToken();
                 }
-                _options.Authenticator =  new JwtAuthenticator(_authenticationService.AuthenticationCredential.JWTToken!);
+                _options!.Authenticator =  new JwtAuthenticator(_authenticationService.AuthenticationCredential.JWTToken!);
                 var client = new RestClient(_options!);
                 //client.Authenticator = new JwtAuthenticator(_authenticationService.AuthenticationCredential.JWTToken!);
                 client.AddDefaultHeader("ClientId", _environmentService.DeviceID);

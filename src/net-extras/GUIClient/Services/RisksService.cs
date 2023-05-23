@@ -94,6 +94,7 @@ public class RisksService: ServiceBase, IRisksService
             if (response == null)
             {
                 _logger.Error("Error getting category ");
+                return "ERROR";
             }
             
             return response.Name;
@@ -123,6 +124,7 @@ public class RisksService: ServiceBase, IRisksService
             if (response == null)
             {
                 _logger.Error("Error getting source ");
+                return "ERROR";
             }
             
             return response.Name;
@@ -154,6 +156,7 @@ public class RisksService: ServiceBase, IRisksService
             if (response == null)
             {
                 _logger.Error("Error getting risk catalogs ");
+                return new List<RiskCatalog>();
             }
             
             return response;

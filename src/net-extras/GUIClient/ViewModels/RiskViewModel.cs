@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using Avalonia.Controls;
@@ -28,8 +30,8 @@ public class RiskViewModel: ViewModelBase
     public string StrRiskType { get; }
     
     
-    private Hydrated.Risk _hdRisk;
-    public Hydrated.Risk HdRisk
+    private Hydrated.Risk? _hdRisk;
+    public Hydrated.Risk? HdRisk
     {
         get { return _hdRisk; }
         set
@@ -52,7 +54,11 @@ public class RiskViewModel: ViewModelBase
             {
                 HdRisk = new Hydrated.Risk(value);
             }
-            else HdRisk = null;
+            else
+            {
+                HdRisk = null;
+                //throw new Exception("Invalid selected Risk");
+            }
             this.RaiseAndSetIfChanged(ref _selectedRisk, value);
         }
     }
@@ -88,7 +94,8 @@ public class RiskViewModel: ViewModelBase
         StrCreation = Localizer["Creation"] + ":";
         StrSubmittedBy = Localizer["SubmittedBy"] + ":";
         StrRiskType = Localizer["RiskType"] ;
-        
+
+        _risks = new ObservableCollection<Risk>();
         
         BtAddRiskClicked = ReactiveCommand.Create<Window>(ExecuteAddRisk);
         BtDeleteRiskClicked = ReactiveCommand.Create(ExecuteDeleteRisk);
