@@ -85,7 +85,7 @@ public class RisksService: ServiceBase, IRisksService
     {
         var client = _restService.GetClient();
         
-        var request = new RestRequest($"/Risks/Category/{id}");
+        var request = new RestRequest($"/Risks/Categories/{id}");
         
         try
         {
@@ -108,6 +108,36 @@ public class RisksService: ServiceBase, IRisksService
             }
             _logger.Error("Error getting risk category message:{0}", ex.Message);
             throw new RestComunicationException("Error getting risk category", ex);
+        }
+    }
+    
+    public List<Category>? GetRiskCategories()
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/Categories");
+        
+        try
+        {
+            var response = client.Get<List<Category>>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting categories ");
+                return null;
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk categories message:{0}", ex.Message);
+            throw new RestComunicationException("Error getting risk categories", ex);
         }
     }
     

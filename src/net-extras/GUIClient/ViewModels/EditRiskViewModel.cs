@@ -14,6 +14,7 @@ public class EditRiskViewModel: ViewModelBase
     public string StrOperationType { get; }
     public string StrSubject { get; }
     public string StrSource { get; }
+    public string StrCategory { get; }
     public bool ShowEditFields { get; }
     
     public List<Source>? RiskSources { get; }
@@ -38,6 +39,7 @@ public class EditRiskViewModel: ViewModelBase
         StrOperation = Localizer["Operation"] + ": ";
         StrSubject = Localizer["Subject"] + ": ";
         StrSource = Localizer["Source"] + ": ";
+        StrCategory = Localizer["Category"]+ ": ";
         
         StrOperationType = _operationType == OperationType.Create ? Localizer["Creation"] : Localizer["Edit"];
         if (_operationType == OperationType.Create)
@@ -54,10 +56,11 @@ public class EditRiskViewModel: ViewModelBase
         _risksService = GetService<IRisksService>();
 
         RiskSources = _risksService.GetRiskSources();
+        Categories = _risksService.GetRiskCategories();
 
         if (RiskSources == null) throw new Exception("Unable to load risk list");
 
-
+        if (Categories == null) throw new Exception("Unable to load category list");
     }
     
     public Risk Risk { get; set; }

@@ -56,8 +56,8 @@
                                                 </ComboBox>
                                         </StackPanel>
                                         <StackPanel  Orientation="Horizontal" Margin="5 5  ">
-                                                <TextBlock Text="{Binding StrSource}" Classes="label"/>
-                                                <ComboBox x:Name="catComboBox" SelectedItem="{Binding SelectedRiskSource}"  ItemsSource="{Binding RiskSources}" Width="250">
+                                                <TextBlock Text="{Binding StrCategory}" Classes="label"/>
+                                                <ComboBox x:Name="catComboBox" SelectedItem="{Binding SelectedCategory}"  ItemsSource="{Binding Categories}" Width="250">
                                                         <ComboBox.ItemTemplate>
                                                                 <DataTemplate>
                                                                         <TextBlock Text="{Binding Name}" />
