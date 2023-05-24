@@ -4,6 +4,7 @@ using DAL.Entities;
 using GUIClient.Models;
 using GUIClient.Services;
 using Model.Exceptions;
+using ReactiveUI;
 
 namespace GUIClient.ViewModels;
 
@@ -18,10 +19,40 @@ public class EditRiskViewModel: ViewModelBase
     public bool ShowEditFields { get; }
     
     public List<Source>? RiskSources { get; }
-    public Source SelectedRiskSource { get; set; }
+    //public Source SelectedRiskSource { get; set; }
+    
+    private Source? _selectedRiskSource;
+    public Source? SelectedRiskSource
+    {
+        get
+        {
+            return _selectedRiskSource;
+        }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedRiskSource, value);
+        }
+    }
+    
     
     public List<Category>? Categories { get; }
-    public Category SelectedCategory { get; set; }
+    
+    
+    //public Category SelectedCategory { get; set; }
+
+    private Category? _selectedCategory;
+    public Category? SelectedCategory
+    {
+        get
+        {
+            return _selectedCategory;
+        }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedCategory, value);
+        }
+    }
+    
 
     private OperationType _operationType;
     private IRisksService _risksService;
