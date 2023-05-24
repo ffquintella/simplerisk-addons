@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using Avalonia.Controls;
 using DAL.Entities;
+using GUIClient.Models;
 using GUIClient.Services;
 using GUIClient.Tools;
 using GUIClient.Views;
@@ -117,7 +118,7 @@ public class RiskViewModel: ViewModelBase
         
         var dialog = new EditRiskView()
         {
-            DataContext = new EditRiskView(),
+            DataContext = new EditRiskViewModel(OperationType.Create),
             WindowStartupLocation = WindowStartupLocation.CenterOwner
         };
         dialog.ShowDialog( openWindow );

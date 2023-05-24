@@ -22,8 +22,21 @@
                 </ExperimentalAcrylicBorder>
                 <Panel Margin="10 10">
                         <Grid RowDefinitions="Auto, Auto, Auto, *" ColumnDefinitions="*">
-                                <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrRisk, Mode=OneTime}" TextAlignment="Center"/>
-                                <TextBlock>TESTE</TextBlock>
+                                <!-- HEADER -->
+                                <TextBlock Grid.Row="0" Grid.Column="0" Classes="header" Text="{Binding StrRisk, Mode=OneTime}" TextAlignment="Center"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Classes="header_detail" Text="{Binding StrOperation, Mode=OneTime}" TextAlignment="Right" Margin="0 5 50 0"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0"  Classes="header_detail" Text="{Binding StrOperationType, Mode=OneTime}" TextAlignment="Right"/>
+                                
+                                <!-- RISK DATA -->
+                                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                        <TextBlock IsVisible="{Binding ShowEditFields}" Text="ID: " Classes="label"/>
+                                        <TextBlock IsVisible="{Binding ShowEditFields}" Text="{Binding Risk.Id}" Classes="formData" Margin="0 0 5 0 "/>  
+                                </StackPanel>
+                                
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5 5  ">
+                                        <TextBlock Text="Ctrl #: " Classes="label"/>
+                                        <TextBox Text="{Binding Risk.ControlNumber, Mode=TwoWay}" Width="150" />
+                                </StackPanel>
                         </Grid>
                 </Panel>
                 

@@ -13,7 +13,6 @@
         <AvaloniaNameGeneratorIsEnabled>false</AvaloniaNameGeneratorIsEnabled>
   </PropertyGroup>
     <ItemGroup>
-        <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
         <None Remove=".gitignore" />
         <None Update="appsettings.development.json">

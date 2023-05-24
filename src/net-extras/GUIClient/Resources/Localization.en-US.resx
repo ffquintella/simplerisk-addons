@@ -240,4 +240,10 @@
     <data name="RiskType" xml:space="preserve">
         <value>Risk Type</value>
     </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="Operation" xml:space="preserve">
+        <value>Operation</value>
+    </data>
 </root>

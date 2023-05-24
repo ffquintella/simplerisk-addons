@@ -65,6 +65,11 @@
         <Setter Property="Background" Value="#222222"/>
     </Style>
     
+    <Style Selector="TextBlock.header_detail">
+        <Setter Property="Margin" Value="0 5 0 0"/>
+        <Setter Property="Foreground" Value="#bbbbbb"/>
+    </Style>
+    
     <Style Selector="TextBlock.label">
         <Setter Property="Margin" Value="0 5 3 0"/>
         <Setter Property="FontWeight" Value="Bold"/>

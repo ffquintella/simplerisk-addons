@@ -267,6 +267,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Editar.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ambiente.
         /// </summary>
         internal static string Environment {
@@ -470,6 +479,15 @@ namespace GUIClient.Resources {
         internal static string NotImplementedMSG {
             get {
                 return ResourceManager.GetString("NotImplementedMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operação.
+        /// </summary>
+        internal static string Operation {
+            get {
+                return ResourceManager.GetString("Operation", resourceCulture);
             }
         }
         
