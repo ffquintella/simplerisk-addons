@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Model.Exceptions;
 using ServerServices;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using ILogger = Serilog.ILogger;
 
 namespace API.Controllers;
@@ -121,7 +122,7 @@ public class RisksController : ApiBaseController
     }
 
     [HttpGet]
-    [Route("Category/{id}")]
+    [Route("Categories/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -138,6 +139,29 @@ public class RisksController : ApiBaseController
         {
             Logger.Warning($"The category {id} was not found: {ex.Message}");
             return NotFound();
+
+        }
+        
+    }
+    
+    [HttpGet]
+    [Route("Categories")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<Category>> GetRiskCategories()
+    {
+        
+        try
+        {
+            var cats  = _riskManagement.GetRiskCategories();
+            return Ok(cats);
+            
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning($"Error Listing categories");
+            return StatusCode(StatusCodes.Status500InternalServerError);
 
         }
         

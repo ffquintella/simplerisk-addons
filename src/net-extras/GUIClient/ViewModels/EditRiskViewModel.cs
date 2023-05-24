@@ -17,6 +17,10 @@ public class EditRiskViewModel: ViewModelBase
     public bool ShowEditFields { get; }
     
     public List<Source>? RiskSources { get; }
+    public Source SelectedRiskSource { get; set; }
+    
+    public List<Category>? Categories { get; }
+    public Category SelectedCategory { get; set; }
 
     private OperationType _operationType;
     private IRisksService _risksService;
