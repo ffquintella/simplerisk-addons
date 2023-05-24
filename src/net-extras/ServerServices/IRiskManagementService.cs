@@ -51,6 +51,12 @@ public interface IRiskManagementService
     Source GetRiskSource(int id);
 
     /// <summary>
+    /// List the risk sources
+    /// </summary>
+    /// <returns></returns>
+    List<Source> GetRiskSources();
+    
+    /// <summary>
     /// Gets all the risks that needs a mgmtReview
     /// </summary>
     /// <param name="status">Filter risk status</param>
