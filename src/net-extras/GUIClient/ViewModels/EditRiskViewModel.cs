@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DAL.Entities;
+using DynamicData.Tests;
 using GUIClient.Models;
 using GUIClient.Services;
 using Model.Exceptions;
@@ -13,6 +14,7 @@ public class EditRiskViewModel: ViewModelBase
     public string StrRisk { get; }
     public string StrOperation { get; }
     public string StrOperationType { get; }
+    public string StrRiskType { get; }
     public string StrSubject { get; }
     public string StrSource { get; }
     public string StrCategory { get; }
@@ -52,6 +54,8 @@ public class EditRiskViewModel: ViewModelBase
             this.RaiseAndSetIfChanged(ref _selectedCategory, value);
         }
     }
+
+    private List<RiskCatalog> RiskTypes { get; }
     
 
     private OperationType _operationType;
@@ -71,6 +75,7 @@ public class EditRiskViewModel: ViewModelBase
         StrSubject = Localizer["Subject"] + ": ";
         StrSource = Localizer["Source"] + ": ";
         StrCategory = Localizer["Category"]+ ": ";
+        StrRiskType = Localizer["RiskType"] ;
         
         StrOperationType = _operationType == OperationType.Create ? Localizer["Creation"] : Localizer["Edit"];
         if (_operationType == OperationType.Create)
@@ -88,10 +93,15 @@ public class EditRiskViewModel: ViewModelBase
 
         RiskSources = _risksService.GetRiskSources();
         Categories = _risksService.GetRiskCategories();
+        RiskTypes = _risksService.GetRiskTypes();
+
+
 
         if (RiskSources == null) throw new Exception("Unable to load risk list");
 
         if (Categories == null) throw new Exception("Unable to load category list");
+        
+        if (RiskTypes == null) throw new Exception("Unable to load risk types");
     }
     
     public Risk Risk { get; set; }

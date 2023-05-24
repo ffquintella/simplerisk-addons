@@ -66,6 +66,22 @@
                                                 </ComboBox>
                                         </StackPanel>
                                 </StackPanel>
+                                <StackPanel Grid.Row="4" Orientation="Vertical">
+                                        <TextBlock Text="{Binding StrRiskType}" Classes="label"/>
+                                        <!-- Risk Catalog List -->
+                                        <ListBox Grid.Row="1" Name="LstCatalogs"  
+                                                 ItemsSource="{Binding RiskTypes}" SelectionMode="Multiple"
+                                                 HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
+                                                 ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                                                <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="{Binding Number}"/><TextBlock>: </TextBlock><TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                                                                </StackPanel>
+                                                        </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                        </ListBox>
+                                </StackPanel>
                         </Grid>
                 </Panel>
                 

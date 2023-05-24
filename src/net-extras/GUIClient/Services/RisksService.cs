@@ -201,13 +201,21 @@ public class RisksService: ServiceBase, IRisksService
         }
     }
 
+    public List<RiskCatalog> GetRiskTypes()
+    {
+        return GetRiskTypes("");
+    }
     public List<RiskCatalog> GetRiskTypes(string ids)
     {
+        var all = false;
+        if (ids == "") all = true;
+        
         var client = _restService.GetClient();
+        
         
         var request = new RestRequest($"/Risks/Catalogs");
 
-        request.AddParameter("list", ids);
+        if(!all) request.AddParameter("list", ids);
         
         try
         {
