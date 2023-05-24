@@ -115,7 +115,7 @@ public class RisksService: ServiceBase, IRisksService
     {
         var client = _restService.GetClient();
         
-        var request = new RestRequest($"/Risks/Source/{id}");
+        var request = new RestRequest($"/Risks/Sources/{id}");
         
         try
         {
@@ -128,6 +128,36 @@ public class RisksService: ServiceBase, IRisksService
             }
             
             return response.Name;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk source message:{0}", ex.Message);
+            throw new RestComunicationException("Error getting risk source", ex);
+        }
+    }
+    
+    public List<Source>? GetRiskSources()
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/Sources");
+        
+        try
+        {
+            var response = client.Get<List<Source>>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting sources ");
+                return null;
+            }
+            
+            return response;
             
         }
         catch (HttpRequestException ex)

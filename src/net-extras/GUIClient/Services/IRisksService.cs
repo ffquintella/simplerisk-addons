@@ -11,5 +11,7 @@ public interface IRisksService
     public string GetRiskCategory(int id);
     public string GetRiskSource(int id);
     
+    public List<Source>? GetRiskSources();
+    
     public List<RiskCatalog> GetRiskTypes(string ids);
 }

@@ -1,5 +1,8 @@
-﻿using DAL.Entities;
+﻿using System;
+using System.Collections.Generic;
+using DAL.Entities;
 using GUIClient.Models;
+using GUIClient.Services;
 using Model.Exceptions;
 
 namespace GUIClient.ViewModels;
@@ -11,10 +14,12 @@ public class EditRiskViewModel: ViewModelBase
     public string StrOperationType { get; }
     public string StrSubject { get; }
     public string StrSource { get; }
-
     public bool ShowEditFields { get; }
+    
+    public List<Source>? RiskSources { get; }
 
     private OperationType _operationType;
+    private IRisksService _risksService;
     
     public EditRiskViewModel(OperationType operation, Risk? risk = null)
     {
@@ -41,6 +46,14 @@ public class EditRiskViewModel: ViewModelBase
             Risk = risk!;
             ShowEditFields = true;
         }
+
+        _risksService = GetService<IRisksService>();
+
+        RiskSources = _risksService.GetRiskSources();
+
+        if (RiskSources == null) throw new Exception("Unable to load risk list");
+
+
     }
     
     public Risk Risk { get; set; }
