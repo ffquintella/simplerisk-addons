@@ -49,6 +49,8 @@ public interface IRiskManagementService
     /// <returns></returns>
     List<RiskCatalog> GetRiskCatalogs(List<int> ids);
     
+    List<RiskCatalog> GetRiskCatalogs();
+    
     /// <summary>
     /// Gets the risk source
     /// </summary>

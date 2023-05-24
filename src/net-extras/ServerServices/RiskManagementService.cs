@@ -132,6 +132,22 @@ public class RiskManagementService: IRiskManagementService
             return cat;
         }
     }
+
+    public List<RiskCatalog> GetRiskCatalogs()
+    {
+        using (var contex = _dalManager.GetContext())
+        {
+
+            var cats = contex.RiskCatalogs.ToList();
+
+            if (cats == null)
+            {
+                throw new DataNotFoundException("Catalog", "");
+            }
+
+            return cats;
+        }
+    }
     
     public List<RiskCatalog> GetRiskCatalogs(List<int> ids)
     {

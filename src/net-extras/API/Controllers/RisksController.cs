@@ -198,10 +198,13 @@ public class RisksController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<List<RiskCatalog>> GetRisksCatalog([FromQuery] string list = "")
     {
+        var all = false;
+        if (list == "") all = true;
+        
         var regex = @"^\d+(,\d+)*$";
         var match = Regex.Match(list, regex, RegexOptions.IgnoreCase);
 
-        if (!match.Success)
+        if (all == false && !match.Success)
         {
             Logger.Warning($"Invalid catalog list format");
             return StatusCode(409);
@@ -209,6 +212,12 @@ public class RisksController : ApiBaseController
         
         try
         {
+            if (all)
+            {
+                var cats  = _riskManagement.GetRiskCatalogs();
+                return Ok(cats);
+            }
+            
             var sids = list.Split(',').ToList();
 
             var ids = new List<int>();
