@@ -66,12 +66,12 @@
                                                 </ComboBox>
                                         </StackPanel>
                                 </StackPanel>
-                                <StackPanel Grid.Row="4" Orientation="Vertical" HorizontalAlignment="Left">
+                                <StackPanel Grid.Row="4" Orientation="Vertical" HorizontalAlignment="Left" Margin="5 0">
                                         <TextBlock Text="{Binding StrRiskType}" Classes="label"/>
                                         <!-- Risk Catalog List -->
-                                        <ListBox Grid.Row="1" Name="LstCatalogs"  
+                                        <ListBox Grid.Row="1" Name="LstCatalogs"  Margin="5 5"
                                                  ItemsSource="{Binding RiskTypes}" SelectionMode="Multiple,Toggle"
-                                                 HorizontalAlignment="Center" MinWidth="550" Height="200"
+                                                 HorizontalAlignment="Center" MinWidth="650" Height="200"
                                                  ScrollViewer.HorizontalScrollBarVisibility="Visible"
                                                  ScrollViewer.VerticalScrollBarVisibility="Visible">
                                                 <ListBox.ItemTemplate>
