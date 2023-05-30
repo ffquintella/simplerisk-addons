@@ -107,7 +107,7 @@
                                 </StackPanel>
                                 <StackPanel Grid.Row="6" Orientation="Vertical">
                                         <TextBlock Text="{Binding StrNotes}" Classes="label"/>
-                                        <TextBox Text="{Binding Notes}" IsReadOnly="True" TextWrapping="Wrap" Height="60"/>
+                                        <TextBox Text="{Binding Notes}" IsReadOnly="False" TextWrapping="Wrap" Height="60"/>
                                 </StackPanel>
                         </Grid>
                 </Panel>
