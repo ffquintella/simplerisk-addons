@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive;
 using DAL.Entities;
 using DynamicData.Tests;
 using GUIClient.Models;
@@ -23,6 +24,8 @@ public class EditRiskViewModel: ViewModelBase
     public string StrOwner { get; }
     public string StrManager { get; }
     public bool ShowEditFields { get; }
+    public string StrSave { get; }
+    public string StrCancel { get; }
     
     public List<Source>? RiskSources { get; }
     
@@ -104,6 +107,9 @@ public class EditRiskViewModel: ViewModelBase
     private IAuthenticationService _authenticationService;
     private IUsersService _usersService;
     
+    public ReactiveCommand<Unit, Unit> BtSaveClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtCancelClicked { get; }
+    
     public EditRiskViewModel(OperationType operation, Risk? risk = null)
     {
         if (operation == OperationType.Edit && risk == null)
@@ -122,6 +128,8 @@ public class EditRiskViewModel: ViewModelBase
         StrOwner = Localizer["Owner"] + ":";
         StrManager = Localizer["Manager"] + ":";
         StrNotes = Localizer["Notes"] + ": ";
+        StrSave= Localizer["Save"] ;
+        StrCancel= Localizer["Cancel"] ;
         
         StrOperationType = _operationType == OperationType.Create ? Localizer["Creation"] : Localizer["Edit"];
         if (_operationType == OperationType.Create)
@@ -149,6 +157,20 @@ public class EditRiskViewModel: ViewModelBase
         if (Categories == null) throw new Exception("Unable to load category list");
         if (RiskTypes == null) throw new Exception("Unable to load risk types");
         if (UserListings == null) throw new Exception("Unable to load user listing");
+        
+        BtSaveClicked = ReactiveCommand.Create(ExecuteSave);
+        BtCancelClicked = ReactiveCommand.Create(ExecuteCancel);
+        
+    }
+    
+    private void ExecuteSave()
+    {
+
+    }
+    
+    private void ExecuteCancel()
+    {
+
     }
     
     public Risk Risk { get; set; }
