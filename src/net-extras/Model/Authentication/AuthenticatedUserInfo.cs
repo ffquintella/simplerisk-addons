@@ -9,6 +9,12 @@ public class AuthenticatedUserInfo
         get;
         set;
     }
+    
+    public int? UserId
+    {
+        get;
+        set;
+    }
     public string? UserAccount  
     {
         get;

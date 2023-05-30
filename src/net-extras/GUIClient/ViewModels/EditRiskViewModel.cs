@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
 using DAL.Entities;
 using DynamicData.Tests;
@@ -152,6 +153,9 @@ public class EditRiskViewModel: ViewModelBase
         RiskTypes = _risksService.GetRiskTypes();
         UserListings = _usersService.ListUsers();
 
+        var sowner = UserListings.FirstOrDefault(ul => ul.Id == _authenticationService.AuthenticatedUserInfo.UserId);
+
+        if (sowner != null) SelectedOwner = sowner;
 
         if (RiskSources == null) throw new Exception("Unable to load risk list");
         if (Categories == null) throw new Exception("Unable to load category list");
