@@ -4,6 +4,7 @@ using DAL.Entities;
 using DynamicData.Tests;
 using GUIClient.Models;
 using GUIClient.Services;
+using Model.DTO;
 using Model.Exceptions;
 using ReactiveUI;
 
@@ -24,7 +25,8 @@ public class EditRiskViewModel: ViewModelBase
     public bool ShowEditFields { get; }
     
     public List<Source>? RiskSources { get; }
-    //public Source SelectedRiskSource { get; set; }
+    
+    public List<UserListing>? UserListings { get; }
     
     private Source? _selectedRiskSource;
     public Source? SelectedRiskSource
@@ -58,12 +60,39 @@ public class EditRiskViewModel: ViewModelBase
         }
     }
 
+    private UserListing? _selectedOwner;
+    public UserListing? SelectedOwner
+    {
+        get
+        {
+            return _selectedOwner;
+        }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedOwner, value);
+        }
+    }
+    
+    private UserListing? _selectedManager;
+    public UserListing? SelectedManager
+    {
+        get
+        {
+            return _selectedManager;
+        }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedManager, value);
+        }
+    }
+    
     private List<RiskCatalog> RiskTypes { get; }
     
 
     private OperationType _operationType;
     private IRisksService _risksService;
     private IAuthenticationService _authenticationService;
+    private IUsersService _usersService;
     
     public EditRiskViewModel(OperationType operation, Risk? risk = null)
     {
@@ -97,17 +126,18 @@ public class EditRiskViewModel: ViewModelBase
 
         _risksService = GetService<IRisksService>();
         _authenticationService = GetService<IAuthenticationService>();
+        _usersService = GetService<IUsersService>();
 
         RiskSources = _risksService.GetRiskSources();
         Categories = _risksService.GetRiskCategories();
         RiskTypes = _risksService.GetRiskTypes();
+        UserListings = _usersService.ListUsers();
 
 
         if (RiskSources == null) throw new Exception("Unable to load risk list");
-
         if (Categories == null) throw new Exception("Unable to load category list");
-        
         if (RiskTypes == null) throw new Exception("Unable to load risk types");
+        if (UserListings == null) throw new Exception("Unable to load user listing");
     }
     
     public Risk Risk { get; set; }
