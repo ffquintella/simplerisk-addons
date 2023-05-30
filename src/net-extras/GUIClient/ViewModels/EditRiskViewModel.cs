@@ -19,7 +19,7 @@ public class EditRiskViewModel: ViewModelBase
     public string StrSubject { get; }
     public string StrSource { get; }
     public string StrCategory { get; }
-    
+    public string StrNotes { get; }
     public string StrOwner { get; }
     public string StrManager { get; }
     public bool ShowEditFields { get; }
@@ -43,9 +43,6 @@ public class EditRiskViewModel: ViewModelBase
     
     
     public List<Category>? Categories { get; }
-    
-    
-    //public Category SelectedCategory { get; set; }
 
     private Category? _selectedCategory;
     public Category? SelectedCategory
@@ -86,6 +83,19 @@ public class EditRiskViewModel: ViewModelBase
         }
     }
     
+    private string? _notes;
+    public String? Notes
+    {
+        get
+        {
+            return _notes;
+        }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _notes, value);
+        }
+    }
+    
     private List<RiskCatalog> RiskTypes { get; }
     
 
@@ -111,6 +121,7 @@ public class EditRiskViewModel: ViewModelBase
         StrRiskType = Localizer["RiskType"] ;
         StrOwner = Localizer["Owner"] + ":";
         StrManager = Localizer["Manager"] + ":";
+        StrNotes = Localizer["Notes"] + ": ";
         
         StrOperationType = _operationType == OperationType.Create ? Localizer["Creation"] : Localizer["Edit"];
         if (_operationType == OperationType.Create)
