@@ -7,6 +7,7 @@ using DAL.Entities;
 using Microsoft.Extensions.Logging;
 using Model.Exceptions;
 using System.Linq;
+using Model.DTO;
 
 namespace ServerServices;
 
@@ -58,6 +59,30 @@ public class UserManagementService: IUserManagementService
             throw new DataNotFoundException("user", id.ToString());
         }
         return user.Name;
+    }
+
+    // List all active users
+    public List<UserListing> ListActiveUsers()
+    {
+        var list = new List<UserListing>();
+        
+        var dbContext = _dalManager!.GetContext();
+        var users = dbContext?.Users?
+            .Where(u => u.Enabled == true)
+            .ToArray();
+        if (users == null) return list;
+        
+        foreach (var user in users)
+        {
+            var ul = new UserListing
+            {
+                Id = user.Value,
+                Name = user.Name
+            };
+            list.Add(ul);
+        }
+        
+        return list;
     }
     
     public List<string> GetUserPermissions(int userId)

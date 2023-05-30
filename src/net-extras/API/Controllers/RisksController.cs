@@ -160,7 +160,7 @@ public class RisksController : ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            Logger.Warning($"Error Listing categories");
+            Logger.Warning($"Error Listing categories {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError);
 
         }
