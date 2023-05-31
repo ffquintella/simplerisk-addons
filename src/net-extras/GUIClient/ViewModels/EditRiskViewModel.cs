@@ -257,9 +257,12 @@ public class EditRiskViewModel: ViewModelBase
         if (Notes != null)
             Risk.Notes = Notes;
 
-        foreach (var srt in SelectedRiskTypes)
+        if (SelectedRiskTypes != null)
         {
-            Risk.RiskCatalogMapping += srt.Id + ";";
+            foreach (var srt in SelectedRiskTypes)
+            {
+                Risk.RiskCatalogMapping += srt.Id + ";";
+            }
         }
 
         var resultingRisk = _risksService.CreateRisk(Risk);
