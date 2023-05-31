@@ -246,4 +246,7 @@
     <data name="Operation" xml:space="preserve">
         <value>Operation</value>
     </data>
+    <data name="RiskMustHaveASubjectMSG" xml:space="preserve">
+        <value>Risk must have a subject.</value>
+    </data>
 </root>

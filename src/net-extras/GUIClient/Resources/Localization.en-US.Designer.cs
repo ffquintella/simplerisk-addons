@@ -582,6 +582,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Risk must have a subject..
+        /// </summary>
+        internal static string RiskMustHaveASubjectMSG {
+            get {
+                return ResourceManager.GetString("RiskMustHaveASubjectMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Risks over time.
         /// </summary>
         internal static string RisksOverTime {

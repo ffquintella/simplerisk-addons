@@ -9,6 +9,7 @@ using GUIClient.Services;
 using Model.DTO;
 using Model.Exceptions;
 using ReactiveUI;
+using ReactiveUI.Validation.Extensions;
 
 namespace GUIClient.ViewModels;
 
@@ -185,17 +186,51 @@ public class EditRiskViewModel: ViewModelBase
         BtSaveClicked = ReactiveCommand.Create(ExecuteSave);
         BtCancelClicked = ReactiveCommand.Create(ExecuteCancel);
         
+        
+        this.ValidationRule(
+            viewModel => viewModel.RiskSubject, 
+            name => !string.IsNullOrWhiteSpace(RiskSubject),
+            Localizer["RiskMustHaveASubjectMSG"]);
+        
     }
     
     private void ExecuteSave()
     {
-
+        this.IsValid();
     }
     
     private void ExecuteCancel()
     {
 
     }
+
+    private string _riskSuject;
     
-    public Risk Risk { get; set; }
+    public string RiskSubject
+    {
+        get
+        {
+            return _riskSuject;
+        }
+        set
+        {
+            Risk.Subject = _riskSuject;
+            this.RaiseAndSetIfChanged(ref _riskSuject, value);
+        }
+    }
+    
+    private Risk _risk;
+    //public Risk Risk { get; set; }
+    
+    public Risk Risk
+    {
+        get
+        {
+            return _risk;
+        }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _risk, value);
+        }
+    }
 }

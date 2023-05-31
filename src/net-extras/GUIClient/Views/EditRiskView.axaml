@@ -40,7 +40,7 @@
                                         </StackPanel>
                                         <StackPanel  Orientation="Horizontal" Margin="5 5  ">
                                                 <TextBlock Text="{Binding StrSubject}" Classes="label"/>
-                                                <TextBox Text="{Binding Risk.Subject, Mode=TwoWay}" Width="700" />
+                                                <TextBox Text="{Binding RiskSubject, Mode=TwoWay}" Width="700" />
                                         </StackPanel>
                                 </StackPanel>
                                 

@@ -3,13 +3,14 @@ using GUIClient.Exceptions;
 using GUIClient.Services;
 using Microsoft.Extensions.Localization;
 using ReactiveUI;
+using ReactiveUI.Validation.Helpers;
 using Serilog;
 using Splat;
 using ILogger = Serilog.ILogger;
 
 namespace GUIClient.ViewModels
 {
-    public class ViewModelBase : ReactiveObject
+    public class ViewModelBase : ReactiveValidationObject
     {
         protected IStringLocalizer _localizer;
         private IAuthenticationService _authenticationService;
