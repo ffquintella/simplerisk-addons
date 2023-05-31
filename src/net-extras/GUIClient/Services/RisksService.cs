@@ -173,6 +173,41 @@ public class RisksService: ServiceBase, IRisksService
         }
     }
 
+    public Risk? CreateRisk(Risk risk)
+    {
+        risk.Id = 0;
+        using (var client = _restService.GetClient())
+        {
+            var request = new RestRequest($"/Risks");
+
+            request.AddJsonBody(risk);
+        
+            try
+            {
+                var response = client.Post<Risk>(request);
+
+                if (response == null)
+                {
+                    _logger.Error("Error creating risk ");
+                    return null;
+                }
+            
+                return response;
+            
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    _authenticationService.DiscardAuthenticationToken();
+                }
+                _logger.Error("Error creating risk message:{0}", ex.Message);
+                throw new RestComunicationException("Error creating risk", ex);
+            }
+        }
+
+    }
+    
     public bool RiskSubjectExists(string? subject)
     {
         if (subject == null || subject == "") return false;

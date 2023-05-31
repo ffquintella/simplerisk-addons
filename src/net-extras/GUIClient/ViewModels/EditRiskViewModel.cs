@@ -122,6 +122,20 @@ public class EditRiskViewModel: ViewModelBase
     }
     
     private List<RiskCatalog> RiskTypes { get; }
+
+    private List<RiskCatalog> _selectedRiskTypes;
+
+    private List<RiskCatalog> SelectedRiskTypes
+    {
+        get
+        {
+            return _selectedRiskTypes;
+        }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedRiskTypes, value);
+        }
+    }
     
 
     private OperationType _operationType;
@@ -223,19 +237,50 @@ public class EditRiskViewModel: ViewModelBase
     private async void ExecuteSave()
     {
 
+        if(SelectedOwner != null)
+            Risk.Owner = SelectedOwner.Id;
+        if (SelectedManager != null)
+            Risk.Manager = SelectedManager.Id;
 
-        var msgError = MessageBox.Avalonia.MessageBoxManager
+        if (_operationType == OperationType.Create)
+        {
+            Risk.Status = "new";
+            Risk.SubmissionDate = DateTime.Now;
+        }
+
+        Risk.LastUpdate = DateTime.Now;
+
+        if (SelectedCategory != null)
+            Risk.Category = SelectedCategory.Value;
+        if (SelectedRiskSource != null)
+            Risk.Source = SelectedRiskSource.Value;
+        if (Notes != null)
+            Risk.Notes = Notes;
+
+        foreach (var srt in SelectedRiskTypes)
+        {
+            Risk.RiskCatalogMapping += srt.Id + ";";
+        }
+
+        var resultingRisk = _risksService.CreateRisk(Risk);
+
+        if (resultingRisk == null)
+        {
+            var msgError = MessageBox.Avalonia.MessageBoxManager
             .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
             {
                 ContentTitle = Localizer["Error"],
-                ContentMessage = "Invalid validation",
+                ContentMessage = Localizer["ErrorCreatingRiskMSG"],
                 Icon = Icon.Error,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner
             });
-            
-        await msgError.Show();
-        
-        
+    
+            await msgError.Show();
+        }
+
+
+
+
     }
     
     private void ExecuteCancel()

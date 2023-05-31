@@ -303,6 +303,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Erro criando um risco..
+        /// </summary>
+        internal static string ErrorCreatingRiskMSG {
+            get {
+                return ResourceManager.GetString("ErrorCreatingRiskMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Erro apagando o levantamento selecionado..
         /// </summary>
         internal static string ErrorDeletingAssessmentMSG {
