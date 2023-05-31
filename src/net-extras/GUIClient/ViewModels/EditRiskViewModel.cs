@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
+using Avalonia.Controls;
 using DAL.Entities;
 using DynamicData.Tests;
 using GUIClient.Models;
 using GUIClient.Services;
+using MessageBox.Avalonia.DTO;
 using Model.DTO;
 using Model.Exceptions;
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
+using MessageBox.Avalonia.Enums;
 
 namespace GUIClient.ViewModels;
 
@@ -174,7 +179,7 @@ public class EditRiskViewModel: ViewModelBase
         RiskTypes = _risksService.GetRiskTypes();
         UserListings = _usersService.ListUsers();
 
-        var sowner = UserListings.FirstOrDefault(ul => ul.Id == _authenticationService.AuthenticatedUserInfo.UserId);
+        var sowner = UserListings.FirstOrDefault(ul => ul.Id == _authenticationService!.AuthenticatedUserInfo!.UserId);
 
         if (sowner != null) SelectedOwner = sowner;
 
@@ -199,18 +204,38 @@ public class EditRiskViewModel: ViewModelBase
                 {
                     return !_risksService.RiskSubjectExists(subject);
                 });
+        
         this.ValidationRule(
             vm => vm.RiskSubject,
             subjectUnique,
             "Subject already exists.");
         
+        
+        this.IsValid()
+            .Subscribe(x =>
+            {
+                SaveEnabled = x;
+            });
     }
     
 
     
-    private void ExecuteSave()
+    private async void ExecuteSave()
     {
-        this.IsValid();
+
+
+        var msgError = MessageBox.Avalonia.MessageBoxManager
+            .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+            {
+                ContentTitle = Localizer["Error"],
+                ContentMessage = "Invalid validation",
+                Icon = Icon.Error,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            });
+            
+        await msgError.Show();
+        
+        
     }
     
     private void ExecuteCancel()
@@ -218,7 +243,21 @@ public class EditRiskViewModel: ViewModelBase
 
     }
 
-    private string _riskSuject;
+    private bool _saveEnabled = false;
+    
+    public bool SaveEnabled
+    {
+        get
+        {
+            return _saveEnabled;
+        }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _saveEnabled, value);
+        }
+    }
+    
+    private string _riskSuject = "";
     
     public string RiskSubject
     {
@@ -233,7 +272,7 @@ public class EditRiskViewModel: ViewModelBase
         }
     }
     
-    private Risk _risk;
+    private Risk _risk = new Risk();
     //public Risk Risk { get; set; }
     
     public Risk Risk

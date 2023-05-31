@@ -175,7 +175,7 @@ public class RisksService: ServiceBase, IRisksService
 
     public bool RiskSubjectExists(string? subject)
     {
-        if (subject == null) return false;
+        if (subject == null || subject == "") return false;
         
         var client = _restService.GetClient();
         

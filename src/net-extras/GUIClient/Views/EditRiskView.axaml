@@ -112,8 +112,9 @@
                                 <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right">
                                         <Button Name="BtSave" 
                                                 Margin="5 0"
+                                                IsEnabled="{Binding SaveEnabled}"
                                                 Command="{Binding BtSaveClicked}">
-                                                <TextBlock Text="{Binding StrSave}" />
+                                                <TextBlock Text="{Binding StrSave}"/>
                                         </Button>
                                         <Button  Name="BtCancel" 
                                                  Margin="5 0"
