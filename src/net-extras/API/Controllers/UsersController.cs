@@ -13,12 +13,11 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class UsersController: ApiBaseController
 {
-    private IUserManagementService _userManagement;
-    
+
     public UsersController(ILogger logger,
-        IUserManagementService userManagement) : base(logger)
+        IHttpContextAccessor httpContextAccessor,
+        IUserManagementService userManagementService) : base(logger, httpContextAccessor, userManagementService)
     {
-        _userManagement = userManagement;
     }
     
     
@@ -33,7 +32,7 @@ public class UsersController: ApiBaseController
         
         try
         {
-            var name  = _userManagement.GetUserName(id);
+            var name  = _userManagementService.GetUserName(id);
             return Ok(name);
         }
         catch (DataNotFoundException ex)
@@ -56,7 +55,7 @@ public class UsersController: ApiBaseController
         
         try
         {
-            var users = _userManagement.ListActiveUsers();
+            var users = _userManagementService.ListActiveUsers();
             return Ok(users);
         }
         catch (Exception ex)

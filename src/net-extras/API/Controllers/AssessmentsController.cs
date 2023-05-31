@@ -16,7 +16,10 @@ public class AssessmentsController : ApiBaseController
 
     private IAssessmentsService _assessmentsService;
     
-    public AssessmentsController(Serilog.ILogger logger, IAssessmentsService assessmentsService) : base(logger)
+    public AssessmentsController(Serilog.ILogger logger, 
+        IAssessmentsService assessmentsService,
+        IHttpContextAccessor httpContextAccessor,
+        IUserManagementService userManagementService) : base(logger, httpContextAccessor, userManagementService)
     {
         _assessmentsService = assessmentsService;
     }

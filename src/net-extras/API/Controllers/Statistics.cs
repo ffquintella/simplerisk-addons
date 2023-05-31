@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Model.DTO.Statistics;
 using Model.Statistics;
 using System.Linq;
+using ServerServices;
 using ILogger = Serilog.ILogger;
 
 namespace API.Controllers;
@@ -24,7 +25,9 @@ public class Statistics : ApiBaseController
     private readonly DALManager _dalManager;
     
     private IMapper _mapper;
-    public Statistics(ILogger logger, DALManager dalManager, IMapper mapper) : base(logger)
+    public Statistics(ILogger logger, DALManager dalManager, IMapper mapper,
+        IHttpContextAccessor httpContextAccessor,
+        IUserManagementService userManagementService) : base(logger, httpContextAccessor, userManagementService)
     {
         _dalManager = dalManager;
         _mapper = mapper;

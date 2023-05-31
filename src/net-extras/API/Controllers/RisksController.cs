@@ -22,39 +22,16 @@ public class RisksController : ApiBaseController
 {
 
     private IRiskManagementService _riskManagement;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IUserManagementService _userManagementService;
-    
+
     public RisksController(
         ILogger logger,
         IHttpContextAccessor httpContextAccessor,
         IUserManagementService userManagementService,
-        IRiskManagementService riskManagement) : base(logger)
+        IRiskManagementService riskManagement) : base(logger, httpContextAccessor, userManagementService)
     {
         _riskManagement = riskManagement;
-        _httpContextAccessor = httpContextAccessor;
-        _userManagementService = userManagementService;
     }
-
-    private User GetUser()
-    {
-        var userAccount =  UserHelper.GetUserName(_httpContextAccessor.HttpContext!.User.Identity);
-        
-        if (userAccount == null)
-        {
-            Logger.Error("Authenticated userAccount not found");
-            throw new UserNotFoundException();
-        }
-        
-        var user = _userManagementService.GetUser(userAccount);
-        if (user == null )
-        {
-            Logger.Error("Authenticated user not found");
-            throw new UserNotFoundException();
-        }
-
-        return user;
-    }
+    
     
     [HttpGet]
     [Route("")]
