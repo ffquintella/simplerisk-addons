@@ -34,8 +34,8 @@
                                 </StackPanel>
                                 
                                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5 5  ">
-                                        <StackPanel  Orientation="Horizontal" Margin="5 5  ">
-                                                <TextBlock Text="Ctrl #: " Classes="label"/>
+                                        <StackPanel  Orientation="Horizontal" Margin="5 5  " IsVisible="{Binding IsCtrlNumVisible}">
+                                                <TextBlock Text="Ctrl #: " Classes="label" />
                                                 <TextBox Text="{Binding Risk.ControlNumber, Mode=TwoWay}" Width="150" />
                                         </StackPanel>
                                         <StackPanel  Orientation="Horizontal" Margin="5 5  ">

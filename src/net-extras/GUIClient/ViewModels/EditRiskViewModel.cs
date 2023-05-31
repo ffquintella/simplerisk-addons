@@ -61,6 +61,21 @@ public class EditRiskViewModel: ViewModelBase
         }
     }
 
+    private bool _isCtrlNumVisible = false;
+    
+    
+    public bool IsCtrlNumVisible
+    {
+        get
+        {
+            return _isCtrlNumVisible;
+        }
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _isCtrlNumVisible, value);
+        }
+    }
+
     private UserListing? _selectedOwner;
     public UserListing? SelectedOwner
     {
@@ -116,6 +131,11 @@ public class EditRiskViewModel: ViewModelBase
         if (operation == OperationType.Edit && risk == null)
         {
             throw new InvalidParameterException("risk", "Risk cannot be null");
+        }
+        
+        if (operation == OperationType.Edit)
+        {
+            IsCtrlNumVisible = true;
         }
 
         
