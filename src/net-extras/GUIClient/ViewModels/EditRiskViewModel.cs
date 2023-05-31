@@ -261,7 +261,7 @@ public class EditRiskViewModel: ViewModelBase
         {
             foreach (var srt in SelectedRiskTypes)
             {
-                Risk.RiskCatalogMapping += srt.Id + ";";
+                Risk.RiskCatalogMapping += srt.Id + ",";
             }
         }
 

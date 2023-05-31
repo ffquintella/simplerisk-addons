@@ -92,7 +92,7 @@ public class RisksController : ApiBaseController
         
     }
     
-    // Create new Risk
+    // Check if risk subejct exists new Risk
     [HttpGet]
     [Route("Exists")]
     [Authorize(Policy = "RequireSubmitRisk")]
