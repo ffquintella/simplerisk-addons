@@ -257,6 +257,11 @@ public class EditRiskViewModel: ViewModelBase
         if (Notes != null)
             Risk.Notes = Notes;
 
+        Risk.Assessment = "";
+        Risk.RiskCatalogMapping = "";
+        Risk.ThreatCatalogMapping = "";
+        Risk.ReferenceId = "";
+
         if (SelectedRiskTypes != null)
         {
             foreach (var srt in SelectedRiskTypes)
