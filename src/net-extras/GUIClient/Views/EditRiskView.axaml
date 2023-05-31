@@ -36,7 +36,7 @@
                                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5 5  ">
                                         <StackPanel  Orientation="Horizontal" Margin="5 5  " IsVisible="{Binding IsCtrlNumVisible}">
                                                 <TextBlock Text="Ctrl #: " Classes="label" />
-                                                <TextBox Text="{Binding Risk.ControlNumber, Mode=TwoWay}" Width="150" />
+                                                <TextBox Text="{Binding Risk.ControlNumber, Mode=TwoWay}" Width="150" IsReadOnly="True" />
                                         </StackPanel>
                                         <StackPanel  Orientation="Horizontal" Margin="5 5  ">
                                                 <TextBlock Text="{Binding StrSubject}" Classes="label"/>

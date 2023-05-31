@@ -23,6 +23,13 @@ public interface IRiskManagementService
 
 
     /// <summary>
+    /// Create a new risk
+    /// </summary>
+    /// <param name="risk">the risk object to create</param>
+    /// <returns>a risk object with updated fields</returns>
+    Risk? CreateRisk(Risk risk);
+    
+    /// <summary>
     /// Gets the risk category
     /// </summary>
     /// <param name="id"></param>

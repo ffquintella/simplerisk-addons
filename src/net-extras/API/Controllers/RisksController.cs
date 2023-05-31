@@ -11,11 +11,12 @@ using Model.Exceptions;
 using ServerServices;
 using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
+using dk.nita.saml20;
 using ILogger = Serilog.ILogger;
 
 namespace API.Controllers;
 
-[Authorize(Policy = "RequireValidUser")]
+[Authorize(Policy = "RequireRiskmanagement")]
 [ApiController]
 [Route("[controller]")]
 public class RisksController : ApiBaseController
@@ -42,6 +43,8 @@ public class RisksController : ApiBaseController
 
         var user = GetUser();
 
+        Logger.Information($"User:{user.Value} listed all risks");
+        
         var risks = new List<Risk>();
 
         try
@@ -58,6 +61,37 @@ public class RisksController : ApiBaseController
         
         
     }
+    
+    // Create new Risk
+    [HttpPost]
+    [Route("")]
+    [Authorize(Policy = "RequireSubmitRisk")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Risk))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<Risk> Create([FromBody] Risk? risk = null)
+    {
+
+        var user = GetUser();
+
+        Logger.Information($"User:{user.Value} submited a risk");
+
+        try
+        {
+            var crisk = _riskManagement.CreateRisk(risk);
+
+            if (crisk != null) return Created("risks/" + crisk.Id, crisk);
+            
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        catch (UserNotAuthorizedException ex)
+        {
+            Logger.Warning($"The user {user.Name} is not authorized to create risks message: {ex.Message}");
+            return this.Unauthorized();
+        }
+        
+        
+    }
+    
 
     [HttpGet]
     [Authorize(Policy = "RequireMgmtReviewAccess")]
@@ -66,9 +100,12 @@ public class RisksController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<List<MgmtReview>> GetAllMangementReviews([FromQuery] string? status = null)
     {
+        
+        var user = GetUser();
+
+        Logger.Information($"User:{user.Value} listed all management reviews");
+        
         var reviews = new List<MgmtReview>();
-
-
         return reviews;
     }
 
@@ -81,6 +118,7 @@ public class RisksController : ApiBaseController
     {
         var user = GetUser();
 
+        Logger.Information($"User:{user.Value} listed own risks");
         var risks = new List<Risk>();
 
         try

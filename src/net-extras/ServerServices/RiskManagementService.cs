@@ -148,6 +148,21 @@ public class RiskManagementService: IRiskManagementService
             return cats;
         }
     }
+
+    public Risk? CreateRisk(Risk risk)
+    {
+        using (var contex = _dalManager.GetContext())
+        {
+            risk.Id = 0;
+            risk.SubmissionDate = DateTime.Now;
+            risk.LastUpdate = DateTime.Now;
+            contex.Risks.Add(risk);
+            contex.SaveChanges();
+            return risk;
+        }
+
+        
+    }
     
     public List<RiskCatalog> GetRiskCatalogs(List<int> ids)
     {

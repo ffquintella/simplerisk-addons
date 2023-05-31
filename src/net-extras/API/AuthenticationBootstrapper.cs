@@ -120,6 +120,18 @@ public static class AuthenticationBootstrapper
                     .Requirements.Add(new ValidUserRequirement());
                 policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"assessments"}));
             });
+            options.AddPolicy("RequireRiskmanagement", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+                policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"riskmanagement"}));
+            });
+            options.AddPolicy("RequireSubmitRisk", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+                policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"submit_risks"}));
+            });
             options.AddPolicy("RequireMgmtReviewAccess", policy =>
             {
                 policy.RequireAuthenticatedUser()
