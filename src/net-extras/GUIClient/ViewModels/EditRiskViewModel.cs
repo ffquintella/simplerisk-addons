@@ -192,7 +192,21 @@ public class EditRiskViewModel: ViewModelBase
             name => !string.IsNullOrWhiteSpace(RiskSubject),
             Localizer["RiskMustHaveASubjectMSG"]);
         
+        IObservable<bool> subjectUnique =
+            this.WhenAnyValue(
+                x => x.RiskSubject,
+                (subject) =>
+                {
+                    return !_risksService.RiskSubjectExists(subject);
+                });
+        this.ValidationRule(
+            vm => vm.RiskSubject,
+            subjectUnique,
+            "Subject already exists.");
+        
     }
+    
+
     
     private void ExecuteSave()
     {

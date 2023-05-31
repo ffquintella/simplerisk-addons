@@ -149,6 +149,15 @@ public class RiskManagementService: IRiskManagementService
         }
     }
 
+    public bool SubjectExists(string subject)
+    {
+        using (var contex = _dalManager.GetContext())
+        {
+            var results = contex.Risks.Where(rsk => rsk.Subject == subject).Count();
+            if (results > 0) return true;
+            else return false;
+        }
+    }
     public Risk? CreateRisk(Risk risk)
     {
         using (var contex = _dalManager.GetContext())

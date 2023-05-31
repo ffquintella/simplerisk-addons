@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
+using System.Reflection.Metadata;
 using DAL.Entities;
+using Microsoft.AspNetCore.Http;
 using Model.Exceptions;
 using RestSharp;
 
@@ -169,6 +171,42 @@ public class RisksService: ServiceBase, IRisksService
             _logger.Error("Error getting risk source message:{0}", ex.Message);
             throw new RestComunicationException("Error getting risk source", ex);
         }
+    }
+
+    public bool RiskSubjectExists(string? subject)
+    {
+        if (subject == null) return false;
+        
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/Exists");
+
+        request.AddParameter("subject", subject);
+        
+        try
+        {
+            var response = client.Get(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting risk subject status ");
+                return false;
+            }
+
+            if (response.StatusCode == HttpStatusCode.OK ) return true;
+            return false;
+
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk subject status message:{0}", ex.Message);
+            throw new RestComunicationException("Error getting risk subject", ex);
+        }
+        
     }
     
     public List<Source>? GetRiskSources()

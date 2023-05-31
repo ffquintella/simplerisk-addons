@@ -17,4 +17,6 @@ public interface IRisksService
     public List<RiskCatalog> GetRiskTypes(string ids);
     
     public List<RiskCatalog> GetRiskTypes();
+    
+    public bool RiskSubjectExists(string status);
 }

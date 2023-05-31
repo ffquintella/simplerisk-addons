@@ -21,6 +21,12 @@ public interface IRiskManagementService
     /// <returns></returns>
     List<Risk> GetAll(string? status = null);
 
+    /// <summary>
+    /// Check if subject exists
+    /// </summary>
+    /// <param name="subject"></param>
+    /// <returns>bool</returns>
+    bool SubjectExists(string subject);
 
     /// <summary>
     /// Create a new risk

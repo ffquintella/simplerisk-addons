@@ -92,6 +92,39 @@ public class RisksController : ApiBaseController
         
     }
     
+    // Create new Risk
+    [HttpGet]
+    [Route("Exists")]
+    [Authorize(Policy = "RequireSubmitRisk")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<bool> Create([FromQuery] string? subject = null)
+    {
+
+        try
+        {
+            if (subject != null)
+            {
+                var exists = _riskManagement.SubjectExists(subject);
+                if (exists) return StatusCode(StatusCodes.Status200OK);
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+            
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
+            
+        }
+        catch (UserNotAuthorizedException ex)
+        {
+            var user = GetUser();
+            Logger.Warning($"The user {user.Value} is not authorized to check risks subjects message: {ex.Message}");
+            return this.Unauthorized();
+        }
+        
+        
+    }
+    
 
     [HttpGet]
     [Authorize(Policy = "RequireMgmtReviewAccess")]
