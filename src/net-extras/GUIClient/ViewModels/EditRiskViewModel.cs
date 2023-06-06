@@ -266,16 +266,13 @@ public class EditRiskViewModel: ViewModelBase
         Risk.ThreatCatalogMapping = "";
         Risk.ReferenceId = "";
 
-        var first = true;
+
         foreach (var srt in SelectedRiskTypes)
         {
-            Risk.RiskCatalogMapping += srt.Id;
-            if (!first)
-            {
-                Risk.RiskCatalogMapping += ",";
-            }
-            else first = false;
+            Risk.RiskCatalogMapping += srt.Id + ",";
         }
+
+        Risk.RiskCatalogMapping = Risk.RiskCatalogMapping.TrimEnd(',');
         
 
         var resultingRisk = _risksService.CreateRisk(Risk);

@@ -281,12 +281,14 @@ public class RisksService: ServiceBase, IRisksService
 
     public List<RiskCatalog> GetRiskTypes()
     {
-        return GetRiskTypes("");
+        return GetRiskTypes("", true);
     }
-    public List<RiskCatalog> GetRiskTypes(string ids)
+    public List<RiskCatalog> GetRiskTypes(string ids, bool all = false)
     {
-        var all = false;
-        if (ids == "") all = true;
+        //var all = false;
+        //if (ids == "") all = true;
+
+        ids = ids.TrimEnd(',');
         
         var client = _restService.GetClient();
         

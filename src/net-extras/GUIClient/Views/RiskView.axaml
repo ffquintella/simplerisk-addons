@@ -73,7 +73,7 @@
                         <!-- Risk Catalog List -->
                         <ListBox Grid.Row="1" Name="LstCatalogs"  
                                  ItemsSource="{Binding HdRisk.Types}" SelectionMode="Single"
-                                 HorizontalAlignment="Center" MinWidth="250" MinHeight="100"
+                                 HorizontalAlignment="Center" MinWidth="250" Height="150"
                                  ScrollViewer.HorizontalScrollBarVisibility="Visible">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>

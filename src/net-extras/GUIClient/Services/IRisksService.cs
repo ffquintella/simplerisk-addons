@@ -14,7 +14,7 @@ public interface IRisksService
     
     public List<Source>? GetRiskSources();
     
-    public List<RiskCatalog> GetRiskTypes(string ids);
+    public List<RiskCatalog> GetRiskTypes(string ids,  bool all = false);
     
     public List<RiskCatalog> GetRiskTypes();
     
