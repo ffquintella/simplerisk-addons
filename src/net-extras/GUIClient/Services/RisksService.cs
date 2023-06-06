@@ -7,6 +7,8 @@ using DAL.Entities;
 using Microsoft.AspNetCore.Http;
 using Model.Exceptions;
 using RestSharp;
+using System.Text.Json;
+using GUIClient.Models;
 
 namespace GUIClient.Services;
 
@@ -184,15 +186,18 @@ public class RisksService: ServiceBase, IRisksService
         
             try
             {
-                var response = client.Post<Risk>(request);
+                var response = client.Post(request);
 
-                if (response == null)
+                if (response.StatusCode != HttpStatusCode.Created)
                 {
                     _logger.Error("Error creating risk ");
+                    
+                    var opResult = JsonSerializer.Deserialize<OperationError>(response!.Content!);
+                    
                     return null;
                 }
             
-                return response;
+                return  JsonSerializer.Deserialize<Risk?>(response!.Content!);
             
             }
             catch (HttpRequestException ex)

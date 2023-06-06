@@ -77,6 +77,9 @@ public class RisksController : ApiBaseController
 
         try
         {
+            risk.SubmittedBy = user.Value;
+            risk.Status = "New";
+            
             var crisk = _riskManagement.CreateRisk(risk);
 
             if (crisk != null) return Created("risks/" + crisk.Id, crisk);

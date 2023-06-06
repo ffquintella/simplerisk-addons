@@ -184,6 +184,8 @@ public class EditRiskViewModel: ViewModelBase
             ShowEditFields = true;
         }
 
+        SelectedRiskTypes = new List<RiskCatalog>();
+
         _risksService = GetService<IRisksService>();
         _authenticationService = GetService<IAuthenticationService>();
         _usersService = GetService<IUsersService>();
@@ -244,8 +246,10 @@ public class EditRiskViewModel: ViewModelBase
 
         if (_operationType == OperationType.Create)
         {
-            Risk.Status = "new";
+            Risk.Status = "New";
             Risk.SubmissionDate = DateTime.Now;
+            if(_authenticationService.AuthenticatedUserInfo!.UserId.HasValue)
+                Risk.SubmittedBy = _authenticationService.AuthenticatedUserInfo.UserId.Value;
         }
 
         Risk.LastUpdate = DateTime.Now;
@@ -262,13 +266,17 @@ public class EditRiskViewModel: ViewModelBase
         Risk.ThreatCatalogMapping = "";
         Risk.ReferenceId = "";
 
-        if (SelectedRiskTypes != null)
+        var first = true;
+        foreach (var srt in SelectedRiskTypes)
         {
-            foreach (var srt in SelectedRiskTypes)
+            Risk.RiskCatalogMapping += srt.Id;
+            if (!first)
             {
-                Risk.RiskCatalogMapping += srt.Id + ",";
+                Risk.RiskCatalogMapping += ",";
             }
+            else first = false;
         }
+        
 
         var resultingRisk = _risksService.CreateRisk(Risk);
 
