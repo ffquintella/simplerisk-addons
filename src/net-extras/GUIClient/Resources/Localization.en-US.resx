@@ -252,4 +252,7 @@
     <data name="ErrorCreatingRiskMSG" xml:space="preserve">
         <value>Error creating a risk.</value>
     </data>
+    <data name="SaveOkMSG" xml:space="preserve">
+        <value>Saved risk with success.</value>
+    </data>
 </root>

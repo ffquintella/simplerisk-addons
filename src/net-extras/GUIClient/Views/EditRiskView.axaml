@@ -5,7 +5,8 @@
         xmlns:vm="using:GUIClient.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GUIClient.Views.EditRiskView"
-        Title="EditRisk">
+        Title="EditRisk"
+        Name="EditRisk">
         
         <Design.DataContext>
                 <vm:EditRiskViewModel/>
@@ -114,12 +115,14 @@
                                         <Button Name="BtSave" 
                                                 Margin="5 0"
                                                 IsEnabled="{Binding SaveEnabled}"
-                                                Command="{Binding BtSaveClicked}">
+                                                Command="{Binding BtSaveClicked}"
+                                                CommandParameter="{Binding ElementName=EditRisk}">
                                                 <TextBlock Text="{Binding StrSave}"/>
                                         </Button>
                                         <Button  Name="BtCancel" 
                                                  Margin="5 0"
-                                                 Command="{Binding BtCancelClicked}">
+                                                 Command="{Binding BtCancelClicked}"
+                                                 CommandParameter="{Binding ElementName=EditRisk}">
                                                 <TextBlock Text="{Binding StrCancel}"/>
                                         </Button>
                                 </StackPanel>

@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using Avalonia.Controls;
 using DAL.Entities;
 using DynamicData.Tests;
+using GUIClient.Exceptions;
 using GUIClient.Models;
 using GUIClient.Services;
 using MessageBox.Avalonia.DTO;
@@ -143,8 +144,8 @@ public class EditRiskViewModel: ViewModelBase
     private IAuthenticationService _authenticationService;
     private IUsersService _usersService;
     
-    public ReactiveCommand<Unit, Unit> BtSaveClicked { get; }
-    public ReactiveCommand<Unit, Unit> BtCancelClicked { get; }
+    public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
+    public ReactiveCommand<Window, Unit> BtCancelClicked { get; }
     
     public EditRiskViewModel(OperationType operation, Risk? risk = null)
     {
@@ -204,8 +205,8 @@ public class EditRiskViewModel: ViewModelBase
         if (RiskTypes == null) throw new Exception("Unable to load risk types");
         if (UserListings == null) throw new Exception("Unable to load user listing");
         
-        BtSaveClicked = ReactiveCommand.Create(ExecuteSave);
-        BtCancelClicked = ReactiveCommand.Create(ExecuteCancel);
+        BtSaveClicked = ReactiveCommand.Create<Window>(ExecuteSave);
+        BtCancelClicked = ReactiveCommand.Create<Window>(ExecuteCancel);
         
         
         this.ValidationRule(
@@ -236,7 +237,7 @@ public class EditRiskViewModel: ViewModelBase
     
 
     
-    private async void ExecuteSave()
+    private async void ExecuteSave(Window baseWindow)
     {
 
         if(SelectedOwner != null)
@@ -273,32 +274,46 @@ public class EditRiskViewModel: ViewModelBase
         }
 
         Risk.RiskCatalogMapping = Risk.RiskCatalogMapping.TrimEnd(',');
-        
 
-        var resultingRisk = _risksService.CreateRisk(Risk);
-
-        if (resultingRisk == null)
+        try
         {
-            var msgError = MessageBox.Avalonia.MessageBoxManager
-            .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
-            {
-                ContentTitle = Localizer["Error"],
-                ContentMessage = Localizer["ErrorCreatingRiskMSG"],
-                Icon = Icon.Error,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            });
-    
-            await msgError.Show();
+            var resultingRisk = _risksService.CreateRisk(Risk);
+
+            var msgOk = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Save"],
+                    ContentMessage = Localizer["SaveOkMSG"],
+                    Icon = Icon.Success,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                });
+
+            await msgOk.Show();
+            
+            baseWindow.Close();
+            
         }
+        catch (ErrorSavingException ex)
+        {
 
+            var msgError = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Error"],
+                    ContentMessage = Localizer["ErrorCreatingRiskMSG"],
+                    Icon = Icon.Error,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                });
 
-        
+            await msgError.Show();
+            
+        }
 
     }
     
-    private void ExecuteCancel()
+    private void ExecuteCancel(Window baseWindow)
     {
-
+        baseWindow.Close();
     }
 
     private bool _saveEnabled = false;

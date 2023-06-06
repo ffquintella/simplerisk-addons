@@ -645,6 +645,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saved risk with success..
+        /// </summary>
+        internal static string SaveOkMSG {
+            get {
+                return ResourceManager.GetString("SaveOkMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select your authentication method..
         /// </summary>
         internal static string SelectAuthenticationMSG {

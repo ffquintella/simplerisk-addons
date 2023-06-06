@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Model.Exceptions;
 using RestSharp;
 using System.Text.Json;
+using GUIClient.Exceptions;
 using GUIClient.Models;
 
 namespace GUIClient.Services;
@@ -193,8 +194,10 @@ public class RisksService: ServiceBase, IRisksService
                     _logger.Error("Error creating risk ");
                     
                     var opResult = JsonSerializer.Deserialize<OperationError>(response!.Content!);
+
+                    throw new ErrorSavingException("Error creating risk", opResult);
                     
-                    return null;
+
                 }
             
                 return  JsonSerializer.Deserialize<Risk?>(response!.Content!);
