@@ -325,7 +325,7 @@ public class EditRiskViewModel: ViewModelBase
         }
         set
         {
-            Risk.Subject = _riskSuject;
+            Risk.Subject = value;
             this.RaiseAndSetIfChanged(ref _riskSuject, value);
         }
     }
