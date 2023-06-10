@@ -6,6 +6,7 @@ using Model.Exceptions;
 using Model.DTO;
 using ServerServices.Interfaces;
 using static BCrypt.Net.BCrypt;
+using static Tools.Extensions.StringExt;
 
 namespace ServerServices.Services;
 
@@ -72,8 +73,9 @@ public class UserManagementService: IUserManagementService
 
         try
         {
-            user.Salt = GenerateSalt();
-            user.Password = Encoding.UTF8.GetBytes(HashPassword(password, user.Salt));
+            //var salt = GenerateSalt();
+            //user.Salt = salt.Replace("$2a$", "").Truncate(20, "");
+            user.Password = Encoding.UTF8.GetBytes(HashPassword(password, 15, true));
             dbContext?.Users?.Update(user);
             dbContext?.SaveChanges();
             _log.LogWarning("Password changed for user {userId}", userId);
