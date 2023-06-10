@@ -46,7 +46,7 @@ public class UsersController: ApiBaseController
     }
     
     [Authorize(Policy = "RequireValidUser")]
-    [HttpGet]
+    [HttpPost]
     [Route("{id}/ChangePassword")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
