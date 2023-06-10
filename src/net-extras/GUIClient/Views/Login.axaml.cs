@@ -58,8 +58,9 @@ public partial class Login : Window
 
             if (result.Result == RequestResult.Success)
             {
-                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-                var bitmap = new Bitmap(assets!.Open(new Uri("avares://GUIClient/Assets/Hex-Warning.ico")));
+                //var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+                //var bitmap = new Bitmap(assets!.Open(new Uri("avares://GUIClient/Assets/Hex-Warning.ico")));
+                var bitmap = new Bitmap(AssetLoader.Open(new Uri("avares://GUIClient/Assets/Hex-Warning.ico")));
                 
                 var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                     .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
