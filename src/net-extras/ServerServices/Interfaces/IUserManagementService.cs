@@ -13,6 +13,11 @@ public interface IUserManagementService
     String GetUserName(int id);
     
     List<UserListing> ListActiveUsers();
+    
+    bool VerifyPassword(string username, string password);
+    bool VerifyPassword(int userId, string password);
+    
+    bool VerifyPassword(User? user, string password);
 
 
 }

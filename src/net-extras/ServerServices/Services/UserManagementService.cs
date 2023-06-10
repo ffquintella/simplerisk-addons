@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Model.Exceptions;
 using Model.DTO;
 using ServerServices.Interfaces;
+using static BCrypt.Net.BCrypt;
 
 namespace ServerServices.Services;
 
@@ -37,7 +38,29 @@ public class UserManagementService: IUserManagementService
 
         return user;
     }
-    
+
+    public bool VerifyPassword(string username, string password)
+    {
+        return VerifyPassword(GetUser(username), password);
+    }
+    public bool VerifyPassword(int userId, string password)
+    {
+        return VerifyPassword(GetUserById(userId), password);
+    }
+
+    public bool VerifyPassword(User? user, string password)
+    {
+        if (user == null) return false;
+        
+        if(user.Lockout == 1)
+        {
+            return false;
+        }
+        
+        var valid = Verify(password, Encoding.UTF8.GetString(user.Password));
+        
+        return valid; 
+    }
     public User? GetUserById(int userId)
     {
         var dbContext = _dalManager!.GetContext();

@@ -15,6 +15,7 @@ using Serilog;
 using ServerServices;
 using static BCrypt.Net.BCrypt;
 using System.Linq;
+using ServerServices.Interfaces;
 using ILogger = Serilog.ILogger;
 
 
@@ -24,6 +25,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
 {
     private SRDbContext? _dbContext = null;
     private IEnvironmentService _environmentService;
+    private IUserManagementService _userManagementService;
     private ILogger _log;
     
     public BasicAuthenticationHandler(
@@ -32,10 +34,12 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
         UrlEncoder encoder, 
         ISystemClock clock,
         IEnvironmentService environmentService,
+        IUserManagementService userManagementService,
         DALManager dalManager) : base(options, logger, encoder, clock)
     {
         _dbContext = dalManager.GetContext();
         _environmentService = environmentService;
+        _userManagementService = userManagementService;
         _log = Log.Logger;
     }
 
@@ -59,19 +63,24 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
             
             if (credentials[0] != "" && credentials[1] != "")
             {
-                var user = _dbContext?.Users?
+                /*var user = _dbContext?.Users?
                     .Where(u => u.Type == "simplerisk" && u.Enabled == true && u.Username == Encoding.UTF8.GetBytes(credentials[0]))
-                    .FirstOrDefault();
+                    .FirstOrDefault();*/
 
+                var user = _userManagementService.GetUser(credentials[0]);
+                
                 if (user != null)
                 {
                     if (user.Lockout == 1)
                     {
                         return Task.FromResult(AuthenticateResult.Fail("User is locked out"));
                     }
-
+                    
+                    
                     // Check the password
-                    var valid = Verify(credentials[1], Encoding.UTF8.GetString(user.Password));
+                    var valid = _userManagementService.VerifyPassword(user.Value, credentials[1]);
+                    //var valid = Verify(credentials[1], Encoding.UTF8.GetString(user.Password));
+                    
                     if (valid)
                     {
                         var clientId = Request.Headers["ClientId"].ToString();
