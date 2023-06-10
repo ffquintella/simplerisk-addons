@@ -1,7 +1,7 @@
 using System;
 using Splat;
 
-namespace ClientServices;
+namespace GUIClient;
 
 public class BaseBootstrapper
 {

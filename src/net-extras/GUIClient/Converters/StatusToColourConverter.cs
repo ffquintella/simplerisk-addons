@@ -4,9 +4,9 @@ using System.Text;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
-using ClientServices.Exceptions;
+using GUIClient.Exceptions;
 
-namespace ClientServices.Converters;
+namespace GUIClient.Converters;
 
 public class StatusToColourConverter: IValueConverter
 {

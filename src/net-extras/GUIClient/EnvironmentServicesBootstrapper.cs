@@ -1,7 +1,8 @@
 ﻿using ClientServices.Services;
+using ClientServices.Interfaces;
 using Splat;
 
-namespace ClientServices;
+namespace GUIClient;
 
 public class EnvironmentServicesBootstrapper
 {

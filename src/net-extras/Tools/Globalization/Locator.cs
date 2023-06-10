@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 using System.Resources;
 using Microsoft.Extensions.Localization;
 
@@ -9,11 +10,13 @@ public class Locator: IStringLocalizer
 {
 
     private CultureInfo? _culture;
+    private readonly Assembly _callingAssembly;
     
-    public Locator(CultureInfo? culture =  null)
+    public Locator(Assembly callingAssembly, CultureInfo? culture =  null)
     {
         //if (culture == null) culture = new CultureInfo("en-US");
         _culture = culture;
+        _callingAssembly = callingAssembly;
     }
     
     
@@ -25,9 +28,10 @@ public class Locator: IStringLocalizer
     public LocalizedString this[string name]  {
         get
         {
-            
+
             ResourceManager rm = new ResourceManager("GUIClient.Resources.Localization",
-                typeof(Locator).Assembly);
+                //typeof(Locator).Assembly);
+                _callingAssembly);
             
             string? str;
             

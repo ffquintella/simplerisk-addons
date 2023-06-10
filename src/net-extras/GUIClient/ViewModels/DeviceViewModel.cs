@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reactive;
-using ClientServices.Services;
+using ClientServices.Interfaces;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
-using Microsoft.Extensions.Localization;
 using Model;
 using ReactiveUI;
 
-namespace ClientServices.ViewModels;
+namespace GUIClient.ViewModels;
 
 public class DeviceViewModel: ViewModelBase
 {

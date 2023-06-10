@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using Avalonia.Controls;
-using ClientServices.Models;
-using ClientServices.Views;
+using ClientServices.Interfaces;
+using GUIClient.Views;
 using DAL.Entities;
-using ClientServices.Services;
-using ClientServices.Tools;
-using LiveChartsCore.Defaults;
+using GUIClient.Models;
 using ReactiveUI;
 
-namespace ClientServices.ViewModels;
+namespace GUIClient.ViewModels;
 
 public class RiskViewModel: ViewModelBase
 {

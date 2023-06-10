@@ -1,6 +1,6 @@
 ﻿using Serilog.Events;
 
-namespace ClientServices.Configuration;
+namespace Model.Configuration;
 
 public class LoggingConfiguration
 {

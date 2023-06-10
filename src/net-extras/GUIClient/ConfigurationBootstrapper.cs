@@ -1,14 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using ClientServices.Configuration;
+﻿using System.IO;
 using Microsoft.Extensions.Configuration;
 using Splat;
-using ClientServices.Models;
 using ClientServices.Services;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using ClientServices.Interfaces;
+using Model.Configuration;
 
-namespace ClientServices;
+namespace GUIClient;
 
 public  class ConfigurationBootstrapper: BaseBootstrapper
 {

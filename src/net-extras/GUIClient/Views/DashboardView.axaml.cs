@@ -1,12 +1,10 @@
-﻿using Avalonia;
+﻿
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using ClientServices.ViewModels;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using Model.Statistics;
+using GUIClient.ViewModels;
 
-namespace ClientServices.Views;
+
+namespace GUIClient.Views;
 
 public partial class DashboardView : UserControl
 {

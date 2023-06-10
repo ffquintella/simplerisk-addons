@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ClientServices.Resources {
+namespace GUIClient.Resources {
     using System;
     
     

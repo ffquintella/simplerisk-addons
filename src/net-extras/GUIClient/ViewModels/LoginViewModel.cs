@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using ClientServices.Configuration;
-using ClientServices.Models;
-using ClientServices.Services;
 using MessageBox.Avalonia.DTO;
-using Microsoft.Extensions.Localization;
 using Model.Authentication;
+using Model.Configuration;
 using ReactiveUI;
-using Splat;
 using Tools;
 
-namespace ClientServices.ViewModels;
+namespace GUIClient.ViewModels;
 
 public class LoginViewModel : ViewModelBase
 {

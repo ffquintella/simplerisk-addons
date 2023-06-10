@@ -7,7 +7,7 @@ using Avalonia.Controls;
 using Splat;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
-namespace ClientServices
+namespace GUIClient
 {
     class Program
     {

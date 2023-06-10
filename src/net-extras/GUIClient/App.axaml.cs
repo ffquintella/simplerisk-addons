@@ -2,15 +2,14 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using ClientServices.Views;
-using ClientServices.Services;
-using ClientServices.ViewModels;
+using GUIClient.Views;
+using ClientServices.Interfaces;
 using Splat;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using Model.Statistics;
 
-namespace ClientServices
+namespace GUIClient
 {
     public partial class App : Application
     {

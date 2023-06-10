@@ -2,12 +2,11 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using ClientServices.Configuration;
-using ClientServices.ViewModels;
-using ClientServices.Services;
+using GUIClient.ViewModels;
+using Model.Configuration;
 using Splat;
 
-namespace ClientServices.Views;
+namespace GUIClient.Views;
 
 public partial class NavigationBar : UserControl
 {

@@ -1,14 +1,13 @@
 ﻿using System;
-using ClientServices.Exceptions;
-using ClientServices.Services;
+using ClientServices.Interfaces;
+using GUIClient.Exceptions;
 using Microsoft.Extensions.Localization;
-using ReactiveUI;
 using ReactiveUI.Validation.Helpers;
 using Serilog;
 using Splat;
 using ILogger = Serilog.ILogger;
 
-namespace ClientServices.ViewModels
+namespace GUIClient.ViewModels
 {
     public class ViewModelBase : ReactiveValidationObject
     {
@@ -37,7 +36,7 @@ namespace ClientServices.ViewModels
             var localizationService = GetService<ILocalizationService>();
             _authenticationService = GetService<IAuthenticationService>();
             _logger = Log.Logger;
-            var localizer = localizationService.GetLocalizer();
+            var localizer = localizationService.GetLocalizer(typeof(ViewModelBase).Assembly);
             if (localizer == null)
             {
                 Logger.Error("Error getting localizer service");

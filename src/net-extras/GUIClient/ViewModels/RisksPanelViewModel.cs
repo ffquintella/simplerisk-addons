@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using DAL.Entities;
-using ClientServices.Services;
+using ClientServices.Interfaces;
 using ReactiveUI;
 
-namespace ClientServices.ViewModels;
+namespace GUIClient.ViewModels;
 
 public class RisksPanelViewModel: ViewModelBase
 {

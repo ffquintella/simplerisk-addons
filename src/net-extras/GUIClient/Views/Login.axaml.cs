@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using ClientServices.Models;
-using ClientServices.ViewModels;
-using ClientServices.Services;
+using ClientServices.Interfaces;
+using GUIClient.ViewModels;
 using MessageBox.Avalonia.DTO;
-using MessageBox.Avalonia.Models;
 using Microsoft.Extensions.Localization;
-using Model.Authentication;
+using Model.Rest;
 using Splat;
 
-namespace ClientServices.Views;
+namespace GUIClient.Views;
 
 public partial class Login : Window
 {
@@ -34,7 +31,7 @@ public partial class Login : Window
         _localizationService = GetService<ILocalizationService>();
         _environmentService = GetService<IEnvironmentService>();
         _mutableConfigurationService = GetService<IMutableConfigurationService>();
-        _localizer = _localizationService.GetLocalizer();
+        _localizer = _localizationService.GetLocalizer(typeof(Login).Assembly);
         _authenticationService = GetService<IAuthenticationService>();
         
         InitializeComponent();

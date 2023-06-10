@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive;
 using System.Text;
 using Avalonia.Controls;
-//using Avalonia.Styling;
 using DAL.Entities;
-using DynamicData;
-using ClientServices.Services;
-using ClientServices.Tools;
+using ClientServices.Interfaces;
+using GUIClient.Tools;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 using ReactiveUI;
-using Tools;
 
-namespace ClientServices.ViewModels;
+namespace GUIClient.ViewModels;
 
 public class AssessmentQuestionViewModel: ViewModelBase
 {

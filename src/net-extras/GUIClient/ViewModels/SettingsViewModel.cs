@@ -1,10 +1,7 @@
-﻿using System.Globalization;
-using ClientServices.Configuration;
-using ClientServices.Tools;
-using ClientServices.Services;
-using Microsoft.Extensions.Localization;
+﻿using Model.Configuration;
+using Tools.Identification;
 
-namespace ClientServices.ViewModels;
+namespace GUIClient.ViewModels;
 
 public class SettingsViewModel: ViewModelBase
 {

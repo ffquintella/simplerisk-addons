@@ -1,13 +1,12 @@
 ﻿using System;
 using System.IO;
-using ClientServices.Configuration;
-using ClientServices.Services;
 using Microsoft.Extensions.Logging;
+using Model.Configuration;
 using Serilog;
 using Serilog.Extensions.Logging;
 using Splat;
 
-namespace ClientServices;
+namespace GUIClient;
 
 public static class LoggingBootstrapper
 {

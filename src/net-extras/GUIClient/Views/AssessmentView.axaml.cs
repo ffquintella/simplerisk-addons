@@ -1,9 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using ClientServices.ViewModels;
+using GUIClient.ViewModels;
 
-namespace ClientServices.Views;
+namespace GUIClient.Views;
 
 public partial class AssessmentView : UserControl
 {

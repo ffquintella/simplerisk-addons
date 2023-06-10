@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Reactive;
-using Avalonia.Controls;
-using ClientServices.Services;
-using Microsoft.Extensions.Localization;
+using ClientServices.Interfaces;
 using Model.Authentication;
 using ReactiveUI;
-using Splat;
 
-namespace ClientServices.ViewModels;
+namespace GUIClient.ViewModels;
 
 public class UserInfoViewModel: ViewModelBase
 {

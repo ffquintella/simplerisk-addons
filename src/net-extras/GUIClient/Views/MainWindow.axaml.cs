@@ -2,12 +2,12 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using ClientServices.Configuration;
-using ClientServices.ViewModels;
-using ClientServices.Services;
+using ClientServices.Interfaces;
+using GUIClient.ViewModels;
+using Model.Configuration;
 using Splat;
 
-namespace ClientServices.Views
+namespace GUIClient.Views
 {
     public partial class MainWindow : Window
     {
@@ -28,7 +28,16 @@ namespace ClientServices.Views
         private void LoadCheck(object? sender, EventArgs eventArgs)
         {
             var authenticationService = GetService<IAuthenticationService>();
-            if(authenticationService.IsAuthenticated == false) authenticationService.TryAuthenticate(this);
+            if (authenticationService.IsAuthenticated == false)
+            {
+                var result = authenticationService.TryAuthenticate();
+                if (result == false)
+                {
+                    //_logger.Debug("Starting authentication");
+                    var dialog = new Login();
+                    dialog.ShowDialog( this );
+                }
+            }
             
             
         } 

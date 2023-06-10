@@ -4,7 +4,7 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Microsoft.Extensions.Localization;
 
-namespace ClientServices.Converters;
+namespace GUIClient.Converters;
 
 public class StringEqualConverter: IValueConverter
 {

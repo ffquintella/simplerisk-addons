@@ -1,12 +1,9 @@
 ﻿using System;
-using ClientServices.Models;
-using ClientServices.Configuration;
-using ClientServices.Services;
-using Microsoft.Extensions.Localization;
+using ClientServices.Interfaces;
+using GUIClient.Models;
 using ReactiveUI;
-using Splat;
 
-namespace ClientServices.ViewModels
+namespace GUIClient.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {

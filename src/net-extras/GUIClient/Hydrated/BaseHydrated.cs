@@ -1,7 +1,7 @@
 using System;
 using Splat;
 
-namespace ClientServices.Hydrated;
+namespace GUIClient.Hydrated;
 
 public class BaseHydrated
 {

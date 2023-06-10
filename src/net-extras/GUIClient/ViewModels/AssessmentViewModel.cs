@@ -1,26 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Media.TextFormatting.Unicode;
-using Avalonia.VisualTree;
-using ClientServices.Views;
 using DAL.Entities;
-using DynamicData;
-using ClientServices.Services;
-using ClientServices.Tools;
+using ClientServices.Interfaces;
+using GUIClient.Tools;
+using GUIClient.Views;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
-using Microsoft.Extensions.Localization;
 using Model.Exceptions;
 using ReactiveUI;
-using Splat;
 
-namespace ClientServices.ViewModels;
+namespace GUIClient.ViewModels;
 
 public class AssessmentViewModel: ViewModelBase
 {

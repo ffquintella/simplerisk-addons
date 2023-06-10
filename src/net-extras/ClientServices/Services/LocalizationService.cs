@@ -1,9 +1,9 @@
-﻿using System.Resources;
+﻿using System.Reflection;
+using System.Resources;
 using ClientServices.Interfaces;
 using Tools.Globalization;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace ClientServices.Services;
 
@@ -17,10 +17,10 @@ public class LocalizationService: ILocalizationService
         _loggerFactory = loggerFactory;
     }
     
-    public IStringLocalizer GetLocalizer()
+    public IStringLocalizer GetLocalizer(Assembly callingAssembly)
     {
 
-        var localizer = new Locator();
+        var localizer = new Locator(callingAssembly);
 
         return localizer;
     }

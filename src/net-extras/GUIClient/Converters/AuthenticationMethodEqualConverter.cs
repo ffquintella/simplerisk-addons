@@ -5,7 +5,7 @@ using Avalonia.Data.Converters;
 using Microsoft.Extensions.Localization;
 using Model.Authentication;
 
-namespace ClientServices.Converters;
+namespace GUIClient.Converters;
 
 public class AuthenticationMethodEqualConverter: IValueConverter
 {

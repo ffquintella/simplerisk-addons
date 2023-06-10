@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Reactive;
-using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
-using ClientServices.Configuration;
-using ClientServices.Models;
-using ClientServices.Views;
-using ClientServices.Services;
+using GUIClient.Views;
+using GUIClient.Models;
+using Model.Configuration;
 using ReactiveUI;
 
-namespace ClientServices.ViewModels;
+namespace GUIClient.ViewModels;
 
 public class NavigationBarViewModel: ViewModelBase
 {
