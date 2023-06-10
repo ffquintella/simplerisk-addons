@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Reactive;
-using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
-using GUIClient.Configuration;
-using GUIClient.Models;
-using GUIClient.Services;
 using GUIClient.Views;
+using GUIClient.Models;
+using Model.Configuration;
 using ReactiveUI;
 
 namespace GUIClient.ViewModels;

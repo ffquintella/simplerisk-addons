@@ -1,10 +1,7 @@
 ﻿using System;
-using GUIClient.Configuration;
+using ClientServices.Interfaces;
 using GUIClient.Models;
-using GUIClient.Services;
-using Microsoft.Extensions.Localization;
 using ReactiveUI;
-using Splat;
 
 namespace GUIClient.ViewModels
 {

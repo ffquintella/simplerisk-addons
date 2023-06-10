@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using System.Linq;
 using System.Reactive;
-using System.Reactive.Linq;
 using Avalonia.Controls;
+using ClientServices.Interfaces;
 using DAL.Entities;
-using DynamicData.Tests;
-using GUIClient.Exceptions;
 using GUIClient.Models;
-using GUIClient.Services;
 using MessageBox.Avalonia.DTO;
 using Model.DTO;
 using Model.Exceptions;

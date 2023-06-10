@@ -2,7 +2,7 @@
 using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Microsoft.Extensions.Localization;
+
 
 namespace GUIClient.Converters;
 

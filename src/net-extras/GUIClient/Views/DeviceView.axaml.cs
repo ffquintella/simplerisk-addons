@@ -1,10 +1,6 @@
 ﻿using System;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using GUIClient.Services;
-using GUIClient.ViewModels;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Splat;
 
 namespace GUIClient.Views;

@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using GUIClient.Configuration;
-using GUIClient.Models;
-using GUIClient.Services;
 using MessageBox.Avalonia.DTO;
-using Microsoft.Extensions.Localization;
 using Model.Authentication;
+using Model.Configuration;
 using ReactiveUI;
-using Splat;
 using Tools;
 
 namespace GUIClient.ViewModels;

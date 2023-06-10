@@ -1,9 +1,8 @@
-﻿using GUIClient.Configuration;
-using GUIClient.Services;
-using Microsoft.Extensions.Configuration;
+﻿using ClientServices.Interfaces;
+using ClientServices.Services;
 using Microsoft.Extensions.Logging;
 using Splat;
-using ILogger = Serilog.ILogger;
+using Model.Configuration;
 
 namespace GUIClient;
 

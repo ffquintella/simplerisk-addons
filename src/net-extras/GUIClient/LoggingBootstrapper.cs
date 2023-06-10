@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
-using GUIClient.Configuration;
-using GUIClient.Services;
 using Microsoft.Extensions.Logging;
+using Model.Configuration;
 using Serilog;
 using Serilog.Extensions.Logging;
 using Splat;

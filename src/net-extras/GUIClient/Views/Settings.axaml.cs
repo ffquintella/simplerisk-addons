@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace GUIClient;
+namespace GUIClient.Views;
 
 public partial class Settings : Window
 {

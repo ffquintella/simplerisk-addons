@@ -1,10 +1,8 @@
-﻿using Avalonia;
+﻿
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using GUIClient.ViewModels;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using Model.Statistics;
+
 
 namespace GUIClient.Views;
 

@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using DAL.Entities;
-using GUIClient.Services;
 using Serilog;
-using Serilog.Core;
+using ClientServices.Interfaces;
 
 namespace GUIClient.Hydrated;
 

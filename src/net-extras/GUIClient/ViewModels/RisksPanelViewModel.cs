@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using DAL.Entities;
-using GUIClient.Services;
+using ClientServices.Interfaces;
 using ReactiveUI;
 
 namespace GUIClient.ViewModels;

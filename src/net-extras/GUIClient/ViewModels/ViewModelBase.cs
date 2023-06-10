@@ -1,8 +1,7 @@
 ﻿using System;
+using ClientServices.Interfaces;
 using GUIClient.Exceptions;
-using GUIClient.Services;
 using Microsoft.Extensions.Localization;
-using ReactiveUI;
 using ReactiveUI.Validation.Helpers;
 using Serilog;
 using Splat;
@@ -37,7 +36,7 @@ namespace GUIClient.ViewModels
             var localizationService = GetService<ILocalizationService>();
             _authenticationService = GetService<IAuthenticationService>();
             _logger = Log.Logger;
-            var localizer = localizationService.GetLocalizer();
+            var localizer = localizationService.GetLocalizer(typeof(ViewModelBase).Assembly);
             if (localizer == null)
             {
                 Logger.Error("Error getting localizer service");

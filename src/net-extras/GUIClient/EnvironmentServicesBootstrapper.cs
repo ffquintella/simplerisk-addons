@@ -1,4 +1,5 @@
-﻿using GUIClient.Services;
+﻿using ClientServices.Services;
+using ClientServices.Interfaces;
 using Splat;
 
 namespace GUIClient;

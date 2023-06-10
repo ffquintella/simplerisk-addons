@@ -1,12 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
 using Microsoft.Extensions.Configuration;
 using Splat;
-using GUIClient.Configuration;
-using GUIClient.Models;
-using GUIClient.Services;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using ClientServices.Services;
+using ClientServices.Interfaces;
+using Model.Configuration;
 
 namespace GUIClient;
 

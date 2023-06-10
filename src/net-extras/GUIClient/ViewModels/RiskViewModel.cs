@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using Avalonia.Controls;
+using ClientServices.Interfaces;
+using GUIClient.Views;
 using DAL.Entities;
 using GUIClient.Models;
-using GUIClient.Services;
-using GUIClient.Tools;
-using GUIClient.Views;
-using LiveChartsCore.Defaults;
 using ReactiveUI;
 
 namespace GUIClient.ViewModels;

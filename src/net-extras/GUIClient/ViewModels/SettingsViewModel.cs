@@ -1,8 +1,5 @@
-﻿using System.Globalization;
-using GUIClient.Configuration;
-using GUIClient.Services;
-using GUIClient.Tools;
-using Microsoft.Extensions.Localization;
+﻿using Model.Configuration;
+using Tools.Identification;
 
 namespace GUIClient.ViewModels;
 

@@ -2,9 +2,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using GUIClient.Configuration;
-using GUIClient.Services;
 using GUIClient.ViewModels;
+using Model.Configuration;
 using Splat;
 
 namespace GUIClient.Views;

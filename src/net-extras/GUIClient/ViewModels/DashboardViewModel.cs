@@ -4,10 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-using GUIClient.Services;
-using Microsoft.Extensions.Localization;
-using Splat;
+using ClientServices.Interfaces;
 using LiveChartsCore;
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
