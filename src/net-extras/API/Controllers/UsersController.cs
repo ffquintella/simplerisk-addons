@@ -97,7 +97,7 @@ public class UsersController: ApiBaseController
         }
         catch (Exception ex)
         {
-            Logger.Warning($"The user with id: {id} was not found: {ex.Message}");
+            Logger.Warning($"Error changing the password of the user {id}: {ex.Message}");
             return NotFound($"The password could not be changed");
         }
         

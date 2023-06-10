@@ -51,6 +51,11 @@ public class UserManagementService: IUserManagementService
 
     public bool VerifyPassword(User? user, string password)
     {
+        if (user.Type == "saml")
+        {
+            throw new Exception("Cannot verify password of saml users");
+        }
+        
         if (user == null) return false;
         
         if(user.Lockout == 1)
@@ -68,14 +73,19 @@ public class UserManagementService: IUserManagementService
         var dbContext = _dalManager!.GetContext();
 
         var user = GetUserById(userId);
-        
-        if (user == null) return false;
 
+        if (user == null) return false;
+        if (user.Type == "saml")
+        {
+            throw new Exception("Cannot change password of saml users");
+        } 
+
+        
         try
         {
             //var salt = GenerateSalt();
             //user.Salt = salt.Replace("$2a$", "").Truncate(20, "");
-            user.Password = Encoding.UTF8.GetBytes(HashPassword(password, 15, true));
+            user.Password = Encoding.UTF8.GetBytes(HashPassword(password, 15));
             dbContext?.Users?.Update(user);
             dbContext?.SaveChanges();
             _log.LogWarning("Password changed for user {userId}", userId);
