@@ -12,6 +12,6 @@ My immage is based on ubuntu and php 8.1.
 
 To get the container image just pull the desired image tag. 
 
-I use an ending code for each default language being en = english  and bp = brazilian portuguease the ones avaliable righ now
+I use an ending code for each language being en = english and bp = brazilian portuguease the ones avaliable right now.
 
 
