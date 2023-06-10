@@ -5,16 +5,16 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using GUIClient.Models;
-using GUIClient.Services;
-using GUIClient.ViewModels;
+using ClientServices.Models;
+using ClientServices.ViewModels;
+using ClientServices.Services;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Models;
 using Microsoft.Extensions.Localization;
 using Model.Authentication;
 using Splat;
 
-namespace GUIClient.Views;
+namespace ClientServices.Views;
 
 public partial class Login : Window
 {

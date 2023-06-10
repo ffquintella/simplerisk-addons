@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GUIClient.Exceptions;
+namespace ClientServices.Exceptions;
 
 public class DIException: Exception
 {

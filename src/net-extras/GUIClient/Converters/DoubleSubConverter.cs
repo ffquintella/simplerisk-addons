@@ -4,7 +4,7 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Microsoft.Extensions.Localization;
 
-namespace GUIClient.Converters;
+namespace ClientServices.Converters;
 
 public class DoubleSubConverter: IValueConverter
 {

@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace GUIClient.Views;
+namespace ClientServices.Views;
 
 public partial class AssessmentQuestionView : Window
 {

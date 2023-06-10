@@ -8,11 +8,11 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media.TextFormatting.Unicode;
 using Avalonia.VisualTree;
+using ClientServices.Views;
 using DAL.Entities;
 using DynamicData;
-using GUIClient.Services;
-using GUIClient.Tools;
-using GUIClient.Views;
+using ClientServices.Services;
+using ClientServices.Tools;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 using Microsoft.Extensions.Localization;
@@ -20,7 +20,7 @@ using Model.Exceptions;
 using ReactiveUI;
 using Splat;
 
-namespace GUIClient.ViewModels;
+namespace ClientServices.ViewModels;
 
 public class AssessmentViewModel: ViewModelBase
 {

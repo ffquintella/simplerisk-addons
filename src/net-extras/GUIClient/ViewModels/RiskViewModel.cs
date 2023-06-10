@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using Avalonia.Controls;
+using ClientServices.Models;
+using ClientServices.Views;
 using DAL.Entities;
-using GUIClient.Models;
-using GUIClient.Services;
-using GUIClient.Tools;
-using GUIClient.Views;
+using ClientServices.Services;
+using ClientServices.Tools;
 using LiveChartsCore.Defaults;
 using ReactiveUI;
 
-namespace GUIClient.ViewModels;
+namespace ClientServices.ViewModels;
 
 public class RiskViewModel: ViewModelBase
 {

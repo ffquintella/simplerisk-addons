@@ -3,12 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:vm="using:GUIClient.ViewModels"
+             xmlns:vm="using:ClientServices.ViewModels"
              xmlns:model="using:Model"
-             xmlns:convertes="clr-namespace:GUIClient.Converters"
+             xmlns:convertes="clr-namespace:ClientServices.Converters"
              xmlns:material="using:Material.Icons.Avalonia"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             x:Class="GUIClient.Views.DeviceView"
+             x:Class="ClientServices.Views.DeviceView"
              Name="DeviceViewName">
              
     <Design.DataContext>

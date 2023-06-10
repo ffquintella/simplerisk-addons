@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
-using GUIClient.Services;
+using ClientServices.Services;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 using Microsoft.Extensions.Localization;
 using Model;
 using ReactiveUI;
 
-namespace GUIClient.ViewModels;
+namespace ClientServices.ViewModels;
 
 public class DeviceViewModel: ViewModelBase
 {

@@ -2,12 +2,12 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using GUIClient.Configuration;
-using GUIClient.Services;
-using GUIClient.ViewModels;
+using ClientServices.Configuration;
+using ClientServices.ViewModels;
+using ClientServices.Services;
 using Splat;
 
-namespace GUIClient.Views
+namespace ClientServices.Views
 {
     public partial class MainWindow : Window
     {

@@ -1,11 +1,11 @@
-﻿using GUIClient.Configuration;
-using GUIClient.Services;
+﻿using ClientServices.Configuration;
+using ClientServices.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Splat;
 using ILogger = Serilog.ILogger;
 
-namespace GUIClient;
+namespace ClientServices;
 
 public class GeneralServicesBootstrapper: BaseBootstrapper
 {

@@ -7,7 +7,7 @@ using Avalonia.Data.Converters;
 using DAL.Entities;
 using Microsoft.Extensions.Localization;
 
-namespace GUIClient.Converters;
+namespace ClientServices.Converters;
 
 public class AssessmentAnswerSelectionConverter: IMultiValueConverter
 {

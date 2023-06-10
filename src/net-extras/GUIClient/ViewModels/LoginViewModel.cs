@@ -6,9 +6,9 @@ using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using GUIClient.Configuration;
-using GUIClient.Models;
-using GUIClient.Services;
+using ClientServices.Configuration;
+using ClientServices.Models;
+using ClientServices.Services;
 using MessageBox.Avalonia.DTO;
 using Microsoft.Extensions.Localization;
 using Model.Authentication;
@@ -16,7 +16,7 @@ using ReactiveUI;
 using Splat;
 using Tools;
 
-namespace GUIClient.ViewModels;
+namespace ClientServices.ViewModels;
 
 public class LoginViewModel : ViewModelBase
 {

@@ -9,14 +9,14 @@ using Avalonia.Controls;
 //using Avalonia.Styling;
 using DAL.Entities;
 using DynamicData;
-using GUIClient.Services;
-using GUIClient.Tools;
+using ClientServices.Services;
+using ClientServices.Tools;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 using ReactiveUI;
 using Tools;
 
-namespace GUIClient.ViewModels;
+namespace ClientServices.ViewModels;
 
 public class AssessmentQuestionViewModel: ViewModelBase
 {

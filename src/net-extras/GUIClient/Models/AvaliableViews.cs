@@ -1,4 +1,4 @@
-﻿namespace GUIClient.Models;
+﻿namespace ClientServices.Models;
 
 public enum AvaliableViews
 {

@@ -1,9 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using GUIClient.ViewModels;
+using ClientServices.ViewModels;
 
-namespace GUIClient.Views;
+namespace ClientServices.Views;
 
 public partial class RiskView : UserControl
 {

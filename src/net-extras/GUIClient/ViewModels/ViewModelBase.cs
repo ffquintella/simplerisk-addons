@@ -1,6 +1,6 @@
 ﻿using System;
-using GUIClient.Exceptions;
-using GUIClient.Services;
+using ClientServices.Exceptions;
+using ClientServices.Services;
 using Microsoft.Extensions.Localization;
 using ReactiveUI;
 using ReactiveUI.Validation.Helpers;
@@ -8,7 +8,7 @@ using Serilog;
 using Splat;
 using ILogger = Serilog.ILogger;
 
-namespace GUIClient.ViewModels
+namespace ClientServices.ViewModels
 {
     public class ViewModelBase : ReactiveValidationObject
     {

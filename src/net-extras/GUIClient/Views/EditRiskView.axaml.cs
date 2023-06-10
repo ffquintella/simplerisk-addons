@@ -2,10 +2,10 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using GUIClient.ViewModels;
+using ClientServices.ViewModels;
 using Splat;
 
-namespace GUIClient.Views;
+namespace ClientServices.Views;
 
 public partial class EditRiskView : Window
 {

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using DAL.Entities;
-using GUIClient.Services;
+using ClientServices.Services;
 using Serilog;
 using Serilog.Core;
 
-namespace GUIClient.Hydrated;
+namespace ClientServices.Hydrated;
 
 public class Risk: BaseHydrated
 {

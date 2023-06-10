@@ -2,12 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:GUIClient.ViewModels"
+             xmlns:viewModels="clr-namespace:ClientServices.ViewModels"
              xmlns:material="using:Material.Icons.Avalonia"
-             xmlns:convertes="clr-namespace:GUIClient.Converters"
+             xmlns:convertes="clr-namespace:ClientServices.Converters"
              xmlns:sys="using:System"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="GUIClient.Views.RiskView"
+             x:Class="ClientServices.Views.RiskView"
              >
     
     <Design.DataContext>

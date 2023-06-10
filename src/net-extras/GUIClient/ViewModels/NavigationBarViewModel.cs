@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
-using GUIClient.Configuration;
-using GUIClient.Models;
-using GUIClient.Services;
-using GUIClient.Views;
+using ClientServices.Configuration;
+using ClientServices.Models;
+using ClientServices.Views;
+using ClientServices.Services;
 using ReactiveUI;
 
-namespace GUIClient.ViewModels;
+namespace ClientServices.ViewModels;
 
 public class NavigationBarViewModel: ViewModelBase
 {

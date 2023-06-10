@@ -5,11 +5,11 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using Avalonia.Controls;
+using ClientServices.Exceptions;
+using ClientServices.Models;
 using DAL.Entities;
 using DynamicData.Tests;
-using GUIClient.Exceptions;
-using GUIClient.Models;
-using GUIClient.Services;
+using ClientServices.Services;
 using MessageBox.Avalonia.DTO;
 using Model.DTO;
 using Model.Exceptions;
@@ -17,7 +17,7 @@ using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
 using MessageBox.Avalonia.Enums;
 
-namespace GUIClient.ViewModels;
+namespace ClientServices.ViewModels;
 
 public class EditRiskViewModel: ViewModelBase
 {

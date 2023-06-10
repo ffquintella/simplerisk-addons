@@ -1,4 +1,4 @@
-﻿namespace GUIClient.Tools;
+﻿namespace ClientServices.Tools;
 using System.Text.Json;
 
 public static class ExtensionMethods

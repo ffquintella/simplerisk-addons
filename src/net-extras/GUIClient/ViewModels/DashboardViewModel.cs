@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using GUIClient.Services;
+using ClientServices.Services;
 using Microsoft.Extensions.Localization;
 using Splat;
 using LiveChartsCore;
@@ -16,7 +16,7 @@ using Model.Statistics;
 using ReactiveUI;
 using SkiaSharp;
 
-namespace GUIClient.ViewModels;
+namespace ClientServices.ViewModels;
 
 public class DashboardViewModel : ViewModelBase
 {

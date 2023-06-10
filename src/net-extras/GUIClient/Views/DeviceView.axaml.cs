@@ -2,12 +2,12 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using GUIClient.Services;
-using GUIClient.ViewModels;
+using ClientServices.Services;
+using ClientServices.ViewModels;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Splat;
 
-namespace GUIClient.Views;
+namespace ClientServices.Views;
 
 public partial class DeviceView : UserControl
 {
