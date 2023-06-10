@@ -18,6 +18,9 @@ public interface IUserManagementService
     bool VerifyPassword(int userId, string password);
     
     bool VerifyPassword(User? user, string password);
+    
+    bool ChangePassword(int userId, string password);
 
+    public User? GetUserById(int userId);
 
 }

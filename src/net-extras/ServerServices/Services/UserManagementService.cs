@@ -61,13 +61,40 @@ public class UserManagementService: IUserManagementService
         
         return valid; 
     }
+
+    public bool ChangePassword(int userId, string password)
+    {
+        var dbContext = _dalManager!.GetContext();
+
+        var user = GetUserById(userId);
+        
+        if (user == null) return false;
+
+        try
+        {
+            user.Salt = GenerateSalt();
+            user.Password = Encoding.UTF8.GetBytes(HashPassword(password, user.Salt));
+            dbContext?.Users?.Update(user);
+            dbContext?.SaveChanges();
+            _log.LogWarning("Password changed for user {userId}", userId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _log.LogError(ex, "Error changing password for user {userId}", userId);
+        }
+
+        
+        return false;
+    }
     public User? GetUserById(int userId)
     {
         var dbContext = _dalManager!.GetContext();
         var user = dbContext?.Users?
             .Where(u => u.Value == userId)
             .FirstOrDefault();
-
+      
+        
         return user;
     }
 

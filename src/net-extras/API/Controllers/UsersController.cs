@@ -69,20 +69,36 @@ public class UsersController: ApiBaseController
             
             // Now let´s verify if the old password is correct
             
-            
+            if (!_userManagementService.VerifyPassword(id, changePasswordRequest.OldPassword))
+            {
+                Logger.Warning($"The user with id: {id} was not found: {loggedUser.Value} tried to change password of {id}");
+                return Unauthorized($"The user with the id:{loggedUser.Value} is not authorized to change the password of {id}");
+            }
         }
         
+        // Let´s check if the user exists 
+        var user = _userManagementService.GetUserById(id);
+
+        if (user == null) NotFound($"The user indicated was not found");
         
-        
+        // If we are here we can change the password 
         try
         {
-            var name  = _userManagementService.GetUserName(id);
-            return Ok(name);
+            var okResult = _userManagementService.ChangePassword(id, changePasswordRequest.NewPassword);
+            if (okResult)
+            {
+                Logger.Information("Password changed for user {id}", id);
+                return Ok("Password changed");
+            }
+            
+            Logger.Error("Error changing password for user {id}", id);
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Error changing password");
+
         }
-        catch (DataNotFoundException ex)
+        catch (Exception ex)
         {
             Logger.Warning($"The user with id: {id} was not found: {ex.Message}");
-            return NotFound($"The user with the id:{ex.Identification} was not found");
+            return NotFound($"The password could not be changed");
         }
         
     }
