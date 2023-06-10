@@ -12,6 +12,7 @@ using ServerServices;
 using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
 using dk.nita.saml20;
+using ServerServices.Interfaces;
 using ILogger = Serilog.ILogger;
 
 namespace API.Controllers;

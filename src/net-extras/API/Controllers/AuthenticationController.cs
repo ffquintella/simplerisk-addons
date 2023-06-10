@@ -17,6 +17,7 @@ using Model.Authentication;
 using Model.Exceptions;
 using ServerServices;
 using System.Linq;
+using ServerServices.Interfaces;
 
 namespace API.Controllers;
 

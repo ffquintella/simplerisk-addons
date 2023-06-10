@@ -13,6 +13,7 @@ using Model.DTO.Statistics;
 using Model.Statistics;
 using System.Linq;
 using ServerServices;
+using ServerServices.Interfaces;
 using ILogger = Serilog.ILogger;
 
 namespace API.Controllers;

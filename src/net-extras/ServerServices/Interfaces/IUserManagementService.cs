@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DAL.Entities;
 using Model.DTO;
 
-namespace ServerServices;
+namespace ServerServices.Interfaces;
 
 public interface IUserManagementService
 {

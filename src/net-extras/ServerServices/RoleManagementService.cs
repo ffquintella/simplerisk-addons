@@ -4,6 +4,7 @@ using DAL.Context;
 using DAL.Entities;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using ServerServices.Services;
 
 namespace ServerServices;
 
@@ -18,7 +19,7 @@ public class RoleManagementService: IRoleManagementService
     {
         _dalManager = dalManager;
         //_dbContext = dalManager.GetContext();
-        _log = logger.CreateLogger(nameof(UserManagementService));
+        _log = logger.CreateLogger(nameof(RoleManagementService));
     }
 
 

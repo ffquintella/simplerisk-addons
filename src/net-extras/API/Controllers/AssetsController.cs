@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Exceptions;
 using ServerServices;
+using ServerServices.Interfaces;
 
 namespace API.Controllers;
 
