@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using DAL.Entities;
 
-namespace ServerServices;
+namespace ServerServices.Interfaces;
 
 public interface IRiskManagementService
 {
@@ -9,17 +9,18 @@ public interface IRiskManagementService
     /// Lists all the risks the user has access to
     /// </summary>
     /// <param name="user"></param>
-    /// <param name="status"> the risk status to use as filter</param>
+    /// <param name="status"> The risk status to use as filter</param>
+    /// <param name="notStatus"> The risk status to use as not filter</param>
     /// <returns>List of risks</returns>
     /// <throws>UserNotAuthorizedException</throws>
-    List<Risk> GetUserRisks(User user, string? status);
+    List<Risk> GetUserRisks(User user, string? status, string? notStatus = "Closed");
 
     /// <summary>
     /// Gets all risks filtering optionaly by status
     /// </summary>
     /// <param name="status">the status to use as filter</param>
     /// <returns></returns>
-    List<Risk> GetAll(string? status = null);
+    List<Risk> GetAll(string? status = null, string? notStatus = "Closed");
 
     /// <summary>
     /// Check if subject exists

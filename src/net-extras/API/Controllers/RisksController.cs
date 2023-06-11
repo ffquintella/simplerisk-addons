@@ -1,17 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using API.Tools;
-using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.Exceptions;
-using ServerServices;
-using System.Linq;
-using System.Runtime.InteropServices.JavaScript;
-using dk.nita.saml20;
 using ServerServices.Interfaces;
 using ILogger = Serilog.ILogger;
 
@@ -44,19 +35,19 @@ public class RisksController : ApiBaseController
 
         var user = GetUser();
 
-        Logger.Information($"User:{user.Value} listed all risks");
+        Logger.Information("User:{UserValue} listed all risks", user.Value);
         
-        var risks = new List<Risk>();
+        //var risks = new List<Risk>();
 
         try
         {
-            risks = _riskManagement.GetUserRisks(user, status);
+            var risks = _riskManagement.GetUserRisks(user, status);
 
             return Ok(risks);
         }
         catch (UserNotAuthorizedException ex)
         {
-            Logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
+            Logger.Warning("The user {UserName} is not authorized to see risks message: {ExMessage}", user.Name, ex.Message);
             return this.Unauthorized();
         }
         
@@ -72,9 +63,11 @@ public class RisksController : ApiBaseController
     public ActionResult<Risk> Create([FromBody] Risk? risk = null)
     {
 
+        if(risk == null) return StatusCode(StatusCodes.Status500InternalServerError);
+        
         var user = GetUser();
 
-        Logger.Information($"User:{user.Value} submited a risk");
+        Logger.Information("User:{UserValue} submitted a risk", user.Value);
 
         try
         {
@@ -89,7 +82,7 @@ public class RisksController : ApiBaseController
         }
         catch (UserNotAuthorizedException ex)
         {
-            Logger.Warning($"The user {user.Name} is not authorized to create risks message: {ex.Message}");
+            Logger.Warning("The user {UserName} is not authorized to create risks message: {ExMessage}", user.Name, ex.Message);
             return this.Unauthorized();
         }
         
@@ -122,7 +115,7 @@ public class RisksController : ApiBaseController
         catch (UserNotAuthorizedException ex)
         {
             var user = GetUser();
-            Logger.Warning($"The user {user.Value} is not authorized to check risks subjects message: {ex.Message}");
+            Logger.Warning("The user {UserValue} is not authorized to check risks subjects message: {ExMessage}", user.Value, ex.Message);
             return this.Unauthorized();
         }
         
@@ -135,12 +128,12 @@ public class RisksController : ApiBaseController
     [Route("ManagementReviews")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<List<MgmtReview>> GetAllMangementReviews([FromQuery] string? status = null)
+    public ActionResult<List<MgmtReview>> GetAllManagementReviews([FromQuery] string? status = null)
     {
         
         var user = GetUser();
 
-        Logger.Information($"User:{user.Value} listed all management reviews");
+        Logger.Information("User:{UserValue} listed all management reviews", user.Value);
         
         var reviews = new List<MgmtReview>();
         return reviews;
@@ -155,19 +148,19 @@ public class RisksController : ApiBaseController
     {
         var user = GetUser();
 
-        Logger.Information($"User:{user.Value} listed own risks");
-        var risks = new List<Risk>();
+        Logger.Information("User:{UserValue} listed own risks", user.Value);
+        //var risks = new List<Risk>();
 
         try
         {
-            risks = _riskManagement.GetUserRisks(user, status);
+            var risks = _riskManagement.GetUserRisks(user, status);
 
             if(risks.Count > 0) return Ok(risks);
             return NotFound(risks);
         }
         catch (UserNotAuthorizedException ex)
         {
-            Logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
+            Logger.Warning("The user {UserName} is not authorized to see risks message: {ExMessage}", user.Name, ex.Message);
             return this.Unauthorized();
         }
         
@@ -189,7 +182,7 @@ public class RisksController : ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            Logger.Warning($"The category {id} was not found: {ex.Message}");
+            Logger.Warning("The category {Id} was not found: {ExMessage}", id, ex.Message);
             return NotFound();
 
         }
@@ -212,7 +205,7 @@ public class RisksController : ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            Logger.Warning($"Error Listing categories {ex.Message}");
+            Logger.Warning("Error Listing categories {ExMessage}", ex.Message);
             return StatusCode(StatusCodes.Status500InternalServerError);
 
         }
@@ -235,7 +228,7 @@ public class RisksController : ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            Logger.Warning($"The catalog {id} was not found: {ex.Message}");
+            Logger.Warning("The catalog {Id} was not found: {ExMessage}", id, ex.Message);
             return NotFound();
 
         }
@@ -250,10 +243,9 @@ public class RisksController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<List<RiskCatalog>> GetRisksCatalog([FromQuery] string list = "")
     {
-        var all = false;
-        if (list == "") all = true;
-        
-        var regex = @"^\d+(,\d+)*$";
+        var all = list == "";
+
+        const string regex = @"^\d+(,\d+)*$";
         var match = Regex.Match(list, regex, RegexOptions.IgnoreCase);
 
         if (all == false && !match.Success)
@@ -285,7 +277,7 @@ public class RisksController : ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            Logger.Warning($"The catalogs {list} was not found: {ex.Message}");
+            Logger.Warning("The catalogs {List} was not found: {ExMessage}", list, ex.Message);
             return NotFound();
 
         }
@@ -308,7 +300,7 @@ public class RisksController : ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            Logger.Warning($"The category {id} was not found: {ex.Message}");
+            Logger.Warning("The category {Id} was not found: {ExMessage}", id, ex.Message);
             return NotFound();
 
         }
@@ -331,7 +323,7 @@ public class RisksController : ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            Logger.Warning($"Erro listing the sources: {ex.Message}");
+            Logger.Warning("Error listing the sources: {ExMessage}", ex.Message);
             return NotFound();
 
         }
@@ -346,16 +338,16 @@ public class RisksController : ApiBaseController
     {
         var user = GetUser();
 
-        var risks = new List<Risk>();
+        //var risks = new List<Risk>();
         try
         {
-            risks = _riskManagement.GetRisksNeedingReview(status);
+            var risks = _riskManagement.GetRisksNeedingReview(status);
 
             return Ok(risks);
         }
         catch (UserNotAuthorizedException ex)
         {
-            Logger.Warning($"The user {user.Name} is not authorized to see risks message: {ex.Message}");
+            Logger.Warning("The user {UserName} is not authorized to see risks message: {ExMessage}", user.Name, ex.Message);
             return this.Unauthorized();
         }
 

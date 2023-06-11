@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using DAL;
 using DAL.Entities;
 using Model.Exceptions;
 using Serilog;
-using System.Linq;
+using ServerServices.Interfaces;
 
-namespace ServerServices;
+namespace ServerServices.Services;
 
 public class RiskManagementService: IRiskManagementService
 {
@@ -27,17 +26,21 @@ public class RiskManagementService: IRiskManagementService
     /// <summary>
     /// Gets the risks associated to a user
     /// </summary>
-    /// <param name="user"></param>
-    /// <param name="status"></param>
+    /// <param name="user">The user object</param>
+    /// <param name="status">String representing the risk status</param>
+    /// <param name="notStatus">String representing the status the risks should not have</param>
     /// <returns></returns>
     /// <exception cref="InvalidParameterException"></exception>
     /// <exception cref="UserNotAuthorizedException"></exception>
-    public List<Risk> GetUserRisks(User user, string? status = null)
+    public List<Risk> GetUserRisks(User user, string? status = null, string? notStatus = "Closed")
     {
         if (user == null) throw new InvalidParameterException("user","User cannot be null");
         
         if (!UserHasRisksPermission(user)) throw new UserNotAuthorizedException(user.Name, user.Value, "risks");
-        var risks = new List<Risk>();
+        
+        //var risks = new List<Risk>();
+
+        List<Risk> risks;
 
         if (user.Admin) return GetAll(status);
         
@@ -47,11 +50,26 @@ public class RiskManagementService: IRiskManagementService
         // if not he can only see the risks associated to himself or that he created
         using (var context = _dalManager.GetContext())
         {
-            if (status != null)
+            
+            if (status != null && notStatus != null)
+            {
+                risks = context.Risks.Where(r => r.Status == status && r.Status != notStatus
+                                                                    && (r.Owner == user.Value 
+                                                                        || r.SubmittedBy == user.Value
+                                                                        || r.Manager == user.Value)).ToList();
+            }
+            else if (status != null)
             {
                 risks = context.Risks.Where(r => r.Status == status && (r.Owner == user.Value 
                                                                         || r.SubmittedBy == user.Value
-                                                 || r.Manager == user.Value)).ToList();
+                                                                        || r.Manager == user.Value)).ToList();
+            }
+            else if (notStatus != null)
+            {
+                risks = context.Risks.Where(r =>  r.Status != notStatus
+                                                                    && (r.Owner == user.Value 
+                                                                        || r.SubmittedBy == user.Value
+                                                                        || r.Manager == user.Value)).ToList();
             }
             else
             {
@@ -59,26 +77,35 @@ public class RiskManagementService: IRiskManagementService
                                                  || r.SubmittedBy == user.Value
                                                  || r.Manager == user.Value).ToList();
             }
-
-
             
         }
 
         return risks;
     }
 
-    public List<Risk> GetAll(string? status = null)
+    public List<Risk> GetAll(string? status = null, string? notStatus = "Closed")
     {
-        var risks = new List<Risk>();
+        List<Risk> risks;
+        //new List<Risk>();
 
-        using (var contex = _dalManager.GetContext())
+        using (var context = _dalManager.GetContext())
         {
-            
-            if (status != null)
+            if (status != null && notStatus != null)
             {
-                risks = contex.Risks.Where(r => r.Status == status).ToList();
-                
-            } else risks = contex.Risks.ToList();
+                risks = context.Risks.Where(r => r.Status == status && r.Status != notStatus).ToList();
+            }
+            else if (status != null)
+            {
+                risks = context.Risks.Where(r => r.Status == status).ToList();
+            }
+            else if (notStatus != null)
+            {
+                risks = context.Risks.Where(r => r.Status != notStatus).ToList();
+            }
+            else
+            {
+                risks = context.Risks.ToList();
+            }
             
         }
         
