@@ -44,7 +44,7 @@ public class StatisticsService: ServiceBase, IStatisticsService
             {
                 _authenticationService.DiscardAuthenticationToken();
             }
-            _logger.Error("Error getting risks over time message:{0}", ex.Message);
+            _logger.Error("Error getting risks over time message:{ExMessage}", ex.Message);
             throw new RestComunicationException("Error getting risks over time", ex);
         }
         
@@ -71,7 +71,7 @@ public class StatisticsService: ServiceBase, IStatisticsService
         }
         catch (Exception ex)
         {
-            _logger.Error("Error getting security control statistics message:{0}", ex.Message);
+            _logger.Error("Error getting security control statistics message:{ExMessage}", ex.Message);
             throw new RestComunicationException("Error getting risks over time", ex);
         }
         
