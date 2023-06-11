@@ -38,14 +38,8 @@ public class EditRiskViewModel: ViewModelBase
     private Source? _selectedRiskSource;
     public Source? SelectedRiskSource
     {
-        get
-        {
-            return _selectedRiskSource;
-        }
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _selectedRiskSource, value);
-        }
+        get => _selectedRiskSource;
+        set => this.RaiseAndSetIfChanged(ref _selectedRiskSource, value);
     }
     
     
@@ -54,14 +48,8 @@ public class EditRiskViewModel: ViewModelBase
     private Category? _selectedCategory;
     public Category? SelectedCategory
     {
-        get
-        {
-            return _selectedCategory;
-        }
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _selectedCategory, value);
-        }
+        get => _selectedCategory;
+        set => this.RaiseAndSetIfChanged(ref _selectedCategory, value);
     }
 
     private bool _isCtrlNumVisible = false;
@@ -69,53 +57,29 @@ public class EditRiskViewModel: ViewModelBase
     
     public bool IsCtrlNumVisible
     {
-        get
-        {
-            return _isCtrlNumVisible;
-        }
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _isCtrlNumVisible, value);
-        }
+        get => _isCtrlNumVisible;
+        set => this.RaiseAndSetIfChanged(ref _isCtrlNumVisible, value);
     }
 
     private UserListing? _selectedOwner;
     public UserListing? SelectedOwner
     {
-        get
-        {
-            return _selectedOwner;
-        }
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _selectedOwner, value);
-        }
+        get => _selectedOwner;
+        set => this.RaiseAndSetIfChanged(ref _selectedOwner, value);
     }
     
     private UserListing? _selectedManager;
     public UserListing? SelectedManager
     {
-        get
-        {
-            return _selectedManager;
-        }
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _selectedManager, value);
-        }
+        get => _selectedManager;
+        set => this.RaiseAndSetIfChanged(ref _selectedManager, value);
     }
     
     private string? _notes;
-    public String? Notes
+    public string? Notes
     {
-        get
-        {
-            return _notes;
-        }
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _notes, value);
-        }
+        get => _notes;
+        set => this.RaiseAndSetIfChanged(ref _notes, value);
     }
     
     private List<RiskCatalog> RiskTypes { get; }
@@ -124,20 +88,14 @@ public class EditRiskViewModel: ViewModelBase
 
     private List<RiskCatalog> SelectedRiskTypes
     {
-        get
-        {
-            return _selectedRiskTypes;
-        }
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _selectedRiskTypes, value);
-        }
+        get => _selectedRiskTypes;
+        set => this.RaiseAndSetIfChanged(ref _selectedRiskTypes, value);
     }
     
 
-    private OperationType _operationType;
-    private IRisksService _risksService;
-    private IAuthenticationService _authenticationService;
+    private readonly OperationType _operationType;
+    private readonly IRisksService _risksService;
+    private readonly IAuthenticationService _authenticationService;
     private IUsersService _usersService;
     
     public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
@@ -149,6 +107,8 @@ public class EditRiskViewModel: ViewModelBase
         {
             throw new InvalidParameterException("risk", "Risk cannot be null");
         }
+
+        _selectedRiskTypes = new List<RiskCatalog>();
         
         if (operation == OperationType.Edit)
         {
@@ -279,7 +239,7 @@ public class EditRiskViewModel: ViewModelBase
                 .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                 {
                     ContentTitle = Localizer["Save"],
-                    ContentMessage = Localizer["SaveOkMSG"],
+                    ContentMessage = Localizer["SaveOkMSG"] + " ID: " + resultingRisk!.Id + ".",
                     Icon = Icon.Success,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 });
@@ -292,11 +252,19 @@ public class EditRiskViewModel: ViewModelBase
         catch (ErrorSavingException ex)
         {
 
+            var errors = "";
+
+            foreach (var error in ex.Result.Errors)
+            {
+                errors += error + "\n";
+            }
+
+
             var msgError = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                 {
                     ContentTitle = Localizer["Error"],
-                    ContentMessage = Localizer["ErrorCreatingRiskMSG"],
+                    ContentMessage = Localizer["ErrorCreatingRiskMSG"] + "cd: " + ex.Result.Status + "\nerr: " + errors + "." ,
                     Icon = Icon.Error,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 });
