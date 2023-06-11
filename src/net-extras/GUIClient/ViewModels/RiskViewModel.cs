@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 using Avalonia.Controls;
 using ClientServices.Interfaces;
@@ -27,7 +28,17 @@ public class RiskViewModel: ViewModelBase
     public string StrCreation { get; }
     public string StrSubmittedBy { get; }
     public string StrRiskType { get; }
-    
+
+    private string _riskFilter = "";
+    public string RiskFilter
+    {
+        get => _riskFilter;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _riskFilter, value);
+            Risks = new ObservableCollection<Risk>(_allRisks.Where(r => r.Subject.Contains(_riskFilter)));
+        }
+    }
     
     private Hydrated.Risk? _hdRisk;
     public Hydrated.Risk? HdRisk
@@ -71,6 +82,18 @@ public class RiskViewModel: ViewModelBase
     public IAuthenticationService _autenticationService;
     
     
+    private ObservableCollection<Risk> _allRisks;
+    
+    public ObservableCollection<Risk> AllRisks
+    {
+        get => _allRisks;
+        set
+        {
+            Risks = value;
+            this.RaiseAndSetIfChanged(ref _allRisks, value);
+        }
+    }
+
     private ObservableCollection<Risk> _risks;
     
     public ObservableCollection<Risk> Risks
@@ -160,14 +183,14 @@ public class RiskViewModel: ViewModelBase
     }
     private void ExecuteReloadRisk()
     {
-        Risks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
+        AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
     }
 
     private void Initialize()
     {
         if (!_initialized)
         {
-            Risks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
+            AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
             
             _initialized = true;
         }

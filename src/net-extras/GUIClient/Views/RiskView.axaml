@@ -48,6 +48,7 @@
                 >
                     <material:MaterialIcon Kind="Edit"/>
                 </Button>
+                <TextBox Grid.Column="2" Text="{Binding RiskFilter}"/>
                 <Button Grid.Column="3" Name="BtReloadRisk" 
                         Command="{Binding BtReloadRiskClicked}">
                     <material:MaterialIcon Kind="Reload"/>
