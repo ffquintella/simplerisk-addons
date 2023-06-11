@@ -30,7 +30,7 @@
                      ScrollViewer.HorizontalScrollBarVisibility="Visible">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding Subject}" TextWrapping="Wrap" MaxWidth="300"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -73,12 +73,13 @@
                         <!-- Risk Catalog List -->
                         <ListBox Grid.Row="1" Name="LstCatalogs"  
                                  ItemsSource="{Binding HdRisk.Types}" SelectionMode="Single"
-                                 HorizontalAlignment="Center" MinWidth="250" Height="150"
+                                 HorizontalAlignment="Center" MinWidth="380" Height="150"
                                  ScrollViewer.HorizontalScrollBarVisibility="Visible">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Number}"/><TextBlock Text=": "/><TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Number}"/><TextBlock Text=": "/>
+                                        <TextBlock Text="{Binding Name}" MaxLines="3" TextWrapping="Wrap" MaxWidth="300"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -86,7 +87,8 @@
                     </StackPanel>
                 
                 </StackPanel>
-                <StackPanel Orientation="Vertical"><TextBlock Text="{Binding StrNotes}" Classes="label"/><TextBox Text="{Binding SelectedRisk.Notes}" IsReadOnly="True" TextWrapping="Wrap" Height="60"/></StackPanel>
+                <StackPanel Orientation="Vertical"><TextBlock Text="{Binding StrNotes}" Classes="label"/>
+                    <TextBox Text="{Binding SelectedRisk.Notes}" IsReadOnly="True" TextWrapping="Wrap" Height="120"/></StackPanel>
             </StackPanel>
         </Grid>
     </Grid>
