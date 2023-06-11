@@ -110,13 +110,6 @@ public class EditRiskViewModel: ViewModelBase
 
         _selectedRiskTypes = new List<RiskCatalog>();
         
-        if (operation == OperationType.Edit)
-        {
-            IsCtrlNumVisible = true;
-            RiskSubject = risk.Subject;
-            _originalSubject = risk.Subject;
-        }
-
         
         _operationType = operation;
         StrRisk = Localizer["Risk"];
@@ -153,6 +146,16 @@ public class EditRiskViewModel: ViewModelBase
         Categories = _risksService.GetRiskCategories();
         RiskTypes = _risksService.GetRiskTypes();
         UserListings = _usersService.ListUsers();
+        
+        if (operation == OperationType.Edit)
+        {
+            IsCtrlNumVisible = true;
+            RiskSubject = risk!.Subject;
+            _originalSubject = risk.Subject;
+            SelectedRiskSource = RiskSources!.FirstOrDefault(r => r.Value == risk.Source);
+            SelectedCategory = Categories!.FirstOrDefault(c => c.Value == risk.Category);
+            //SelectedRiskTypes = RiskTypes!.Where(rt => risk.RiskCatalogMapping.Contains(rt.Id)).ToList();
+        }
 
         var sowner = UserListings.FirstOrDefault(ul => ul.Id == _authenticationService!.AuthenticatedUserInfo!.UserId);
 
