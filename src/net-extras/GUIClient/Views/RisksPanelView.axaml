@@ -46,6 +46,15 @@
                                     Converter={StaticResource stringEqualConverter},
                                     ConverterParameter=New}"
                                                        />
+                                <avalonia:MaterialIcon Kind="PrintPreview"
+                                                       IsVisible="{Binding Status, 
+                                    Converter={StaticResource stringEqualConverter},
+                                    ConverterParameter=Mgmt Reviewed}"/>
+                                <avalonia:MaterialIcon Kind="Done"
+                                                       IsVisible="{Binding Status, 
+                                    Converter={StaticResource stringEqualConverter},
+                                    ConverterParameter=Closed}"                                                       
+                                />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
