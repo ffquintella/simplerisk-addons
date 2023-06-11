@@ -5,13 +5,15 @@ using ClientServices.Interfaces;
 using GUIClient.Views;
 using DAL.Entities;
 using GUIClient.Models;
+using MessageBox.Avalonia.DTO;
+using MessageBox.Avalonia.Enums;
 using ReactiveUI;
 
 namespace GUIClient.ViewModels;
 
 public class RiskViewModel: ViewModelBase
 {
-    private bool _initialized = false;
+    private bool _initialized;
     
     public string StrRisk { get; }
     public string StrDetails { get; }
@@ -61,7 +63,7 @@ public class RiskViewModel: ViewModelBase
     }
     
     public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
-    
+    public ReactiveCommand<Window, Unit> BtEditRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtDeleteRiskClicked { get; }
     
@@ -77,7 +79,7 @@ public class RiskViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _risks, value);
     }
     
-    public RiskViewModel() : base()
+    public RiskViewModel()
     {
         StrRisk = Localizer["Risk"];
         StrDetails= Localizer["Details"];
@@ -95,6 +97,7 @@ public class RiskViewModel: ViewModelBase
         _risks = new ObservableCollection<Risk>();
         
         BtAddRiskClicked = ReactiveCommand.Create<Window>(ExecuteAddRisk);
+        BtEditRiskClicked = ReactiveCommand.Create<Window>(ExecuteEditRisk);
         BtDeleteRiskClicked = ReactiveCommand.Create(ExecuteDeleteRisk);
         BtReloadRiskClicked = ReactiveCommand.Create(ExecuteReloadRisk);
 
@@ -121,6 +124,36 @@ public class RiskViewModel: ViewModelBase
         };
         dialog.ShowDialog( openWindow );
     }
+    
+    private async void ExecuteEditRisk(Window openWindow)
+    {
+        if (SelectedRisk == null)
+        {
+            var msgSelect = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Error"],
+                    ContentMessage = Localizer["SelectRiskMSG"] ,
+                    Icon = Icon.Success,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                });
+
+            await msgSelect.Show();
+            return;
+        }
+        
+        // OPENS a new window to edit the risk
+
+        var dialog = new EditRiskView()
+        {
+            DataContext = new EditRiskViewModel(OperationType.Edit, SelectedRisk),
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Width = 1000,
+            Height = 650,
+        };
+        dialog.ShowDialog( openWindow );
+    }
+    
     private void ExecuteDeleteRisk()
     {
 

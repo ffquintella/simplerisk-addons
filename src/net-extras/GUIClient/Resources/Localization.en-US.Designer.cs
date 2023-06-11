@@ -663,6 +663,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please seelct a risk before editing..
+        /// </summary>
+        internal static string SelectRiskMSG {
+            get {
+                return ResourceManager.GetString("SelectRiskMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server.
         /// </summary>
         internal static string Server {

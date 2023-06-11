@@ -255,4 +255,7 @@
     <data name="SaveOkMSG" xml:space="preserve">
         <value>Risco salvo com sucesso.</value>
     </data>
+    <data name="SelectRiskMSG" xml:space="preserve">
+        <value>Por favor selecione um risco antes de editar.</value>
+    </data>
 </root>
