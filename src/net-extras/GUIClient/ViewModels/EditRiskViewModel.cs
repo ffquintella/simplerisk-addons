@@ -233,13 +233,13 @@ public class EditRiskViewModel: ViewModelBase
 
         try
         {
-            var resultingRisk = _risksService.CreateRisk(Risk);
+            _risksService.CreateRisk(Risk);
 
             var msgOk = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
                 {
                     ContentTitle = Localizer["Save"],
-                    ContentMessage = Localizer["SaveOkMSG"] + " ID: " + resultingRisk!.Id + ".",
+                    ContentMessage = Localizer["SaveOkMSG"] ,
                     Icon = Icon.Success,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 });
