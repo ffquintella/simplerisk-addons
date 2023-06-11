@@ -22,6 +22,8 @@ public class StatisticsService: ServiceBase, IStatisticsService
         var client = _restService.GetClient();
         
         var request = new RestRequest("/Statistics/RisksOverTime");
+
+        request.AddParameter("daysSpan", 90);
         
         try
         {
