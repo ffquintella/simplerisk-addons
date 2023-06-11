@@ -147,10 +147,10 @@ public class DashboardViewModel : ViewModelBase
         
         RisksOverTime = new ObservableCollection<ISeries>
         {
-            new LineSeries<RisksOnDay>
+            new LineSeries<int>
             {
                 Name = "Risks Over Time",
-                Values = risksOverTimeValues
+                Values = risksOverTimeValues.Select(rot => rot.RisksCreated).ToList()
             }
         };
 
