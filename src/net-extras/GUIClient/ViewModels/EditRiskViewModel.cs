@@ -156,11 +156,16 @@ public class EditRiskViewModel: ViewModelBase
             SelectedCategory = Categories!.FirstOrDefault(c => c.Value == risk.Category);
             List<int> ids = risk.RiskCatalogMapping.Split(',').Select(int.Parse).ToList();
             SelectedRiskTypes = RiskTypes!.Where(rt => ids.Contains(rt.Id)).ToList();
+            SelectedOwner = UserListings!.FirstOrDefault(ul => ul.Id == risk.Owner);
+            SelectedManager = UserListings!.FirstOrDefault(ul => ul.Id == risk.Manager);
+        }
+        else
+        {
+            var sowner = UserListings.FirstOrDefault(ul => ul.Id == _authenticationService!.AuthenticatedUserInfo!.UserId);
+            if (sowner != null) SelectedOwner = sowner;
         }
 
-        var sowner = UserListings.FirstOrDefault(ul => ul.Id == _authenticationService!.AuthenticatedUserInfo!.UserId);
 
-        if (sowner != null) SelectedOwner = sowner;
 
         if (RiskSources == null) throw new Exception("Unable to load risk list");
         if (Categories == null) throw new Exception("Unable to load category list");
