@@ -184,6 +184,7 @@ public class RiskViewModel: ViewModelBase
     private void ExecuteReloadRisk()
     {
         AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
+        RiskFilter = "";
     }
 
     private void Initialize()
