@@ -97,7 +97,7 @@ public class EditRiskViewModel: ViewModelBase
     private readonly IRisksService _risksService;
     private readonly IAuthenticationService _authenticationService;
     private IUsersService _usersService;
-    
+    private string _originalSubject = "";
     public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
     public ReactiveCommand<Window, Unit> BtCancelClicked { get; }
     
@@ -113,6 +113,8 @@ public class EditRiskViewModel: ViewModelBase
         if (operation == OperationType.Edit)
         {
             IsCtrlNumVisible = true;
+            RiskSubject = risk.Subject;
+            _originalSubject = risk.Subject;
         }
 
         
@@ -175,6 +177,7 @@ public class EditRiskViewModel: ViewModelBase
                 x => x.RiskSubject,
                 (subject) =>
                 {
+                    if (_operationType == OperationType.Edit && _originalSubject == subject) return true;
                     return !_risksService.RiskSubjectExists(subject);
                 });
         
