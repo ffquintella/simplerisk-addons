@@ -158,6 +158,7 @@ public class EditRiskViewModel: ViewModelBase
             SelectedRiskTypes = RiskTypes!.Where(rt => ids.Contains(rt.Id)).ToList();
             SelectedOwner = UserListings!.FirstOrDefault(ul => ul.Id == risk.Owner);
             SelectedManager = UserListings!.FirstOrDefault(ul => ul.Id == risk.Manager);
+            Notes = risk.Notes;
         }
         else
         {
