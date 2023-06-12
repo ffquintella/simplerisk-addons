@@ -258,4 +258,7 @@
     <data name="SelectRiskMSG" xml:space="preserve">
         <value>Por favor selecione um risco antes de editar.</value>
     </data>
+    <data name="SelectRiskDeleteMSG" xml:space="preserve">
+        <value>Por favor selecione um risk antes de tentar apagá-lo.</value>
+    </data>
 </root>

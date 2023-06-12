@@ -179,9 +179,22 @@ public class RiskViewModel: ViewModelBase
         AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
     }
     
-    private void ExecuteDeleteRisk()
+    private async void ExecuteDeleteRisk()
     {
+        if (SelectedRisk == null)
+        {
+            var msgSelect = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Error"],
+                    ContentMessage = Localizer["SelectRiskDeleteMSG"] ,
+                    Icon = Icon.Success,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                });
 
+            await msgSelect.Show();
+            return;
+        }
     }
     private void ExecuteReloadRisk()
     {

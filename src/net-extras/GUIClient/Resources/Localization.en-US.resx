@@ -256,6 +256,9 @@
         <value>Saved risk with success.</value>
     </data>
     <data name="SelectRiskMSG" xml:space="preserve">
-        <value>Please seelct a risk before editing.</value>
+        <value>Please seelct a risk before deleting.</value>
+    </data>
+    <data name="SelectRiskDeleteMSG" xml:space="preserve">
+        <value>Please select a risk before tring to edit</value>
     </data>
 </root>
