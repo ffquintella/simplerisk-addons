@@ -134,7 +134,7 @@ public class RiskViewModel: ViewModelBase
         
     }
     
-    private void ExecuteAddRisk(Window openWindow)
+    private async void ExecuteAddRisk(Window openWindow)
     {
         // OPENS a new window to create the risk
         
@@ -145,7 +145,8 @@ public class RiskViewModel: ViewModelBase
             Width = 1000,
             Height = 650,
         };
-        dialog.ShowDialog( openWindow );
+        await dialog.ShowDialog( openWindow );
+        AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
     }
     
     private async void ExecuteEditRisk(Window openWindow)
@@ -174,7 +175,8 @@ public class RiskViewModel: ViewModelBase
             Width = 1000,
             Height = 650,
         };
-        dialog.ShowDialog( openWindow );
+        await dialog.ShowDialog( openWindow );
+        AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
     }
     
     private void ExecuteDeleteRisk()
