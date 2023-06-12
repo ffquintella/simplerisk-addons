@@ -89,6 +89,40 @@ public class RisksController : ApiBaseController
         
     }
     
+    // Updates a Risk
+    [HttpPut]
+    [Route("{id}")]
+    [Authorize(Policy = "RequireSubmitRisk")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult Save(int id, [FromBody] Risk? risk = null)
+    {
+
+        if(risk == null) return StatusCode(StatusCodes.Status500InternalServerError);
+        
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} updated risk: {Id}", user.Value, id);
+
+        try
+        {
+            risk.LastUpdate = DateTime.Now;
+            
+            _riskManagement.SaveRisk(risk);
+
+            return Ok();
+            
+            //return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        catch (UserNotAuthorizedException ex)
+        {
+            Logger.Warning("The user {UserName} is not authorized to create risks message: {ExMessage}", user.Name, ex.Message);
+            return this.Unauthorized();
+        }
+        
+        
+    }
+    
     // Check if risk subejct exists new Risk
     [HttpGet]
     [Route("Exists")]

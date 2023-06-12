@@ -246,7 +246,12 @@ public class EditRiskViewModel: ViewModelBase
 
         try
         {
-            _risksService.CreateRisk(Risk);
+            if (_operationType == OperationType.Create)
+                _risksService.CreateRisk(Risk);
+            
+            if (_operationType == OperationType.Edit)
+                _risksService.CreateRisk(Risk);
+            
 
             var msgOk = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(   new MessageBoxStandardParams

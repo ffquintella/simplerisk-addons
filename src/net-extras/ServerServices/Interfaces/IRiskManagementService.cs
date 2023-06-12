@@ -37,6 +37,13 @@ public interface IRiskManagementService
     Risk? CreateRisk(Risk risk);
     
     /// <summary>
+    /// Saves the risk to the database
+    /// </summary>
+    /// <param name="risk">the risk object to save</param>
+    /// <returns>a risk object with updated fields</returns>
+    void SaveRisk(Risk risk);
+    
+    /// <summary>
     /// Gets the risk category
     /// </summary>
     /// <param name="id"></param>

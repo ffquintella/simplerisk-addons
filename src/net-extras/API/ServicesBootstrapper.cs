@@ -29,6 +29,7 @@ public class ServicesBootstrapper
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddAutoMapper(typeof(ClientProfile));
+        services.AddAutoMapper(typeof(ObjectUpdateProfile));
         services.AddMemoryCache();
         services.AddMemoryCache(options =>
         {

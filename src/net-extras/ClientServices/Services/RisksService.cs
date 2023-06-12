@@ -211,6 +211,44 @@ public class RisksService: ServiceBase, IRisksService
 
     }
     
+    public void SaveRisk(Risk risk)
+    {
+        risk.Id = 0;
+        using (var client = _restService.GetClient())
+        {
+            var request = new RestRequest($"/Risks/{risk.Id}");
+
+            request.AddJsonBody(risk);
+        
+            try
+            {
+                var response = client.Put(request);
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    _logger.Error("Error saving risk with id: {Id}", risk.Id);
+                    
+                    var opResult = JsonSerializer.Deserialize<OperationError>(response!.Content!);
+
+                    throw new ErrorSavingException("Error saving risk", opResult!);
+                    
+                }
+                
+
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    _authenticationService.DiscardAuthenticationToken();
+                }
+                _logger.Error("Error saving risk {Id} message:{ExMessage}", risk.Id, ex.Message);
+                throw new RestComunicationException("Error saving risk", ex);
+            }
+        }
+
+    }
+    
     public bool RiskSubjectExists(string? subject)
     {
         if (subject == null || subject == "") return false;

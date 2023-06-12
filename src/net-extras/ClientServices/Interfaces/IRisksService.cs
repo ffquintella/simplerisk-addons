@@ -20,5 +20,7 @@ public interface IRisksService
     public bool RiskSubjectExists(string status);
 
     public Risk? CreateRisk(Risk risk);
+    
+    public void SaveRisk(Risk risk);
 
 }

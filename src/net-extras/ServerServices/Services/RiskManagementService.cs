@@ -1,3 +1,4 @@
+using AutoMapper;
 using DAL;
 using DAL.Entities;
 using Model.Exceptions;
@@ -11,16 +12,19 @@ public class RiskManagementService: IRiskManagementService
     private DALManager _dalManager;
     private ILogger _log;
     private readonly IRoleManagementService _roleManagement;
+    private IMapper _mapper;
 
     public RiskManagementService(
         ILogger logger, 
         DALManager dalManager,
+        IMapper mapper,
         IRoleManagementService roleManagementService
         )
     {
         _dalManager = dalManager;
         _log = logger;
         _roleManagement = roleManagementService;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -196,8 +200,21 @@ public class RiskManagementService: IRiskManagementService
             contex.SaveChanges();
             return risk;
         }
+    }
 
-        
+    /// <summary>
+    /// Saves a existing risk to the database
+    /// </summary>
+    /// <param name="risk">The risk to be saved (updated)</param>
+    public void SaveRisk(Risk risk)
+    {
+        using (var context = _dalManager.GetContext())
+        {
+            var dbRisk = context.Risks.FirstOrDefault(r => r.Id == risk.Id);
+            if (dbRisk == null) throw new Exception($"Unable to find risk with id:{risk.Id}");
+            dbRisk = _mapper.Map(risk, dbRisk);
+            context.SaveChanges();
+        }
     }
     
     public List<RiskCatalog> GetRiskCatalogs(List<int> ids)
