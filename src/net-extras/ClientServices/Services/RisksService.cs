@@ -213,7 +213,7 @@ public class RisksService: ServiceBase, IRisksService
     
     public void SaveRisk(Risk risk)
     {
-        risk.Id = 0;
+
         using (var client = _restService.GetClient())
         {
             var request = new RestRequest($"/Risks/{risk.Id}");

@@ -114,10 +114,19 @@ public class RisksController : ApiBaseController
             
             //return StatusCode(StatusCodes.Status500InternalServerError);
         }
-        catch (UserNotAuthorizedException ex)
+        catch (Exception ex)
         {
-            Logger.Warning("The user {UserName} is not authorized to create risks message: {ExMessage}", user.Name, ex.Message);
-            return this.Unauthorized();
+            if (typeof(UserNotAuthorizedException) == ex.GetType())
+            {
+                Logger.Warning("The user {UserName} is not authorized to create risks message: {ExMessage}", user.Name, ex.Message);
+                return this.Unauthorized();
+            }
+            else
+            {
+                Logger.Error("Internal error saving risk");
+                return StatusCode(500);
+            }
+
         }
         
         
