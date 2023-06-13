@@ -249,6 +249,42 @@ public class RisksService: ServiceBase, IRisksService
 
     }
     
+    public void DeleteRisk(Risk risk)
+    {
+
+        using (var client = _restService.GetClient())
+        {
+            var request = new RestRequest($"/Risks/{risk.Id}");
+
+            try
+            {
+                var response = client.Delete(request);
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    _logger.Error("Error deleting risk with id: {Id}", risk.Id);
+                    
+                    //var opResult = JsonSerializer.Deserialize<OperationError>(response!.Content!);
+
+                    throw new Exception("Error deleting risk");
+                    
+                }
+                
+
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    _authenticationService.DiscardAuthenticationToken();
+                }
+                _logger.Error("Error deleting risk {Id} message:{ExMessage}", risk.Id, ex.Message);
+                throw new RestComunicationException("Error deleting risk", ex);
+            }
+        }
+
+    }
+    
     public bool RiskSubjectExists(string? subject)
     {
         if (subject == null || subject == "") return false;

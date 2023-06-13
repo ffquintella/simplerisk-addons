@@ -22,5 +22,7 @@ public interface IRisksService
     public Risk? CreateRisk(Risk risk);
     
     public void SaveRisk(Risk risk);
+    
+    public void DeleteRisk(Risk risk);
 
 }

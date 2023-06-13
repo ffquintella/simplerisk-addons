@@ -209,7 +209,8 @@ public class RiskViewModel: ViewModelBase
 
         if (confirmation == ButtonResult.Ok)
         {
-            
+            _risksService.DeleteRisk(SelectedRisk);
+            AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
         }
     }
     private void ExecuteReloadRisk()
