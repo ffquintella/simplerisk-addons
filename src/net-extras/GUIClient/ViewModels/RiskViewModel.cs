@@ -195,6 +195,21 @@ public class RiskViewModel: ViewModelBase
             await msgSelect.Show();
             return;
         }
+        var messageBoxConfirm = MessageBox.Avalonia.MessageBoxManager
+            .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+            {
+                ContentTitle = Localizer["Warning"],
+                ContentMessage = Localizer["RiskDeleteConfirmationMSG"]  ,
+                ButtonDefinitions = ButtonEnum.OkAbort,
+                Icon = Icon.Question,
+            });
+                        
+        var confirmation = await messageBoxConfirm.Show();
+
+        if (confirmation == ButtonResult.Ok)
+        {
+            
+        }
     }
     private void ExecuteReloadRisk()
     {

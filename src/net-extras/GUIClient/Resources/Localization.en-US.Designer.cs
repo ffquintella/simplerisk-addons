@@ -591,6 +591,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you shure you want to delete the selected risk?.
+        /// </summary>
+        internal static string RiskDeleteConfirmationMSG {
+            get {
+                return ResourceManager.GetString("RiskDeleteConfirmationMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Risk must have a subject..
         /// </summary>
         internal static string RiskMustHaveASubjectMSG {

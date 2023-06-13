@@ -261,4 +261,7 @@
     <data name="SelectRiskDeleteMSG" xml:space="preserve">
         <value>Please select a risk before tring to edit</value>
     </data>
+    <data name="RiskDeleteConfirmationMSG" xml:space="preserve">
+        <value>Are you shure you want to delete the selected risk?</value>
+    </data>
 </root>
