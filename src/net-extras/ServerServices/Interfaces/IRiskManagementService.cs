@@ -40,8 +40,13 @@ public interface IRiskManagementService
     /// Saves the risk to the database
     /// </summary>
     /// <param name="risk">the risk object to save</param>
-    /// <returns>a risk object with updated fields</returns>
     void SaveRisk(Risk risk);
+    
+    /// <summary>
+    /// Deletes the risk from the database
+    /// </summary>
+    /// <param name="id">The id of the risk to delete</param>
+    void DeleteRisk(int id);
     
     /// <summary>
     /// Gets the risk category

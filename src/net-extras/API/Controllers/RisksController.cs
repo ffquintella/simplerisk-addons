@@ -132,6 +132,45 @@ public class RisksController : ApiBaseController
         
     }
     
+    // Deletes a Risk
+    [HttpDelete]
+    [Route("{id}")]
+    [Authorize(Policy = "RequireSubmitRisk")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult Delete(int id)
+    {
+
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} deleted risk: {Id}", user.Value, id);
+
+        try
+        {
+           
+            _riskManagement.DeleteRisk(id);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+
+            if (typeof(DataNotFoundException) == ex.GetType())
+            {
+                Logger.Warning("The risk: {Id} was not found in the database: {ExMessage}", id, ex.Message);
+                return this.NotFound();
+            }
+            else
+            {
+                Logger.Error("Internal error deleting risk");
+                return StatusCode(500);
+            }
+
+        }
+        
+        
+    }
+    
     // Check if risk subejct exists new Risk
     [HttpGet]
     [Route("Exists")]

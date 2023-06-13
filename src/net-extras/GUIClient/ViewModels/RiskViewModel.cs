@@ -201,6 +201,7 @@ public class RiskViewModel: ViewModelBase
                 ContentTitle = Localizer["Warning"],
                 ContentMessage = Localizer["RiskDeleteConfirmationMSG"]  ,
                 ButtonDefinitions = ButtonEnum.OkAbort,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 Icon = Icon.Question,
             });
                         

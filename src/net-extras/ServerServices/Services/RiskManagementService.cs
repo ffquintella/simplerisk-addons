@@ -216,6 +216,17 @@ public class RiskManagementService: IRiskManagementService
             context.SaveChanges();
         }
     }
+
+    public void DeleteRisk(int id)
+    {
+        using (var context = _dalManager.GetContext())
+        {
+            var dbRisk = context.Risks.FirstOrDefault(r => r.Id == id);
+            if (dbRisk == null) throw new DataNotFoundException("simplerisk",$"Unable to find risk with id:{id}");
+            context.Risks.Remove(dbRisk);
+            context.SaveChanges();
+        }
+    }
     
     public List<RiskCatalog> GetRiskCatalogs(List<int> ids)
     {
