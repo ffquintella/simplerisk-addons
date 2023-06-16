@@ -135,7 +135,7 @@ public class RisksController : ApiBaseController
     // Deletes a Risk
     [HttpDelete]
     [Route("{id}")]
-    [Authorize(Policy = "RequireSubmitRisk")]
+    [Authorize(Policy = "RequireDeleteRisk")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult Delete(int id)

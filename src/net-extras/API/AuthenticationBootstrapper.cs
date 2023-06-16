@@ -1,4 +1,5 @@
 using System;
+using System.Security.Claims;
 using System.Text;
 using API.Security;
 using Microsoft.AspNetCore.Authentication;
@@ -124,13 +125,29 @@ public static class AuthenticationBootstrapper
             {
                 policy.RequireAuthenticatedUser()
                     .Requirements.Add(new ValidUserRequirement());
-                policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"riskmanagement"}));
+                //policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"riskmanagement"}));
+                policy.RequireAssertion(context =>
+                    context.User.HasClaim(c =>
+                        (c.Type == ClaimTypes.Role && c.Value=="Administrator") || 
+                        (c.Type == "Permission" && c.Value == "riskmanagement")));
             });
             options.AddPolicy("RequireSubmitRisk", policy =>
             {
                 policy.RequireAuthenticatedUser()
                     .Requirements.Add(new ValidUserRequirement());
                 policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"submit_risks"}));
+            });
+            options.AddPolicy("RequireDeleteRisk", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+                //policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"delete_risk"}));
+                
+                policy.RequireAssertion(context =>
+                    context.User.HasClaim(c =>
+                        (c.Type == ClaimTypes.Role && c.Value=="Admin") || 
+                         (c.Type == "Permission" && c.Value == "delete_risk")));
+                
             });
             options.AddPolicy("RequireMgmtReviewAccess", policy =>
             {

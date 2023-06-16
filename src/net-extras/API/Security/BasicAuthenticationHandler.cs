@@ -26,6 +26,7 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
     private SRDbContext? _dbContext = null;
     private IEnvironmentService _environmentService;
     private IUserManagementService _userManagementService;
+    private IRoleManagementService _roleManagementService;
     private ILogger _log;
     
     public BasicAuthenticationHandler(
@@ -35,11 +36,13 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
         ISystemClock clock,
         IEnvironmentService environmentService,
         IUserManagementService userManagementService,
+        IRoleManagementService roleManagementService,
         DALManager dalManager) : base(options, logger, encoder, clock)
     {
         _dbContext = dalManager.GetContext();
         _environmentService = environmentService;
         _userManagementService = userManagementService;
+        _roleManagementService = roleManagementService;
         _log = Log.Logger;
     }
 
@@ -102,6 +105,17 @@ public class BasicAuthenticationHandler: AuthenticationHandler<AuthenticationSch
                         {
                             claims = claims.Concat(new[] {new Claim(ClaimTypes.Role, "Admin")}).ToArray();
                         }
+                        
+                        if (user.RoleId == 0)
+                        {
+                            claims = claims.Concat(new[] { new Claim(ClaimTypes.Role, "user")}).ToArray();    
+                        }
+                        else
+                        {
+                            var role = _roleManagementService.GetRole(user.RoleId);
+                            claims = claims.Concat(new[] { new Claim(ClaimTypes.Role, role!.Name)}).ToArray(); 
+                        }
+                        
                         
                         _log.Information("User {0} authenticated using basic from client {1}", user.Name, client.Name);
                         var identity = new ClaimsIdentity(claims, "Basic");

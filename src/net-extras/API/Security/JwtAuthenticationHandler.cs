@@ -109,6 +109,10 @@ public class JwtAuthenticationHandler: AuthenticationHandler<JwtBearerOptions>
                     // Add more claims if needed: Roles, ...
                 };
                 
+                if (userObj.Admin)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                }
                 
                 if (userObj.RoleId == 0)
                 {
