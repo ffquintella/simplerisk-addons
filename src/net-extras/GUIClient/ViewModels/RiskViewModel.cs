@@ -260,12 +260,14 @@ public class RiskViewModel: ViewModelBase
         {
             ClosedFilterColor = Brushes.White;
             _filterStatuses.Remove(RiskStatus.Closed);
+            LoadRisks(false);
             ApplyFilter();
         }
         else
         {
             ClosedFilterColor = Brushes.DodgerBlue;
             _filterStatuses.Add(RiskStatus.Closed);
+            LoadRisks(true);
             ApplyFilter();
         }
     }
@@ -353,9 +355,18 @@ public class RiskViewModel: ViewModelBase
             AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
         }
     }
+    
+    private void LoadRisks(bool includeClosed = false)
+    {
+        AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks(includeClosed));
+    }
+    
     private void ExecuteReloadRisk()
     {
-        AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
+        if(_filterStatuses.Any(s => s == RiskStatus.Closed))
+            LoadRisks(true);
+        else
+            LoadRisks();
         RiskFilter = "";
     }
 
