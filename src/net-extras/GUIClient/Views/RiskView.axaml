@@ -20,10 +20,30 @@
     
     <Grid ColumnDefinitions="Auto, *" >
         <!-- LEFT SIDE AREA -->
-        <Grid Grid.Column="0" RowDefinitions="Auto, *, Auto" >
+        <Grid Grid.Column="0" RowDefinitions="Auto, Auto, *, Auto" >
             <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrRisk, Mode=OneTime}" TextAlignment="Center"/>
-            <!-- Assessment List -->
-            <ListBox Grid.Row="1" Name="LstRisks"  
+            <!-- Filter Control Bar -->
+            <Grid Grid.Row="1" ColumnDefinitions="Auto, *, Auto, Auto, Auto,Auto">
+                <TextBlock Grid.Column="0" Text="{Binding StrStatusFilter, Mode=OneTime}" Margin="0 5"/>
+                <Button Grid.Column="2" Name="BtNewFilter" Foreground="{Binding NewFilterColor}" 
+                        Command="{Binding BtNewFilterClicked}">
+                    <material:MaterialIcon Kind="NewReleases"/>
+                </Button>
+                <Button Grid.Column="3" Name="BtMitigationFilter" Foreground="{Binding MitigationFilterColor}"
+                        Command="{Binding BtMitigationFilterClicked}">
+                    <material:MaterialIcon Kind="Minus"/>
+                </Button>
+                <Button Grid.Column="4" Name="BtReviewFilter" Foreground="{Binding ReviewFilterColor}"
+                        Command="{Binding BtReviewFilterClicked}">
+                    <material:MaterialIcon Kind="RateReview"/>
+                </Button>
+                <Button Grid.Column="5" Name="BtClosedFilter" Foreground="{Binding ClosedFilterColor}"
+                        Command="{Binding BtClosedFilterClicked}">
+                    <material:MaterialIcon Kind="Close"/>
+                </Button>
+            </Grid>
+            <!-- Risk List -->
+            <ListBox Grid.Row="2" Name="LstRisks"  
                      ItemsSource="{Binding Risks}" SelectionMode="Single"
                      SelectedItem="{Binding SelectedRisk, Mode=TwoWay}"
                      HorizontalAlignment="Center" Width="300" MinHeight="100"
@@ -34,8 +54,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <!-- Assessment Control Bar -->
-            <Grid Grid.Row="2" ColumnDefinitions="Auto, Auto, *, Auto,Auto">
+            <!-- Risk Control Bar -->
+            <Grid Grid.Row="3" ColumnDefinitions="Auto, Auto, *, Auto,Auto">
                 <Button Grid.Column="0" Name="BtAddRisk" 
                         Command="{Binding BtAddRiskClicked}"
                         CommandParameter="{Binding $parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent}"

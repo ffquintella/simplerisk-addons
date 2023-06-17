@@ -264,4 +264,7 @@
     <data name="RiskDeleteConfirmationMSG" xml:space="preserve">
         <value>Are you shure you want to delete the selected risk?</value>
     </data>
+    <data name="StatusFilter" xml:space="preserve">
+        <value>Status Filter</value>
+    </data>
 </root>

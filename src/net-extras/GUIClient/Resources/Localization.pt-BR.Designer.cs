@@ -726,6 +726,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filtro de estado.
+        /// </summary>
+        internal static string StatusFilter {
+            get {
+                return ResourceManager.GetString("StatusFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Painel de Riscos.
         /// </summary>
         internal static string StrRiskPanel {

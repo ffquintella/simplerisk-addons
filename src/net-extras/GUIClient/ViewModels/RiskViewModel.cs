@@ -1,13 +1,16 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using Avalonia.Controls;
+using Avalonia.Media;
 using ClientServices.Interfaces;
 using GUIClient.Views;
 using DAL.Entities;
 using GUIClient.Models;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
+using Model.Risks;
 using ReactiveUI;
 
 namespace GUIClient.ViewModels;
@@ -29,6 +32,7 @@ public class RiskViewModel: ViewModelBase
     public string StrCreation { get; }
     public string StrSubmittedBy { get; }
     public string StrRiskType { get; }
+    public string StrStatusFilter { get; }
     #endregion
 
     #region PROPERTIES
@@ -39,7 +43,7 @@ public class RiskViewModel: ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _riskFilter, value);
-            Risks = new ObservableCollection<Risk>(_allRisks.Where(r => r.Subject.Contains(_riskFilter)));
+            Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter)));
         }
     }
     
@@ -75,9 +79,9 @@ public class RiskViewModel: ViewModelBase
             //if(value != null && _hasDeleteRiskPermission) CanDeleteRisk = true;
         }
     }
-    private ObservableCollection<Risk> _allRisks;
+    private ObservableCollection<Risk>? _allRisks;
     
-    public ObservableCollection<Risk> AllRisks
+    public ObservableCollection<Risk>? AllRisks
     {
         get => _allRisks;
         set
@@ -87,15 +91,15 @@ public class RiskViewModel: ViewModelBase
         }
     }
 
-    private ObservableCollection<Risk> _risks;
+    private ObservableCollection<Risk>? _risks;
     
-    public ObservableCollection<Risk> Risks
+    public ObservableCollection<Risk>? Risks
     {
         get => _risks;
         set => this.RaiseAndSetIfChanged(ref _risks, value);
     }
 
-    private bool _hasDeleteRiskPermission = false;
+    private bool _hasDeleteRiskPermission;
 
     public bool CanDeleteRisk
     {
@@ -107,17 +111,50 @@ public class RiskViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _hasDeleteRiskPermission, value);
     }
 
+    private IImmutableSolidColorBrush _newFilterColor = Brushes.White;
+    public IImmutableSolidColorBrush NewFilterColor
+    {
+        get => _newFilterColor;
+        set => this.RaiseAndSetIfChanged(ref _newFilterColor, value);
+    }
+    
+    private IImmutableSolidColorBrush _mitigationFilterColor = Brushes.White;
+    public IImmutableSolidColorBrush MitigationFilterColor
+    {
+        get => _mitigationFilterColor;
+        set => this.RaiseAndSetIfChanged(ref _mitigationFilterColor, value);
+    }
+    
+    private IImmutableSolidColorBrush _reviewFilterColor = Brushes.White;
+    public IImmutableSolidColorBrush ReviewFilterColor
+    {
+        get => _reviewFilterColor;
+        set => this.RaiseAndSetIfChanged(ref _reviewFilterColor, value);
+    }
+    
+    private IImmutableSolidColorBrush _closedFilterColor = Brushes.White;
+    public IImmutableSolidColorBrush ClosedFilterColor
+    {
+        get => _reviewFilterColor;
+        set => this.RaiseAndSetIfChanged(ref _reviewFilterColor, value);
+    }
 
     public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
     public ReactiveCommand<Window, Unit> BtEditRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtDeleteRiskClicked { get; }
+    
+    public ReactiveCommand<Unit, Unit> BtNewFilterClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtMitigationFilterClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtReviewFilterClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtClosedFilterClicked { get; }
     #endregion
 
     public IRisksService _risksService;
     public IAuthenticationService _autenticationService;
     
     private bool _initialized;
+    private List<RiskStatus> _filterStatuses = new List<RiskStatus>();
     
     public RiskViewModel()
     {
@@ -133,6 +170,7 @@ public class RiskViewModel: ViewModelBase
         StrCreation = Localizer["Creation"] + ":";
         StrSubmittedBy = Localizer["SubmittedBy"] + ":";
         StrRiskType = Localizer["RiskType"] ;
+        StrStatusFilter = Localizer["StatusFilter"] ;
 
         _risks = new ObservableCollection<Risk>();
         
@@ -140,6 +178,10 @@ public class RiskViewModel: ViewModelBase
         BtEditRiskClicked = ReactiveCommand.Create<Window>(ExecuteEditRisk);
         BtDeleteRiskClicked = ReactiveCommand.Create(ExecuteDeleteRisk);
         BtReloadRiskClicked = ReactiveCommand.Create(ExecuteReloadRisk);
+        BtNewFilterClicked = ReactiveCommand.Create(ApplyNewFilter);
+        BtMitigationFilterClicked = ReactiveCommand.Create(ApplyMitigationFilter);
+        BtReviewFilterClicked = ReactiveCommand.Create(ApplyReviewFilter);
+        BtClosedFilterClicked = ReactiveCommand.Create(ApplyClosedFilter);
 
         _risksService = GetService<IRisksService>();
         _autenticationService = GetService<IAuthenticationService>();
@@ -156,6 +198,63 @@ public class RiskViewModel: ViewModelBase
         };
         
     }
+
+    private async void ApplyNewFilter()
+    {
+        if (_filterStatuses.Any(s => s == RiskStatus.New))
+        {
+            NewFilterColor = Brushes.White;
+            _filterStatuses.Remove(RiskStatus.New);
+        }
+        else
+        {
+            NewFilterColor = Brushes.LightGreen;
+            _filterStatuses.Add(RiskStatus.New);   
+        }
+    }
+    
+    private async void ApplyMitigationFilter()
+    {
+        if (_filterStatuses.Any(s => s == RiskStatus.MitigationPlanned))
+        {
+            MitigationFilterColor = Brushes.White;
+            _filterStatuses.Remove(RiskStatus.MitigationPlanned);
+        }
+        else
+        {
+            MitigationFilterColor = Brushes.LightGreen;
+            _filterStatuses.Add(RiskStatus.MitigationPlanned);   
+        }
+    }
+    
+    private async void ApplyReviewFilter()
+    {
+        if (_filterStatuses.Any(s => s == RiskStatus.ManagementReview))
+        {
+            ReviewFilterColor = Brushes.White;
+            _filterStatuses.Remove(RiskStatus.ManagementReview);
+        }
+        else
+        {
+            ReviewFilterColor = Brushes.LightGreen;
+            _filterStatuses.Add(RiskStatus.ManagementReview);   
+        }
+    }
+    
+    private async void ApplyClosedFilter()
+    {
+        if (_filterStatuses.Any(s => s == RiskStatus.Closed))
+        {
+            ClosedFilterColor = Brushes.White;
+            _filterStatuses.Remove(RiskStatus.Closed);
+        }
+        else
+        {
+            ClosedFilterColor = Brushes.LightGreen;
+            _filterStatuses.Add(RiskStatus.Closed);   
+        }
+    }
+    
     
     private async void ExecuteAddRisk(Window openWindow)
     {
