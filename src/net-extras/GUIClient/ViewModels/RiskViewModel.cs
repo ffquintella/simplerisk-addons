@@ -43,7 +43,8 @@ public class RiskViewModel: ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _riskFilter, value);
-            Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter)));
+            ApplyFilter();
+            //Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter)));
         }
     }
     
