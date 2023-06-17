@@ -30,7 +30,7 @@ public class RisksController : ApiBaseController
     [Route("")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public ActionResult<List<Risk>> GetAll([FromQuery] string? status = null)
+    public ActionResult<List<Risk>> GetAll([FromQuery] string? status = null, [FromQuery] bool includeClosed = false)
     {
 
         var user = GetUser();
@@ -41,7 +41,12 @@ public class RisksController : ApiBaseController
 
         try
         {
-            var risks = _riskManagement.GetUserRisks(user, status);
+            
+            List<Risk> risks;
+            if(!includeClosed)
+                risks = _riskManagement.GetAll(status, notStatus:"Closed");
+            else 
+                risks = _riskManagement.GetAll(status, notStatus:null);
 
             return Ok(risks);
         }

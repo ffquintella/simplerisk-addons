@@ -4,7 +4,8 @@ namespace ClientServices.Interfaces;
 
 public interface IRisksService
 {
-    public List<Risk> GetAllRisks();
+    /// Returns the list of risks
+    public List<Risk> GetAllRisks(bool includeClosed = false);
     
     public List<Risk> GetUserRisks();
     public string GetRiskCategory(int id);

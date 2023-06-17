@@ -18,11 +18,14 @@ public class RisksService: ServiceBase, IRisksService
         _authenticationService = authenticationService;
     }
     
-    public List<Risk> GetAllRisks()
+    public List<Risk> GetAllRisks(bool includeClosed = false)
     {
         var client = _restService.GetClient();
         
         var request = new RestRequest("/Risks");
+        
+        if(includeClosed)
+            request.AddQueryParameter("includeClosed", "true");
         
         try
         {

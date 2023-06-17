@@ -51,12 +51,12 @@ public class UserManagementService: IUserManagementService
 
     public bool VerifyPassword(User? user, string password)
     {
+        if (user == null) return false;
+        
         if (user.Type == "saml")
         {
             throw new Exception("Cannot verify password of saml users");
         }
-        
-        if (user == null) return false;
         
         if(user.Lockout == 1)
         {

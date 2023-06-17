@@ -21,6 +21,7 @@ public class AssetManagementService: IAssetManagementService
         
         var dbContext = _dalManager!.GetContext();
         var assets = dbContext?.Assets?.ToList();
+        if (assets == null) return new List<Asset>();
         return assets;
         
     }
