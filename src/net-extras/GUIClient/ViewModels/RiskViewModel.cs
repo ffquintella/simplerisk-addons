@@ -14,8 +14,9 @@ namespace GUIClient.ViewModels;
 
 public class RiskViewModel: ViewModelBase
 {
-    private bool _initialized;
+
     
+    #region LANGUAGE-STRINGS
     public string StrRisk { get; }
     public string StrDetails { get; }
     public string StrSubject { get; }
@@ -28,7 +29,9 @@ public class RiskViewModel: ViewModelBase
     public string StrCreation { get; }
     public string StrSubmittedBy { get; }
     public string StrRiskType { get; }
+    #endregion
 
+    #region PROPERTIES
     private string _riskFilter = "";
     public string RiskFilter
     {
@@ -67,21 +70,11 @@ public class RiskViewModel: ViewModelBase
             else
             {
                 HdRisk = null;
-                //throw new Exception("Invalid selected Risk");
             }
             this.RaiseAndSetIfChanged(ref _selectedRisk, value);
+            //if(value != null && _hasDeleteRiskPermission) CanDeleteRisk = true;
         }
     }
-    
-    public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
-    public ReactiveCommand<Window, Unit> BtEditRiskClicked { get; }
-    public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
-    public ReactiveCommand<Unit, Unit> BtDeleteRiskClicked { get; }
-    
-    public IRisksService _risksService;
-    public IAuthenticationService _autenticationService;
-    
-    
     private ObservableCollection<Risk> _allRisks;
     
     public ObservableCollection<Risk> AllRisks
@@ -101,6 +94,30 @@ public class RiskViewModel: ViewModelBase
         get => _risks;
         set => this.RaiseAndSetIfChanged(ref _risks, value);
     }
+
+    private bool _hasDeleteRiskPermission = false;
+
+    public bool CanDeleteRisk
+    {
+        get
+        {
+            //if (SelectedRisk == null) return false;
+            return _hasDeleteRiskPermission;
+        }
+        set => this.RaiseAndSetIfChanged(ref _hasDeleteRiskPermission, value);
+    }
+
+
+    public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
+    public ReactiveCommand<Window, Unit> BtEditRiskClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
+    public ReactiveCommand<Unit, Unit> BtDeleteRiskClicked { get; }
+    #endregion
+
+    public IRisksService _risksService;
+    public IAuthenticationService _autenticationService;
+    
+    private bool _initialized;
     
     public RiskViewModel()
     {
@@ -130,6 +147,12 @@ public class RiskViewModel: ViewModelBase
         _autenticationService.AuthenticationSucceeded += (obj, args) =>
         {
             Initialize();
+            
+            if(_autenticationService.AuthenticatedUserInfo!.UserRole == "Admin" ||  
+               _autenticationService.AuthenticatedUserInfo!.UserRole == "Administrator" || 
+               _autenticationService.AuthenticatedUserInfo!.UserPermissions!.Any(p => p == "delete_risk"))
+                CanDeleteRisk = true;
+            
         };
         
     }
@@ -148,7 +171,6 @@ public class RiskViewModel: ViewModelBase
         await dialog.ShowDialog( openWindow );
         AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
     }
-    
     private async void ExecuteEditRisk(Window openWindow)
     {
         if (SelectedRisk == null)
@@ -178,7 +200,6 @@ public class RiskViewModel: ViewModelBase
         await dialog.ShowDialog( openWindow );
         AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
     }
-    
     private async void ExecuteDeleteRisk()
     {
         if (SelectedRisk == null)

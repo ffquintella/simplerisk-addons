@@ -17,6 +17,8 @@ namespace GUIClient.ViewModels;
 
 public class EditRiskViewModel: ViewModelBase
 {
+    #region LangStrings
+
     public string StrRisk { get; }
     public string StrOperation { get; }
     public string StrOperationType { get; }
@@ -30,7 +32,10 @@ public class EditRiskViewModel: ViewModelBase
     public bool ShowEditFields { get; }
     public string StrSave { get; }
     public string StrCancel { get; }
+
+    #endregion
     
+    #region PROPERTIES
     public List<Source>? RiskSources { get; }
     
     public List<UserListing>? UserListings { get; }
@@ -41,7 +46,6 @@ public class EditRiskViewModel: ViewModelBase
         get => _selectedRiskSource;
         set => this.RaiseAndSetIfChanged(ref _selectedRiskSource, value);
     }
-    
     
     public List<Category>? Categories { get; }
 
@@ -92,14 +96,16 @@ public class EditRiskViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _selectedRiskTypes, value);
     }
     
-
+    public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
+    public ReactiveCommand<Window, Unit> BtCancelClicked { get; }
+    #endregion
+    
     private readonly OperationType _operationType;
     private readonly IRisksService _risksService;
     private readonly IAuthenticationService _authenticationService;
     private IUsersService _usersService;
     private string _originalSubject = "";
-    public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
-    public ReactiveCommand<Window, Unit> BtCancelClicked { get; }
+
     
     public EditRiskViewModel(OperationType operation, Risk? risk = null)
     {
