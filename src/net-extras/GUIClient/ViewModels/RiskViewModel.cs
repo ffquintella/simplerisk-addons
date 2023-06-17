@@ -205,11 +205,13 @@ public class RiskViewModel: ViewModelBase
         {
             NewFilterColor = Brushes.White;
             _filterStatuses.Remove(RiskStatus.New);
+            ApplyFilter();
         }
         else
         {
             NewFilterColor = Brushes.LightGreen;
-            _filterStatuses.Add(RiskStatus.New);   
+            _filterStatuses.Add(RiskStatus.New);
+            ApplyFilter();
         }
     }
     
@@ -219,11 +221,13 @@ public class RiskViewModel: ViewModelBase
         {
             MitigationFilterColor = Brushes.White;
             _filterStatuses.Remove(RiskStatus.MitigationPlanned);
+            ApplyFilter();
         }
         else
         {
             MitigationFilterColor = Brushes.LightGreen;
-            _filterStatuses.Add(RiskStatus.MitigationPlanned);   
+            _filterStatuses.Add(RiskStatus.MitigationPlanned);
+            ApplyFilter();
         }
     }
     
@@ -233,11 +237,13 @@ public class RiskViewModel: ViewModelBase
         {
             ReviewFilterColor = Brushes.White;
             _filterStatuses.Remove(RiskStatus.ManagementReview);
+            ApplyFilter();
         }
         else
         {
             ReviewFilterColor = Brushes.LightGreen;
-            _filterStatuses.Add(RiskStatus.ManagementReview);   
+            _filterStatuses.Add(RiskStatus.ManagementReview);
+            ApplyFilter();
         }
     }
     
@@ -247,15 +253,22 @@ public class RiskViewModel: ViewModelBase
         {
             ClosedFilterColor = Brushes.White;
             _filterStatuses.Remove(RiskStatus.Closed);
+            ApplyFilter();
         }
         else
         {
             ClosedFilterColor = Brushes.LightGreen;
-            _filterStatuses.Add(RiskStatus.Closed);   
+            _filterStatuses.Add(RiskStatus.Closed);
+            ApplyFilter();
         }
     }
-    
-    
+
+    private void ApplyFilter()
+    {
+        Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter) && _filterStatuses.Any(s => r.Status == RiskHelper.GetRiskStatusName(s))));
+        //Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter)));
+    }
+
     private async void ExecuteAddRisk(Window openWindow)
     {
         // OPENS a new window to create the risk
