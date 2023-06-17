@@ -111,21 +111,21 @@ public class RiskViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _hasDeleteRiskPermission, value);
     }
 
-    private IImmutableSolidColorBrush _newFilterColor = Brushes.White;
+    private IImmutableSolidColorBrush _newFilterColor = Brushes.DodgerBlue;
     public IImmutableSolidColorBrush NewFilterColor
     {
         get => _newFilterColor;
         set => this.RaiseAndSetIfChanged(ref _newFilterColor, value);
     }
     
-    private IImmutableSolidColorBrush _mitigationFilterColor = Brushes.White;
+    private IImmutableSolidColorBrush _mitigationFilterColor = Brushes.DodgerBlue;
     public IImmutableSolidColorBrush MitigationFilterColor
     {
         get => _mitigationFilterColor;
         set => this.RaiseAndSetIfChanged(ref _mitigationFilterColor, value);
     }
     
-    private IImmutableSolidColorBrush _reviewFilterColor = Brushes.White;
+    private IImmutableSolidColorBrush _reviewFilterColor = Brushes.DodgerBlue;
     public IImmutableSolidColorBrush ReviewFilterColor
     {
         get => _reviewFilterColor;
@@ -135,8 +135,8 @@ public class RiskViewModel: ViewModelBase
     private IImmutableSolidColorBrush _closedFilterColor = Brushes.White;
     public IImmutableSolidColorBrush ClosedFilterColor
     {
-        get => _reviewFilterColor;
-        set => this.RaiseAndSetIfChanged(ref _reviewFilterColor, value);
+        get => _closedFilterColor;
+        set => this.RaiseAndSetIfChanged(ref _closedFilterColor, value);
     }
 
     public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
@@ -154,7 +154,7 @@ public class RiskViewModel: ViewModelBase
     public IAuthenticationService _autenticationService;
     
     private bool _initialized;
-    private List<RiskStatus> _filterStatuses = new List<RiskStatus>();
+    private List<RiskStatus> _filterStatuses;
     
     public RiskViewModel()
     {
@@ -185,7 +185,14 @@ public class RiskViewModel: ViewModelBase
 
         _risksService = GetService<IRisksService>();
         _autenticationService = GetService<IAuthenticationService>();
-        
+
+        _filterStatuses = new List<RiskStatus>()
+        {
+            RiskStatus.New,
+            RiskStatus.ManagementReview,
+            RiskStatus.MitigationPlanned
+        };
+
         _autenticationService.AuthenticationSucceeded += (obj, args) =>
         {
             Initialize();
@@ -209,7 +216,7 @@ public class RiskViewModel: ViewModelBase
         }
         else
         {
-            NewFilterColor = Brushes.LightGreen;
+            NewFilterColor = Brushes.DodgerBlue;
             _filterStatuses.Add(RiskStatus.New);
             ApplyFilter();
         }
@@ -225,7 +232,7 @@ public class RiskViewModel: ViewModelBase
         }
         else
         {
-            MitigationFilterColor = Brushes.LightGreen;
+            MitigationFilterColor = Brushes.DodgerBlue;
             _filterStatuses.Add(RiskStatus.MitigationPlanned);
             ApplyFilter();
         }
@@ -241,7 +248,7 @@ public class RiskViewModel: ViewModelBase
         }
         else
         {
-            ReviewFilterColor = Brushes.LightGreen;
+            ReviewFilterColor = Brushes.DodgerBlue;
             _filterStatuses.Add(RiskStatus.ManagementReview);
             ApplyFilter();
         }
@@ -257,7 +264,7 @@ public class RiskViewModel: ViewModelBase
         }
         else
         {
-            ClosedFilterColor = Brushes.LightGreen;
+            ClosedFilterColor = Brushes.DodgerBlue;
             _filterStatuses.Add(RiskStatus.Closed);
             ApplyFilter();
         }
