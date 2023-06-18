@@ -84,6 +84,18 @@ public interface IRiskManagementService
     List<Category> GetRiskCategories();
     
     /// <summary>
+    /// Gets the list of risk probability or likelihood
+    /// </summary>
+    /// <returns></returns>
+    public List<Likelihood> GetRiskProbabilities();
+    
+    /// <summary>
+    /// Get the list of risk impacts
+    /// </summary>
+    /// <returns>List of risk impacts</returns>
+    public List<Impact> GetRiskImpacts();
+    
+    /// <summary>
     /// Gets the risk catalog item
     /// </summary>
     /// <param name="id"></param>

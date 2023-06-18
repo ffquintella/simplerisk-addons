@@ -384,6 +384,52 @@ public class RisksController : ApiBaseController
     }
     
     [HttpGet]
+    [Route("Probabilities")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Likelihood>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<Likelihood>> GetRiskProbabilities()
+    {
+        
+        try
+        {
+            var probs = _riskManagement.GetRiskProbabilities();
+            return Ok(probs);
+            
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("Error Listing probabilities {ExMessage}", ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError);
+
+        }
+        
+    }
+    
+    [HttpGet]
+    [Route("Impacts")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Impact>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<Impact>> GetRiskImpacts()
+    {
+        
+        try
+        {
+            var impacts = _riskManagement.GetRiskImpacts();
+            return Ok(impacts);
+            
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("Error Listing impacts {ExMessage}", ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError);
+
+        }
+        
+    }
+    
+    [HttpGet]
     [Route("Catalogs/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

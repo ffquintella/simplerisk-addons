@@ -195,6 +195,38 @@ public class RiskManagementService: IRiskManagementService
         }
     }
 
+    public List<Likelihood> GetRiskProbabilities()
+    {
+        using (var contex = _dalManager.GetContext())
+        {
+            
+            var probs = contex.Likelihoods.ToList();
+
+            if (probs == null)
+            {
+                throw new DataNotFoundException("Likelihoods", "");
+            }
+
+            return probs;
+        }
+    }
+
+    public List<Impact> GetRiskImpacts()
+    {
+        using (var contex = _dalManager.GetContext())
+        {
+            
+            var impacts = contex.Impacts.ToList();
+
+            if (impacts == null)
+            {
+                throw new DataNotFoundException("Impacts", "");
+            }
+
+            return impacts;
+        }
+    }
+
     public RiskCatalog GetRiskCatalog(int id)
     {
         using (var contex = _dalManager.GetContext())
