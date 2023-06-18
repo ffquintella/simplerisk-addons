@@ -101,6 +101,15 @@ public interface IRiskManagementService
     /// <param name="id"></param>
     /// <returns></returns>
     RiskCatalog GetRiskCatalog(int id);
+    
+    
+    /// <summary>
+    ///  Gets the risk score value
+    /// </summary>
+    /// <param name="probabilityId"></param>
+    /// <param name="impactId"></param>
+    /// <returns></returns>
+    public double GetRiskScore(int probabilityId, int impactId);
 
     /// <summary>
     /// Gets a list of risk catalogs

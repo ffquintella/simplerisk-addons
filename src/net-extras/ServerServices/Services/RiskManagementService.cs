@@ -227,6 +227,22 @@ public class RiskManagementService: IRiskManagementService
         }
     }
 
+    public double GetRiskScore(int probabilityId, int impactId)
+    {
+        using (var contex = _dalManager.GetContext())
+        {
+            
+            var score = contex.CustomRiskModelValues.Where(c => c.Likelihood == probabilityId && c.Impact == impactId).FirstOrDefault();
+
+            if (score == null)
+            {
+                throw new DataNotFoundException("CustomRiskModelValues", "");
+            }
+
+            return score.Value;
+        }
+    }
+    
     public RiskCatalog GetRiskCatalog(int id)
     {
         using (var contex = _dalManager.GetContext())

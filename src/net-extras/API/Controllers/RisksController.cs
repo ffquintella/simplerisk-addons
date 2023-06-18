@@ -430,6 +430,30 @@ public class RisksController : ApiBaseController
     }
     
     [HttpGet]
+    [Route("ScoreValue-{probability}-{impact}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Impact>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<double> GetRiskScoreValue(int probability, int impact)
+    {
+        
+        try
+        {
+            var score = _riskManagement.GetRiskScore(probability, impact);
+            return Ok(score);
+            
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("Error getting score {ExMessage}", ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError);
+
+        }
+        
+    }
+
+    
+    [HttpGet]
     [Route("Catalogs/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
