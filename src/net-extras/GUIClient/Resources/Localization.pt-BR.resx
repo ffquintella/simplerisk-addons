@@ -267,4 +267,16 @@
     <data name="StatusFilter" xml:space="preserve">
         <value>Filtro de estado</value>
     </data>
+    <data name="Value" xml:space="preserve">
+        <value>Valor</value>
+    </data>
+    <data name="Scoring" xml:space="preserve">
+        <value>Pontuação</value>
+    </data>
+    <data name="Probability" xml:space="preserve">
+        <value>Probabilidade</value>
+    </data>
+    <data name="Impact" xml:space="preserve">
+        <value>Impacto</value>
+    </data>
 </root>

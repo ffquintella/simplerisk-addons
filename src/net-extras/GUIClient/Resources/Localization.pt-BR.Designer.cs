@@ -384,6 +384,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Impacto.
+        /// </summary>
+        internal static string Impact {
+            get {
+                return ResourceManager.GetString("Impact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conta Usada.
         /// </summary>
         internal static string LoggedAccount {
@@ -528,6 +537,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Probabilidade.
+        /// </summary>
+        internal static string Probability {
+            get {
+                return ResourceManager.GetString("Probability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pergunta.
         /// </summary>
         internal static string Question {
@@ -663,6 +681,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pontuação.
+        /// </summary>
+        internal static string Scoring {
+            get {
+                return ResourceManager.GetString("Scoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Por favor selecione o seu método de autenticação..
         /// </summary>
         internal static string SelectAuthenticationMSG {
@@ -785,6 +812,15 @@ namespace GUIClient.Resources {
         internal static string Username {
             get {
                 return ResourceManager.GetString("Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valor.
+        /// </summary>
+        internal static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
         

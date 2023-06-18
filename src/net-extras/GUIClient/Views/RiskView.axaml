@@ -100,7 +100,7 @@
                         <!-- Risk Catalog List -->
                         <ListBox Grid.Row="1" Name="LstCatalogs"  
                                  ItemsSource="{Binding HdRisk.Types}" SelectionMode="Single"
-                                 HorizontalAlignment="Center" MinWidth="380" Height="150"
+                                 HorizontalAlignment="Center" Width="380" Height="150"
                                  ScrollViewer.HorizontalScrollBarVisibility="Visible">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
@@ -112,7 +112,21 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
-                
+                    <StackPanel Orientation="Vertical" Margin="10 0">
+                        <TextBlock Text="{Binding StrScoring}" Classes="label"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding StrValue}" />
+                            <TextBlock Text="{Binding HdRisk.Scoring.CalculatedRisk}" Margin="5 0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding StrProbability}" />
+                            <TextBlock Text="{Binding HdRisk.Scoring.ClassicLikelihood}" Margin="5 0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding StrImpact}" />
+                            <TextBlock Text="{Binding HdRisk.Scoring.ClassicImpact}" Margin="5 0"/>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical"><TextBlock Text="{Binding StrNotes}" Classes="label"/>
                     <TextBox Text="{Binding SelectedRisk.Notes}" IsReadOnly="True" TextWrapping="Wrap" Height="120"/></StackPanel>

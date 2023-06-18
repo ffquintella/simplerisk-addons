@@ -33,6 +33,10 @@ public class RiskViewModel: ViewModelBase
     public string StrSubmittedBy { get; }
     public string StrRiskType { get; }
     public string StrStatusFilter { get; }
+    public string StrValue { get; }
+    public string StrScoring { get; }
+    public string StrProbability { get; }
+    public string StrImpact { get; }
     #endregion
 
     #region PROPERTIES
@@ -172,6 +176,10 @@ public class RiskViewModel: ViewModelBase
         StrSubmittedBy = Localizer["SubmittedBy"] + ":";
         StrRiskType = Localizer["RiskType"] ;
         StrStatusFilter = Localizer["StatusFilter"] ;
+        StrValue = Localizer["Value"] + ":";
+        StrScoring = Localizer["Scoring"] + ":";
+        StrProbability = Localizer["Probability"] + ":";
+        StrImpact = Localizer["Impact"] + ":";
 
         _risks = new ObservableCollection<Risk>();
         

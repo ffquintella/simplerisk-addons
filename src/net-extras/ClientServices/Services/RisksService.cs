@@ -113,6 +113,35 @@ public class RisksService: ServiceBase, IRisksService
             throw new RestComunicationException("Error getting risk category", ex);
         }
     }
+
+    public RiskScoring GetRiskScoring(int id)
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/{id}/Scoring");
+        try
+        {
+            var response = client.Get<RiskScoring>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting scoring for risk {Id}", id);
+                throw new RestComunicationException($"Error getting scoring for risk {id}");
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk scoring message:{Message}", ex.Message);
+            throw new RestComunicationException("Error getting risk scoring", ex);
+        }
+    }
     
     public List<Category>? GetRiskCategories()
     {

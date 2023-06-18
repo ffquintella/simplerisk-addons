@@ -9,6 +9,7 @@ public interface IRisksService
     
     public List<Risk> GetUserRisks();
     public string GetRiskCategory(int id);
+    public RiskScoring GetRiskScoring(int id);
     public List<Category>? GetRiskCategories();
     public string GetRiskSource(int id);
     
