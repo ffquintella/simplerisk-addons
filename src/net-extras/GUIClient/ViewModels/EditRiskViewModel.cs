@@ -32,6 +32,11 @@ public class EditRiskViewModel: ViewModelBase
     public bool ShowEditFields { get; }
     public string StrSave { get; }
     public string StrCancel { get; }
+    public string StrScoring { get; }
+    
+    public string StrProbability { get; }
+    public string StrImpact { get; }
+    public string StrValue { get; }
 
     #endregion
     
@@ -39,6 +44,10 @@ public class EditRiskViewModel: ViewModelBase
     public List<Source>? RiskSources { get; }
     
     public List<UserListing>? UserListings { get; }
+    
+    public List<Likelihood>? Probabilities { get; }
+    
+    public List<Impact>? Impacts { get; }
     
     private Source? _selectedRiskSource;
     public Source? SelectedRiskSource
@@ -72,6 +81,28 @@ public class EditRiskViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _selectedOwner, value);
     }
     
+    private Likelihood? _selectedProbability;
+    public Likelihood? SelectedProbability
+    {
+        get => _selectedProbability;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedProbability, value);
+            CalculateValue();
+        }
+    }
+
+    private Impact? _selectedImpact;
+    public Impact? SelectedImpact
+    {
+        get => _selectedImpact;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedImpact, value);
+            CalculateValue();
+        }
+    }
+
     private UserListing? _selectedManager;
     public UserListing? SelectedManager
     {
@@ -84,6 +115,13 @@ public class EditRiskViewModel: ViewModelBase
     {
         get => _notes;
         set => this.RaiseAndSetIfChanged(ref _notes, value);
+    }
+    
+    private string? _value;
+    public string? Value
+    {
+        get => _value;
+        set => this.RaiseAndSetIfChanged(ref _value, value);
     }
     
     private List<RiskCatalog> RiskTypes { get; }
@@ -129,6 +167,10 @@ public class EditRiskViewModel: ViewModelBase
         StrNotes = Localizer["Notes"] + ": ";
         StrSave= Localizer["Save"] ;
         StrCancel= Localizer["Cancel"] ;
+        StrScoring = Localizer["Scoring"];
+        StrProbability = Localizer["Probability"];
+        StrImpact = Localizer["Impact"];
+        StrValue = Localizer["Value"];
         
         StrOperationType = _operationType == OperationType.Create ? Localizer["Creation"] : Localizer["Edit"];
         if (_operationType == OperationType.Create)
@@ -152,6 +194,8 @@ public class EditRiskViewModel: ViewModelBase
         Categories = _risksService.GetRiskCategories();
         RiskTypes = _risksService.GetRiskTypes();
         UserListings = _usersService.ListUsers();
+        Probabilities = _risksService.GetProbabilities();
+        Impacts = _risksService.GetImpacts();
         
         if (operation == OperationType.Edit)
         {
@@ -168,6 +212,8 @@ public class EditRiskViewModel: ViewModelBase
         }
         else
         {
+            SelectedImpact = Impacts!.FirstOrDefault(i => i.Value == 1);
+            SelectedProbability = Probabilities!.FirstOrDefault(p => p.Value == 1);
             var sowner = UserListings.FirstOrDefault(ul => ul.Id == _authenticationService!.AuthenticatedUserInfo!.UserId);
             if (sowner != null) SelectedOwner = sowner;
         }
@@ -178,6 +224,8 @@ public class EditRiskViewModel: ViewModelBase
         if (Categories == null) throw new Exception("Unable to load category list");
         if (RiskTypes == null) throw new Exception("Unable to load risk types");
         if (UserListings == null) throw new Exception("Unable to load user listing");
+        if (Probabilities == null) throw new Exception("Unable to load probability list");
+        if (Impacts == null) throw new Exception("Unable to load impact list");
         
         BtSaveClicked = ReactiveCommand.Create<Window>(ExecuteSave);
         BtCancelClicked = ReactiveCommand.Create<Window>(ExecuteCancel);
@@ -209,8 +257,13 @@ public class EditRiskViewModel: ViewModelBase
                 SaveEnabled = x;
             });
     }
-    
 
+    private void CalculateValue()
+    {
+        if (_selectedImpact != null && _selectedProbability != null)
+            Value = _risksService.GetRiskScore(SelectedImpact!.Value, SelectedProbability!.Value).ToString("0.00");
+        else Value = "0.0";
+    }
     
     private async void ExecuteSave(Window baseWindow)
     {

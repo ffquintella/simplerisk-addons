@@ -383,6 +383,71 @@ public class RisksService: ServiceBase, IRisksService
         }
     }
 
+    public List<Likelihood>? GetProbabilities()
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/Probabilities");
+        
+        try
+        {
+            var response = client.Get<List<Likelihood>>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting probabilities ");
+                return null;
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk probabilities message:{Message}", ex.Message);
+            throw new RestComunicationException("Error getting risk probabilities", ex);
+        }
+    }
+
+    public List<Impact>? GetImpacts()
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/Impacts");
+        
+        try
+        {
+            var response = client.Get<List<Impact>>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting impacts ");
+                return null;
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk impacts message:{Message}", ex.Message);
+            throw new RestComunicationException("Error getting risk impacts", ex);
+        }
+    }
+
+    public float GetRiskScore(int probabilityId, int impactId)
+    {
+        return 0;
+    }
+    
     public List<RiskCatalog> GetRiskTypes()
     {
         return GetRiskTypes("", true);

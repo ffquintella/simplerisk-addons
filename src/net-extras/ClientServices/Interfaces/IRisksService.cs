@@ -15,6 +15,12 @@ public interface IRisksService
     
     public List<Source>? GetRiskSources();
     
+    public List<Likelihood>? GetProbabilities();
+    
+    public List<Impact>? GetImpacts();
+    
+    public float GetRiskScore(int probabilityId, int impactId);
+    
     public List<RiskCatalog> GetRiskTypes(string ids,  bool all = false);
     
     public List<RiskCatalog> GetRiskTypes();
