@@ -445,7 +445,32 @@ public class RisksService: ServiceBase, IRisksService
 
     public float GetRiskScore(int probabilityId, int impactId)
     {
-        return 0;
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/ScoreValue-{probabilityId}-{impactId}");
+        
+        try
+        {
+            var response = client.Get<float?>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting score value ");
+                return 0;
+            }
+            
+            return response.Value;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk score value message:{Message}", ex.Message);
+            throw new RestComunicationException("Error getting risk score value", ex);
+        }
     }
     
     public List<RiskCatalog> GetRiskTypes()

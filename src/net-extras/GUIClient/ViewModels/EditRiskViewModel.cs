@@ -261,8 +261,8 @@ public class EditRiskViewModel: ViewModelBase
     private void CalculateValue()
     {
         if (_selectedImpact != null && _selectedProbability != null)
-            Value = _risksService.GetRiskScore(SelectedImpact!.Value, SelectedProbability!.Value).ToString("0.00");
-        else Value = "0.0";
+            Value = _risksService.GetRiskScore(SelectedProbability!.Value, SelectedImpact!.Value ).ToString("0.00");
+        else Value = "0.00";
     }
     
     private async void ExecuteSave(Window baseWindow)
