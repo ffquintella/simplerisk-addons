@@ -118,6 +118,22 @@ public class RiskManagementService: IRiskManagementService
             return risk;
         }
     }
+
+    public RiskScoring GetRiskScoring(int id)
+    {
+        using (var context = _dalManager.GetContext())
+        {
+            var scoring = context.RiskScorings.FirstOrDefault(rs => rs.Id == id);
+            if (scoring == null)
+            {
+                Log.Error("Risk Scoring with id {id} not found", id);
+                throw new DataNotFoundException("RiskScoring", id.ToString());
+            }
+
+            return scoring;
+        }
+    }
+    
     public List<Risk> GetAll(string? status = null, string? notStatus = "Closed")
     {
         List<Risk> risks;

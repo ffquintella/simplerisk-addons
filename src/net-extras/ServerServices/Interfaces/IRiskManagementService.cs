@@ -23,6 +23,13 @@ public interface IRiskManagementService
     Risk GetRisk(int id);
     
     /// <summary>
+    /// Gets the risk scoring
+    /// </summary>
+    /// <param name="id">Risk ID</param>
+    /// <returns>Risk scoring object</returns>
+    RiskScoring GetRiskScoring(int id);
+    
+    /// <summary>
     ///  Gets the risk with id if the user has permission 
     /// </summary>
     /// <param name="user">User object</param>

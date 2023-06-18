@@ -69,6 +69,7 @@ public class RisksController : ApiBaseController
     /// <returns></returns>
     [HttpGet]
     [Route("{id}")]
+    [Authorize(Policy = "RequireValidUser")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<Risk> GetRisk(int id)
@@ -104,6 +105,42 @@ public class RisksController : ApiBaseController
         }
 
         return Ok(risk);
+    }
+    
+    /// <summary>
+    /// Gets a risk score 
+    /// </summary>
+    /// <param name="id">Risk Id</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("{id}/Scoring")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<RiskScoring> GetRiskScoring(int id)
+    {
+
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} got risk scoring with id={Id}", user.Value, id);
+
+        RiskScoring scoring;
+        
+        try
+        {
+            scoring = _riskManagement.GetRiskScoring(id);
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("The riskscoring: {Id} was not found in the database: {ExMessage}", id, ex.Message);
+            return this.NotFound();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error getting riskscoring");
+            return StatusCode(500);
+        }
+
+        return Ok(scoring);
     }
     
     // Create new Risk
