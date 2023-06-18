@@ -3,6 +3,7 @@ using DAL;
 using DAL.Entities;
 using Model.Exceptions;
 using Serilog;
+using Serilog.Core;
 using ServerServices.Interfaces;
 
 namespace ServerServices.Services;
@@ -87,6 +88,36 @@ public class RiskManagementService: IRiskManagementService
         return risks;
     }
 
+
+    public Risk GetUserRisk(User user, int id)
+    {
+        if (user == null) throw new InvalidParameterException("user","User cannot be null");
+        if (UserHasRisksPermission(user)) return GetRisk(id);
+        else
+        {
+            var risk = GetRisk(id);
+            if(risk.Owner == user.Value || risk.SubmittedBy == user.Value || risk.Manager == user.Value)
+                return risk;
+            else
+                throw new UserNotAuthorizedException(user.Name, user.Value, "risks");
+            
+        }
+    }
+
+    public Risk GetRisk(int id)
+    {
+        using (var context = _dalManager.GetContext())
+        {
+            var risk = context.Risks.FirstOrDefault(r => r.Id == id);
+            if (risk == null)
+            {
+                Log.Error("Risk with id {id} not found", id);
+                throw new DataNotFoundException("Risk", id.ToString());
+            }
+
+            return risk;
+        }
+    }
     public List<Risk> GetAll(string? status = null, string? notStatus = "Closed")
     {
         List<Risk> risks;

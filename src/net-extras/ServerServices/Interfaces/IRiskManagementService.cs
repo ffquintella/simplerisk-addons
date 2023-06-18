@@ -16,6 +16,21 @@ public interface IRiskManagementService
     List<Risk> GetUserRisks(User user, string? status, string? notStatus = "Closed");
 
     /// <summary>
+    /// Returns the risk with the given id
+    /// </summary>
+    /// <param name="id">Risk id</param>
+    /// <returns>Risk object</returns>
+    Risk GetRisk(int id);
+    
+    /// <summary>
+    ///  Gets the risk with id if the user has permission 
+    /// </summary>
+    /// <param name="user">User object</param>
+    /// <param name="id">id</param>
+    /// <returns>Risk Object</returns>
+    Risk GetUserRisk(User user,int id);
+    
+    /// <summary>
     /// Gets all risks filtering optionaly by status
     /// </summary>
     /// <param name="status">the status to use as filter</param>

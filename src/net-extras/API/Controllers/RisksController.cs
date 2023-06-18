@@ -26,6 +26,9 @@ public class RisksController : ApiBaseController
     }
     
     
+    
+    
+    
     [HttpGet]
     [Route("")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
@@ -57,6 +60,50 @@ public class RisksController : ApiBaseController
         }
         
         
+    }
+    
+    /// <summary>
+    /// Gets a risk by id
+    /// </summary>
+    /// <param name="id">Risk Id</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<Risk> GetRisk(int id)
+    {
+
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} got risk with id={Id}", user.Value, id);
+
+        Risk risk;
+        
+        try
+        {
+            if (user.Admin)
+            {
+                risk = _riskManagement.GetRisk(id);
+            }else risk = _riskManagement.GetUserRisk(user, id);
+        }
+        catch (UserNotAuthorizedException ex)
+        {
+            Logger.Warning("The user {UserName} is not authorized to see risks message: {ExMessage}", user.Name, ex.Message);
+            return this.Unauthorized();
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("The risk: {Id} was not found in the database: {ExMessage}", id, ex.Message);
+            return this.NotFound();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error getting risk");
+            return StatusCode(500);
+        }
+
+        return Ok(risk);
     }
     
     // Create new Risk
@@ -176,7 +223,7 @@ public class RisksController : ApiBaseController
         
     }
     
-    // Check if risk subejct exists new Risk
+    // Check if risk subject exists new Risk
     [HttpGet]
     [Route("Exists")]
     [Authorize(Policy = "RequireSubmitRisk")]
