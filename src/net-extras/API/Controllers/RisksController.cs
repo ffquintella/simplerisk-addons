@@ -142,7 +142,34 @@ public class RisksController : ApiBaseController
 
         return Ok(scoring);
     }
-    
+
+    /// <summary>
+    /// Creates a new scoring
+    /// </summary>
+    /// <param name="id">Risk ID</param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("{id}/Scoring")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<RiskScoring> CreateRiskScoring(int id, [FromBody] RiskScoring? scoring)
+    {
+        if(scoring == null) return StatusCode(StatusCodes.Status500InternalServerError);
+        
+        var user = GetUser();
+        var risk = _riskManagement.GetUserRisk(user, id);
+        
+        if(risk == null) return NotFound();
+
+        scoring.Id = risk.Id;
+
+        var final_scoring = _riskManagement.CreateRiskScoring(scoring);
+
+        return final_scoring;
+
+    }
+
     // Create new Risk
     [HttpPost]
     [Route("")]

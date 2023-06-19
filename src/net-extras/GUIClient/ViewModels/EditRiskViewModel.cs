@@ -303,6 +303,14 @@ public class EditRiskViewModel: ViewModelBase
 
         Risk.RiskCatalogMapping = Risk.RiskCatalogMapping.TrimEnd(',');
 
+        var riskScoring = new RiskScoring
+        {
+            ScoringMethod = 1,
+            ClassicImpact = SelectedImpact!.Value,
+            ClassicLikelihood = SelectedProbability!.Value,
+            CalculatedRisk =_risksService.GetRiskScore(SelectedProbability!.Value, SelectedImpact!.Value),
+        };
+
         try
         {
             if (_operationType == OperationType.Create)

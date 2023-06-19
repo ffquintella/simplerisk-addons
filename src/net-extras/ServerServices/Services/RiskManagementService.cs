@@ -297,6 +297,33 @@ public class RiskManagementService: IRiskManagementService
         }
     }
 
+    public RiskScoring? CreateRiskScoring(RiskScoring riskScoring)
+    {
+        riskScoring.CvssAuthentication = "N";
+        riskScoring.CvssAccessVector = "N";
+        riskScoring.CvssAccessComplexity = "L";
+        riskScoring.CvssConfImpact = "C";
+        riskScoring.CvssIntegImpact = "C";
+        riskScoring.CvssAvailImpact = "C";
+        riskScoring.CvssExploitability = "ND";
+        riskScoring.CvssRemediationLevel = "ND";
+        riskScoring.CvssReportConfidence = "ND";
+        riskScoring.CvssCollateralDamagePotential = "ND";
+        riskScoring.CvssTargetDistribution = "ND";
+        riskScoring.CvssConfidentialityRequirement = "ND";
+        riskScoring.CvssIntegrityRequirement = "ND";
+        riskScoring.CvssAvailabilityRequirement = "ND";
+        
+        
+        
+        using (var contex = _dalManager.GetContext())
+        {
+            var scoring = contex.RiskScorings.Add(riskScoring);
+            contex.SaveChanges();
+            return scoring.Entity;
+        }
+    }
+
     /// <summary>
     /// Saves a existing risk to the database
     /// </summary>

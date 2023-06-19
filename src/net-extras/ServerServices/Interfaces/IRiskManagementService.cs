@@ -59,6 +59,13 @@ public interface IRiskManagementService
     Risk? CreateRisk(Risk risk);
     
     /// <summary>
+    /// Creates a new risk scoring
+    /// </summary>
+    /// <param name="riskScoring"></param>
+    /// <returns></returns>
+    public RiskScoring? CreateRiskScoring(RiskScoring riskScoring);
+    
+    /// <summary>
     /// Saves the risk to the database
     /// </summary>
     /// <param name="risk">the risk object to save</param>
