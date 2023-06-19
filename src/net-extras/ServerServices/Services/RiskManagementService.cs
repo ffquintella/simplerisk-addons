@@ -314,16 +314,30 @@ public class RiskManagementService: IRiskManagementService
         riskScoring.CvssIntegrityRequirement = "ND";
         riskScoring.CvssAvailabilityRequirement = "ND";
         
-        
-        
         using (var contex = _dalManager.GetContext())
         {
+            // Check if exists already
+            var existing = contex.RiskScorings.Where(r => r.Id == riskScoring.Id).Count();
+            if(existing > 0 ) throw new DataAlreadyExistsException("main",
+                "risk_scoring", riskScoring.Id.ToString(), $"Risk scoring with id:{riskScoring.Id} already exists");
+            
             var scoring = contex.RiskScorings.Add(riskScoring);
             contex.SaveChanges();
             return scoring.Entity;
         }
     }
 
+    public void SaveRiskScoring(RiskScoring riskScoring)
+    {
+        using (var context = _dalManager.GetContext())
+        {
+            var dbRiskScoring = context.RiskScorings.FirstOrDefault(r => r.Id == riskScoring.Id);
+            if (dbRiskScoring == null) throw new Exception($"Unable to find risk scoring with id:{dbRiskScoring.Id}");
+            dbRiskScoring = _mapper.Map(riskScoring, dbRiskScoring);
+            context.SaveChanges();
+        }
+    }
+    
     /// <summary>
     /// Saves a existing risk to the database
     /// </summary>

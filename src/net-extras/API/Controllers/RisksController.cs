@@ -149,6 +149,7 @@ public class RisksController : ApiBaseController
     /// <param name="id">Risk ID</param>
     /// <returns></returns>
     [HttpPost]
+    [Authorize(Policy = "RequireSubmitRisk")]
     [Route("{id}/Scoring")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -164,9 +165,42 @@ public class RisksController : ApiBaseController
 
         scoring.Id = risk.Id;
 
-        var final_scoring = _riskManagement.CreateRiskScoring(scoring);
+        try
+        {
+            var final_scoring = _riskManagement.CreateRiskScoring(scoring);
 
-        return final_scoring;
+            return Created($"{id}/Scoring", final_scoring);
+        }
+        catch (DataAlreadyExistsException daex)
+        {
+            return StatusCode(StatusCodes.Status409Conflict, daex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+
+
+    }
+    
+    // Updates a Scoring
+    [HttpPut]
+    [Route("{id}/Scoring")]
+    [Authorize(Policy = "RequireSubmitRisk")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult SaveRiskScoring(int id, [FromBody] RiskScoring? scoring = null)
+    {
+        if(scoring == null) return StatusCode(StatusCodes.Status500InternalServerError);
+            scoring.Id = id;
+        try
+        {
+            _riskManagement.SaveRiskScoring(scoring);
+            return Ok();
+        } catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
 
     }
 

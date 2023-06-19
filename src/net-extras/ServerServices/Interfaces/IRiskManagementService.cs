@@ -65,6 +65,14 @@ public interface IRiskManagementService
     /// <returns></returns>
     public RiskScoring? CreateRiskScoring(RiskScoring riskScoring);
     
+    
+    /// <summary>
+    /// Saves a Risk Scoring
+    /// </summary>
+    /// <param name="riskScoring"></param>
+    public void SaveRiskScoring(RiskScoring riskScoring);
+    
+    
     /// <summary>
     /// Saves the risk to the database
     /// </summary>
