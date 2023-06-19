@@ -363,6 +363,17 @@ public class RiskManagementService: IRiskManagementService
             context.SaveChanges();
         }
     }
+
+    public void DeleteRiskScoring(int id)
+    {
+        using (var context = _dalManager.GetContext())
+        {
+            var dbRiskScoring = context.RiskScorings.FirstOrDefault(r => r.Id == id);
+            if (dbRiskScoring == null) throw new DataNotFoundException("simplerisk",id.ToString());
+            context.RiskScorings.Remove(dbRiskScoring);
+            context.SaveChanges();
+        }
+    }
     
     public List<RiskCatalog> GetRiskCatalogs(List<int> ids)
     {

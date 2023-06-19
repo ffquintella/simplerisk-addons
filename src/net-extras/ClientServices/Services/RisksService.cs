@@ -280,7 +280,7 @@ public class RisksService: ServiceBase, IRisksService
         }
 
     }
-    
+
     public void DeleteRisk(Risk risk)
     {
 
@@ -315,6 +315,112 @@ public class RisksService: ServiceBase, IRisksService
             }
         }
 
+    }
+    
+    public RiskScoring? CreateRiskScoring(RiskScoring scoring)
+    {
+        using (var client = _restService.GetClient())
+        {
+            var request = new RestRequest($"/Risks/{scoring.Id}/Scoring");
+
+            request.AddJsonBody(scoring);
+        
+            try
+            {
+                var response = client.Post(request);
+
+                if (response.StatusCode != HttpStatusCode.Created)
+                {
+                    _logger.Error("Error creating risk scoring");
+                    
+                    var opResult = JsonSerializer.Deserialize<OperationError>(response!.Content!);
+
+                    throw new ErrorSavingException("Error creating risk scoring", opResult!);
+
+                }
+            
+                return  JsonSerializer.Deserialize<RiskScoring?>(response!.Content!);
+            
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    _authenticationService.DiscardAuthenticationToken();
+                }
+                _logger.Error("Error creating risk scoring message:{0}", ex.Message);
+                throw new RestComunicationException("Error creating risk score", ex);
+            }
+        }
+
+    }
+
+    public void SaveRiskScoring(RiskScoring scoring)
+    {
+        using (var client = _restService.GetClient())
+        {
+            var request = new RestRequest($"/Risks/{scoring.Id}/Scoring");
+
+            request.AddJsonBody(scoring);
+        
+            try
+            {
+                var response = client.Put(request);
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    _logger.Error("Error saving risk scoring with id: {Id}", scoring.Id);
+                    
+                    var opResult = JsonSerializer.Deserialize<OperationError>(response!.Content!);
+
+                    throw new ErrorSavingException("Error saving risk scoring", opResult!);
+                    
+                }
+                
+
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    _authenticationService.DiscardAuthenticationToken();
+                }
+                _logger.Error("Error saving risk {Id} message:{ExMessage}", scoring.Id, ex.Message);
+                throw new RestComunicationException("Error saving risk", ex);
+            }
+        }
+    }
+
+    public void DeleteRiskScoring(int scoringId)
+    {
+        using (var client = _restService.GetClient())
+        {
+            var request = new RestRequest($"/Risks/{scoringId}/Scoring");
+
+            try
+            {
+                var response = client.Delete(request);
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    _logger.Error("Error deleting risk scoring with id: {Id}", scoringId);
+                    
+                    throw new Exception("Error deleting risk scoring");
+                    
+                }
+                
+
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    _authenticationService.DiscardAuthenticationToken();
+                }
+                _logger.Error("Error deleting risk scoring: {Id} message:{ExMessage}", scoringId, ex.Message);
+                throw new RestComunicationException("Error deleting risk scoring", ex);
+            }
+        }
     }
     
     public bool RiskSubjectExists(string? subject)

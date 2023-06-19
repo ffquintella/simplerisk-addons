@@ -32,5 +32,11 @@ public interface IRisksService
     public void SaveRisk(Risk risk);
     
     public void DeleteRisk(Risk risk);
+    
+    public RiskScoring? CreateRiskScoring(RiskScoring scoring);
+    
+    public void SaveRiskScoring(RiskScoring scoring);
+    
+    public void DeleteRiskScoring(int scoringId);
 
 }

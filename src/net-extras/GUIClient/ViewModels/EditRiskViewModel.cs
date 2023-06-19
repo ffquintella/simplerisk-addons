@@ -314,25 +314,33 @@ public class EditRiskViewModel: ViewModelBase
         try
         {
             if (_operationType == OperationType.Create)
+            {
                 _risksService.CreateRisk(Risk);
-            
+                _risksService.CreateRiskScoring(riskScoring);
+            }
+
+
             if (_operationType == OperationType.Edit)
+            {
                 _risksService.SaveRisk(Risk);
-            
+                _risksService.SaveRiskScoring(riskScoring);
+            }
+
+
 
             var msgOk = MessageBox.Avalonia.MessageBoxManager
-                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                .GetMessageBoxStandardWindow(new MessageBoxStandardParams
                 {
                     ContentTitle = Localizer["Save"],
-                    ContentMessage = Localizer["SaveOkMSG"] ,
+                    ContentMessage = Localizer["SaveOkMSG"],
                     Icon = Icon.Success,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 });
 
             await msgOk.Show();
-            
+
             baseWindow.Close();
-            
+
         }
         catch (ErrorSavingException ex)
         {
@@ -346,16 +354,30 @@ public class EditRiskViewModel: ViewModelBase
 
 
             var msgError = MessageBox.Avalonia.MessageBoxManager
-                .GetMessageBoxStandardWindow(   new MessageBoxStandardParams
+                .GetMessageBoxStandardWindow(new MessageBoxStandardParams
                 {
                     ContentTitle = Localizer["Error"],
-                    ContentMessage = Localizer["ErrorCreatingRiskMSG"] + "cd: " + ex.Result.Status + "\nerr: " + errors + "." ,
+                    ContentMessage = Localizer["ErrorCreatingRiskMSG"] + "cd: " + ex.Result.Status + "\nerr: " +
+                                     errors + ".",
                     Icon = Icon.Error,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 });
 
             await msgError.Show();
-            
+
+        }
+        catch (Exception ex)
+        {
+            var msgError = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Error"],
+                    ContentMessage = Localizer["ErrorCreatingRiskMSG"] ,
+                    Icon = Icon.Error,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                });
+
+            await msgError.Show();
         }
 
     }

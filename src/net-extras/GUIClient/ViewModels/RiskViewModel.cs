@@ -247,7 +247,7 @@ public class RiskViewModel: ViewModelBase
         }
     }
     
-    private async void ApplyReviewFilter()
+    private void ApplyReviewFilter()
     {
         if (_filterStatuses.Any(s => s == RiskStatus.ManagementReview))
         {
@@ -360,7 +360,9 @@ public class RiskViewModel: ViewModelBase
 
         if (confirmation == ButtonResult.Ok)
         {
+            _risksService.DeleteRiskScoring(SelectedRisk.Id);
             _risksService.DeleteRisk(SelectedRisk);
+            
             AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
         }
     }

@@ -72,6 +72,11 @@ public interface IRiskManagementService
     /// <param name="riskScoring"></param>
     public void SaveRiskScoring(RiskScoring riskScoring);
     
+    /// <summary>
+    /// Deletes a risk scoring
+    /// </summary>
+    /// <param name="id"></param>
+    public void DeleteRiskScoring(int id);
     
     /// <summary>
     /// Saves the risk to the database

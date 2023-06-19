@@ -203,6 +203,45 @@ public class RisksController : ApiBaseController
         }
 
     }
+    
+    // Deletes a Risk scoring
+    [HttpDelete]
+    [Route("{id}/Scoring")]
+    [Authorize(Policy = "RequireDeleteRisk")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult DeleteScoring(int id)
+    {
+
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} deleted risk soring: {Id}", user.Value, id);
+
+        try
+        {
+           
+            _riskManagement.DeleteRiskScoring(id);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+
+            if (typeof(DataNotFoundException) == ex.GetType())
+            {
+                Logger.Warning("The risk scoring: {Id} was not found in the database: {ExMessage}", id, ex.Message);
+                return this.NotFound();
+            }
+            else
+            {
+                Logger.Error("Internal error deleting risk scoring");
+                return StatusCode(500);
+            }
+
+        }
+        
+        
+    }
 
     // Create new Risk
     [HttpPost]
