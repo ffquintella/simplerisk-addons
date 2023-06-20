@@ -46,7 +46,7 @@ public class RisksService: ServiceBase, IRisksService
             {
                 _authenticationService.DiscardAuthenticationToken();
             }
-            _logger.Error("Error getting all risks message:{0}", ex.Message);
+            _logger.Error("Error getting all risks message: {Message}", ex.Message);
             throw new RestComunicationException("Error getting all risks", ex);
         }
     }
@@ -77,7 +77,7 @@ public class RisksService: ServiceBase, IRisksService
             {
                 _authenticationService.DiscardAuthenticationToken();
             }
-            _logger.Error("Error getting my risks message:{0}", ex.Message);
+            _logger.Error("Error getting my risks message: {Message}", ex.Message);
             throw new RestComunicationException("Error getting my risks", ex);
         }
 
@@ -109,7 +109,7 @@ public class RisksService: ServiceBase, IRisksService
             {
                 _authenticationService.DiscardAuthenticationToken();
             }
-            _logger.Error("Error getting risk category message:{0}", ex.Message);
+            _logger.Error("Error getting risk category message:{Message}", ex.Message);
             throw new RestComunicationException("Error getting risk category", ex);
         }
     }
@@ -168,7 +168,7 @@ public class RisksService: ServiceBase, IRisksService
             {
                 _authenticationService.DiscardAuthenticationToken();
             }
-            _logger.Error("Error getting risk categories message:{0}", ex.Message);
+            _logger.Error("Error getting risk categories message: {Message}", ex.Message);
             throw new RestComunicationException("Error getting risk categories", ex);
         }
     }
@@ -198,7 +198,7 @@ public class RisksService: ServiceBase, IRisksService
             {
                 _authenticationService.DiscardAuthenticationToken();
             }
-            _logger.Error("Error getting risk source message:{0}", ex.Message);
+            _logger.Error("Error getting risk source message: {Message}", ex.Message);
             throw new RestComunicationException("Error getting risk source", ex);
         }
     }
@@ -241,7 +241,7 @@ public class RisksService: ServiceBase, IRisksService
                 {
                     _authenticationService.DiscardAuthenticationToken();
                 }
-                _logger.Error("Error creating risk message:{0}", ex.Message);
+                _logger.Error("Error creating risk message: {Message}", ex.Message);
                 throw new RestComunicationException("Error creating risk", ex);
             }
         }
@@ -373,7 +373,7 @@ public class RisksService: ServiceBase, IRisksService
                 {
                     _authenticationService.DiscardAuthenticationToken();
                 }
-                _logger.Error("Error creating risk scoring message:{0}", ex.Message);
+                _logger.Error("Error creating risk scoring message: {Message}", ex.Message);
                 throw new RestComunicationException("Error creating risk score", ex);
             }
         }
