@@ -337,9 +337,22 @@ public class EditRiskViewModel: ViewModelBase
 
             if (_operationType == OperationType.Edit)
             {
-                riskScoring.Id = Risk.Id;
                 _risksService.SaveRisk(Risk);
-                _risksService.SaveRiskScoring(riskScoring);
+                if (Risk.Id != RiskScoring.Id)
+                {
+                    riskScoring.Id = Risk.Id;
+                    _risksService.CreateRiskScoring(riskScoring);
+                }
+                else
+                {
+                    RiskScoring.ClassicImpact = SelectedImpact!.Value;
+                    RiskScoring.ClassicLikelihood = SelectedProbability!.Value;
+                    RiskScoring.CalculatedRisk =
+                        _risksService.GetRiskScore(SelectedProbability!.Value, SelectedImpact!.Value);
+                    _risksService.SaveRiskScoring(RiskScoring);
+                }
+
+                
             }
 
 

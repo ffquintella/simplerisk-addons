@@ -303,7 +303,7 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Erro criando um risco..
+        ///   Looks up a localized string similar to Erro criando ou atualizando um risco..
         /// </summary>
         internal static string ErrorCreatingRiskMSG {
             get {
