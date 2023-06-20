@@ -299,20 +299,7 @@ public class RiskManagementService: IRiskManagementService
 
     public RiskScoring? CreateRiskScoring(RiskScoring riskScoring)
     {
-        riskScoring.CvssAuthentication = "N";
-        riskScoring.CvssAccessVector = "N";
-        riskScoring.CvssAccessComplexity = "L";
-        riskScoring.CvssConfImpact = "C";
-        riskScoring.CvssIntegImpact = "C";
-        riskScoring.CvssAvailImpact = "C";
-        riskScoring.CvssExploitability = "ND";
-        riskScoring.CvssRemediationLevel = "ND";
-        riskScoring.CvssReportConfidence = "ND";
-        riskScoring.CvssCollateralDamagePotential = "ND";
-        riskScoring.CvssTargetDistribution = "ND";
-        riskScoring.CvssConfidentialityRequirement = "ND";
-        riskScoring.CvssIntegrityRequirement = "ND";
-        riskScoring.CvssAvailabilityRequirement = "ND";
+
         
         using (var contex = _dalManager.GetContext())
         {

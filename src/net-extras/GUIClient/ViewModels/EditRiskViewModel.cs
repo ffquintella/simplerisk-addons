@@ -315,7 +315,8 @@ public class EditRiskViewModel: ViewModelBase
         {
             if (_operationType == OperationType.Create)
             {
-                _risksService.CreateRisk(Risk);
+                var new_risk = _risksService.CreateRisk(Risk);
+                riskScoring.Id = new_risk.Id;
                 _risksService.CreateRiskScoring(riskScoring);
             }
 

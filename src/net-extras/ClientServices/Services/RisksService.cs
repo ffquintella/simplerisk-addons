@@ -226,9 +226,14 @@ public class RisksService: ServiceBase, IRisksService
                     
 
                 }
-            
-                return  JsonSerializer.Deserialize<Risk?>(response!.Content!);
-            
+                
+                var newRisk = JsonSerializer.Deserialize<Risk?>(response!.Content!, new JsonSerializerOptions 
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                return newRisk;
+
             }
             catch (HttpRequestException ex)
             {
@@ -319,6 +324,23 @@ public class RisksService: ServiceBase, IRisksService
     
     public RiskScoring? CreateRiskScoring(RiskScoring scoring)
     {
+        scoring.CvssAuthentication = "N";
+        scoring.CvssAccessVector = "N";
+        scoring.CvssAccessComplexity = "L";
+        scoring.CvssConfImpact = "C";
+        scoring.CvssIntegImpact = "C";
+        scoring.CvssAvailImpact = "C";
+        scoring.CvssExploitability = "ND";
+        scoring.CvssRemediationLevel = "ND";
+        scoring.CvssReportConfidence = "ND";
+        scoring.CvssCollateralDamagePotential = "ND";
+        scoring.CvssTargetDistribution = "ND";
+        scoring.CvssConfidentialityRequirement = "ND";
+        scoring.CvssIntegrityRequirement = "ND";
+        scoring.CvssAvailabilityRequirement = "ND";
+        
+        
+        
         using (var client = _restService.GetClient())
         {
             var request = new RestRequest($"/Risks/{scoring.Id}/Scoring");
@@ -339,7 +361,10 @@ public class RisksService: ServiceBase, IRisksService
 
                 }
             
-                return  JsonSerializer.Deserialize<RiskScoring?>(response!.Content!);
+                return  JsonSerializer.Deserialize<RiskScoring?>(response!.Content!, new JsonSerializerOptions 
+                {
+                    PropertyNameCaseInsensitive = true
+                });
             
             }
             catch (HttpRequestException ex)
