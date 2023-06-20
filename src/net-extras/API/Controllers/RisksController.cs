@@ -100,7 +100,7 @@ public class RisksController : ApiBaseController
         }
         catch (Exception ex)
         {
-            Logger.Error("Internal error getting risk");
+            Logger.Error("Internal error getting risk: {Message}", ex.Message);
             return StatusCode(500);
         }
 
@@ -136,7 +136,7 @@ public class RisksController : ApiBaseController
         }
         catch (Exception ex)
         {
-            Logger.Error("Internal error getting riskscoring");
+            Logger.Error("Internal error getting riskscoring: {Message}", ex.Message);
             return StatusCode(500);
         }
 

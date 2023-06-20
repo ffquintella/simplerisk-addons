@@ -332,7 +332,7 @@ public class RiskManagementService: IRiskManagementService
         using (var context = _dalManager.GetContext())
         {
             var dbRiskScoring = context.RiskScorings.FirstOrDefault(r => r.Id == riskScoring.Id);
-            if (dbRiskScoring == null) throw new Exception($"Unable to find risk scoring with id:{dbRiskScoring.Id}");
+            if (dbRiskScoring == null) throw new Exception($"Unable to find risk scoring with id:{riskScoring.Id}");
             dbRiskScoring = _mapper.Map(riskScoring, dbRiskScoring);
             context.SaveChanges();
         }
