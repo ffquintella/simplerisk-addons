@@ -323,6 +323,7 @@ public class EditRiskViewModel: ViewModelBase
 
             if (_operationType == OperationType.Edit)
             {
+                riskScoring.Id = Risk.Id;
                 _risksService.SaveRisk(Risk);
                 _risksService.SaveRiskScoring(riskScoring);
             }

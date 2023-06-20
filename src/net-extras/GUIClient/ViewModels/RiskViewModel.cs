@@ -61,10 +61,13 @@ public class RiskViewModel: ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _hdRisk, value);
-            if (_likelihoods != null && _impacts != null)
+            if (_likelihoods != null && _impacts != null && _hdRisk != null)
             {
-                Probability = _likelihoods.FirstOrDefault(l => Math.Abs(l.Value - HdRisk.Scoring.ClassicLikelihood) < 0.001)!.Name;
-                Impact = _impacts.FirstOrDefault(i => Math.Abs(i.Value - HdRisk.Scoring.ClassicImpact) < 0.001)!.Name;
+                var probs = _likelihoods.FirstOrDefault(l =>
+                    Math.Abs(l.Value - _hdRisk.Scoring.ClassicLikelihood) < 0.001);
+                if(probs != null) Probability = probs.Name;
+                var impact = _impacts.FirstOrDefault(i => Math.Abs(i.Value - _hdRisk.Scoring.ClassicImpact) < 0.001);
+                if(impact != null ) Impact = impact.Name;
             }
         }
     }
