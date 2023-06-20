@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -40,6 +41,7 @@ public class RiskViewModel: ViewModelBase
     #endregion
 
     #region PROPERTIES
+    
     private string _riskFilter = "";
     public string RiskFilter
     {
@@ -59,6 +61,11 @@ public class RiskViewModel: ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _hdRisk, value);
+            if (_likelihoods != null && _impacts != null)
+            {
+                Probability = _likelihoods.FirstOrDefault(l => Math.Abs(l.Value - HdRisk.Scoring.ClassicLikelihood) < 0.001)!.Name;
+                Impact = _impacts.FirstOrDefault(i => Math.Abs(i.Value - HdRisk.Scoring.ClassicImpact) < 0.001)!.Name;
+            }
         }
     }
 
@@ -144,6 +151,26 @@ public class RiskViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _closedFilterColor, value);
     }
 
+    private List<Likelihood>? _likelihoods;
+    private List<Impact>? _impacts;
+
+    private string? _probability;
+
+    public string? Probability
+    {
+        get => _probability;
+        set => this.RaiseAndSetIfChanged(ref _probability, value);
+    }
+
+    private string? _impact;
+
+    public string? Impact
+    {
+        get => _impact;
+        set => this.RaiseAndSetIfChanged(ref _impact, value);
+    }
+
+   
     public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
     public ReactiveCommand<Window, Unit> BtEditRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
@@ -153,6 +180,7 @@ public class RiskViewModel: ViewModelBase
     public ReactiveCommand<Unit, Unit> BtMitigationFilterClicked { get; }
     public ReactiveCommand<Unit, Unit> BtReviewFilterClicked { get; }
     public ReactiveCommand<Unit, Unit> BtClosedFilterClicked { get; }
+    
     #endregion
 
     public IRisksService _risksService;
@@ -386,6 +414,9 @@ public class RiskViewModel: ViewModelBase
         if (!_initialized)
         {
             AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
+            
+            _impacts = _risksService.GetImpacts();
+            _likelihoods = _risksService.GetProbabilities();
             
             _initialized = true;
         }

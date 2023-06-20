@@ -120,11 +120,11 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding StrProbability}" />
-                            <TextBlock Text="{Binding HdRisk.Scoring.ClassicLikelihood}" Margin="5 0"/>
+                            <TextBlock Text="{Binding Probability}" Margin="5 0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding StrImpact}" />
-                            <TextBlock Text="{Binding HdRisk.Scoring.ClassicImpact}" Margin="5 0"/>
+                            <TextBlock Text="{Binding Impact}" Margin="5 0"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
