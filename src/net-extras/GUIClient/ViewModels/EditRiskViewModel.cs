@@ -134,6 +134,8 @@ public class EditRiskViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _selectedRiskTypes, value);
     }
     
+    private RiskScoring RiskScoring { get; set; }
+    
     public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
     public ReactiveCommand<Window, Unit> BtCancelClicked { get; }
     #endregion
@@ -173,6 +175,9 @@ public class EditRiskViewModel: ViewModelBase
         StrValue = Localizer["Value"];
         
         StrOperationType = _operationType == OperationType.Create ? Localizer["Creation"] : Localizer["Edit"];
+        
+        _risksService = GetService<IRisksService>();
+        
         if (_operationType == OperationType.Create)
         {
             Risk = new Risk();
@@ -181,12 +186,13 @@ public class EditRiskViewModel: ViewModelBase
         else
         {
             Risk = risk!;
+            RiskScoring = _risksService.GetRiskScoring(Risk.Id);
             ShowEditFields = true;
         }
 
         SelectedRiskTypes = new List<RiskCatalog>();
 
-        _risksService = GetService<IRisksService>();
+        
         _authenticationService = GetService<IAuthenticationService>();
         _usersService = GetService<IUsersService>();
 
@@ -209,6 +215,14 @@ public class EditRiskViewModel: ViewModelBase
             SelectedOwner = UserListings!.FirstOrDefault(ul => ul.Id == risk.Owner);
             SelectedManager = UserListings!.FirstOrDefault(ul => ul.Id == risk.Manager);
             Notes = risk.Notes;
+
+            
+            var sp = Probabilities!.FirstOrDefault(p => Math.Abs(p.Value - RiskScoring!.ClassicLikelihood) < 0.01);
+            if (sp != null) SelectedProbability = sp;
+            var imp = Impacts!.FirstOrDefault(i => Math.Abs(i.Value - RiskScoring!.ClassicImpact) < 0.01);
+            if (imp != null) SelectedImpact = imp;
+            
+
         }
         else
         {
