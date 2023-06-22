@@ -210,7 +210,7 @@ public class EditRiskViewModel: ViewModelBase
             _originalSubject = risk.Subject;
             SelectedRiskSource = RiskSources!.FirstOrDefault(r => r.Value == risk.Source);
             SelectedCategory = Categories!.FirstOrDefault(c => c.Value == risk.Category);
-            List<int> ids = risk.RiskCatalogMapping.Split(',').Select(int.Parse).ToList();
+            var ids = risk.RiskCatalogMapping.TrimEnd().Length > 0 ? risk.RiskCatalogMapping.Split(',').Select(int.Parse).ToList() : new List<int>();
             SelectedRiskTypes = RiskTypes!.Where(rt => ids.Contains(rt.Id)).ToList();
             SelectedOwner = UserListings!.FirstOrDefault(ul => ul.Id == risk.Owner);
             SelectedManager = UserListings!.FirstOrDefault(ul => ul.Id == risk.Manager);
