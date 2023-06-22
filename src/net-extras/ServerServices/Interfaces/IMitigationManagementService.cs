@@ -18,4 +18,10 @@ public interface IMitigationManagementService
     /// <param name="id">Risk Id</param>
     /// <returns>Mitigation Object</returns>
     public Mitigation GetByRiskId(int id);
+    
+    /// <summary>
+    /// List the mitigation strategies
+    /// </summary>
+    /// <returns></returns>
+    public List<PlanningStrategy> ListStrategies();
 }

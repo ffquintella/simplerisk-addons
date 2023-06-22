@@ -12,8 +12,10 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class MitigationsController: ApiBaseController
 {
+    #region FIELDS
     private IRiskManagementService _riskManagement;
     private IMitigationManagementService _mitigationManagement;
+    #endregion
     
     public MitigationsController(
         ILogger logger,
@@ -61,6 +63,39 @@ public class MitigationsController: ApiBaseController
         }
 
         return Ok(mitigation);
+
+    }
+    
+    /// <summary>
+    /// Gets a Mitigation by it´s Id
+    /// </summary>
+    /// <param name="id">Mitigation Id</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Authorize(Policy = "RequireValidUser")]
+    [Route("strategies")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PlanningStrategy>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<PlanningStrategy>> ListMitigationStrategies()
+    {
+
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} listed mitigation strategies", user.Value);
+
+        List<PlanningStrategy> strategies;
+        
+        try
+        {
+            strategies = _mitigationManagement.ListStrategies();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error getting strategies: {Message}", ex.Message);
+            return StatusCode(500);
+        }
+
+        return Ok(strategies);
 
     }
     #endregion

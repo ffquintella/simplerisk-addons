@@ -56,4 +56,19 @@ public class MitigationManagementService: IMitigationManagementService
             return mitigation;
         }
     }
+
+    public List<PlanningStrategy> ListStrategies()
+    {
+        using (var context = _dalManager.GetContext())
+        {
+            var strategies = context.PlanningStrategies.ToList();
+            if (strategies == null)
+            {
+                Log.Error("Error Listing strategies");
+                throw new DataNotFoundException("PlanningStrategies", "");
+            }
+
+            return strategies;
+        }
+    }
 }
