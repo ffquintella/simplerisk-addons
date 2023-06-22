@@ -798,6 +798,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Estratégia.
+        /// </summary>
+        internal static string Strategy {
+            get {
+                return ResourceManager.GetString("Strategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Painel de Riscos.
         /// </summary>
         internal static string StrRiskPanel {

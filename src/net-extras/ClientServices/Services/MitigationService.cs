@@ -46,6 +46,35 @@ public class MitigationService: ServiceBase, IMitigationService
         }
     }
 
+    public List<PlanningStrategy>? GetStrategies()
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Mitigations/Strategies");
+        try
+        {
+            var response = client.Get<List<PlanningStrategy>>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting mitigation strategies");
+                throw new RestComunicationException($"Error getting mitigation strategies");
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting mitigation strategies");
+            throw new RestComunicationException("Error getting mitigation strategies", ex);
+        }
+    }
+    
     public Mitigation? GetById(int id)
     {
         throw new NotImplementedException();

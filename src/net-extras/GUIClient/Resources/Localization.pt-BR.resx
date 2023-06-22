@@ -294,4 +294,7 @@
     <data name="Update" xml:space="preserve">
         <value>Atualização</value>
     </data>
+    <data name="Strategy" xml:space="preserve">
+        <value>Estratégia</value>
+    </data>
 </root>

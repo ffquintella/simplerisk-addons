@@ -41,10 +41,9 @@ public class RiskViewModel: ViewModelBase
     public string StrImpact { get; }
     public string StrMitigationNotPlanned { get; }
     public string StrPlanMitigation { get; }
-    
     public string StrMitigation { get; }
-    
     public string StrUpdate { get; }
+    public string StrStrategy { get; }
     #endregion
 
     #region PROPERTIES
@@ -57,7 +56,6 @@ public class RiskViewModel: ViewModelBase
         {
             this.RaiseAndSetIfChanged(ref _riskFilter, value);
             ApplyFilter();
-            //Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter)));
         }
     }
     
@@ -76,7 +74,19 @@ public class RiskViewModel: ViewModelBase
                 var impact = _impacts.FirstOrDefault(i => Math.Abs(i.Value - _hdRisk.Scoring.ClassicImpact) < 0.001);
                 if(impact != null ) Impact = impact.Name;
             }
+
+            if (_hdRisk is { Mitigation: not null })
+                SelectedMigrationStrategy = Strategies.Where(s => s.Value == _hdRisk.Mitigation.PlanningStrategy)
+                    .Select(s => s.Name).FirstOrDefault();
         }
+    }
+
+    private string _selectedMigrationStrategy = "";
+
+    public string SelectedMigrationStrategy
+    {
+        get => _selectedMigrationStrategy;
+        set => this.RaiseAndSetIfChanged(ref _selectedMigrationStrategy, value);
     }
 
     private Risk? _selectedRisk;
@@ -98,7 +108,6 @@ public class RiskViewModel: ViewModelBase
                 HdRisk = null;
             }
             this.RaiseAndSetIfChanged(ref _selectedRisk, value);
-            //if(value != null && _hasDeleteRiskPermission) CanDeleteRisk = true;
         }
     }
     private ObservableCollection<Risk>? _allRisks;
@@ -127,7 +136,6 @@ public class RiskViewModel: ViewModelBase
     {
         get
         {
-            //if (SelectedRisk == null) return false;
             return _hasDeleteRiskPermission;
         }
         set => this.RaiseAndSetIfChanged(ref _hasDeleteRiskPermission, value);
@@ -179,8 +187,10 @@ public class RiskViewModel: ViewModelBase
         get => _impact;
         set => this.RaiseAndSetIfChanged(ref _impact, value);
     }
+    
+    
+    public List<PlanningStrategy>? Strategies { get; set; }
 
-   
     public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
     public ReactiveCommand<Window, Unit> BtEditRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
@@ -193,8 +203,9 @@ public class RiskViewModel: ViewModelBase
     
     #endregion
 
-    public IRisksService _risksService;
-    public IAuthenticationService _autenticationService;
+    private IRisksService _risksService;
+    private IAuthenticationService _autenticationService;
+    private IMitigationService _mitigationService;
     
     private bool _initialized;
     private List<RiskStatus> _filterStatuses;
@@ -222,6 +233,7 @@ public class RiskViewModel: ViewModelBase
         StrPlanMitigation = Localizer["PlanMitigation"];
         StrMitigation = Localizer["Mitigation"];
         StrUpdate = Localizer["Update"];
+        StrStrategy = Localizer["Strategy"];
 
         _risks = new ObservableCollection<Risk>();
         
@@ -236,6 +248,7 @@ public class RiskViewModel: ViewModelBase
 
         _risksService = GetService<IRisksService>();
         _autenticationService = GetService<IAuthenticationService>();
+        _mitigationService = GetService<IMitigationService>();
 
         _filterStatuses = new List<RiskStatus>()
         {
@@ -448,6 +461,7 @@ public class RiskViewModel: ViewModelBase
             
             _impacts = _risksService.GetImpacts();
             _likelihoods = _risksService.GetProbabilities();
+            Strategies = _mitigationService.GetStrategies();
             
             _initialized = true;
         }

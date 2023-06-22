@@ -131,6 +131,7 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
+                <!-- MITIGATION -->
                 <Panel Background="Black" IsVisible="{Binding !!SelectedRisk }">
                     <Grid ColumnDefinitions="Auto, *, Auto" IsVisible="{Binding SelectedRisk.Status, 
                                     Converter={StaticResource stringEqualConverter},
@@ -139,18 +140,27 @@
                         <Button Grid.Column="2" Name="BtPlanMitigation" ><material:MaterialIcon Kind="Planner"></material:MaterialIcon></Button>
                     </Grid>
                     <Grid ColumnDefinitions="Auto, Auto, Auto, Auto, *, Auto"
-                          RowDefinitions="Auto,Auto,Auto"
+                          RowDefinitions="Auto,Auto,Auto, Auto"
                           IsVisible="{Binding SelectedRisk.Status, 
                                     Converter={StaticResource stringNotEqualConverter},
                                     ConverterParameter=New}">
                         <TextBlock Grid.Row="0" Grid.Column="0"  Classes="label" Text="{Binding StrMitigation}" />
                         <Button Grid.Row="0" Grid.Column="5" Name="BtEditMitigation" ><material:MaterialIcon Kind="Edit"></material:MaterialIcon></Button>
                         
-                        <TextBlock Grid.Row="1" Grid.Column="0"  Classes="label">Dt Sub:</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="0"  Classes="label" Margin="5 5">Dt Sub</TextBlock>
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding HdRisk.Mitigation.SubmissionDate}" Margin="5 5"/>
                         
                         <TextBlock Grid.Row="1" Grid.Column="2"  Classes="label" Text="{Binding StrUpdate, Mode=OneTime}" Margin="5 5"/>
                         <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding HdRisk.Mitigation.LastUpdate}" Margin="5 5"/>
+                        
+                        <TextBlock Grid.Row="2" Grid.Column="0"  Classes="label" Text="{Binding StrStrategy, Mode=OneTime}" Margin="5 5"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedMigrationStrategy}" Margin="5 5"/>
+                        
+                        <TextBlock Grid.Row="2" Grid.Column="2"  Classes="label" Margin="5 5">Dt Plan</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding HdRisk.Mitigation.PlanningDate}" Margin="5 5"/>
+                        
+                        <TextBlock Grid.Row="3" Grid.Column="0"  Classes="label" Margin="5 5">%</TextBlock>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding HdRisk.Mitigation.MitigationPercent}" Margin="5 5"/>
                         
                     </Grid>
                 </Panel>

@@ -17,4 +17,10 @@ public interface IMitigationService
     /// <param name="id">Mitigation Id</param>
     /// <returns></returns>
     public Mitigation? GetById(int id);
+    
+    /// <summary>
+    /// Gets the mitigations strategies avaliable
+    /// </summary>
+    /// <returns>List of PlaningStrategy</returns>
+    public List<PlanningStrategy>? GetStrategies();
 }
