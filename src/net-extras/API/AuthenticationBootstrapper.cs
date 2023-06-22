@@ -128,7 +128,7 @@ public static class AuthenticationBootstrapper
                 //policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"riskmanagement"}));
                 policy.RequireAssertion(context =>
                     context.User.HasClaim(c =>
-                        (c.Type == ClaimTypes.Role && c.Value=="Administrator") || 
+                        (c.Type == ClaimTypes.Role && c.Value == "Administrator") ||
                         (c.Type == "Permission" && c.Value == "riskmanagement")));
             });
             options.AddPolicy("RequireSubmitRisk", policy =>
@@ -157,6 +157,34 @@ public static class AuthenticationBootstrapper
                 {
                     "review_insignificant", "review_low", "review_medium", "review_high", "review_veryhigh", "comment_risk_management"
                 }));
+            });
+            options.AddPolicy("RequirePlanMitigations", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+                policy.RequireAssertion(context =>
+                    context.User.HasClaim(c =>
+                        (c.Type == ClaimTypes.Role && c.Value=="Administrator") || 
+                        (c.Type == "Permission" && c.Value == "plan_mitigations")));
+            });
+            options.AddPolicy("RequireAcceptMitigation", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+                policy.RequireAssertion(context =>
+                    context.User.HasClaim(c =>
+                        (c.Type == ClaimTypes.Role && c.Value=="Administrator") || 
+                        (c.Type == "Permission" && c.Value == "accept_mitigation")));
+            });
+            options.AddPolicy("RequireMitigation", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+                policy.RequireAssertion(context =>
+                    context.User.HasClaim(c =>
+                        (c.Type == ClaimTypes.Role && c.Value=="Administrator") ||
+                        (c.Type == "Permission" && c.Value == "accept_mitigation") || 
+                        (c.Type == "Permission" && c.Value == "plan_mitigations")));
             });
             options.AddPolicy("RequireAdminOnly", policy =>
             {

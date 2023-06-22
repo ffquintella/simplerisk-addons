@@ -301,15 +301,25 @@ public class RiskManagementService: IRiskManagementService
     {
 
         
-        using (var contex = _dalManager.GetContext())
+        using (var context = _dalManager.GetContext())
         {
             // Check if exists already
-            var existing = contex.RiskScorings.Where(r => r.Id == riskScoring.Id).Count();
+            var existing = context.RiskScorings.Where(r => r.Id == riskScoring.Id).Count();
             if(existing > 0 ) throw new DataAlreadyExistsException("main",
                 "risk_scoring", riskScoring.Id.ToString(), $"Risk scoring with id:{riskScoring.Id} already exists");
             
-            var scoring = contex.RiskScorings.Add(riskScoring);
-            contex.SaveChanges();
+            var scoring = context.RiskScorings.Add(riskScoring);
+
+            var scoringHistory = new RiskScoringHistory
+            {
+                RiskId = riskScoring.Id,
+                CalculatedRisk = riskScoring.CalculatedRisk,
+                LastUpdate = DateTime.Now
+            };
+
+            context.RiskScoringHistories.Add(scoringHistory);
+            
+            context.SaveChanges();
             return scoring.Entity;
         }
     }
@@ -321,6 +331,16 @@ public class RiskManagementService: IRiskManagementService
             var dbRiskScoring = context.RiskScorings.FirstOrDefault(r => r.Id == riskScoring.Id);
             if (dbRiskScoring == null) throw new Exception($"Unable to find risk scoring with id:{riskScoring.Id}");
             dbRiskScoring = _mapper.Map(riskScoring, dbRiskScoring);
+            
+            var scoringHistory = new RiskScoringHistory
+            {
+                RiskId = dbRiskScoring.Id,
+                CalculatedRisk = dbRiskScoring.CalculatedRisk,
+                LastUpdate = DateTime.Now
+            };
+
+            context.RiskScoringHistories.Add(scoringHistory);
+            
             context.SaveChanges();
         }
     }

@@ -15,14 +15,17 @@ public class RisksController : ApiBaseController
 {
 
     private IRiskManagementService _riskManagement;
+    private IMitigationManagementService _mitigationManagement;
 
     public RisksController(
         ILogger logger,
         IHttpContextAccessor httpContextAccessor,
         IUserManagementService userManagementService,
+        IMitigationManagementService mitigationManagementService,
         IRiskManagementService riskManagement) : base(logger, httpContextAccessor, userManagementService)
     {
         _riskManagement = riskManagement;
+        _mitigationManagement = mitigationManagementService;
     }
     
     
@@ -108,6 +111,43 @@ public class RisksController : ApiBaseController
     }
     
     /// <summary>
+    /// Gets a mitigation by risk ID
+    /// </summary>
+    /// <param name="id">Risk Id</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("{id}/Mitigation")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Mitigation>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<Mitigation> GetMitigation(int id)
+    {
+
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} got mitigation for risk with id={Id}", user.Value, id);
+
+        Mitigation mitigation;
+        
+        try
+        {
+            mitigation = _mitigationManagement.GetByRiskId(id);
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("The risk: {Id} has no mitigations: {ExMessage}", id, ex.Message);
+            return this.NotFound();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error getting mitigation: {Message}", ex.Message);
+            return StatusCode(500);
+        }
+
+        return Ok(mitigation);
+    }
+    
+    /// <summary>
     /// Gets a risk score 
     /// </summary>
     /// <param name="id">Risk Id</param>
@@ -142,6 +182,8 @@ public class RisksController : ApiBaseController
 
         return Ok(scoring);
     }
+    
+    
 
     /// <summary>
     /// Creates a new scoring
