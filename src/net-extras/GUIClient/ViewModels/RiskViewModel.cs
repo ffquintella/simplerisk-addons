@@ -13,6 +13,7 @@ using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 using Model.Risks;
 using ReactiveUI;
+using Serilog;
 
 namespace GUIClient.ViewModels;
 
@@ -391,8 +392,25 @@ public class RiskViewModel: ViewModelBase
 
         if (confirmation == ButtonResult.Ok)
         {
-            _risksService.DeleteRiskScoring(SelectedRisk.Id);
-            _risksService.DeleteRisk(SelectedRisk);
+            try
+            {
+                _risksService.DeleteRiskScoring(SelectedRisk.Id);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error deleting risk score with id:{Id}", SelectedRisk.Id);
+            }
+            
+            try
+            {
+                _risksService.DeleteRisk(SelectedRisk);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error deleting risk  with id:{Id}", SelectedRisk.Id);
+            }
+            
+           
             
             AllRisks = new ObservableCollection<Risk>(_risksService.GetAllRisks());
         }
