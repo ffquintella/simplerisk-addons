@@ -231,6 +231,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custo.
+        /// </summary>
+        internal static string Cost {
+            get {
+                return ResourceManager.GetString("Cost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Criação.
         /// </summary>
         internal static string Creation {
@@ -272,6 +281,15 @@ namespace GUIClient.Resources {
         internal static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Esforço.
+        /// </summary>
+        internal static string Effort {
+            get {
+                return ResourceManager.GetString("Effort", resourceCulture);
             }
         }
         
@@ -582,6 +600,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Estimado.
+        /// </summary>
+        internal static string Projected {
+            get {
+                return ResourceManager.GetString("Projected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pergunta.
         /// </summary>
         internal static string Question {
@@ -803,6 +830,15 @@ namespace GUIClient.Resources {
         internal static string Strategy {
             get {
                 return ResourceManager.GetString("Strategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estimado.
+        /// </summary>
+        internal static string StrProjected {
+            get {
+                return ResourceManager.GetString("StrProjected", resourceCulture);
             }
         }
         

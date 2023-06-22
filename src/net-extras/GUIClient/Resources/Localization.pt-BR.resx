@@ -297,4 +297,16 @@
     <data name="Strategy" xml:space="preserve">
         <value>Estratégia</value>
     </data>
+    <data name="StrProjected" xml:space="preserve">
+        <value>Estimado</value>
+    </data>
+    <data name="Projected" xml:space="preserve">
+        <value>Estimado</value>
+    </data>
+    <data name="Cost" xml:space="preserve">
+        <value>Custo</value>
+    </data>
+    <data name="Effort" xml:space="preserve">
+        <value>Esforço</value>
+    </data>
 </root>

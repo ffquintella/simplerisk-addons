@@ -44,6 +44,9 @@ public class RiskViewModel: ViewModelBase
     public string StrMitigation { get; }
     public string StrUpdate { get; }
     public string StrStrategy { get; }
+    public string StrProjected { get; }
+    public string StrCost { get; }
+    public string StrEffort { get; }
     #endregion
 
     #region PROPERTIES
@@ -76,19 +79,42 @@ public class RiskViewModel: ViewModelBase
             }
 
             if (_hdRisk is { Mitigation: not null })
-                SelectedMigrationStrategy = Strategies.Where(s => s.Value == _hdRisk.Mitigation.PlanningStrategy)
+            {
+                SelectedMitigationStrategy = Strategies.Where(s => s.Value == _hdRisk.Mitigation.PlanningStrategy)
                     .Select(s => s.Name).FirstOrDefault();
+                SelectedMitigationCost = Costs.Where(c => c.Value == _hdRisk.Mitigation.MitigationCost).Select(c => c.Name)
+                    .FirstOrDefault();
+                SelectedMitigationEffort = Efforts.Where(e => e.Value == _hdRisk.Mitigation.MitigationEffort).Select(c => c.Name)
+                    .FirstOrDefault();
+            }
+
         }
     }
 
-    private string _selectedMigrationStrategy = "";
+    private string _selectedMitigationStrategy = "";
 
-    public string SelectedMigrationStrategy
+    public string SelectedMitigationStrategy
     {
-        get => _selectedMigrationStrategy;
-        set => this.RaiseAndSetIfChanged(ref _selectedMigrationStrategy, value);
+        get => _selectedMitigationStrategy;
+        set => this.RaiseAndSetIfChanged(ref _selectedMitigationStrategy, value);
     }
 
+    private string _selectedMitigationCost = "";
+
+    public string SelectedMitigationCost
+    {
+        get => _selectedMitigationCost;
+        set => this.RaiseAndSetIfChanged(ref _selectedMitigationCost, value);
+    }
+    
+    private string _selectedMitigationEffort = "";
+
+    public string SelectedMitigationEffort
+    {
+        get => _selectedMitigationEffort;
+        set => this.RaiseAndSetIfChanged(ref _selectedMitigationEffort, value);
+    }
+    
     private Risk? _selectedRisk;
 
     public Risk? SelectedRisk
@@ -190,6 +216,10 @@ public class RiskViewModel: ViewModelBase
     
     
     public List<PlanningStrategy>? Strategies { get; set; }
+    
+    public List<MitigationCost>? Costs { get; set; }
+    
+    public List<MitigationEffort>? Efforts { get; set; }
 
     public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
     public ReactiveCommand<Window, Unit> BtEditRiskClicked { get; }
@@ -234,6 +264,9 @@ public class RiskViewModel: ViewModelBase
         StrMitigation = Localizer["Mitigation"];
         StrUpdate = Localizer["Update"];
         StrStrategy = Localizer["Strategy"];
+        StrProjected = Localizer["Projected"];
+        StrCost = Localizer["Cost"];
+        StrEffort = Localizer["Effort"];
 
         _risks = new ObservableCollection<Risk>();
         
@@ -462,6 +495,8 @@ public class RiskViewModel: ViewModelBase
             _impacts = _risksService.GetImpacts();
             _likelihoods = _risksService.GetProbabilities();
             Strategies = _mitigationService.GetStrategies();
+            Costs = _mitigationService.GetCosts();
+            Efforts = _mitigationService.GetEfforts();
             
             _initialized = true;
         }

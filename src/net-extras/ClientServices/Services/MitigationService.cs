@@ -74,6 +74,65 @@ public class MitigationService: ServiceBase, IMitigationService
             throw new RestComunicationException("Error getting mitigation strategies", ex);
         }
     }
+
+    public List<MitigationCost>? GetCosts()
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Mitigations/Costs");
+        try
+        {
+            var response = client.Get<List<MitigationCost>>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting mitigation costs");
+                throw new RestComunicationException($"Error getting mitigation costs");
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting mitigation costs");
+            throw new RestComunicationException("Error getting mitigation costs", ex);
+        } 
+    }
+
+
+    public List<MitigationEffort>? GetEfforts()
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Mitigations/Efforts");
+        try
+        {
+            var response = client.Get<List<MitigationEffort>>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting mitigation efforts");
+                throw new RestComunicationException($"Error getting mitigation efforts");
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting mitigation efforts");
+            throw new RestComunicationException("Error getting mitigation efforts", ex);
+        } 
+    }
     
     public Mitigation? GetById(int id)
     {

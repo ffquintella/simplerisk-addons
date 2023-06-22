@@ -23,4 +23,17 @@ public interface IMitigationService
     /// </summary>
     /// <returns>List of PlaningStrategy</returns>
     public List<PlanningStrategy>? GetStrategies();
+    
+    /// <summary>
+    /// Gets the possible list of mitigation costs
+    /// </summary>
+    /// <returns></returns>
+    public List<MitigationCost>? GetCosts();
+    
+    
+    /// <summary>
+    /// Gets the possible list of mitigation efforts
+    /// </summary>
+    /// <returns></returns>
+    public List<MitigationEffort>? GetEfforts();
 }
