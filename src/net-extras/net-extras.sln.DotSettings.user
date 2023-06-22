@@ -5,5 +5,5 @@
   &lt;Assembly Path="C:\Users\Felipe Quintella\.nuget\packages\skiasharp\2.88.1-preview.1\lib\netstandard2.0\SkiaSharp.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Client_002FResources_002FLocalize/@EntryIndexedValue">False</s:Boolean>
-	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=GUIClient_002FResources_002FLocalization/@EntryIndexedValue">True</s:Boolean>
+	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>
