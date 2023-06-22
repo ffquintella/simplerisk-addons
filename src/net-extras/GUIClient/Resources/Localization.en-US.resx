@@ -288,4 +288,10 @@
     <data name="PlanMitigation" xml:space="preserve">
         <value>Plan Mitigation</value>
     </data>
+    <data name="Mitigation" xml:space="preserve">
+        <value>Mitigation</value>
+    </data>
+    <data name="Update" xml:space="preserve">
+        <value>Update</value>
+    </data>
 </root>

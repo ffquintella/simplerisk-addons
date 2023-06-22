@@ -48,6 +48,10 @@ public class GeneralServicesBootstrapper: BaseBootstrapper
             GetService<IRestService>(), 
             GetService<IAuthenticationService>()));
         
+        services.RegisterLazySingleton<IMitigationService>(() => new MitigationService(
+            GetService<IRestService>(), 
+            GetService<IAuthenticationService>()));
+        
         services.RegisterLazySingleton<IUsersService>(() => new UsersService(
             GetService<IRestService>()
             ));

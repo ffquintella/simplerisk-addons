@@ -456,6 +456,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mitigation.
+        /// </summary>
+        internal static string Mitigation {
+            get {
+                return ResourceManager.GetString("Mitigation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mitigation not planned..
         /// </summary>
         internal static string MitigationNotPlannedMSG {
@@ -830,6 +839,15 @@ namespace GUIClient.Resources {
         internal static string Sys {
             get {
                 return ResourceManager.GetString("Sys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
             }
         }
         

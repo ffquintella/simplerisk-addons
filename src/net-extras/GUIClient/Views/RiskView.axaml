@@ -17,6 +17,7 @@
     <UserControl.Resources>
         <convertes:StatusToColourConverter x:Key="statusToColourConverter"/>
         <convertes:StringEqualConverter x:Key="stringEqualConverter"/>
+        <convertes:StringNotEqualConverter x:Key="stringNotEqualConverter"/>
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="Auto, *" >
@@ -130,13 +131,28 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                <Panel Background="Black">
-                    <StackPanel Orientation="Horizontal" IsVisible="{Binding SelectedRisk.Status, 
+                <Panel Background="Black" IsVisible="{Binding !!SelectedRisk }">
+                    <Grid ColumnDefinitions="Auto, *, Auto" IsVisible="{Binding SelectedRisk.Status, 
                                     Converter={StaticResource stringEqualConverter},
                                     ConverterParameter=New}">
-                    <TextBlock  Text="{Binding StrMitigationNotPlanned}" Margin="0 5"/>
-                    <Button Name="BtPlanMitigation" Margin="5 0 "><material:MaterialIcon Kind="Planner"></material:MaterialIcon></Button>
-                    </StackPanel>
+                        <TextBlock Grid.Column="0" Text="{Binding StrMitigationNotPlanned}" Margin="0 5"/>
+                        <Button Grid.Column="2" Name="BtPlanMitigation" ><material:MaterialIcon Kind="Planner"></material:MaterialIcon></Button>
+                    </Grid>
+                    <Grid ColumnDefinitions="Auto, Auto, Auto, Auto, *, Auto"
+                          RowDefinitions="Auto,Auto,Auto"
+                          IsVisible="{Binding SelectedRisk.Status, 
+                                    Converter={StaticResource stringNotEqualConverter},
+                                    ConverterParameter=New}">
+                        <TextBlock Grid.Row="0" Grid.Column="0"  Classes="label" Text="{Binding StrMitigation}" />
+                        <Button Grid.Row="0" Grid.Column="5" Name="BtEditMitigation" ><material:MaterialIcon Kind="Edit"></material:MaterialIcon></Button>
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="0"  Classes="label">Dt Sub:</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding HdRisk.Mitigation.SubmissionDate}" Margin="5 5"/>
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="2"  Classes="label" Text="{Binding StrUpdate, Mode=OneTime}" Margin="5 5"/>
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding HdRisk.Mitigation.LastUpdate}" Margin="5 5"/>
+                        
+                    </Grid>
                 </Panel>
                 <StackPanel Orientation="Vertical"><TextBlock Text="{Binding StrNotes}" Classes="label"/>
                     <TextBox Text="{Binding SelectedRisk.Notes}" IsReadOnly="True" TextWrapping="Wrap" Height="120"/></StackPanel>

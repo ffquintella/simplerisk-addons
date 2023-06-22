@@ -14,11 +14,15 @@ public class Risk: BaseHydrated
     
     private IUsersService _usersService;
     
+    private IMitigationService _mitigationService;
+    
     public Risk(DAL.Entities.Risk risk)
     {
         _baseRisk = risk;
         _risksService = GetService<IRisksService>();
         _usersService = GetService<IUsersService>();
+        _mitigationService = GetService<IMitigationService>();
+
     }
 
     public int Id => _baseRisk.Id;
@@ -36,6 +40,25 @@ public class Risk: BaseHydrated
     public string SubmittedBy => _usersService.GetUserName(_baseRisk.SubmittedBy);
     
     public RiskScoring Scoring => _risksService.GetRiskScoring(_baseRisk.Id);
+
+    private Mitigation? _mitigation;
+    public Mitigation? Mitigation
+    {
+        get
+        {
+            if (_baseRisk.Status != "New")
+            {
+                if (_mitigation == null || _mitigation.RiskId != _baseRisk.Id)
+                    _mitigation = _mitigationService.GetByRiskId(_baseRisk.Id);
+            }
+            else
+            {
+                _mitigation = null;
+            }
+
+            return _mitigation;
+        }
+    }
 
     public string Manager
     {
