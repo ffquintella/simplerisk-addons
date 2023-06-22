@@ -39,6 +39,8 @@ public class RiskViewModel: ViewModelBase
     public string StrScoring { get; }
     public string StrProbability { get; }
     public string StrImpact { get; }
+    public string StrMitigationNotPlanned { get; }
+    public string StrPlanMitigation { get; }
     #endregion
 
     #region PROPERTIES
@@ -212,6 +214,8 @@ public class RiskViewModel: ViewModelBase
         StrScoring = Localizer["Scoring"] + ":";
         StrProbability = Localizer["Probability"] + ":";
         StrImpact = Localizer["Impact"] + ":";
+        StrMitigationNotPlanned = Localizer["MitigationNotPlannedMSG"];
+        StrPlanMitigation = Localizer["PlanMitigation"];
 
         _risks = new ObservableCollection<Risk>();
         

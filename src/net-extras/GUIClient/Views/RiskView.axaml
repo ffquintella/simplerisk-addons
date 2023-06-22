@@ -16,6 +16,7 @@
     
     <UserControl.Resources>
         <convertes:StatusToColourConverter x:Key="statusToColourConverter"/>
+        <convertes:StringEqualConverter x:Key="stringEqualConverter"/>
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="Auto, *" >
@@ -129,7 +130,14 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
-                
+                <Panel Background="Black">
+                    <StackPanel Orientation="Horizontal" IsVisible="{Binding SelectedRisk.Status, 
+                                    Converter={StaticResource stringEqualConverter},
+                                    ConverterParameter=New}">
+                    <TextBlock  Text="{Binding StrMitigationNotPlanned}" Margin="0 5"/>
+                    <Button Name="BtPlanMitigation" Margin="5 0 "><material:MaterialIcon Kind="Planner"></material:MaterialIcon></Button>
+                    </StackPanel>
+                </Panel>
                 <StackPanel Orientation="Vertical"><TextBlock Text="{Binding StrNotes}" Classes="label"/>
                     <TextBox Text="{Binding SelectedRisk.Notes}" IsReadOnly="True" TextWrapping="Wrap" Height="120"/></StackPanel>
             </StackPanel>

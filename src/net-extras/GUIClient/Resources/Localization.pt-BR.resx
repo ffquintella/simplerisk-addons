@@ -282,4 +282,10 @@
     <data name="PleaseSelectOneMSG" xml:space="preserve">
         <value>Por favor selecione um valor.</value>
     </data>
+    <data name="MitigationNotPlannedMSG" xml:space="preserve">
+        <value>Mitigação não planejada</value>
+    </data>
+    <data name="PlanMitigation" xml:space="preserve">
+        <value>Planejar Mitigação</value>
+    </data>
 </root>
