@@ -73,4 +73,17 @@ public class MitigationManagementService: IMitigationManagementService
 
         return efforts;
     }
+
+    public List<MitigationCost> ListCosts()
+    {
+        using var context = _dalManager.GetContext();
+        var costs = context.MitigationCosts.ToList();
+        if (costs == null)
+        {
+            Log.Error("Error Listing Efforts");
+            throw new DataNotFoundException("MitigationEffort", "");
+        }
+
+        return costs;
+    }
 }

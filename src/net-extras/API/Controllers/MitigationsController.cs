@@ -107,7 +107,7 @@ public class MitigationsController: ApiBaseController
     [HttpGet]
     [Authorize(Policy = "RequireValidUser")]
     [Route("Efforts")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PlanningStrategy>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<MitigationEffort>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<List<MitigationEffort>> ListMitigationEffort()
     {
@@ -116,11 +116,11 @@ public class MitigationsController: ApiBaseController
 
         Logger.Information("User:{UserValue} listed mitigation efforts", user.Value);
 
-        List<PlanningStrategy> strategies;
+        List<MitigationEffort> efforts;
         
         try
         {
-            strategies = _mitigationManagement.ListStrategies();
+            efforts = _mitigationManagement.ListEfforts();
         }
         catch (Exception ex)
         {
@@ -128,7 +128,40 @@ public class MitigationsController: ApiBaseController
             return StatusCode(500);
         }
 
-        return Ok(strategies);
+        return Ok(efforts);
+
+    }
+    
+    /// <summary>
+    /// Gets a Mitigation by it´s Id
+    /// </summary>
+    /// <param name="id">Mitigation Id</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Authorize(Policy = "RequireValidUser")]
+    [Route("Costs")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<MitigationCost>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<MitigationCost>> ListMitigationCosts()
+    {
+
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} listed mitigation costs", user.Value);
+
+        List<MitigationCost> costs;
+        
+        try
+        {
+            costs = _mitigationManagement.ListCosts();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error getting costs: {Message}", ex.Message);
+            return StatusCode(500);
+        }
+
+        return Ok(costs);
 
     }
     #endregion

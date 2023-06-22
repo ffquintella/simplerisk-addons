@@ -30,4 +30,10 @@ public interface IMitigationManagementService
     /// </summary>
     /// <returns></returns>
     public List<MitigationEffort> ListEfforts();
+    
+    /// <summary>
+    /// List the mitigation costs
+    /// </summary>
+    /// <returns>List of mitigation costs</returns>
+    public List<MitigationCost> ListCosts();
 }
