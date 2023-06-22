@@ -112,6 +112,7 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
+                    <!-- Risk scoring panel -->
                     <StackPanel Orientation="Vertical" Margin="10 0">
                         <TextBlock Text="{Binding StrScoring}" Classes="label"/>
                         <StackPanel Orientation="Horizontal">
@@ -128,6 +129,7 @@
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
+                
                 <StackPanel Orientation="Vertical"><TextBlock Text="{Binding StrNotes}" Classes="label"/>
                     <TextBox Text="{Binding SelectedRisk.Notes}" IsReadOnly="True" TextWrapping="Wrap" Height="120"/></StackPanel>
             </StackPanel>
