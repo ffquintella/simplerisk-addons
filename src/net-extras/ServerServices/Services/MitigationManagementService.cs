@@ -29,46 +29,48 @@ public class MitigationManagementService: IMitigationManagementService
     
     public Mitigation GetById(int id)
     {
-        using (var context = _dalManager.GetContext())
+        using var context = _dalManager.GetContext();
+        var mitigation = context.Mitigations.FirstOrDefault(m => m.Id == id);
+        if (mitigation == null)
         {
-            var mitigation = context.Mitigations.FirstOrDefault(m => m.Id == id);
-            if (mitigation == null)
-            {
-                Log.Error("Mitigation with id {id} not found", id);
-                throw new DataNotFoundException("Mitigation", id.ToString());
-            }
-
-            return mitigation;
+            Log.Error("Mitigation with id {Id} not found", id);
+            throw new DataNotFoundException("Mitigation", id.ToString());
         }
+
+        return mitigation;
     }
     
     public Mitigation GetByRiskId(int id)
     {
-        using (var context = _dalManager.GetContext())
+        using var context = _dalManager.GetContext();
+        var mitigation = context.Mitigations.FirstOrDefault(m => m.RiskId == id);
+        if (mitigation == null)
         {
-            var mitigation = context.Mitigations.FirstOrDefault(m => m.RiskId == id);
-            if (mitigation == null)
-            {
-                Log.Error("Mitigation with id {id} not found", id);
-                throw new DataNotFoundException("Mitigation", id.ToString());
-            }
-
-            return mitigation;
+            Log.Error("Mitigation with id {Id} not found", id);
+            throw new DataNotFoundException("Mitigation", id.ToString());
         }
+
+        return mitigation;
     }
 
     public List<PlanningStrategy> ListStrategies()
     {
-        using (var context = _dalManager.GetContext())
-        {
-            var strategies = context.PlanningStrategies.ToList();
-            if (strategies == null)
-            {
-                Log.Error("Error Listing strategies");
-                throw new DataNotFoundException("PlanningStrategies", "");
-            }
+        using var context = _dalManager.GetContext();
+        var strategies = context.PlanningStrategies.ToList();
+        return strategies;
 
-            return strategies;
+    }
+
+    public List<MitigationEffort> ListEfforts()
+    {
+        using var context = _dalManager.GetContext();
+        var efforts = context.MitigationEfforts.ToList();
+        if (efforts == null)
+        {
+            Log.Error("Error Listing Efforts");
+            throw new DataNotFoundException("MitigationEffort", "");
         }
+
+        return efforts;
     }
 }

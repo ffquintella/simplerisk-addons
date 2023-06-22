@@ -73,7 +73,7 @@ public class MitigationsController: ApiBaseController
     /// <returns></returns>
     [HttpGet]
     [Authorize(Policy = "RequireValidUser")]
-    [Route("strategies")]
+    [Route("Strategies")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PlanningStrategy>))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<List<PlanningStrategy>> ListMitigationStrategies()
@@ -82,6 +82,39 @@ public class MitigationsController: ApiBaseController
         var user = GetUser();
 
         Logger.Information("User:{UserValue} listed mitigation strategies", user.Value);
+
+        List<PlanningStrategy> strategies;
+        
+        try
+        {
+            strategies = _mitigationManagement.ListStrategies();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error getting strategies: {Message}", ex.Message);
+            return StatusCode(500);
+        }
+
+        return Ok(strategies);
+
+    }
+    
+    /// <summary>
+    /// Gets a Mitigation by it´s Id
+    /// </summary>
+    /// <param name="id">Mitigation Id</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Authorize(Policy = "RequireValidUser")]
+    [Route("Efforts")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PlanningStrategy>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<MitigationEffort>> ListMitigationEffort()
+    {
+
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} listed mitigation efforts", user.Value);
 
         List<PlanningStrategy> strategies;
         

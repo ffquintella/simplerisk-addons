@@ -24,4 +24,10 @@ public interface IMitigationManagementService
     /// </summary>
     /// <returns></returns>
     public List<PlanningStrategy> ListStrategies();
+    
+    /// <summary>
+    /// List the mitigation efforts
+    /// </summary>
+    /// <returns></returns>
+    public List<MitigationEffort> ListEfforts();
 }
