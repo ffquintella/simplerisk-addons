@@ -244,6 +244,35 @@ public class EditRiskViewModel: ViewModelBase
         BtSaveClicked = ReactiveCommand.Create<Window>(ExecuteSave);
         BtCancelClicked = ReactiveCommand.Create<Window>(ExecuteCancel);
         
+        this.ValidationRule(
+            viewModel => viewModel.SelectedProbability, 
+            name => SelectedProbability != null,
+            Localizer["PleaseSelectOneMSG"]);
+        
+        this.ValidationRule(
+            viewModel => viewModel.SelectedImpact, 
+            name => SelectedImpact != null,
+            Localizer["PleaseSelectOneMSG"]);
+        
+        this.ValidationRule(
+            viewModel => viewModel.SelectedRiskSource, 
+            name => SelectedRiskSource != null,
+            Localizer["PleaseSelectOneMSG"]);
+        
+        this.ValidationRule(
+            viewModel => viewModel.SelectedCategory, 
+            name => SelectedCategory != null,
+            Localizer["PleaseSelectOneMSG"]);
+        
+        this.ValidationRule(
+            viewModel => viewModel.SelectedOwner, 
+            name => SelectedOwner != null,
+            Localizer["PleaseSelectOneMSG"]);
+        
+        this.ValidationRule(
+            viewModel => viewModel.SelectedManager, 
+            name => SelectedManager != null,
+            Localizer["PleaseSelectOneMSG"]);
         
         this.ValidationRule(
             viewModel => viewModel.RiskSubject, 

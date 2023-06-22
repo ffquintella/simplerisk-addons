@@ -537,6 +537,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Por favor selecione um valor..
+        /// </summary>
+        internal static string PleaseSelectOneMSG {
+            get {
+                return ResourceManager.GetString("PleaseSelectOneMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Probabilidade.
         /// </summary>
         internal static string Probability {

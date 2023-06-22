@@ -279,4 +279,7 @@
     <data name="Impact" xml:space="preserve">
         <value>Impact</value>
     </data>
+    <data name="PleaseSelectOneMSG" xml:space="preserve">
+        <value>Please select one value.</value>
+    </data>
 </root>
