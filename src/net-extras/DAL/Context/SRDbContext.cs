@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using DAL.Entities;
+using File = DAL.Entities.File;
 
 namespace DAL.Context
 {
@@ -19,8 +20,6 @@ namespace DAL.Context
 
         public virtual DbSet<AddonsApiKey> AddonsApiKeys { get; set; } = null!;
         public virtual DbSet<AddonsClientRegistration> AddonsClientRegistrations { get; set; } = null!;
-        public virtual DbSet<AddonsNotificationControl> AddonsNotificationControls { get; set; } = null!;
-        public virtual DbSet<AddonsNotificationMessage> AddonsNotificationMessages { get; set; } = null!;
         public virtual DbSet<Assessment> Assessments { get; set; } = null!;
         public virtual DbSet<AssessmentAnswer> AssessmentAnswers { get; set; } = null!;
         public virtual DbSet<AssessmentAnswersToAsset> AssessmentAnswersToAssets { get; set; } = null!;
@@ -59,7 +58,7 @@ namespace DAL.Context
         public virtual DbSet<FailedLoginAttempt> FailedLoginAttempts { get; set; } = null!;
         public virtual DbSet<Family> Families { get; set; } = null!;
         public virtual DbSet<Field> Fields { get; set; } = null!;
-        public virtual DbSet<DAL.Entities.File> Files { get; set; } = null!;
+        public virtual DbSet<File> Files { get; set; } = null!;
         public virtual DbSet<FileType> FileTypes { get; set; } = null!;
         public virtual DbSet<FileTypeExtension> FileTypeExtensions { get; set; } = null!;
         public virtual DbSet<Framework> Frameworks { get; set; } = null!;
@@ -81,6 +80,7 @@ namespace DAL.Context
         public virtual DbSet<MgmtReview> MgmtReviews { get; set; } = null!;
         public virtual DbSet<Mitigation> Mitigations { get; set; } = null!;
         public virtual DbSet<MitigationAcceptUser> MitigationAcceptUsers { get; set; } = null!;
+        public virtual DbSet<MitigationCost> MitigationCosts { get; set; } = null!;
         public virtual DbSet<MitigationEffort> MitigationEfforts { get; set; } = null!;
         public virtual DbSet<MitigationToControl> MitigationToControls { get; set; } = null!;
         public virtual DbSet<MitigationToTeam> MitigationToTeams { get; set; } = null!;
@@ -93,7 +93,6 @@ namespace DAL.Context
         public virtual DbSet<PermissionToUser> PermissionToUsers { get; set; } = null!;
         public virtual DbSet<PlanningStrategy> PlanningStrategies { get; set; } = null!;
         public virtual DbSet<Project> Projects { get; set; } = null!;
-        public virtual DbSet<QuestionnairePendingRisk> QuestionnairePendingRisks { get; set; } = null!;
         public virtual DbSet<Regulation> Regulations { get; set; } = null!;
         public virtual DbSet<ResidualRiskScoringHistory> ResidualRiskScoringHistories { get; set; } = null!;
         public virtual DbSet<Review> Reviews { get; set; } = null!;
@@ -115,6 +114,7 @@ namespace DAL.Context
         public virtual DbSet<RisksToAssetGroup> RisksToAssetGroups { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<RoleResponsibility> RoleResponsibilities { get; set; } = null!;
+        public virtual DbSet<SavedTableDisplaySetting> SavedTableDisplaySettings { get; set; } = null!;
         public virtual DbSet<ScoringMethod> ScoringMethods { get; set; } = null!;
         public virtual DbSet<Session> Sessions { get; set; } = null!;
         public virtual DbSet<Setting> Settings { get; set; } = null!;
@@ -124,14 +124,12 @@ namespace DAL.Context
         public virtual DbSet<TagsTaggee> TagsTaggees { get; set; } = null!;
         public virtual DbSet<Team> Teams { get; set; } = null!;
         public virtual DbSet<Technology> Technologies { get; set; } = null!;
-        public virtual DbSet<TempContributingRiskImpactDatum> TempContributingRiskImpactData { get; set; } = null!;
-        public virtual DbSet<TempRrshLastUpdateAge> TempRrshLastUpdateAges { get; set; } = null!;
-        public virtual DbSet<TempRshLastUpdateAge> TempRshLastUpdateAges { get; set; } = null!;
         public virtual DbSet<TestResult> TestResults { get; set; } = null!;
         public virtual DbSet<TestStatus> TestStatuses { get; set; } = null!;
         public virtual DbSet<ThreatCatalog> ThreatCatalogs { get; set; } = null!;
         public virtual DbSet<ThreatGrouping> ThreatGroupings { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<UserMfa> UserMfas { get; set; } = null!;
         public virtual DbSet<UserPassHistory> UserPassHistories { get; set; } = null!;
         public virtual DbSet<UserPassReuseHistory> UserPassReuseHistories { get; set; } = null!;
         public virtual DbSet<UserToTeam> UserToTeams { get; set; } = null!;
@@ -152,9 +150,6 @@ namespace DAL.Context
             modelBuilder.Entity<AddonsApiKey>(entity =>
             {
                 entity.ToTable("addons_api_keys");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(6) unsigned")
@@ -183,9 +178,6 @@ namespace DAL.Context
             {
                 entity.ToTable("addons_client_registration");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.ExternalId, "ExternalId");
 
                 entity.Property(e => e.Id).HasColumnType("int(11)");
@@ -211,71 +203,9 @@ namespace DAL.Context
                     .HasDefaultValueSql("'requested'");
             });
 
-            modelBuilder.Entity<AddonsNotificationControl>(entity =>
-            {
-                entity.ToTable("addons_notification_control");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
-                entity.HasIndex(e => e.NotificationHash, "hash_ind");
-
-                entity.HasIndex(e => e.NotifiedId, "ntf_ind");
-
-                entity.Property(e => e.Id)
-                    .HasColumnType("int(6) unsigned")
-                    .HasColumnName("id");
-
-                entity.Property(e => e.NotificationHash)
-                    .HasMaxLength(50)
-                    .HasColumnName("notification_hash");
-
-                entity.Property(e => e.NotifiedId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("notified_id");
-
-                entity.Property(e => e.SentDate)
-                    .HasColumnType("datetime")
-                    .ValueGeneratedOnAddOrUpdate()
-                    .HasColumnName("sent_date")
-                    .HasDefaultValueSql("current_timestamp()");
-
-                entity.HasOne(d => d.Notified)
-                    .WithMany(p => p.AddonsNotificationControls)
-                    .HasForeignKey(d => d.NotifiedId)
-                    .HasConstraintName("addons_notification_control_ibfk_1");
-            });
-
-            modelBuilder.Entity<AddonsNotificationMessage>(entity =>
-            {
-                entity.ToTable("addons_notification_messages");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
-                entity.Property(e => e.Id)
-                    .HasColumnType("int(6) unsigned")
-                    .HasColumnName("id");
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .HasColumnName("name");
-
-                entity.Property(e => e.Status)
-                    .HasMaxLength(10)
-                    .HasColumnName("status");
-
-                entity.Property(e => e.Value)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("value");
-            });
-
             modelBuilder.Entity<Assessment>(entity =>
             {
                 entity.ToTable("assessments");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -294,9 +224,6 @@ namespace DAL.Context
             modelBuilder.Entity<AssessmentAnswer>(entity =>
             {
                 entity.ToTable("assessment_answers");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -342,9 +269,6 @@ namespace DAL.Context
 
                 entity.ToTable("assessment_answers_to_assets");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.AssessmentAnswerId, e.AssetId }, "assessment_answer_asset_unique")
                     .IsUnique();
 
@@ -363,9 +287,6 @@ namespace DAL.Context
 
                 entity.ToTable("assessment_answers_to_asset_groups");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.AssessmentAnswerId, e.AssetGroupId }, "assessment_answer_asset_group_unique")
                     .IsUnique();
 
@@ -381,9 +302,6 @@ namespace DAL.Context
             modelBuilder.Entity<AssessmentQuestion>(entity =>
             {
                 entity.ToTable("assessment_questions");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -406,9 +324,6 @@ namespace DAL.Context
             modelBuilder.Entity<AssessmentScoring>(entity =>
             {
                 entity.ToTable("assessment_scoring");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Id, "id")
                     .IsUnique();
@@ -618,9 +533,6 @@ namespace DAL.Context
             {
                 entity.ToTable("assessment_scoring_contributing_impacts");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
@@ -641,9 +553,6 @@ namespace DAL.Context
             modelBuilder.Entity<Asset>(entity =>
             {
                 entity.ToTable("assets");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
@@ -689,9 +598,6 @@ namespace DAL.Context
             {
                 entity.ToTable("asset_groups");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.Name, "name_unique")
                     .IsUnique();
 
@@ -707,9 +613,6 @@ namespace DAL.Context
             modelBuilder.Entity<AssetValue>(entity =>
             {
                 entity.ToTable("asset_values");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -735,9 +638,6 @@ namespace DAL.Context
 
                 entity.ToTable("assets_asset_groups");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.AssetId, e.AssetGroupId }, "asset_asset_group_unique")
                     .IsUnique();
 
@@ -756,15 +656,12 @@ namespace DAL.Context
 
                 entity.ToTable("audit_log");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.LogType)
                     .HasMaxLength(100)
                     .HasColumnName("log_type");
 
                 entity.Property(e => e.Message)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("message");
 
                 entity.Property(e => e.RiskId)
@@ -785,19 +682,16 @@ namespace DAL.Context
             {
                 entity.ToTable("backups");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
                 entity.Property(e => e.AppZipFileName)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("app_zip_file_name");
 
                 entity.Property(e => e.DbZipFileName)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("db_zip_file_name");
 
                 entity.Property(e => e.RandomId)
@@ -817,9 +711,6 @@ namespace DAL.Context
 
                 entity.ToTable("category");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -836,9 +727,6 @@ namespace DAL.Context
 
                 entity.ToTable("close_reason");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -851,9 +739,6 @@ namespace DAL.Context
             modelBuilder.Entity<Closure>(entity =>
             {
                 entity.ToTable("closures");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.CloseReason, "closures_close_reason_idx");
 
@@ -873,7 +758,7 @@ namespace DAL.Context
                     .HasDefaultValueSql("current_timestamp()");
 
                 entity.Property(e => e.Note)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("note");
 
                 entity.Property(e => e.RiskId)
@@ -889,15 +774,12 @@ namespace DAL.Context
             {
                 entity.ToTable("comments");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
                 entity.Property(e => e.Comment1)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("comment");
 
                 entity.Property(e => e.Date)
@@ -917,9 +799,6 @@ namespace DAL.Context
             modelBuilder.Entity<ComplianceFile>(entity =>
             {
                 entity.ToTable("compliance_files");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -971,9 +850,6 @@ namespace DAL.Context
             {
                 entity.ToTable("contributing_risks");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
@@ -988,9 +864,6 @@ namespace DAL.Context
             modelBuilder.Entity<ContributingRisksImpact>(entity =>
             {
                 entity.ToTable("contributing_risks_impact");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.ContributingRisksId, "contributing_risks_id");
 
@@ -1019,9 +892,6 @@ namespace DAL.Context
             {
                 entity.ToTable("contributing_risks_likelihood");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.Value, "crl_index");
 
                 entity.Property(e => e.Id)
@@ -1044,16 +914,11 @@ namespace DAL.Context
 
                 entity.ToTable("control_class");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
 
-                entity.Property(e => e.Name)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("name");
+                entity.Property(e => e.Name).HasColumnName("name");
             });
 
             modelBuilder.Entity<ControlMaturity>(entity =>
@@ -1063,17 +928,12 @@ namespace DAL.Context
 
                 entity.ToTable("control_maturity");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .ValueGeneratedNever()
                     .HasColumnName("value");
 
-                entity.Property(e => e.Name)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("name");
+                entity.Property(e => e.Name).HasColumnName("name");
             });
 
             modelBuilder.Entity<ControlPhase>(entity =>
@@ -1083,16 +943,11 @@ namespace DAL.Context
 
                 entity.ToTable("control_phase");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
 
-                entity.Property(e => e.Name)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("name");
+                entity.Property(e => e.Name).HasColumnName("name");
             });
 
             modelBuilder.Entity<ControlPriority>(entity =>
@@ -1102,16 +957,11 @@ namespace DAL.Context
 
                 entity.ToTable("control_priority");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
 
-                entity.Property(e => e.Name)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("name");
+                entity.Property(e => e.Name).HasColumnName("name");
             });
 
             modelBuilder.Entity<ControlType>(entity =>
@@ -1121,16 +971,11 @@ namespace DAL.Context
 
                 entity.ToTable("control_type");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
 
-                entity.Property(e => e.Name)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("name");
+                entity.Property(e => e.Name).HasColumnName("name");
             });
 
             modelBuilder.Entity<CustomRiskModelValue>(entity =>
@@ -1138,9 +983,6 @@ namespace DAL.Context
                 entity.HasNoKey();
 
                 entity.ToTable("custom_risk_model_values");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.Impact, e.Likelihood }, "impact_likelihood_unique")
                     .IsUnique();
@@ -1161,9 +1003,6 @@ namespace DAL.Context
             modelBuilder.Entity<CvssScoring>(entity =>
             {
                 entity.ToTable("CVSS_scoring");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -1192,16 +1031,11 @@ namespace DAL.Context
             {
                 entity.ToTable("data_classification");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
-                entity.Property(e => e.Name)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("name");
+                entity.Property(e => e.Name).HasColumnName("name");
 
                 entity.Property(e => e.Order)
                     .HasColumnType("int(11)")
@@ -1215,9 +1049,6 @@ namespace DAL.Context
 
                 entity.ToTable("date_formats");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasMaxLength(20)
                     .HasColumnName("value");
@@ -1226,9 +1057,6 @@ namespace DAL.Context
             modelBuilder.Entity<Document>(entity =>
             {
                 entity.ToTable("documents");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -1251,7 +1079,7 @@ namespace DAL.Context
                 entity.Property(e => e.CreationDate).HasColumnName("creation_date");
 
                 entity.Property(e => e.DocumentName)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("document_name");
 
                 entity.Property(e => e.DocumentOwner)
@@ -1307,9 +1135,6 @@ namespace DAL.Context
 
                 entity.ToTable("document_exceptions");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -1329,7 +1154,7 @@ namespace DAL.Context
                     .HasColumnName("approver");
 
                 entity.Property(e => e.AssociatedRisks)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("associated_risks");
 
                 entity.Property(e => e.ControlFrameworkId)
@@ -1389,9 +1214,6 @@ namespace DAL.Context
 
                 entity.ToTable("document_exceptions_status");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -1407,9 +1229,6 @@ namespace DAL.Context
                     .HasName("PRIMARY");
 
                 entity.ToTable("document_status");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
@@ -1427,15 +1246,12 @@ namespace DAL.Context
 
                 entity.ToTable("dynamic_saved_selections");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
 
                 entity.Property(e => e.CustomColumnFilters)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("custom_column_filters");
 
                 entity.Property(e => e.CustomDisplaySettings)
@@ -1462,9 +1278,6 @@ namespace DAL.Context
             modelBuilder.Entity<FailedLoginAttempt>(entity =>
             {
                 entity.ToTable("failed_login_attempts");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -1497,9 +1310,6 @@ namespace DAL.Context
 
                 entity.ToTable("family");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -1512,9 +1322,6 @@ namespace DAL.Context
             modelBuilder.Entity<Field>(entity =>
             {
                 entity.ToTable("fields");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
@@ -1532,12 +1339,9 @@ namespace DAL.Context
                     .HasColumnName("type");
             });
 
-            modelBuilder.Entity<DAL.Entities.File>(entity =>
+            modelBuilder.Entity<File>(entity =>
             {
                 entity.ToTable("files");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -1588,9 +1392,6 @@ namespace DAL.Context
 
                 entity.ToTable("file_types");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
 
@@ -1610,9 +1411,6 @@ namespace DAL.Context
 
                 entity.ToTable("file_type_extensions");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
 
@@ -1631,9 +1429,6 @@ namespace DAL.Context
                     .HasName("PRIMARY");
 
                 entity.ToTable("frameworks");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
@@ -1672,9 +1467,6 @@ namespace DAL.Context
             modelBuilder.Entity<FrameworkControl>(entity =>
             {
                 entity.ToTable("framework_controls");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Deleted, "framework_controls_deleted_idx");
 
@@ -1765,9 +1557,6 @@ namespace DAL.Context
             {
                 entity.ToTable("framework_control_mappings");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.ControlId, "control_id");
 
                 entity.HasIndex(e => e.Framework, "framework");
@@ -1785,16 +1574,13 @@ namespace DAL.Context
                     .HasColumnName("framework");
 
                 entity.Property(e => e.ReferenceName)
-                    .HasMaxLength(200)
+                    .HasMaxLength(1000)
                     .HasColumnName("reference_name");
             });
 
             modelBuilder.Entity<FrameworkControlTest>(entity =>
             {
                 entity.ToTable("framework_control_tests");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Id, "id")
                     .IsUnique();
@@ -1817,9 +1603,7 @@ namespace DAL.Context
                     .HasColumnType("int(11)")
                     .HasColumnName("desired_frequency");
 
-                entity.Property(e => e.ExpectedResults)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("expected_results");
+                entity.Property(e => e.ExpectedResults).HasColumnName("expected_results");
 
                 entity.Property(e => e.FrameworkControlId)
                     .HasColumnType("int(11)")
@@ -1827,15 +1611,11 @@ namespace DAL.Context
 
                 entity.Property(e => e.LastDate).HasColumnName("last_date");
 
-                entity.Property(e => e.Name)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("name");
+                entity.Property(e => e.Name).HasColumnName("name");
 
                 entity.Property(e => e.NextDate).HasColumnName("next_date");
 
-                entity.Property(e => e.Objective)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("objective");
+                entity.Property(e => e.Objective).HasColumnName("objective");
 
                 entity.Property(e => e.Status)
                     .HasColumnType("int(11)")
@@ -1846,9 +1626,7 @@ namespace DAL.Context
                     .HasColumnType("int(11)")
                     .HasColumnName("test_frequency");
 
-                entity.Property(e => e.TestSteps)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("test_steps");
+                entity.Property(e => e.TestSteps).HasColumnName("test_steps");
 
                 entity.Property(e => e.Tester)
                     .HasColumnType("int(11)")
@@ -1858,9 +1636,6 @@ namespace DAL.Context
             modelBuilder.Entity<FrameworkControlTestAudit>(entity =>
             {
                 entity.ToTable("framework_control_test_audits");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -1878,9 +1653,7 @@ namespace DAL.Context
                     .HasColumnType("int(11)")
                     .HasColumnName("desired_frequency");
 
-                entity.Property(e => e.ExpectedResults)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("expected_results");
+                entity.Property(e => e.ExpectedResults).HasColumnName("expected_results");
 
                 entity.Property(e => e.FrameworkControlId)
                     .HasColumnType("int(11)")
@@ -1888,15 +1661,11 @@ namespace DAL.Context
 
                 entity.Property(e => e.LastDate).HasColumnName("last_date");
 
-                entity.Property(e => e.Name)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("name");
+                entity.Property(e => e.Name).HasColumnName("name");
 
                 entity.Property(e => e.NextDate).HasColumnName("next_date");
 
-                entity.Property(e => e.Objective)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("objective");
+                entity.Property(e => e.Objective).HasColumnName("objective");
 
                 entity.Property(e => e.Status)
                     .HasColumnType("int(11)")
@@ -1911,9 +1680,7 @@ namespace DAL.Context
                     .HasColumnType("int(11)")
                     .HasColumnName("test_id");
 
-                entity.Property(e => e.TestSteps)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("test_steps");
+                entity.Property(e => e.TestSteps).HasColumnName("test_steps");
 
                 entity.Property(e => e.Tester)
                     .HasColumnType("int(11)")
@@ -1924,16 +1691,11 @@ namespace DAL.Context
             {
                 entity.ToTable("framework_control_test_comments");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
-                entity.Property(e => e.Comment)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("comment");
+                entity.Property(e => e.Comment).HasColumnName("comment");
 
                 entity.Property(e => e.Date)
                     .HasColumnType("timestamp")
@@ -1952,9 +1714,6 @@ namespace DAL.Context
             modelBuilder.Entity<FrameworkControlTestResult>(entity =>
             {
                 entity.ToTable("framework_control_test_results");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -1975,7 +1734,7 @@ namespace DAL.Context
                     .HasColumnName("submitted_by");
 
                 entity.Property(e => e.Summary)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("summary");
 
                 entity.Property(e => e.TestAuditId)
@@ -1992,9 +1751,6 @@ namespace DAL.Context
             modelBuilder.Entity<FrameworkControlTestResultsToRisk>(entity =>
             {
                 entity.ToTable("framework_control_test_results_to_risks");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -2017,9 +1773,6 @@ namespace DAL.Context
 
                 entity.ToTable("framework_control_to_framework");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.FrameworkId, e.ControlId }, "framework_id");
 
                 entity.Property(e => e.ControlId)
@@ -2034,9 +1787,6 @@ namespace DAL.Context
             modelBuilder.Entity<FrameworkControlTypeMapping>(entity =>
             {
                 entity.ToTable("framework_control_type_mappings");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -2057,9 +1807,6 @@ namespace DAL.Context
                     .HasName("PRIMARY");
 
                 entity.ToTable("graphical_saved_selections");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
@@ -2088,9 +1835,6 @@ namespace DAL.Context
 
                 entity.ToTable("impact");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.Value, "impact_index");
 
                 entity.Property(e => e.Name)
@@ -2107,9 +1851,6 @@ namespace DAL.Context
                 entity.HasNoKey();
 
                 entity.ToTable("items_to_teams");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.ItemId, e.TeamId, e.Type }, "item_team_unique")
                     .IsUnique();
@@ -2140,9 +1881,6 @@ namespace DAL.Context
 
                 entity.ToTable("languages");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -2162,9 +1900,6 @@ namespace DAL.Context
 
                 entity.ToTable("likelihood");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.Value, "likelihood_index");
 
                 entity.Property(e => e.Name)
@@ -2183,9 +1918,6 @@ namespace DAL.Context
 
                 entity.ToTable("location");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -2199,15 +1931,12 @@ namespace DAL.Context
             {
                 entity.ToTable("mgmt_reviews");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
                 entity.Property(e => e.Comments)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("comments");
 
                 entity.Property(e => e.NextReview)
@@ -2240,9 +1969,6 @@ namespace DAL.Context
             {
                 entity.ToTable("mitigations");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.RiskId, "risk_id");
 
                 entity.Property(e => e.Id)
@@ -2250,7 +1976,7 @@ namespace DAL.Context
                     .HasColumnName("id");
 
                 entity.Property(e => e.CurrentSolution)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("current_solution");
 
                 entity.Property(e => e.LastUpdate)
@@ -2286,11 +2012,11 @@ namespace DAL.Context
                     .HasColumnName("risk_id");
 
                 entity.Property(e => e.SecurityRecommendations)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("security_recommendations");
 
                 entity.Property(e => e.SecurityRequirements)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("security_requirements");
 
                 entity.Property(e => e.SubmissionDate)
@@ -2307,9 +2033,6 @@ namespace DAL.Context
             modelBuilder.Entity<MitigationAcceptUser>(entity =>
             {
                 entity.ToTable("mitigation_accept_users");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.RiskId, "mau_risk_id_idx");
 
@@ -2334,15 +2057,28 @@ namespace DAL.Context
                     .HasColumnName("user_id");
             });
 
+            modelBuilder.Entity<MitigationCost>(entity =>
+            {
+                entity.HasKey(e => e.Value)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("mitigation_cost");
+
+                entity.Property(e => e.Value)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("value");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .HasColumnName("name");
+            });
+
             modelBuilder.Entity<MitigationEffort>(entity =>
             {
                 entity.HasKey(e => e.Value)
                     .HasName("PRIMARY");
 
                 entity.ToTable("mitigation_effort");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
@@ -2361,9 +2097,6 @@ namespace DAL.Context
 
                 entity.ToTable("mitigation_to_controls");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.ControlId, e.MitigationId }, "control_id");
 
                 entity.HasIndex(e => e.ControlId, "mtg2ctrl_control_idx");
@@ -2378,9 +2111,7 @@ namespace DAL.Context
                     .HasColumnType("int(11)")
                     .HasColumnName("control_id");
 
-                entity.Property(e => e.ValidationDetails)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("validation_details");
+                entity.Property(e => e.ValidationDetails).HasColumnName("validation_details");
 
                 entity.Property(e => e.ValidationMitigationPercent)
                     .HasColumnType("int(11)")
@@ -2400,9 +2131,6 @@ namespace DAL.Context
                     .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
                 entity.ToTable("mitigation_to_team");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.MitigationId, "mtg2team_mtg_id");
 
@@ -2426,9 +2154,6 @@ namespace DAL.Context
 
                 entity.ToTable("next_step");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -2443,9 +2168,6 @@ namespace DAL.Context
                 entity.HasNoKey();
 
                 entity.ToTable("password_reset");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Attempts)
                     .HasColumnType("int(11)")
@@ -2469,15 +2191,12 @@ namespace DAL.Context
             {
                 entity.ToTable("pending_risks");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
                 entity.Property(e => e.AffectedAssets)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("affected_assets");
 
                 entity.Property(e => e.AssessmentAnswerId)
@@ -2489,7 +2208,7 @@ namespace DAL.Context
                     .HasColumnName("assessment_id");
 
                 entity.Property(e => e.Comment)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("comment");
 
                 entity.Property(e => e.Owner)
@@ -2511,9 +2230,6 @@ namespace DAL.Context
             modelBuilder.Entity<Permission>(entity =>
             {
                 entity.ToTable("permissions");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Key, "key")
                     .IsUnique();
@@ -2543,9 +2259,6 @@ namespace DAL.Context
             {
                 entity.ToTable("permission_groups");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.Name, "name")
                     .IsUnique();
 
@@ -2574,9 +2287,6 @@ namespace DAL.Context
 
                 entity.ToTable("permission_to_permission_group");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.PermissionGroupId, e.PermissionId }, "permission_group_id");
 
                 entity.Property(e => e.PermissionId)
@@ -2596,9 +2306,6 @@ namespace DAL.Context
 
                 entity.ToTable("permission_to_user");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.UserId, e.PermissionId }, "user_id");
 
                 entity.Property(e => e.PermissionId)
@@ -2617,9 +2324,6 @@ namespace DAL.Context
 
                 entity.ToTable("planning_strategy");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -2635,9 +2339,6 @@ namespace DAL.Context
                     .HasName("PRIMARY");
 
                 entity.ToTable("projects");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
@@ -2674,56 +2375,12 @@ namespace DAL.Context
                     .HasDefaultValueSql("'1'");
             });
 
-            modelBuilder.Entity<QuestionnairePendingRisk>(entity =>
-            {
-                entity.ToTable("questionnaire_pending_risks");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
-                entity.Property(e => e.Id)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("id");
-
-                entity.Property(e => e.Asset)
-                    .HasMaxLength(200)
-                    .HasColumnName("asset");
-
-                entity.Property(e => e.Comment)
-                    .HasMaxLength(500)
-                    .HasColumnName("comment");
-
-                entity.Property(e => e.Owner)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("owner");
-
-                entity.Property(e => e.QuestionnaireScoringId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("questionnaire_scoring_id");
-
-                entity.Property(e => e.QuestionnaireTrackingId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("questionnaire_tracking_id");
-
-                entity.Property(e => e.Subject)
-                    .HasColumnType("blob")
-                    .HasColumnName("subject");
-
-                entity.Property(e => e.SubmissionDate)
-                    .HasColumnType("timestamp")
-                    .HasColumnName("submission_date")
-                    .HasDefaultValueSql("current_timestamp()");
-            });
-
             modelBuilder.Entity<Regulation>(entity =>
             {
                 entity.HasKey(e => e.Value)
                     .HasName("PRIMARY");
 
                 entity.ToTable("regulation");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
@@ -2737,9 +2394,6 @@ namespace DAL.Context
             modelBuilder.Entity<ResidualRiskScoringHistory>(entity =>
             {
                 entity.ToTable("residual_risk_scoring_history");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.RiskId, "risk_id");
 
@@ -2767,9 +2421,6 @@ namespace DAL.Context
 
                 entity.ToTable("review");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -2784,9 +2435,6 @@ namespace DAL.Context
                 entity.HasNoKey();
 
                 entity.ToTable("review_levels");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -2804,9 +2452,6 @@ namespace DAL.Context
             modelBuilder.Entity<Risk>(entity =>
             {
                 entity.ToTable("risks");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Category, "category");
 
@@ -2927,15 +2572,12 @@ namespace DAL.Context
             {
                 entity.ToTable("risk_catalog");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
                 entity.Property(e => e.Description)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("description");
 
                 entity.Property(e => e.Function)
@@ -2966,9 +2608,6 @@ namespace DAL.Context
 
                 entity.ToTable("risk_function");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -2984,9 +2623,6 @@ namespace DAL.Context
                     .HasName("PRIMARY");
 
                 entity.ToTable("risk_grouping");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
@@ -3008,9 +2644,6 @@ namespace DAL.Context
                 entity.HasNoKey();
 
                 entity.ToTable("risk_levels");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "risk_levels_name_idx");
 
@@ -3039,9 +2672,6 @@ namespace DAL.Context
 
                 entity.ToTable("risk_models");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .HasColumnName("name");
@@ -3054,9 +2684,6 @@ namespace DAL.Context
             modelBuilder.Entity<RiskScoring>(entity =>
             {
                 entity.ToTable("risk_scoring");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.CalculatedRisk, "calculated_risk");
 
@@ -3269,9 +2896,6 @@ namespace DAL.Context
             {
                 entity.ToTable("risk_scoring_contributing_impacts");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.ContributingRiskId, "contributing_risk_id");
 
                 entity.HasIndex(e => e.RiskScoringId, "risk_scoring_id");
@@ -3301,9 +2925,6 @@ namespace DAL.Context
             {
                 entity.ToTable("risk_scoring_history");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => e.RiskId, "risk_id");
 
                 entity.HasIndex(e => e.LastUpdate, "rsh_last_update_idx");
@@ -3331,9 +2952,6 @@ namespace DAL.Context
 
                 entity.ToTable("risk_to_additional_stakeholder");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.UserId, e.RiskId }, "user_id");
 
                 entity.Property(e => e.RiskId)
@@ -3353,9 +2971,6 @@ namespace DAL.Context
 
                 entity.ToTable("risk_to_location");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.LocationId, e.RiskId }, "location_id");
 
                 entity.Property(e => e.RiskId)
@@ -3374,9 +2989,6 @@ namespace DAL.Context
                     .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
                 entity.ToTable("risk_to_team");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.RiskId, "risk2team_risk_id");
 
@@ -3401,9 +3013,6 @@ namespace DAL.Context
 
                 entity.ToTable("risk_to_technology");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.TechnologyId, e.RiskId }, "technology_id");
 
                 entity.Property(e => e.RiskId)
@@ -3420,9 +3029,6 @@ namespace DAL.Context
                 entity.HasNoKey();
 
                 entity.ToTable("risks_to_assets");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.AssetId, e.RiskId }, "asset_id")
                     .IsUnique();
@@ -3442,9 +3048,6 @@ namespace DAL.Context
 
                 entity.ToTable("risks_to_asset_groups");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.AssetGroupId, e.RiskId }, "asset_group_id")
                     .IsUnique();
 
@@ -3463,9 +3066,6 @@ namespace DAL.Context
                     .HasName("PRIMARY");
 
                 entity.ToTable("role");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Default, "default")
                     .IsUnique();
@@ -3491,9 +3091,6 @@ namespace DAL.Context
 
                 entity.ToTable("role_responsibilities");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.PermissionId, e.RoleId }, "permission_id");
 
                 entity.Property(e => e.RoleId)
@@ -3505,15 +3102,46 @@ namespace DAL.Context
                     .HasColumnName("permission_id");
             });
 
+            modelBuilder.Entity<SavedTableDisplaySetting>(entity =>
+            {
+                entity.ToTable("saved_table_display_settings");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.DisplaySettings)
+                    .HasColumnType("mediumtext")
+                    .HasColumnName("display_settings");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(100)
+                    .HasColumnName("name")
+                    .HasComment("Name of the save. Only used if there are multiple saves for the same view.");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id")
+                    .HasComment("ID of the user who created the save");
+
+                entity.Property(e => e.View)
+                    .HasMaxLength(100)
+                    .HasColumnName("view")
+                    .HasComment("Name of the view like plan_mitigation or asset_edit to be able to get it for the table where it is used");
+
+                entity.Property(e => e.Visibility)
+                    .HasColumnType("enum('private','public')")
+                    .HasColumnName("visibility")
+                    .HasDefaultValueSql("'private'")
+                    .HasComment("Visibility of the save. Only used if there are multiple saves for the same view.");
+            });
+
             modelBuilder.Entity<ScoringMethod>(entity =>
             {
                 entity.HasKey(e => e.Value)
                     .HasName("PRIMARY");
 
                 entity.ToTable("scoring_methods");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
@@ -3527,9 +3155,6 @@ namespace DAL.Context
             modelBuilder.Entity<Session>(entity =>
             {
                 entity.ToTable("sessions");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasMaxLength(128)
@@ -3551,17 +3176,12 @@ namespace DAL.Context
 
                 entity.ToTable("settings");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Name)
                     .HasMaxLength(100)
                     .HasColumnName("name")
                     .HasDefaultValueSql("''");
 
-                entity.Property(e => e.Value)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("value");
+                entity.Property(e => e.Value).HasColumnName("value");
             });
 
             modelBuilder.Entity<Source>(entity =>
@@ -3570,9 +3190,6 @@ namespace DAL.Context
                     .HasName("PRIMARY");
 
                 entity.ToTable("source");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
@@ -3590,9 +3207,6 @@ namespace DAL.Context
 
                 entity.ToTable("status");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -3605,9 +3219,6 @@ namespace DAL.Context
             modelBuilder.Entity<Tag>(entity =>
             {
                 entity.ToTable("tags");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Tag1, "tag_unique")
                     .IsUnique();
@@ -3626,9 +3237,6 @@ namespace DAL.Context
                 entity.HasNoKey();
 
                 entity.ToTable("tags_taggees");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => new { e.TagId, e.TaggeeId, e.Type }, "tag_taggee_unique")
                     .IsUnique();
@@ -3655,9 +3263,6 @@ namespace DAL.Context
 
                 entity.ToTable("team");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -3674,9 +3279,6 @@ namespace DAL.Context
 
                 entity.ToTable("technology");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -3686,117 +3288,12 @@ namespace DAL.Context
                     .HasColumnName("name");
             });
 
-            modelBuilder.Entity<TempContributingRiskImpactDatum>(entity =>
-            {
-                entity.HasKey(e => new { e.RiskScoringId, e.ContributingRisksId })
-                    .HasName("PRIMARY")
-                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
-
-                entity.ToTable("TEMP_contributing_risk_impact_data");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
-                entity.HasIndex(e => e.ContributingRisksId, "contributing_risks_id");
-
-                entity.HasIndex(e => e.RiskScoringId, "risk_scoring_id");
-
-                entity.Property(e => e.RiskScoringId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("risk_scoring_id");
-
-                entity.Property(e => e.ContributingRisksId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("contributing_risks_id");
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(100)
-                    .HasColumnName("name");
-
-                entity.Property(e => e.Value)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("value");
-            });
-
-            modelBuilder.Entity<TempRrshLastUpdateAge>(entity =>
-            {
-                entity.ToTable("TEMP_rrsh_last_update_age");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
-                entity.HasIndex(e => e.AgeRange, "age_range");
-
-                entity.HasIndex(e => e.RiskId, "risk_id");
-
-                entity.Property(e => e.Id)
-                    .HasColumnType("int(11)")
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
-
-                entity.Property(e => e.Age)
-                    .HasColumnType("int(7)")
-                    .HasColumnName("age");
-
-                entity.Property(e => e.AgeRange)
-                    .HasMaxLength(5)
-                    .HasColumnName("age_range");
-
-                entity.Property(e => e.LastUpdate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("last_update");
-
-                entity.Property(e => e.ResidualRisk).HasColumnName("residual_risk");
-
-                entity.Property(e => e.RiskId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("risk_id");
-            });
-
-            modelBuilder.Entity<TempRshLastUpdateAge>(entity =>
-            {
-                entity.ToTable("TEMP_rsh_last_update_age");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
-                entity.HasIndex(e => e.AgeRange, "age_range");
-
-                entity.HasIndex(e => e.RiskId, "risk_id");
-
-                entity.Property(e => e.Id)
-                    .HasColumnType("int(11)")
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
-
-                entity.Property(e => e.Age)
-                    .HasColumnType("int(7)")
-                    .HasColumnName("age");
-
-                entity.Property(e => e.AgeRange)
-                    .HasMaxLength(5)
-                    .HasColumnName("age_range");
-
-                entity.Property(e => e.CalculatedRisk).HasColumnName("calculated_risk");
-
-                entity.Property(e => e.LastUpdate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("last_update");
-
-                entity.Property(e => e.RiskId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("risk_id");
-            });
-
             modelBuilder.Entity<TestResult>(entity =>
             {
                 entity.HasKey(e => e.Value)
                     .HasName("PRIMARY");
 
                 entity.ToTable("test_results");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.HasIndex(e => e.Name, "name_unique")
                     .IsUnique();
@@ -3821,9 +3318,6 @@ namespace DAL.Context
 
                 entity.ToTable("test_status");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -3837,15 +3331,12 @@ namespace DAL.Context
             {
                 entity.ToTable("threat_catalog");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
                 entity.Property(e => e.Description)
-                    .HasColumnType("text")
+                    .HasColumnType("mediumtext")
                     .HasColumnName("description");
 
                 entity.Property(e => e.Grouping)
@@ -3872,9 +3363,6 @@ namespace DAL.Context
 
                 entity.ToTable("threat_grouping");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
                     .HasColumnName("value");
@@ -3896,9 +3384,6 @@ namespace DAL.Context
                     .HasName("PRIMARY");
 
                 entity.ToTable("user");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Value)
                     .HasColumnType("int(11)")
@@ -3966,8 +3451,7 @@ namespace DAL.Context
 
                 entity.Property(e => e.MultiFactor)
                     .HasColumnType("int(11)")
-                    .HasColumnName("multi_factor")
-                    .HasDefaultValueSql("'1'");
+                    .HasColumnName("multi_factor");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -3996,12 +3480,31 @@ namespace DAL.Context
                     .HasColumnName("username");
             });
 
+            modelBuilder.Entity<UserMfa>(entity =>
+            {
+                entity.HasKey(e => e.Uid)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("user_mfa");
+
+                entity.Property(e => e.Uid)
+                    .HasColumnType("int(11)")
+                    .ValueGeneratedNever()
+                    .HasColumnName("uid");
+
+                entity.Property(e => e.Secret)
+                    .HasMaxLength(16)
+                    .HasColumnName("secret");
+
+                entity.Property(e => e.Verified)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("verified")
+                    .HasDefaultValueSql("'0'");
+            });
+
             modelBuilder.Entity<UserPassHistory>(entity =>
             {
                 entity.ToTable("user_pass_history");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -4030,9 +3533,6 @@ namespace DAL.Context
             {
                 entity.ToTable("user_pass_reuse_history");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
@@ -4060,9 +3560,6 @@ namespace DAL.Context
 
                 entity.ToTable("user_to_team");
 
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
-
                 entity.HasIndex(e => new { e.TeamId, e.UserId }, "team_id");
 
                 entity.Property(e => e.UserId)
@@ -4077,9 +3574,6 @@ namespace DAL.Context
             modelBuilder.Entity<ValidationFile>(entity =>
             {
                 entity.ToTable("validation_files");
-
-                entity.HasCharSet("utf8mb3")
-                    .UseCollation("utf8mb3_general_ci");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
