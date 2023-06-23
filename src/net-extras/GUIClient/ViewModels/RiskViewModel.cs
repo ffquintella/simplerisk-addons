@@ -80,12 +80,12 @@ public class RiskViewModel: ViewModelBase
 
             if (_hdRisk is { Mitigation: not null })
             {
-                SelectedMitigationStrategy = Strategies.Where(s => s.Value == _hdRisk.Mitigation.PlanningStrategy)
-                    .Select(s => s.Name).FirstOrDefault();
-                SelectedMitigationCost = Costs.Where(c => c.Value == _hdRisk.Mitigation.MitigationCost).Select(c => c.Name)
-                    .FirstOrDefault();
-                SelectedMitigationEffort = Efforts.Where(e => e.Value == _hdRisk.Mitigation.MitigationEffort).Select(c => c.Name)
-                    .FirstOrDefault();
+                SelectedMitigationStrategy = Strategies!.Where(s => s.Value == _hdRisk.Mitigation.PlanningStrategy)
+                    .Select(s => s.Name).FirstOrDefault()!;
+                SelectedMitigationCost = Costs!.Where(c => c.Value == _hdRisk.Mitigation.MitigationCost).Select(c => c.Name)
+                    .FirstOrDefault()!;
+                SelectedMitigationEffort = Efforts!.Where(e => e.Value == _hdRisk.Mitigation.MitigationEffort).Select(c => c.Name)
+                    .FirstOrDefault()!;
             }
 
         }
@@ -303,7 +303,7 @@ public class RiskViewModel: ViewModelBase
         
     }
 
-    private async void ApplyNewFilter()
+    private void ApplyNewFilter()
     {
         if (_filterStatuses.Any(s => s == RiskStatus.New))
         {
@@ -319,7 +319,7 @@ public class RiskViewModel: ViewModelBase
         }
     }
     
-    private async void ApplyMitigationFilter()
+    private void ApplyMitigationFilter()
     {
         if (_filterStatuses.Any(s => s == RiskStatus.MitigationPlanned))
         {
@@ -351,7 +351,7 @@ public class RiskViewModel: ViewModelBase
         }
     }
     
-    private async void ApplyClosedFilter()
+    private void ApplyClosedFilter()
     {
         if (_filterStatuses.Any(s => s == RiskStatus.Closed))
         {
@@ -454,7 +454,7 @@ public class RiskViewModel: ViewModelBase
             }
             catch (Exception ex)
             {
-                Log.Error("Error deleting risk score with id:{Id}", SelectedRisk.Id);
+                Log.Error("Error deleting risk score with id:{Id} details: {Details}", SelectedRisk.Id, ex.Message);
             }
             
             try
@@ -463,7 +463,7 @@ public class RiskViewModel: ViewModelBase
             }
             catch (Exception ex)
             {
-                Log.Error("Error deleting risk  with id:{Id}", SelectedRisk.Id);
+                Log.Error("Error deleting risk  with id:{Id} details: {Details}", SelectedRisk.Id, ex.Message);
             }
             
            
