@@ -379,7 +379,7 @@ public class RiskViewModel: ViewModelBase
     {
         // OPENS a new window to create the risk
         
-        var dialog = new EditRiskView()
+        var dialog = new EditRiskWindow()
         {
             DataContext = new EditRiskViewModel(OperationType.Create),
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
@@ -408,7 +408,7 @@ public class RiskViewModel: ViewModelBase
         
         // OPENS a new window to edit the risk
 
-        var dialog = new EditRiskView()
+        var dialog = new EditRiskWindow()
         {
             DataContext = new EditRiskViewModel(OperationType.Edit, SelectedRisk),
             WindowStartupLocation = WindowStartupLocation.CenterOwner,

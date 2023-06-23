@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:material="using:Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="GUIClient.Views.Login"
+        x:Class="GUIClient.Views.LoginWindow"
         Opened="OnOpened"
         xmlns:convertes="clr-namespace:GUIClient.Converters"
         xmlns:vm="using:GUIClient.ViewModels"
@@ -13,7 +13,7 @@
         ExtendClientAreaToDecorationsHint="True"
         Width="400" Height="300"
         WindowStartupLocation="CenterOwner"
-        Name="LoginWindow"
+        Name="Login"
         >
     
     <Design.DataContext>
@@ -76,7 +76,7 @@
                                 Converter={StaticResource authenticationMethodsContainConverter},
                                     ConverterParameter=SAML}"
                                 Command="{Binding BtSSOClicked}"
-                                CommandParameter="{Binding ElementName=LoginWindow}"
+                                CommandParameter="{Binding ElementName=Login}"
                                 Margin="5 0" >
                             <PathIcon Height="16" Data="{StaticResource accountSSO}" />
                         </Button>
@@ -84,7 +84,7 @@
                                 IsEnabled="{Binding IsAccepted , Mode=TwoWay}" 
                                 Margin="5 0"
                                 Command="{Binding BtLoginClicked}"
-                                CommandParameter="{Binding ElementName=LoginWindow}">
+                                CommandParameter="{Binding ElementName=Login}">
                             <TextBlock Text="{Binding StrLogin}" />
                         </Button>
                         <Button  Name="BtExit" 

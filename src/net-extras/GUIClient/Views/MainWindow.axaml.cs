@@ -34,7 +34,7 @@ namespace GUIClient.Views
                 if (result == false)
                 {
                     //_logger.Debug("Starting authentication");
-                    var dialog = new Login();
+                    var dialog = new LoginWindow();
                     dialog.ShowDialog( this );
                 }
             }

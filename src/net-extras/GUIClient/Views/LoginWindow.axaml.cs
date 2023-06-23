@@ -13,7 +13,7 @@ using Splat;
 
 namespace GUIClient.Views;
 
-public partial class Login : Window
+public partial class LoginWindow : Window
 {
     private IRegistrationService _registrationService;
     private ILocalizationService _localizationService;
@@ -23,7 +23,7 @@ public partial class Login : Window
     private IAuthenticationService _authenticationService;
 
     
-    public Login()
+    public LoginWindow()
     {
         DataContext = new LoginViewModel();
   
@@ -31,7 +31,7 @@ public partial class Login : Window
         _localizationService = GetService<ILocalizationService>();
         _environmentService = GetService<IEnvironmentService>();
         _mutableConfigurationService = GetService<IMutableConfigurationService>();
-        _localizer = _localizationService.GetLocalizer(typeof(Login).Assembly);
+        _localizer = _localizationService.GetLocalizer(typeof(LoginWindow).Assembly);
         _authenticationService = GetService<IAuthenticationService>();
         
         InitializeComponent();
