@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using Avalonia.Controls;
@@ -65,7 +66,7 @@ public class EditRiskViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _selectedCategory, value);
     }
 
-    private bool _isCtrlNumVisible = false;
+    private bool _isCtrlNumVisible;
     
     
     public bool IsCtrlNumVisible
@@ -134,7 +135,7 @@ public class EditRiskViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _selectedRiskTypes, value);
     }
     
-    private RiskScoring RiskScoring { get; set; }
+    private RiskScoring? RiskScoring { get; set; }
     
     public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
     public ReactiveCommand<Window, Unit> BtCancelClicked { get; }
@@ -143,8 +144,8 @@ public class EditRiskViewModel: ViewModelBase
     private readonly OperationType _operationType;
     private readonly IRisksService _risksService;
     private readonly IAuthenticationService _authenticationService;
-    private IUsersService _usersService;
-    private string _originalSubject = "";
+    private readonly IUsersService _usersService;
+    private readonly string _originalSubject = "";
 
     
     public EditRiskViewModel(OperationType operation, Risk? risk = null)
@@ -211,7 +212,7 @@ public class EditRiskViewModel: ViewModelBase
             SelectedRiskSource = RiskSources!.FirstOrDefault(r => r.Value == risk.Source);
             SelectedCategory = Categories!.FirstOrDefault(c => c.Value == risk.Category);
             var ids = risk.RiskCatalogMapping.TrimEnd().Length > 0 ? risk.RiskCatalogMapping.Split(',').Select(int.Parse).ToList() : new List<int>();
-            SelectedRiskTypes = RiskTypes!.Where(rt => ids.Contains(rt.Id)).ToList();
+            SelectedRiskTypes = ids.Count == 0 ? new List<RiskCatalog>() : RiskTypes.Where(rt => ids.Contains(rt.Id)).ToList();
             SelectedOwner = UserListings!.FirstOrDefault(ul => ul.Id == risk.Owner);
             SelectedManager = UserListings!.FirstOrDefault(ul => ul.Id == risk.Manager);
             Notes = risk.Notes;
@@ -228,7 +229,7 @@ public class EditRiskViewModel: ViewModelBase
         {
             SelectedImpact = Impacts!.FirstOrDefault(i => i.Value == 1);
             SelectedProbability = Probabilities!.FirstOrDefault(p => p.Value == 1);
-            var sowner = UserListings.FirstOrDefault(ul => ul.Id == _authenticationService!.AuthenticatedUserInfo!.UserId);
+            var sowner = UserListings.FirstOrDefault(ul => ul.Id == _authenticationService.AuthenticatedUserInfo!.UserId);
             if (sowner != null) SelectedOwner = sowner;
         }
 
@@ -246,37 +247,37 @@ public class EditRiskViewModel: ViewModelBase
         
         this.ValidationRule(
             viewModel => viewModel.SelectedProbability, 
-            name => SelectedProbability != null,
+            prob => prob != null,
             Localizer["PleaseSelectOneMSG"]);
         
         this.ValidationRule(
             viewModel => viewModel.SelectedImpact, 
-            name => SelectedImpact != null,
+            impact => impact != null,
             Localizer["PleaseSelectOneMSG"]);
         
         this.ValidationRule(
             viewModel => viewModel.SelectedRiskSource, 
-            name => SelectedRiskSource != null,
+            source => source != null,
             Localizer["PleaseSelectOneMSG"]);
         
         this.ValidationRule(
             viewModel => viewModel.SelectedCategory, 
-            name => SelectedCategory != null,
+            category => category != null,
             Localizer["PleaseSelectOneMSG"]);
         
         this.ValidationRule(
             viewModel => viewModel.SelectedOwner, 
-            name => SelectedOwner != null,
+            owner => owner != null,
             Localizer["PleaseSelectOneMSG"]);
         
         this.ValidationRule(
             viewModel => viewModel.SelectedManager, 
-            name => SelectedManager != null,
+            manager => manager != null,
             Localizer["PleaseSelectOneMSG"]);
         
         this.ValidationRule(
             viewModel => viewModel.RiskSubject, 
-            name => !string.IsNullOrWhiteSpace(RiskSubject),
+            subject => !string.IsNullOrWhiteSpace(subject),
             Localizer["RiskMustHaveASubjectMSG"]);
         
         IObservable<bool> subjectUnique =
@@ -358,8 +359,9 @@ public class EditRiskViewModel: ViewModelBase
         {
             if (_operationType == OperationType.Create)
             {
-                var new_risk = _risksService.CreateRisk(Risk);
-                riskScoring.Id = new_risk.Id;
+                var newRisk = _risksService.CreateRisk(Risk);
+                Debug.Assert(newRisk != null, nameof(newRisk) + " != null");
+                riskScoring.Id = newRisk.Id;
                 _risksService.CreateRiskScoring(riskScoring);
             }
 
@@ -367,18 +369,21 @@ public class EditRiskViewModel: ViewModelBase
             if (_operationType == OperationType.Edit)
             {
                 _risksService.SaveRisk(Risk);
-                if (Risk.Id != RiskScoring.Id)
+                if (RiskScoring != null && Risk.Id != RiskScoring.Id)
                 {
                     riskScoring.Id = Risk.Id;
                     _risksService.CreateRiskScoring(riskScoring);
                 }
                 else
                 {
-                    RiskScoring.ClassicImpact = SelectedImpact!.Value;
-                    RiskScoring.ClassicLikelihood = SelectedProbability!.Value;
-                    RiskScoring.CalculatedRisk =
-                        _risksService.GetRiskScore(SelectedProbability!.Value, SelectedImpact!.Value);
-                    _risksService.SaveRiskScoring(RiskScoring);
+                    if (RiskScoring != null)
+                    {
+                        RiskScoring.ClassicImpact = SelectedImpact!.Value;
+                        RiskScoring.ClassicLikelihood = SelectedProbability!.Value;
+                        RiskScoring.CalculatedRisk =
+                            _risksService.GetRiskScore(SelectedProbability!.Value, SelectedImpact!.Value);
+                        _risksService.SaveRiskScoring(RiskScoring);
+                    }
                 }
 
                 
@@ -430,7 +435,7 @@ public class EditRiskViewModel: ViewModelBase
                 .GetMessageBoxStandardWindow(new MessageBoxStandardParams
                 {
                     ContentTitle = Localizer["Error"],
-                    ContentMessage = Localizer["ErrorCreatingRiskMSG"] ,
+                    ContentMessage = Localizer["ErrorCreatingRiskMSG"] + "ex: " + ex.Message,
                     Icon = Icon.Error,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 });
@@ -445,47 +450,31 @@ public class EditRiskViewModel: ViewModelBase
         baseWindow.Close();
     }
 
-    private bool _saveEnabled = false;
+    private bool _saveEnabled;
     
     public bool SaveEnabled
     {
-        get
-        {
-            return _saveEnabled;
-        }
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _saveEnabled, value);
-        }
+        get => _saveEnabled;
+        set => this.RaiseAndSetIfChanged(ref _saveEnabled, value);
     }
     
-    private string _riskSuject = "";
+    private string _riskSubject = "";
     
     public string RiskSubject
     {
-        get
-        {
-            return _riskSuject;
-        }
+        get => _riskSubject;
         set
         {
             Risk.Subject = value;
-            this.RaiseAndSetIfChanged(ref _riskSuject, value);
+            this.RaiseAndSetIfChanged(ref _riskSubject, value);
         }
     }
     
     private Risk _risk = new Risk();
-    //public Risk Risk { get; set; }
     
     public Risk Risk
     {
-        get
-        {
-            return _risk;
-        }
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _risk, value);
-        }
+        get => _risk;
+        set => this.RaiseAndSetIfChanged(ref _risk, value);
     }
 }
