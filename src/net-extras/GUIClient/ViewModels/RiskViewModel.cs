@@ -216,6 +216,7 @@ public class RiskViewModel: ViewModelBase
     public List<MitigationEffort>? Efforts { get; set; }
 
     public ReactiveCommand<Window, Unit> BtAddMitigationClicked { get; }
+    public ReactiveCommand<Window, Unit> BtEditMitigationClicked { get; }
     public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
     public ReactiveCommand<Window, Unit> BtEditRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
@@ -267,6 +268,7 @@ public class RiskViewModel: ViewModelBase
         
         
         BtAddMitigationClicked = ReactiveCommand.Create<Window>(ExecuteAddMitigation);
+        BtEditMitigationClicked = ReactiveCommand.Create<Window>(ExecuteEditMitigation);
         BtAddRiskClicked = ReactiveCommand.Create<Window>(ExecuteAddRisk);
         BtEditRiskClicked = ReactiveCommand.Create<Window>(ExecuteEditRisk);
         BtDeleteRiskClicked = ReactiveCommand.Create(ExecuteDeleteRisk);
@@ -369,20 +371,24 @@ public class RiskViewModel: ViewModelBase
     private void ApplyFilter()
     {
         Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter) && _filterStatuses.Any(s => r.Status == RiskHelper.GetRiskStatusName(s))));
-        //Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter)));
     }
 
     private async void ExecuteAddMitigation(Window openWindow)
     {
         var dialog = new EditMitigationWindow()
         {
-            DataContext = new EditMitigationViewModel(),
+            DataContext = new EditMitigationViewModel(OperationType.Create),
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             Width = 1000,
             Height = 650,
         };
         await dialog.ShowDialog( openWindow );
         
+    }
+    
+    private async void ExecuteEditMitigation(Window openWindow)
+    {
+        throw new NotImplementedException();
     }
 
     private async void ExecuteAddRisk(Window openWindow)
