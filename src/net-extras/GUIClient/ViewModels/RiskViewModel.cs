@@ -40,7 +40,7 @@ public class RiskViewModel: ViewModelBase
     public string StrProbability { get; }
     public string StrImpact { get; }
     public string StrMitigationNotPlanned { get; }
-    public string StrPlanMitigation { get; }
+    //public string StrPlanMitigation { get; }
     public string StrMitigation { get; }
     public string StrUpdate { get; }
     public string StrStrategy { get; }
@@ -65,7 +65,7 @@ public class RiskViewModel: ViewModelBase
     private Hydrated.Risk? _hdRisk;
     public Hydrated.Risk? HdRisk
     {
-        get { return _hdRisk; }
+        get => _hdRisk;
         set
         {
             this.RaiseAndSetIfChanged(ref _hdRisk, value);
@@ -119,10 +119,7 @@ public class RiskViewModel: ViewModelBase
 
     public Risk? SelectedRisk
     {
-        get
-        {
-            return _selectedRisk;
-        }
+        get => _selectedRisk;
         set
         {
             if (value != null)
@@ -160,10 +157,7 @@ public class RiskViewModel: ViewModelBase
 
     public bool CanDeleteRisk
     {
-        get
-        {
-            return _hasDeleteRiskPermission;
-        }
+        get => _hasDeleteRiskPermission;
         set => this.RaiseAndSetIfChanged(ref _hasDeleteRiskPermission, value);
     }
 
@@ -221,6 +215,7 @@ public class RiskViewModel: ViewModelBase
     
     public List<MitigationEffort>? Efforts { get; set; }
 
+    public ReactiveCommand<Window, Unit> BtAddMitigationClicked { get; }
     public ReactiveCommand<Window, Unit> BtAddRiskClicked { get; }
     public ReactiveCommand<Window, Unit> BtEditRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
@@ -260,7 +255,7 @@ public class RiskViewModel: ViewModelBase
         StrProbability = Localizer["Probability"] + ":";
         StrImpact = Localizer["Impact"] + ":";
         StrMitigationNotPlanned = Localizer["MitigationNotPlannedMSG"];
-        StrPlanMitigation = Localizer["PlanMitigation"];
+        //StrPlanMitigation = Localizer["PlanMitigation"];
         StrMitigation = Localizer["Mitigation"];
         StrUpdate = Localizer["Update"];
         StrStrategy = Localizer["Strategy"];
@@ -270,6 +265,8 @@ public class RiskViewModel: ViewModelBase
 
         _risks = new ObservableCollection<Risk>();
         
+        
+        BtAddMitigationClicked = ReactiveCommand.Create<Window>(ExecuteAddMitigation);
         BtAddRiskClicked = ReactiveCommand.Create<Window>(ExecuteAddRisk);
         BtEditRiskClicked = ReactiveCommand.Create<Window>(ExecuteEditRisk);
         BtDeleteRiskClicked = ReactiveCommand.Create(ExecuteDeleteRisk);
@@ -290,7 +287,7 @@ public class RiskViewModel: ViewModelBase
             RiskStatus.MitigationPlanned
         };
 
-        _autenticationService.AuthenticationSucceeded += (obj, args) =>
+        _autenticationService.AuthenticationSucceeded += (_, _) =>
         {
             Initialize();
             
@@ -357,7 +354,7 @@ public class RiskViewModel: ViewModelBase
         {
             ClosedFilterColor = Brushes.White;
             _filterStatuses.Remove(RiskStatus.Closed);
-            LoadRisks(false);
+            LoadRisks();
             ApplyFilter();
         }
         else
@@ -373,6 +370,19 @@ public class RiskViewModel: ViewModelBase
     {
         Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter) && _filterStatuses.Any(s => r.Status == RiskHelper.GetRiskStatusName(s))));
         //Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter)));
+    }
+
+    private async void ExecuteAddMitigation(Window openWindow)
+    {
+        var dialog = new EditMitigationWindow()
+        {
+            DataContext = new EditMitigationViewModel(),
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Width = 1000,
+            Height = 650,
+        };
+        await dialog.ShowDialog( openWindow );
+        
     }
 
     private async void ExecuteAddRisk(Window openWindow)

@@ -145,7 +145,12 @@
                                     Converter={StaticResource stringNotEqualConverter},
                                     ConverterParameter=New}">
                         <TextBlock Grid.Row="0" Grid.Column="0"  Classes="label" Text="{Binding StrMitigation}" />
-                        <Button Grid.Row="0" Grid.Column="5" Name="BtEditMitigation" ><material:MaterialIcon Kind="Edit"></material:MaterialIcon></Button>
+                        <Button Grid.Row="0" Grid.Column="5" Name="BtEditMitigation"
+                                Command="{Binding BtAddMitigationClicked}"
+                                CommandParameter="{Binding $parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent}"
+                                >
+                            <material:MaterialIcon Kind="Edit"></material:MaterialIcon>
+                        </Button>
                         
                         <TextBlock Grid.Row="1" Grid.Column="0"  Classes="label" Margin="5 5">Dt Sub</TextBlock>
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding HdRisk.Mitigation.SubmissionDate}" Margin="5 5"/>
