@@ -134,7 +134,8 @@
 
             
             <TextBlock Grid.Row="8" Grid.Column="0"  Text="{Binding StrMitigationPercent, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/>
-            <NumericUpDown Grid.Row="8" Grid.Column="1" Value="0" Increment="1" Minimum="0" Maximum="100" Width="297"  Margin="5 5"/>
+            <NumericUpDown Grid.Row="8" Grid.Column="1" Value="{Binding MitigationPercent, Mode=TwoWay}" 
+                           Increment="1" Minimum="0" Maximum="100" Width="297"  Margin="5 5"/>
             
             <StackPanel Grid.Row="11" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5 5">
                 <Button >

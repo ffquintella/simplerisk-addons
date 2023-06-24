@@ -93,6 +93,7 @@ public class EditMitigationViewModel: ViewModelBase
             SecurityRequirements = "";
             RecommendedSolution = "";
             SelectedMitigationOwner = Users.Find(x => x.Id == _authenticationService.AuthenticatedUserInfo!.UserId);
+            MitigationPercent = 0;
         }
         else
         {
@@ -111,6 +112,8 @@ public class EditMitigationViewModel: ViewModelBase
             if (mitigationTeams != null)
                 SelectedMitigationTeam =
                     Teams.FirstOrDefault(at => mitigationTeams.Select(mt => mt.Value).Contains(at.Value));
+            
+            MitigationPercent = _mitigation.MitigationPercent;
         }
     }
 
@@ -195,6 +198,12 @@ public class EditMitigationViewModel: ViewModelBase
             set => this.RaiseAndSetIfChanged(ref _plannedDate, value);
         }
     
+        private decimal _mitigationPercent = 0;
+        public decimal MitigationPercent
+        {
+            get => _mitigationPercent;
+            set => this.RaiseAndSetIfChanged(ref _mitigationPercent, value);
+        }
 
     #endregion
 }
