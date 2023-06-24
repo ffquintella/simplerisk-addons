@@ -9,6 +9,7 @@ using GUIClient.Models;
 using Model.DTO;
 using Model.Exceptions;
 using ReactiveUI;
+using ReactiveUI.Validation.Extensions;
 
 namespace GUIClient.ViewModels;
 
@@ -121,12 +122,50 @@ public class EditMitigationViewModel: ViewModelBase
         BtSaveClicked = ReactiveCommand.Create<Window>(ExecuteSave);
         BtCancelClicked = ReactiveCommand.Create<Window>(ExecuteCancel);
         
+        #region VALIDATION
+        
+        this.ValidationRule(
+            viewModel => viewModel.SelectedMitigationOwner, 
+            prob => prob != null,
+            Localizer["PleaseSelectOneMSG"]);
+        
+        this.ValidationRule(
+            viewModel => viewModel.SelectedMitigationCost, 
+            prob => prob != null,
+            Localizer["PleaseSelectOneMSG"]);
+        
+        this.ValidationRule(
+            viewModel => viewModel.SelectedMitigationEffort, 
+            prob => prob != null,
+            Localizer["PleaseSelectOneMSG"]);
+        
+        this.ValidationRule(
+            viewModel => viewModel.SelectedPlanningStrategy, 
+            prob => prob != null,
+            Localizer["PleaseSelectOneMSG"]);
+        
+       
+        this.IsValid()
+            .Subscribe(x =>
+            {
+                SaveEnabled = x;
+            });
+        
+        #endregion
+        
     }
 
     #region PROPERTIES
 
         public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
         public ReactiveCommand<Window, Unit> BtCancelClicked { get; }
+        
+        private bool _saveEnabled = true;
+        public bool SaveEnabled
+        {
+            get => _saveEnabled;
+            set => this.RaiseAndSetIfChanged(ref _saveEnabled, value);
+        }
         
         public List<Team> Teams => _teamsService.GetAll();
         private Team? _selectedMitigationTeam;
