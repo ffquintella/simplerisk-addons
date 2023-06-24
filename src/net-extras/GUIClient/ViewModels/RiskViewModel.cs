@@ -379,8 +379,9 @@ public class RiskViewModel: ViewModelBase
         {
             DataContext = new EditMitigationViewModel(OperationType.Create),
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
-            Width = 1000,
+            Width = 1050,
             Height = 650,
+            CanResize = false
         };
         await dialog.ShowDialog( openWindow );
         

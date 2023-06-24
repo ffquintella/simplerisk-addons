@@ -309,4 +309,16 @@
     <data name="Effort" xml:space="preserve">
         <value>Esforço</value>
     </data>
+    <data name="Solution" xml:space="preserve">
+        <value>Solução</value>
+    </data>
+    <data name="PlannedDate" xml:space="preserve">
+        <value>Data  Planejada para Mitigação</value>
+    </data>
+    <data name="PlanningStrategy" xml:space="preserve">
+        <value>Estratégia planejada</value>
+    </data>
+    <data name="SecurityRequirements" xml:space="preserve">
+        <value>Requisitos de Segurança</value>
+    </data>
 </root>

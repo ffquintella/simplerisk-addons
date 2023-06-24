@@ -582,6 +582,24 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Planned Mitigation Date.
+        /// </summary>
+        internal static string PlannedDate {
+            get {
+                return ResourceManager.GetString("PlannedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planning Strategy.
+        /// </summary>
+        internal static string PlanningStrategy {
+            get {
+                return ResourceManager.GetString("PlanningStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select one value..
         /// </summary>
         internal static string PleaseSelectOneMSG {
@@ -753,6 +771,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Security Requirements.
+        /// </summary>
+        internal static string SecurityRequirements {
+            get {
+                return ResourceManager.GetString("SecurityRequirements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select your authentication method..
         /// </summary>
         internal static string SelectAuthenticationMSG {
@@ -794,6 +821,15 @@ namespace GUIClient.Resources {
         internal static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Solution.
+        /// </summary>
+        internal static string Solution {
+            get {
+                return ResourceManager.GetString("Solution", resourceCulture);
             }
         }
         

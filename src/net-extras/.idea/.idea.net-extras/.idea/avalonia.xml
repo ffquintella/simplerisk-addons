@@ -22,6 +22,7 @@
         <entry key="GUIClient/Views/EditMitigationWindow.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/EditRisk.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/EditRiskView.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/EditRiskWindow.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/Login.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/LoginWindow.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/MainWindow.axaml" value="GUIClient/GUIClient.csproj" />

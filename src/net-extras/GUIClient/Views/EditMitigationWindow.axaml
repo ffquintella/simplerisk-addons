@@ -26,14 +26,29 @@
             <Panel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Background="SlateGray">
                 <TextBlock Classes="label" Text="{Binding StrMitigation, Mode=OneTime}" Margin="5"/>
             </Panel>
-            <TextBlock Grid.Row="1" Grid.Column="0"  Text="{Binding StrSubmissionDate, OneTime}" Classes="label" Margin="3 10 0 0"/> 
+            <TextBlock Grid.Row="1" Grid.Column="0"  Text="{Binding StrSubmissionDate, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/> 
             <DatePicker Grid.Row="1" Grid.Column="1"  Margin="5 5"  />
             
-            <TextBlock Grid.Row="1" Grid.Column="2"  Text="Solutuion:" Classes="label" Margin="3 10 0 0"/> 
-            <TextBox Grid.Row="1" Grid.Column="3"  Margin="5 5" Width="250" />
+            <TextBlock Grid.Row="1" Grid.Column="2"  Text="{Binding StrSolution, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/> 
+            <TextBox Grid.Row="1" Grid.Column="3" Grid.RowSpan="2"
+                     Margin="5 5" Width="350" Height="80" TextWrapping="Wrap" AcceptsReturn="True"  />
             
-            <TextBlock Grid.Row="2" Grid.Column="0"  Text="Planed Date:" Classes="label" Margin="3 10 0 0"/> 
+            <TextBlock Grid.Row="2" Grid.Column="0"  Text="{Binding StrPlannedDate, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/> 
             <DatePicker Grid.Row="2" Grid.Column="1"  Margin="5 5"  />
+            
+            <TextBlock Grid.Row="3" Grid.Column="0"  Text="{Binding StrPlanningStrategy, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/>
+            
+            <ComboBox Grid.Row="3" Grid.Column="1" x:Name="strategyComboBox" Width="297" Margin="5 5">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="3" Grid.Column="2"  Text="{Binding StrSecurityRequirements, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/> 
+            <TextBox Grid.Row="3" Grid.Column="3" Grid.RowSpan="2"
+                     Margin="5 5" Width="350" Height="80" TextWrapping="Wrap" AcceptsReturn="True"  />
             
         </Grid>
     </Grid>

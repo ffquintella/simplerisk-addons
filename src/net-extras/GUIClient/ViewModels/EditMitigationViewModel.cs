@@ -10,6 +10,14 @@ public class EditMitigationViewModel: ViewModelBase
 
     public string StrMitigation { get; }
     public string StrSubmissionDate { get; }
+    
+    public string StrSolution { get; }
+    public string StrPlannedDate { get; }
+    
+    public string StrPlanningStrategy { get; }
+    
+    public string StrSecurityRequirements { get; }
+    
     #endregion
 
     #region INTERNAL FIELDS
@@ -29,9 +37,12 @@ public class EditMitigationViewModel: ViewModelBase
         }
         _mitigation = _operationType == OperationType.Create ? new Mitigation() : mitigation;
         
-        
         StrMitigation = Localizer["Mitigation"];
         StrSubmissionDate = Localizer["SubmissionDate"] + ":";
+        StrSolution = Localizer["Solution"] + ":";
+        StrPlannedDate = Localizer["PlannedDate"] + ":";
+        StrPlanningStrategy = Localizer["PlanningStrategy"] + ":";
+        StrSecurityRequirements = Localizer["SecurityRequirements"] + ":";
     }
 
     #region PROPERTIES

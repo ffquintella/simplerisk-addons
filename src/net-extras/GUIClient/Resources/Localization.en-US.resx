@@ -309,4 +309,16 @@
     <data name="Effort" xml:space="preserve">
         <value>Effort</value>
     </data>
+    <data name="Solution" xml:space="preserve">
+        <value>Solution</value>
+    </data>
+    <data name="PlannedDate" xml:space="preserve">
+        <value>Planned Mitigation Date</value>
+    </data>
+    <data name="PlanningStrategy" xml:space="preserve">
+        <value>Planning Strategy</value>
+    </data>
+    <data name="SecurityRequirements" xml:space="preserve">
+        <value>Security Requirements</value>
+    </data>
 </root>
