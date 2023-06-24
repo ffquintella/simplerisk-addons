@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using ClientServices.Interfaces;
 using DAL.Entities;
 using GUIClient.Models;
 using Model.Exceptions;
@@ -42,6 +44,7 @@ public class EditMitigationViewModel: ViewModelBase
 
     private readonly OperationType _operationType;
     private Mitigation? _mitigation;
+    private readonly IMitigationService _mitigationService;
 
     #endregion
 
@@ -70,6 +73,8 @@ public class EditMitigationViewModel: ViewModelBase
         StrDocumentation = Localizer["Documentation"] + ":";
         StrSave = Localizer["Save"];
         StrCancel = Localizer["Cancel"];
+        
+        _mitigationService = GetService<IMitigationService>();
 
         if (_operationType == OperationType.Create)
         {
@@ -77,6 +82,7 @@ public class EditMitigationViewModel: ViewModelBase
             Solution = "";
             PlannedDate = new DateTimeOffset(DateTime.Now + TimeSpan.FromDays(2));
             _mitigation!.LastUpdate = DateTime.Now;
+            SecurityRequirements = "";
         }
         else
         {
@@ -84,12 +90,41 @@ public class EditMitigationViewModel: ViewModelBase
             Solution = _mitigation!.CurrentSolution;
             PlannedDate = new DateTimeOffset(_mitigation!.PlanningDate.ToDateTime(new TimeOnly(0,0)));
             _mitigation.LastUpdate = DateTime.Now;
+            SelectedPlanningStrategy = PlanningStrategies.Find(x => x.Value == _mitigation.PlanningStrategy);
+            SecurityRequirements = _mitigation.SecurityRequirements;
+            SelectedMitigationEffort = MitigationEfforts.Find(x => x.Value == _mitigation.MitigationEffort);
         }
     }
 
     #region PROPERTIES
 
+        public List<MitigationEffort> MitigationEfforts => _mitigationService.GetEfforts()!;
+        
+        private MitigationEffort? _selectedMitigationEffort;
+        public MitigationEffort? SelectedMitigationEffort
+        {
+            get => _selectedMitigationEffort;
+            set => this.RaiseAndSetIfChanged(ref _selectedMitigationEffort, value);
+        }
+        
+        public List<MitigationCost> MitigationCosts => _mitigationService.GetCosts()!;
+        private MitigationCost? _selectedMitigationCost;
+        public MitigationCost? SelectedMitigationCost
+        {
+            get => _selectedMitigationCost;
+            set => this.RaiseAndSetIfChanged(ref _selectedMitigationCost, value);
+        }
+        
     
+        public List<PlanningStrategy> PlanningStrategies => _mitigationService.GetStrategies()!;
+    
+        private PlanningStrategy? _selectedPlanningStrategy;
+        public PlanningStrategy? SelectedPlanningStrategy
+        {
+            get => _selectedPlanningStrategy;
+            set => this.RaiseAndSetIfChanged(ref _selectedPlanningStrategy, value);
+        }
+        
         private DateTimeOffset _submissionDate;
         public DateTimeOffset SubmissionDate
         {
@@ -102,6 +137,13 @@ public class EditMitigationViewModel: ViewModelBase
         {
             get => _solution;
             set => this.RaiseAndSetIfChanged(ref _solution, value);
+        }
+        
+        private string _securityRequirements = "";
+        public string SecurityRequirements
+        {
+            get => _securityRequirements;
+            set => this.RaiseAndSetIfChanged(ref _securityRequirements, value);
         }
         
         private DateTimeOffset _plannedDate;
