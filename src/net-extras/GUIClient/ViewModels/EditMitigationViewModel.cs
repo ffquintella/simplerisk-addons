@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
+using Avalonia.Controls;
 using ClientServices.Interfaces;
 using DAL.Entities;
 using GUIClient.Models;
@@ -45,7 +47,7 @@ public class EditMitigationViewModel: ViewModelBase
     #region INTERNAL FIELDS
 
     private readonly OperationType _operationType;
-    private Mitigation? _mitigation;
+    private readonly Mitigation? _mitigation;
     private readonly IMitigationService _mitigationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly ITeamsService _teamsService;
@@ -115,10 +117,17 @@ public class EditMitigationViewModel: ViewModelBase
             
             MitigationPercent = _mitigation.MitigationPercent;
         }
+        
+        BtSaveClicked = ReactiveCommand.Create<Window>(ExecuteSave);
+        BtCancelClicked = ReactiveCommand.Create<Window>(ExecuteCancel);
+        
     }
 
     #region PROPERTIES
 
+        public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
+        public ReactiveCommand<Window, Unit> BtCancelClicked { get; }
+        
         public List<Team> Teams => _teamsService.GetAll();
         private Team? _selectedMitigationTeam;
         public Team? SelectedMitigationTeam
@@ -204,6 +213,20 @@ public class EditMitigationViewModel: ViewModelBase
             get => _mitigationPercent;
             set => this.RaiseAndSetIfChanged(ref _mitigationPercent, value);
         }
+
+    #endregion
+    
+    #region METHODS
+
+    private async void ExecuteSave(Window baseWindow)
+    {
+        
+    }
+    
+    private async void ExecuteCancel(Window baseWindow)
+    {
+        baseWindow.Close();
+    }
 
     #endregion
 }

@@ -6,7 +6,8 @@
         xmlns:material="using:Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GUIClient.Views.EditMitigationWindow"
-        Title="EditMitigationWindow">
+        Title="EditMitigationWindow"
+        Name="EditMitigationWin">
     
     <Design.DataContext>
         <viewModels:EditMitigationViewModel/>
@@ -138,13 +139,19 @@
                            Increment="1" Minimum="0" Maximum="100" Width="297"  Margin="5 5"/>
             
             <StackPanel Grid.Row="11" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5 5">
-                <Button >
+                <Button 
+                    Command="{Binding BtSaveClicked}"
+                    CommandParameter="{Binding ElementName=EditMitigationWin}"
+                    >
                     <StackPanel Orientation="Horizontal">
                         <material:MaterialIcon Kind="ContentSave" Width="20" Height="20" Margin=" 0 0 5 0" />
                         <TextBlock Text="{Binding StrSave, Mode=OneTime}"/>
                     </StackPanel>
                 </Button>
-                <Button >
+                <Button
+                    Command="{Binding BtCancelClicked}"
+                    CommandParameter="{Binding ElementName=EditMitigationWin}"
+                    >
                     <StackPanel Orientation="Horizontal">
                         <material:MaterialIcon Kind="Cancel" Width="20" Height="20" Margin=" 0 0 5 0" />
                         <TextBlock Text="{Binding StrCancel, Mode=OneTime}"/>
