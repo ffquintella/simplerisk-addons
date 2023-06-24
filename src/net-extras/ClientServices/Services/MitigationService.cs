@@ -16,6 +16,34 @@ public class MitigationService: ServiceBase, IMitigationService
     {
         _authenticationService = authenticationService;
     }
+
+    public List<Team>? GetTeamsById(int id)
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Mitigations/{id}/Teams");
+        try
+        {
+            var response = client.Get<List<Team>>(request);
+            if (response == null)
+            {
+                _logger.Error("Error getting teams for mitigation {Id}", id);
+                throw new RestComunicationException($"Error getting teams for mitigation {id}");
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting teams for mitigation  message:{Message}", ex.Message);
+            throw new RestComunicationException("Error getting teams for mitigation", ex);
+        }
+    }
     
     public Mitigation? GetByRiskId(int id)
     {

@@ -14,7 +14,8 @@ public class MitigationsController: ApiBaseController
 {
     #region FIELDS
     private IRiskManagementService _riskManagement;
-    private IMitigationManagementService _mitigationManagement;
+    private readonly IMitigationManagementService _mitigationManagement;
+    private ITeamManagementService _teamManagement;
     #endregion
     
     public MitigationsController(
@@ -22,10 +23,12 @@ public class MitigationsController: ApiBaseController
         IHttpContextAccessor httpContextAccessor,
         IUserManagementService userManagementService,
         IMitigationManagementService mitigationManagementService,
+        ITeamManagementService teamManagementService,
         IRiskManagementService riskManagement) : base(logger, httpContextAccessor, userManagementService)
     {
         _riskManagement = riskManagement;
         _mitigationManagement = mitigationManagementService;
+        _teamManagement = teamManagementService;
     }
     
     #region METHODS
@@ -36,7 +39,7 @@ public class MitigationsController: ApiBaseController
     /// <returns></returns>
     [HttpGet]
     [Route("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Mitigation))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult<Mitigation> GetById(int id)
     {
@@ -67,10 +70,46 @@ public class MitigationsController: ApiBaseController
     }
     
     /// <summary>
-    /// Gets a Mitigation by it´s Id
+    /// Gets mitigation teams by mitigation Ids
     /// </summary>
     /// <param name="id">Mitigation Id</param>
-    /// <returns></returns>
+    /// <returns>List of Mitigation Teams</returns>
+    [HttpGet]
+    [Route("{id}/Teams")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Team>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<List<Team>> GetTeamsById(int id)
+    {
+
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} got mitigation´s {Id} teams", user.Value, id);
+
+        List<Team> teams;
+        
+        try
+        {
+            teams = _teamManagement.GetByMitigationId(id);
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("There is no teams with mitigation: {Id} : {ExMessage}", id, ex.Message);
+            return this.NotFound();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error getting mitigation´s teams: {Message}", ex.Message);
+            return StatusCode(500);
+        }
+
+        return Ok(teams);
+
+    }
+    
+    /// <summary>
+    /// List mitigation strategies
+    /// </summary>
+    /// <returns>List of mitigation strategies </returns>
     [HttpGet]
     [Authorize(Policy = "RequireValidUser")]
     [Route("Strategies")]
@@ -100,10 +139,9 @@ public class MitigationsController: ApiBaseController
     }
     
     /// <summary>
-    /// Gets a Mitigation by it´s Id
+    /// List mitigation efforts
     /// </summary>
-    /// <param name="id">Mitigation Id</param>
-    /// <returns></returns>
+    /// <returns>List of mitigation efforts</returns>
     [HttpGet]
     [Authorize(Policy = "RequireValidUser")]
     [Route("Efforts")]
@@ -133,10 +171,9 @@ public class MitigationsController: ApiBaseController
     }
     
     /// <summary>
-    /// Gets a Mitigation by it´s Id
+    /// Lists Mitigation costs
     /// </summary>
-    /// <param name="id">Mitigation Id</param>
-    /// <returns></returns>
+    /// <returns>List of mitigation costs</returns>
     [HttpGet]
     [Authorize(Policy = "RequireValidUser")]
     [Route("Costs")]

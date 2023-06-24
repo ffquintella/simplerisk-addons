@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ClientServices.Interfaces;
 using DAL.Entities;
 using GUIClient.Models;
@@ -47,6 +48,7 @@ public class EditMitigationViewModel: ViewModelBase
     private Mitigation? _mitigation;
     private readonly IMitigationService _mitigationService;
     private readonly IAuthenticationService _authenticationService;
+    private readonly ITeamsService _teamsService;
     private readonly IUsersService _usersService;
 
     #endregion
@@ -80,6 +82,7 @@ public class EditMitigationViewModel: ViewModelBase
         _mitigationService = GetService<IMitigationService>();
         _usersService = GetService<IUsersService>();
         _authenticationService = GetService<IAuthenticationService>();
+        _teamsService = GetService<ITeamsService>();
 
         if (_operationType == OperationType.Create)
         {
@@ -103,10 +106,23 @@ public class EditMitigationViewModel: ViewModelBase
             SelectedMitigationCost = MitigationCosts.Find(x => x.Value == _mitigation.MitigationCost);
             RecommendedSolution = _mitigation.SecurityRecommendations;
             SelectedMitigationOwner = Users.Find(x => x.Id == _mitigation.MitigationOwner);
+
+            var mitigationTeams = _mitigationService.GetTeamsById(_mitigation.Id);
+            if (mitigationTeams != null)
+                SelectedMitigationTeam =
+                    Teams.FirstOrDefault(at => mitigationTeams.Select(mt => mt.Value).Contains(at.Value));
         }
     }
 
     #region PROPERTIES
+
+        public List<Team> Teams => _teamsService.GetAll();
+        private Team? _selectedMitigationTeam;
+        public Team? SelectedMitigationTeam
+        {
+            get => _selectedMitigationTeam;
+            set => this.RaiseAndSetIfChanged(ref _selectedMitigationTeam, value);
+        }
 
         public List<UserListing> Users => _usersService.ListUsers();
 

@@ -48,6 +48,9 @@ public class GeneralServicesBootstrapper: BaseBootstrapper
             GetService<IRestService>(), 
             GetService<IAuthenticationService>()));
         
+        services.RegisterLazySingleton<ITeamsService>(() => new TeamsService(
+            GetService<IRestService>()));
+        
         services.RegisterLazySingleton<IMitigationService>(() => new MitigationService(
             GetService<IRestService>(), 
             GetService<IAuthenticationService>()));

@@ -1,19 +1,20 @@
 ﻿using DAL.Entities;
 
-namespace ServerServices.Interfaces;
+namespace ClientServices.Interfaces;
 
-public interface ITeamManagementService
+public interface ITeamsService
 {
     /// <summary>
-    /// Get all teams
+    /// List all teams
     /// </summary>
-    /// <returns>List of teams</returns>
+    /// <returns></returns>
     public List<Team> GetAll();
     
+    
     /// <summary>
-    /// Gets the teams by mitigation id
+    /// Gets all teams by mitigation id
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">Mitigation id</param>
     /// <returns></returns>
     public List<Team> GetByMitigationId(int id);
 }
