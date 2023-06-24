@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ClientServices.Interfaces;
 using DAL.Entities;
 using GUIClient.Models;
+using Model.DTO;
 using Model.Exceptions;
 using ReactiveUI;
 
@@ -45,6 +46,8 @@ public class EditMitigationViewModel: ViewModelBase
     private readonly OperationType _operationType;
     private Mitigation? _mitigation;
     private readonly IMitigationService _mitigationService;
+    private readonly IAuthenticationService _authenticationService;
+    private readonly IUsersService _usersService;
 
     #endregion
 
@@ -75,6 +78,8 @@ public class EditMitigationViewModel: ViewModelBase
         StrCancel = Localizer["Cancel"];
         
         _mitigationService = GetService<IMitigationService>();
+        _usersService = GetService<IUsersService>();
+        _authenticationService = GetService<IAuthenticationService>();
 
         if (_operationType == OperationType.Create)
         {
@@ -83,6 +88,8 @@ public class EditMitigationViewModel: ViewModelBase
             PlannedDate = new DateTimeOffset(DateTime.Now + TimeSpan.FromDays(2));
             _mitigation!.LastUpdate = DateTime.Now;
             SecurityRequirements = "";
+            RecommendedSolution = "";
+            SelectedMitigationOwner = Users.Find(x => x.Id == _authenticationService.AuthenticatedUserInfo!.UserId);
         }
         else
         {
@@ -93,11 +100,30 @@ public class EditMitigationViewModel: ViewModelBase
             SelectedPlanningStrategy = PlanningStrategies.Find(x => x.Value == _mitigation.PlanningStrategy);
             SecurityRequirements = _mitigation.SecurityRequirements;
             SelectedMitigationEffort = MitigationEfforts.Find(x => x.Value == _mitigation.MitigationEffort);
+            SelectedMitigationCost = MitigationCosts.Find(x => x.Value == _mitigation.MitigationCost);
+            RecommendedSolution = _mitigation.SecurityRecommendations;
+            SelectedMitigationOwner = Users.Find(x => x.Id == _mitigation.MitigationOwner);
         }
     }
 
     #region PROPERTIES
 
+        public List<UserListing> Users => _usersService.ListUsers();
+
+        private UserListing? _selectedMitigationOwner;
+        public UserListing? SelectedMitigationOwner
+        {
+            get => _selectedMitigationOwner;
+            set => this.RaiseAndSetIfChanged(ref _selectedMitigationOwner, value);
+        }
+        
+        private string _recommendedSolution = "";
+        public string RecommendedSolution
+        {
+            get => _recommendedSolution;
+            set => this.RaiseAndSetIfChanged(ref _recommendedSolution, value);
+        }
+    
         public List<MitigationEffort> MitigationEfforts => _mitigationService.GetEfforts()!;
         
         private MitigationEffort? _selectedMitigationEffort;
