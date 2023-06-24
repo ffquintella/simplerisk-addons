@@ -52,6 +52,7 @@ public class ServicesBootstrapper
         services.AddSingleton<DALManager>(sp => new DALManager(config));
         
         services.AddTransient<IMitigationManagementService, MitigationManagementService>();
+        services.AddTransient<ITeamManagementService, TeamManagementService>();
         services.AddTransient<IRiskManagementService, RiskManagementService>();
         services.AddTransient<IUserManagementService, UserManagementService>();
         services.AddTransient<IRoleManagementService, RoleManagementService>();
