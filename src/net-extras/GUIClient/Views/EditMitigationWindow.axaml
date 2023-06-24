@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:GUIClient.ViewModels"
+        xmlns:material="using:Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GUIClient.Views.EditMitigationWindow"
         Title="EditMitigationWindow">
@@ -21,7 +22,7 @@
                     MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-        <Grid Grid.Row="0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto,*" >
+        <Grid Grid.Row="0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto,*" >
             <!-- TITLE -->
             <Panel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Background="SlateGray">
                 <TextBlock Classes="label" Text="{Binding StrMitigation, Mode=OneTime}" Margin="5"/>
@@ -89,8 +90,49 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             
+            <TextBlock Grid.Row="7" Grid.Column="2"  Text="{Binding StrDocumentation, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/>
+            
+            <!-- Documentation List -->
+            <ListBox Grid.Row="7" Grid.Column="3" Grid.RowSpan="3" Name="LstDocs"  Margin="5 5"
+                     HorizontalAlignment="Center" Width="350" Height="80"
+                     ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Number}"/><TextBlock>: </TextBlock><TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel Grid.Row="10" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5 5">
+                <Button >
+                    <material:MaterialIcon Kind="Add" Width="15" Height="15" />
+                </Button>
+                <Button >
+                    <material:MaterialIcon Kind="Remove" Width="15" Height="15" />
+                </Button>
+            </StackPanel>
+
+            
             <TextBlock Grid.Row="8" Grid.Column="0"  Text="{Binding StrMitigationPercent, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/>
             <NumericUpDown Grid.Row="8" Grid.Column="1" Value="0" Increment="1" Minimum="0" Maximum="100" Width="297"  Margin="5 5"/>
+            
+            <StackPanel Grid.Row="11" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5 5">
+                <Button >
+                    <StackPanel Orientation="Horizontal">
+                        <material:MaterialIcon Kind="ContentSave" Width="20" Height="20" Margin=" 0 0 5 0" />
+                        <TextBlock Text="{Binding StrSave, Mode=OneTime}"/>
+                    </StackPanel>
+                </Button>
+                <Button >
+                    <StackPanel Orientation="Horizontal">
+                        <material:MaterialIcon Kind="Cancel" Width="20" Height="20" Margin=" 0 0 5 0" />
+                        <TextBlock Text="{Binding StrCancel, Mode=OneTime}"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
             
         </Grid>
     </Grid>

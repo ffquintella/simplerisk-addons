@@ -342,4 +342,7 @@
     <data name="MitigationPercent" xml:space="preserve">
         <value>Percentual da mitigação</value>
     </data>
+    <data name="Documentation" xml:space="preserve">
+        <value>Documentação</value>
+    </data>
 </root>

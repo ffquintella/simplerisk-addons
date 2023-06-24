@@ -29,6 +29,11 @@ public class EditMitigationViewModel: ViewModelBase
     
     public string StrMitigationPercent { get; }
     
+    public string StrDocumentation { get; }
+    
+    public string StrSave { get; }
+    public string StrCancel { get; }
+    
     #endregion
 
     #region INTERNAL FIELDS
@@ -60,6 +65,9 @@ public class EditMitigationViewModel: ViewModelBase
         StrMitigationOwner = Localizer["MitigationOwner"] + ":";
         StrMitigationTeam = Localizer["MitigationTeam"] + ":";
         StrMitigationPercent = Localizer["MitigationPercent"] + ":";
+        StrDocumentation = Localizer["Documentation"] + ":";
+        StrSave = Localizer["Save"];
+        StrCancel = Localizer["Cancel"];
     }
 
     #region PROPERTIES

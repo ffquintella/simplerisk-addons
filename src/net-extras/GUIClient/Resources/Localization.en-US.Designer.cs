@@ -276,6 +276,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        internal static string Documentation {
+            get {
+                return ResourceManager.GetString("Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string Edit {
