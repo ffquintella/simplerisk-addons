@@ -1,6 +1,8 @@
-﻿using DAL.Entities;
+﻿using System;
+using DAL.Entities;
 using GUIClient.Models;
 using Model.Exceptions;
+using ReactiveUI;
 
 namespace GUIClient.ViewModels;
 
@@ -68,10 +70,22 @@ public class EditMitigationViewModel: ViewModelBase
         StrDocumentation = Localizer["Documentation"] + ":";
         StrSave = Localizer["Save"];
         StrCancel = Localizer["Cancel"];
+
+        if (_operationType == OperationType.Create)
+        {
+            SubmissionDate = new DateTimeOffset(DateTime.Now);
+        }
+        else SubmissionDate = new DateTimeOffset(_mitigation!.SubmissionDate);
     }
 
     #region PROPERTIES
 
+        public DateTimeOffset _submissionDate;
+        public DateTimeOffset SubmissionDate
+        {
+            get => _submissionDate;
+            set => this.RaiseAndSetIfChanged(ref _submissionDate, value);
+        }
     
 
     #endregion
