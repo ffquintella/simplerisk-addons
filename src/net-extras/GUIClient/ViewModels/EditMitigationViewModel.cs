@@ -18,6 +18,17 @@ public class EditMitigationViewModel: ViewModelBase
     
     public string StrSecurityRequirements { get; }
     
+    public string StrMitigationEffort { get; }
+    
+    public string StrMitigationCost { get; }
+    public string StrSecurityRecommendation { get; }
+    
+    public string StrMitigationOwner { get; }
+    
+    public string StrMitigationTeam { get; }
+    
+    public string StrMitigationPercent { get; }
+    
     #endregion
 
     #region INTERNAL FIELDS
@@ -43,6 +54,12 @@ public class EditMitigationViewModel: ViewModelBase
         StrPlannedDate = Localizer["PlannedDate"] + ":";
         StrPlanningStrategy = Localizer["PlanningStrategy"] + ":";
         StrSecurityRequirements = Localizer["SecurityRequirements"] + ":";
+        StrMitigationEffort = Localizer["MitigationEffort"] + ":";
+        StrMitigationCost = Localizer["MitigationCost"] + ":";
+        StrSecurityRecommendation = Localizer["SecurityRecommendation"] + ":";
+        StrMitigationOwner = Localizer["MitigationOwner"] + ":";
+        StrMitigationTeam = Localizer["MitigationTeam"] + ":";
+        StrMitigationPercent = Localizer["MitigationPercent"] + ":";
     }
 
     #region PROPERTIES

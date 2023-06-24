@@ -21,7 +21,7 @@
                     MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-        <Grid Grid.Row="0" RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto,*" >
+        <Grid Grid.Row="0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto,*" >
             <!-- TITLE -->
             <Panel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Background="SlateGray">
                 <TextBlock Classes="label" Text="{Binding StrMitigation, Mode=OneTime}" Margin="5"/>
@@ -37,7 +37,6 @@
             <DatePicker Grid.Row="2" Grid.Column="1"  Margin="5 5"  />
             
             <TextBlock Grid.Row="3" Grid.Column="0"  Text="{Binding StrPlanningStrategy, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/>
-            
             <ComboBox Grid.Row="3" Grid.Column="1" x:Name="strategyComboBox" Width="297" Margin="5 5">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -49,6 +48,49 @@
             <TextBlock Grid.Row="3" Grid.Column="2"  Text="{Binding StrSecurityRequirements, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/> 
             <TextBox Grid.Row="3" Grid.Column="3" Grid.RowSpan="2"
                      Margin="5 5" Width="350" Height="80" TextWrapping="Wrap" AcceptsReturn="True"  />
+            
+            <TextBlock Grid.Row="4" Grid.Column="0"  Text="{Binding StrMitigationEffort, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/>
+            <ComboBox Grid.Row="4" Grid.Column="1" x:Name="effortComboBox" Width="297" Margin="5 5">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="5" Grid.Column="0"  Text="{Binding StrMitigationCost, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/>
+            <ComboBox Grid.Row="5" Grid.Column="1" x:Name="costComboBox" Width="297" Margin="5 5">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="5" Grid.Column="2"  Text="{Binding StrSecurityRecommendation, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/> 
+            <TextBox Grid.Row="5" Grid.Column="3" Grid.RowSpan="2"
+                     Margin="5 5" Width="350" Height="80" TextWrapping="Wrap" AcceptsReturn="True"  />
+            
+            <TextBlock Grid.Row="6" Grid.Column="0"  Text="{Binding StrMitigationOwner, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/>
+            <ComboBox Grid.Row="6" Grid.Column="1" x:Name="ownerComboBox" Width="297" Margin="5 5">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="7" Grid.Column="0"  Text="{Binding StrMitigationTeam, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/>
+            <ComboBox Grid.Row="7" Grid.Column="1" x:Name="teamComboBox" Width="297" Margin="5 5">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="8" Grid.Column="0"  Text="{Binding StrMitigationPercent, Mode=OneTime}" Classes="label" Margin="3 10 0 0"/>
+            <NumericUpDown Grid.Row="8" Grid.Column="1" Value="0" Increment="1" Minimum="0" Maximum="100" Width="297"  Margin="5 5"/>
             
         </Grid>
     </Grid>

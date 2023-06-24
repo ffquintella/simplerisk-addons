@@ -321,4 +321,25 @@
     <data name="SecurityRequirements" xml:space="preserve">
         <value>Requisitos de Segurança</value>
     </data>
+    <data name="MitigationEffort" xml:space="preserve">
+        <value>Esforço de mitigação</value>
+    </data>
+    <data name="MitigationCost" xml:space="preserve">
+        <value>Custo de mitigação</value>
+    </data>
+    <data name="SecurityRecommendation" xml:space="preserve">
+        <value>Recomendação</value>
+    </data>
+    <data name="StrMitigationOwner" xml:space="preserve">
+        <value>Responsável pela mitigação</value>
+    </data>
+    <data name="MitigationTeam" xml:space="preserve">
+        <value>Time de mitigação</value>
+    </data>
+    <data name="MitigationOwner" xml:space="preserve">
+        <value>Responsável pela mitigação</value>
+    </data>
+    <data name="MitigationPercent" xml:space="preserve">
+        <value>Percentual da mitigação</value>
+    </data>
 </root>

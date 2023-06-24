@@ -483,11 +483,56 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custo de mitigação.
+        /// </summary>
+        internal static string MitigationCost {
+            get {
+                return ResourceManager.GetString("MitigationCost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Esforço de mitigação.
+        /// </summary>
+        internal static string MitigationEffort {
+            get {
+                return ResourceManager.GetString("MitigationEffort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mitigação não planejada.
         /// </summary>
         internal static string MitigationNotPlannedMSG {
             get {
                 return ResourceManager.GetString("MitigationNotPlannedMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Responsável pela mitigação.
+        /// </summary>
+        internal static string MitigationOwner {
+            get {
+                return ResourceManager.GetString("MitigationOwner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Percentual da mitigação.
+        /// </summary>
+        internal static string MitigationPercent {
+            get {
+                return ResourceManager.GetString("MitigationPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time de mitigação.
+        /// </summary>
+        internal static string MitigationTeam {
+            get {
+                return ResourceManager.GetString("MitigationTeam", resourceCulture);
             }
         }
         
@@ -771,6 +816,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recomendação.
+        /// </summary>
+        internal static string SecurityRecommendation {
+            get {
+                return ResourceManager.GetString("SecurityRecommendation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Requisitos de Segurança.
         /// </summary>
         internal static string SecurityRequirements {
@@ -866,6 +920,15 @@ namespace GUIClient.Resources {
         internal static string Strategy {
             get {
                 return ResourceManager.GetString("Strategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Responsável pela mitigação.
+        /// </summary>
+        internal static string StrMitigationOwner {
+            get {
+                return ResourceManager.GetString("StrMitigationOwner", resourceCulture);
             }
         }
         
