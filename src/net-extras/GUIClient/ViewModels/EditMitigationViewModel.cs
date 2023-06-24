@@ -74,17 +74,41 @@ public class EditMitigationViewModel: ViewModelBase
         if (_operationType == OperationType.Create)
         {
             SubmissionDate = new DateTimeOffset(DateTime.Now);
+            Solution = "";
+            PlannedDate = new DateTimeOffset(DateTime.Now + TimeSpan.FromDays(2));
+            _mitigation!.LastUpdate = DateTime.Now;
         }
-        else SubmissionDate = new DateTimeOffset(_mitigation!.SubmissionDate);
+        else
+        {
+            SubmissionDate = new DateTimeOffset(_mitigation!.SubmissionDate);
+            Solution = _mitigation!.CurrentSolution;
+            PlannedDate = new DateTimeOffset(_mitigation!.PlanningDate.ToDateTime(new TimeOnly(0,0)));
+            _mitigation.LastUpdate = DateTime.Now;
+        }
     }
 
     #region PROPERTIES
 
-        public DateTimeOffset _submissionDate;
+    
+        private DateTimeOffset _submissionDate;
         public DateTimeOffset SubmissionDate
         {
             get => _submissionDate;
             set => this.RaiseAndSetIfChanged(ref _submissionDate, value);
+        }
+        
+        private string _solution = "";
+        public string Solution
+        {
+            get => _solution;
+            set => this.RaiseAndSetIfChanged(ref _solution, value);
+        }
+        
+        private DateTimeOffset _plannedDate;
+        public DateTimeOffset PlannedDate
+        {
+            get => _plannedDate;
+            set => this.RaiseAndSetIfChanged(ref _plannedDate, value);
         }
     
 
