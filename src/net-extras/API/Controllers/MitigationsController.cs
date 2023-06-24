@@ -32,6 +32,36 @@ public class MitigationsController: ApiBaseController
     }
     
     #region METHODS
+    
+    [HttpPost]
+    [Authorize(Policy = "RequirePlanMitigations")]
+    [Route("")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Mitigation))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public ActionResult<Mitigation> Create([FromBody]Mitigation mitigation)
+    {
+        var user = GetUser();
+        Logger.Information("User:{UserValue} creating mitigation", user.Value);
+        
+        try
+        {
+            var createdMitigation = _mitigationManagement.Create(mitigation);
+            Logger.Information("User:{UserValue} created mitigation with id={Id}", user.Value, createdMitigation.Id);
+            return CreatedAtAction(nameof(GetById), new {id = createdMitigation.Id}, createdMitigation);
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("The risk with id: {Id} does not exists: {ExMessage}", mitigation.RiskId, ex.Message);
+            return this.NotFound();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error creating mitigation: {ExMessage}", ex.Message);
+            return this.BadRequest();
+        }
+    }
+    
     /// <summary>
     /// Gets a Mitigation by it´s Id
     /// </summary>

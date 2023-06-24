@@ -36,4 +36,11 @@ public interface IMitigationManagementService
     /// </summary>
     /// <returns>List of mitigation costs</returns>
     public List<MitigationCost> ListCosts();
+    
+    /// <summary>
+    /// Creates a new mitigation
+    /// </summary>
+    /// <param name="mitigation"></param>
+    /// <returns></returns>
+    public Mitigation Create(Mitigation mitigation);
 }

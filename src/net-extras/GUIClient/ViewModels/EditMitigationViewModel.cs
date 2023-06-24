@@ -48,7 +48,7 @@ public class EditMitigationViewModel: ViewModelBase
     #region INTERNAL FIELDS
 
     private readonly OperationType _operationType;
-    private readonly Mitigation? _mitigation;
+    private Mitigation? _mitigation;
     private readonly IMitigationService _mitigationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly ITeamsService _teamsService;
@@ -257,12 +257,34 @@ public class EditMitigationViewModel: ViewModelBase
     
     #region METHODS
 
-    private async void ExecuteSave(Window baseWindow)
+    private  void ExecuteSave(Window baseWindow)
     {
-        
+        SyncMitigation();
+        if (_operationType == OperationType.Create)
+        {
+            var newMitigation = _mitigationService.Create(_mitigation!);
+            if (newMitigation != null)
+            {
+                //TODO: Add Team
+            }
+        }
+    }
+
+    private void SyncMitigation()
+    {
+        _mitigation ??= new Mitigation();
+        _mitigation.MitigationCost = SelectedMitigationCost!.Value;
+        _mitigation.MitigationEffort = SelectedMitigationEffort!.Value;
+        _mitigation.MitigationOwner = SelectedMitigationOwner!.Id;
+        _mitigation.PlanningStrategy = SelectedPlanningStrategy!.Value;
+        _mitigation.PlanningDate = new DateOnly(PlannedDate.DateTime.Year, PlannedDate.DateTime.Month, PlannedDate.DateTime.Day);
+        _mitigation.SecurityRecommendations = RecommendedSolution;
+        _mitigation.SecurityRequirements = SecurityRequirements;
+        _mitigation.CurrentSolution = Solution;
+        _mitigation.SubmissionDate = SubmissionDate.DateTime;
     }
     
-    private async void ExecuteCancel(Window baseWindow)
+    private  void ExecuteCancel(Window baseWindow)
     {
         baseWindow.Close();
     }

@@ -132,7 +132,6 @@ public class MitigationService: ServiceBase, IMitigationService
         } 
     }
 
-
     public List<MitigationEffort>? GetEfforts()
     {
         var client = _restService.GetClient();
@@ -166,4 +165,10 @@ public class MitigationService: ServiceBase, IMitigationService
     {
         throw new NotImplementedException();
     }
+
+    public Mitigation? Create(Mitigation mitigation)
+    {
+        throw new NotImplementedException();
+    }
+    
 }

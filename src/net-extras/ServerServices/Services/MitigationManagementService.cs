@@ -2,6 +2,7 @@
 using DAL;
 using DAL.Entities;
 using Model.Exceptions;
+using Model.Risks;
 using Serilog;
 using ServerServices.Interfaces;
 
@@ -85,5 +86,23 @@ public class MitigationManagementService: IMitigationManagementService
         }
 
         return costs;
+    }
+
+    public Mitigation Create(Mitigation mitigation)
+    {
+        using var context = _dalManager.GetContext();
+
+        var risk = context.Risks.FirstOrDefault(r => r.Id == mitigation.RiskId);
+
+        if (risk == null) throw new DataNotFoundException("Risk", mitigation.RiskId.ToString());
+        
+        var createdMitigation = context.Mitigations.Add(mitigation);
+        context.SaveChanges();
+        
+        risk.MitigationId = createdMitigation.Entity.Id;
+        risk.Status = RiskHelper.GetRiskStatusName(RiskStatus.MitigationPlanned);
+        context.SaveChanges();
+        
+        return createdMitigation.Entity;
     }
 }

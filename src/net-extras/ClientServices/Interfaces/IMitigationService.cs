@@ -43,4 +43,11 @@ public interface IMitigationService
     /// </summary>
     /// <returns></returns>
     public List<MitigationEffort>? GetEfforts();
+    
+    /// <summary>
+    /// Creates a new mitigation
+    /// </summary>
+    /// <param name="mitigation"></param>
+    /// <returns>Mitigation object</returns>
+    public Mitigation? Create(Mitigation mitigation);
 }
