@@ -50,4 +50,23 @@ public class TeamManagementService: ITeamManagementService
 
         return teams;
     }
+
+    public void AssociateTeamToMitigation(int mitigationId, int teamId)
+    {
+        using var context = _dalManager.GetContext();
+        var mitigation = context.Mitigations.FirstOrDefault(m => m.Id == mitigationId);
+        var team = context.Teams.FirstOrDefault(t => t.Value == teamId);
+        
+        if(mitigation == null || team == null) throw new DataNotFoundException("Mitigation or Team", "Mitigation or Team not found");
+        
+        var mitigationToTeam = new MitigationToTeam
+        {
+            MitigationId = mitigation.Id,
+            TeamId = team.Value
+        };
+        
+        context.MitigationToTeams.Add(mitigationToTeam);
+
+        context.SaveChanges();
+    }
 }

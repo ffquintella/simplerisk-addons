@@ -16,4 +16,11 @@ public interface ITeamManagementService
     /// <param name="id"></param>
     /// <returns></returns>
     public List<Team> GetByMitigationId(int id);
+    
+    /// <summary>
+    /// Associates a team to a mitigation
+    /// </summary>
+    /// <param name="mitigationId"></param>
+    /// <param name="teamId"></param>
+    public void AssociateTeamToMitigation(int mitigationId, int teamId);
 }

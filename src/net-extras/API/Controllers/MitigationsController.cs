@@ -32,7 +32,11 @@ public class MitigationsController: ApiBaseController
     }
     
     #region METHODS
-    
+    /// <summary>
+    /// Creates a mitigation
+    /// </summary>
+    /// <param name="mitigation"></param>
+    /// <returns></returns>
     [HttpPost]
     [Authorize(Policy = "RequirePlanMitigations")]
     [Route("")]
@@ -135,7 +139,70 @@ public class MitigationsController: ApiBaseController
         return Ok(teams);
 
     }
-    
+
+    [HttpGet]
+    [Authorize(Policy = "RequirePlanMitigations")]
+    [Route("{id}/Teams/Associate/{teamId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Team>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult AssociateTeamToMitigation(int id, int teamId)
+    {
+        var user = GetUser();
+
+        Logger.Information("User:{UserValue} associated team {TeamId} to mitigation {MitigationId}", user.Value, teamId, id);
+        
+        try
+        {
+            _teamManagement.AssociateTeamToMitigation(id, teamId);
+            return Ok();
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("There is no teams or mitigation with defined ids: {MitigationId} - {TeamId}: {ExMessage}", 
+                id, teamId, ex.Message);
+            return this.NotFound();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error associating mitigation to teams: {Message}", ex.Message);
+            return StatusCode(500);
+        }
+    }
+
+    /// <summary>
+    /// Deletes all teams associations to this mitigation
+    /// </summary>
+    /// <param name="id">Mitigation Id</param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Authorize(Policy = "RequirePlanMitigations")]
+    [Route("{id}/Teams")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Team>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult AssociateTeamToMitigation(int id)
+    {
+        var user = GetUser();
+        Logger.Information("User:{UserValue} deleted teams association to mitigation {MitigationId}", user.Value,  id);
+        
+        try
+        {
+            _mitigationManagement.DeleteTeamsAssociations(id);
+            return Ok();
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("There is no mitigation with defined ids: {MitigationId} : {ExMessage}", 
+                id,  ex.Message);
+            return this.NotFound();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error deleting mitigation´s teams: {Message}", ex.Message);
+            return StatusCode(500);
+        }
+
+    }
+
     /// <summary>
     /// List mitigation strategies
     /// </summary>

@@ -105,4 +105,18 @@ public class MitigationManagementService: IMitigationManagementService
         
         return createdMitigation.Entity;
     }
+
+    public void DeleteTeamsAssociations(int mitigationId)
+    {
+        using var context = _dalManager.GetContext();
+        
+        var mitigation = context.Mitigations.FirstOrDefault(m => m.Id == mitigationId);
+        if(mitigation == null) throw new DataNotFoundException("Mitigation", mitigationId.ToString());
+        var associations = context.MitigationToTeams.Where(m => m.MitigationId == mitigationId).ToList();
+        foreach (var association in associations)
+        {
+            context.MitigationToTeams.Remove(association);
+        }
+        context.SaveChanges();
+    }
 }

@@ -43,4 +43,10 @@ public interface IMitigationManagementService
     /// <param name="mitigation"></param>
     /// <returns></returns>
     public Mitigation Create(Mitigation mitigation);
+    
+    /// <summary>
+    /// Deletes all teams associations from a mitigation
+    /// </summary>
+    /// <param name="mitigationId"></param>
+    public void DeleteTeamsAssociations(int mitigationId);
 }
