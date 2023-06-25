@@ -387,7 +387,7 @@ public class RiskViewModel: ViewModelBase
         };
         await dialog.ShowDialog( openWindow );
         var selectedRiskId = SelectedRisk.Id;
-        LoadRisks();
+        ExecuteReloadRisk();
         SelectedRisk = Risks!.FirstOrDefault(r=>r.Id == selectedRiskId);
     }
     
