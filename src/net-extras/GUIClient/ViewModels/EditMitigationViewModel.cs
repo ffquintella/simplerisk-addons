@@ -276,13 +276,13 @@ public class EditMitigationViewModel: ViewModelBase
                         _mitigationService.AssociateMitigationToTeam(newMitigation.Id, SelectedMitigationTeam!.Value);
                     }catch(Exception e)
                     {
-                        Logger.Error("Error associating mitigation to team");
+                        Logger.Error("Error associating mitigation to team: {Message}", e.Message);
 
                     }
                 }
             }catch(Exception e)
             {
-                Logger.Error("Error creating mitigation");
+                Logger.Error("Error creating mitigation: {Message}", e.Message);
                 
                 var msgError = MessageBox.Avalonia.MessageBoxManager
                     .GetMessageBoxStandardWindow(new MessageBoxStandardParams

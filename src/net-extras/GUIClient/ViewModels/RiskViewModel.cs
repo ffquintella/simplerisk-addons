@@ -389,7 +389,7 @@ public class RiskViewModel: ViewModelBase
         
     }
     
-    private async void ExecuteEditMitigation(Window openWindow)
+    private void ExecuteEditMitigation(Window openWindow)
     {
         throw new NotImplementedException();
     }
