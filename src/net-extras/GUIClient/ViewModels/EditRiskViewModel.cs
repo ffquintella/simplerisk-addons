@@ -333,6 +333,7 @@ public class EditRiskViewModel: ViewModelBase
             Risk.Source = SelectedRiskSource.Value;
         if (Notes != null)
             Risk.Notes = Notes;
+        else Risk.Notes = "";
 
         Risk.Assessment = "";
         Risk.RiskCatalogMapping = "";
