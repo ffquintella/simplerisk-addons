@@ -51,6 +51,7 @@ public class EditMitigationViewModel: ViewModelBase
 
     private readonly OperationType _operationType;
     private Mitigation? _mitigation;
+    private int _riskId;
     private readonly IMitigationService _mitigationService;
     private readonly IAuthenticationService _authenticationService;
     private readonly ITeamsService _teamsService;
@@ -58,8 +59,12 @@ public class EditMitigationViewModel: ViewModelBase
 
     #endregion
 
-    public EditMitigationViewModel(OperationType operation, Mitigation? mitigation = null)
+    public EditMitigationViewModel(OperationType operation, int? riskId,  Mitigation? mitigation = null)
     {
+        if (riskId == null)
+            throw new InvalidParameterException("riskId", "RiskId cannot be null");
+        _riskId = riskId.Value;
+        
         _operationType = operation;
         
         if (_operationType == OperationType.Edit && mitigation == null)
@@ -68,7 +73,7 @@ public class EditMitigationViewModel: ViewModelBase
         }
         
         
-        //_mitigation = _operationType == OperationType.Create ? new Mitigation() : mitigation;
+        _mitigation = _operationType == OperationType.Create ? new Mitigation() : mitigation;
         
         StrMitigation = Localizer["Mitigation"];
         StrSubmissionDate = Localizer["SubmissionDate"] + ":";
@@ -274,6 +279,7 @@ public class EditMitigationViewModel: ViewModelBase
                     try
                     {
                         _mitigationService.AssociateMitigationToTeam(newMitigation.Id, SelectedMitigationTeam!.Value);
+                        baseWindow.Close();
                     }catch(Exception e)
                     {
                         Logger.Error("Error associating mitigation to team: {Message}", e.Message);
@@ -303,6 +309,7 @@ public class EditMitigationViewModel: ViewModelBase
     private void SyncMitigation()
     {
         _mitigation ??= new Mitigation();
+        _mitigation.RiskId = _riskId;
         _mitigation.MitigationCost = SelectedMitigationCost!.Value;
         _mitigation.MitigationEffort = SelectedMitigationEffort!.Value;
         _mitigation.MitigationOwner = SelectedMitigationOwner!.Id;
@@ -312,6 +319,7 @@ public class EditMitigationViewModel: ViewModelBase
         _mitigation.SecurityRequirements = SecurityRequirements;
         _mitigation.CurrentSolution = Solution;
         _mitigation.SubmissionDate = SubmissionDate.DateTime;
+        _mitigation.MitigationPercent = Convert.ToInt32(MitigationPercent);
     }
     
     private  void ExecuteCancel(Window baseWindow)

@@ -379,14 +379,16 @@ public class RiskViewModel: ViewModelBase
         
         var dialog = new EditMitigationWindow()
         {
-            DataContext = new EditMitigationViewModel(OperationType.Create),
+            DataContext = new EditMitigationViewModel(OperationType.Create, SelectedRisk!.Id),
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             Width = 1050,
             Height = 530,
             CanResize = false
         };
         await dialog.ShowDialog( openWindow );
-        
+        var selectedRiskId = SelectedRisk.Id;
+        LoadRisks();
+        SelectedRisk = Risks!.FirstOrDefault(r=>r.Id == selectedRiskId);
     }
     
     private void ExecuteEditMitigation(Window openWindow)
