@@ -373,6 +373,22 @@ public class RiskViewModel: ViewModelBase
         Risks = new ObservableCollection<Risk>(_allRisks!.Where(r => r.Subject.Contains(_riskFilter) && _filterStatuses.Any(s => r.Status == RiskHelper.GetRiskStatusName(s))));
     }
 
+    private void CleanFilters()
+    {
+        _filterStatuses = new List<RiskStatus>()
+        {
+            RiskStatus.New,
+            RiskStatus.ManagementReview,
+            RiskStatus.MitigationPlanned
+        };
+        ClosedFilterColor = Brushes.White;
+        ReviewFilterColor = Brushes.DodgerBlue;
+        MitigationFilterColor = Brushes.DodgerBlue;
+        NewFilterColor = Brushes.DodgerBlue; 
+        ApplyFilter();
+        
+    }
+    
     private async void ExecuteAddMitigation(Window openWindow)
     {
         //Mitigation mitigation = new Mitigation();
@@ -388,6 +404,7 @@ public class RiskViewModel: ViewModelBase
         await dialog.ShowDialog( openWindow );
         var selectedRiskId = SelectedRisk.Id;
         ExecuteReloadRisk();
+        CleanFilters();
         SelectedRisk = Risks!.FirstOrDefault(r=>r.Id == selectedRiskId);
     }
     

@@ -260,7 +260,7 @@ public class MitigationService: ServiceBase, IMitigationService
     {
         using var client = _restService.GetClient();
         
-        var request = new RestRequest($"/Mitigations/{mitigationId}/Teams/{teamId}");
+        var request = new RestRequest($"/Mitigations/{mitigationId}/Teams/Associate/{teamId}");
 
         try
         {
