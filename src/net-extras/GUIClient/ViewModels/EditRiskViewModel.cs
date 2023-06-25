@@ -389,8 +389,6 @@ public class EditRiskViewModel: ViewModelBase
                 
             }
 
-
-
             var msgOk = MessageBox.Avalonia.MessageBoxManager
                 .GetMessageBoxStandardWindow(new MessageBoxStandardParams
                 {

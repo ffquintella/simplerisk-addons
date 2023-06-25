@@ -375,6 +375,8 @@ public class RiskViewModel: ViewModelBase
 
     private async void ExecuteAddMitigation(Window openWindow)
     {
+        //Mitigation mitigation = new Mitigation();
+        
         var dialog = new EditMitigationWindow()
         {
             DataContext = new EditMitigationViewModel(OperationType.Create),

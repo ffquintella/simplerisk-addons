@@ -345,4 +345,7 @@
     <data name="Documentation" xml:space="preserve">
         <value>Documentação</value>
     </data>
+    <data name="ErrorMitigationMSG" xml:space="preserve">
+        <value>Erro criando ou atualizando uma mitigação.</value>
+    </data>
 </root>

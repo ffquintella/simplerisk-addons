@@ -357,6 +357,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error creating or saving a mitigation..
+        /// </summary>
+        internal static string ErrorMitigationMSG {
+            get {
+                return ResourceManager.GetString("ErrorMitigationMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error opening browser: .
         /// </summary>
         internal static string ErrorOpeningExternalBrowserMSG {

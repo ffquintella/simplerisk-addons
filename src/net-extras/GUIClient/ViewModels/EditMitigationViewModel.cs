@@ -6,6 +6,8 @@ using Avalonia.Controls;
 using ClientServices.Interfaces;
 using DAL.Entities;
 using GUIClient.Models;
+using MessageBox.Avalonia.DTO;
+using MessageBox.Avalonia.Enums;
 using Model.DTO;
 using Model.Exceptions;
 using ReactiveUI;
@@ -64,7 +66,9 @@ public class EditMitigationViewModel: ViewModelBase
         {
             throw new InvalidParameterException("mitigation", "Mitigation cannot be null on edit operations");
         }
-        _mitigation = _operationType == OperationType.Create ? new Mitigation() : mitigation;
+        
+        
+        //_mitigation = _operationType == OperationType.Create ? new Mitigation() : mitigation;
         
         StrMitigation = Localizer["Mitigation"];
         StrSubmissionDate = Localizer["SubmissionDate"] + ":";
@@ -257,16 +261,42 @@ public class EditMitigationViewModel: ViewModelBase
     
     #region METHODS
 
-    private  void ExecuteSave(Window baseWindow)
+    private async void ExecuteSave(Window baseWindow)
     {
         SyncMitigation();
         if (_operationType == OperationType.Create)
         {
-            var newMitigation = _mitigationService.Create(_mitigation!);
-            if (newMitigation != null)
+            try
             {
-                //TODO: Add Team
+                var newMitigation = _mitigationService.Create(_mitigation!);
+                if (newMitigation != null)
+                {
+                    try
+                    {
+                        _mitigationService.AssociateMitigationToTeam(newMitigation.Id, SelectedMitigationTeam!.Value);
+                    }catch(Exception e)
+                    {
+                        Logger.Error("Error associating mitigation to team");
+
+                    }
+                }
+            }catch(Exception e)
+            {
+                Logger.Error("Error creating mitigation");
+                
+                var msgError = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams
+                    {
+                        ContentTitle = Localizer["Error"],
+                        ContentMessage = Localizer["ErrorMitigationMSG"],
+                        Icon = Icon.Error,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    });
+
+                await msgError.Show();
+                
             }
+
         }
     }
 

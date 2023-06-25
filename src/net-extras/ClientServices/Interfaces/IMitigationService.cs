@@ -50,4 +50,18 @@ public interface IMitigationService
     /// <param name="mitigation"></param>
     /// <returns>Mitigation object</returns>
     public Mitigation? Create(Mitigation mitigation);
+    
+    /// <summary>
+    /// Deletes all teams associations for a mitigation
+    /// </summary>
+    /// <param name="mitigationId"></param>
+    public void DeleteTeamsAssociations(int mitigationId);
+    
+    
+    /// <summary>
+    /// Associates a mitigation to a team
+    /// </summary>
+    /// <param name="mitigationId"></param>
+    /// <param name="teamId"></param>
+    public void AssociateMitigationToTeam(int mitigationId, int teamId);
 }
