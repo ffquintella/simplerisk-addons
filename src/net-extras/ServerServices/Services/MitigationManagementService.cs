@@ -106,6 +106,21 @@ public class MitigationManagementService: IMitigationManagementService
         return createdMitigation.Entity;
     }
 
+    public void Save(Mitigation mitigation)
+    {
+        using var context = _dalManager.GetContext();
+        // First let´s check if the mitigation exists
+        var existingMitigation = context.Mitigations.FirstOrDefault(m => m.Id == mitigation.Id);
+        if (existingMitigation == null)
+        {
+            Log.Error("Mitigation with id {Id} not found", mitigation.Id);
+            throw new DataNotFoundException("Mitigation", mitigation.Id.ToString());
+        }
+        _mapper.Map(mitigation, existingMitigation);
+        context.SaveChanges();
+
+    }
+
     public void DeleteTeamsAssociations(int mitigationId)
     {
         using var context = _dalManager.GetContext();

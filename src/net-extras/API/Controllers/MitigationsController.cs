@@ -102,7 +102,45 @@ public class MitigationsController: ApiBaseController
         return Ok(mitigation);
 
     }
-    
+
+
+    /// <summary>
+    /// Updates an existing mitigation
+    /// </summary>
+    /// <param name="id">Mitigation Id</param>
+    /// <param name="mitigation">Mitigation object</param>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Mitigation))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult UpdateById(int id, [FromBody] Mitigation mitigation)
+    {
+        var user = GetUser();
+        //Logger.Information("User:{UserValue} updating mitigation: {Id} ", user.Value, id);
+        
+        // To avoid inconsistencies
+        mitigation.Id = id;
+
+        try
+        {
+            _mitigationManagement.Save(mitigation);
+            Logger.Information("User:{UserValue} updated mitigation: {Id} ", user.Value, id);
+            return Ok();
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("The mitigation with id: {Id} does not exists: {ExMessage}", id, ex.Message);
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Internal error updating mitigation: {Message}", ex.Message);
+            return StatusCode(500, ex.Message);
+        }
+
+    }
+
     /// <summary>
     /// Gets mitigation teams by mitigation Ids
     /// </summary>

@@ -9,5 +9,6 @@ public class ObjectUpdateProfile: Profile
     {
         CreateMap<Risk, Risk>();
         CreateMap<RiskScoring, RiskScoring>();
+        CreateMap<Mitigation, Mitigation>();
     }
 }
