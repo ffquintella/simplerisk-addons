@@ -9,6 +9,8 @@
     <Design.DataContext>
         <vm:CloseRiskViewModel/>
     </Design.DataContext>
+    <Grid>
+        
+    </Grid>
     
-    Welcome to Avalonia!
 </Window>

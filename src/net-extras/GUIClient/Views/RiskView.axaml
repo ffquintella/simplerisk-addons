@@ -190,6 +190,7 @@
                 </Panel>
                 <StackPanel Orientation="Vertical"><TextBlock Text="{Binding StrNotes}" Classes="label"/>
                     <TextBox Text="{Binding SelectedRisk.Notes}" IsReadOnly="True" TextWrapping="Wrap" Height="80"/></StackPanel>
+                    <!-- CLOSED INFO -->
                     <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto" RowDefinitions="Auto" Background="Chocolate"
                           IsVisible="{Binding SelectedRisk.Status, 
                                     Converter={StaticResource stringEqualConverter},

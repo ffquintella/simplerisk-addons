@@ -2,5 +2,10 @@
 
 public class CloseRiskViewModel: ViewModelBase
 {
+    public CloseRiskViewModel()
+    {
+        
+    }
+    
     
 }
