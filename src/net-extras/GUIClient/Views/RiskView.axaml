@@ -88,7 +88,7 @@
             </Grid>
         </Grid>
         <!-- RIGHT SIDE AREA -->
-        <Grid Grid.Column="1" RowDefinitions="Auto, *" >
+        <Grid Grid.Column="1" RowDefinitions="Auto, *" IsVisible="{Binding !!SelectedRisk}" >
             <TextBlock Grid.Row="0" Classes="header" Text="{Binding StrDetails, Mode=OneTime}" TextAlignment="Center"/>
             <StackPanel Grid.Row="1" Orientation="Vertical" Spacing="5" Margin="5 5 0 0">
                 <StackPanel Orientation="Horizontal" Background="#666666">
@@ -190,6 +190,12 @@
                 </Panel>
                 <StackPanel Orientation="Vertical"><TextBlock Text="{Binding StrNotes}" Classes="label"/>
                     <TextBox Text="{Binding SelectedRisk.Notes}" IsReadOnly="True" TextWrapping="Wrap" Height="80"/></StackPanel>
+                    <Grid ColumnDefinitions="Auto" RowDefinitions="Auto" Background="Chocolate"
+                          IsVisible="{Binding SelectedRisk.Status, 
+                                    Converter={StaticResource stringEqualConverter},
+                                    ConverterParameter=Closed}">
+                        <TextBlock Grid.Row="0" Grid.Column="0">CLOSED</TextBlock>
+                    </Grid>
             </StackPanel>
         </Grid>
     </Grid>
