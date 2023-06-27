@@ -221,7 +221,7 @@ public class RiskViewModel: ViewModelBase
     public ReactiveCommand<Window, Unit> BtEditRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtReloadRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtDeleteRiskClicked { get; }
-    
+    public ReactiveCommand<Window, Unit> BtCloseRiskClicked { get; }
     public ReactiveCommand<Unit, Unit> BtNewFilterClicked { get; }
     public ReactiveCommand<Unit, Unit> BtMitigationFilterClicked { get; }
     public ReactiveCommand<Unit, Unit> BtReviewFilterClicked { get; }
@@ -272,6 +272,7 @@ public class RiskViewModel: ViewModelBase
         BtAddRiskClicked = ReactiveCommand.Create<Window>(ExecuteAddRisk);
         BtEditRiskClicked = ReactiveCommand.Create<Window>(ExecuteEditRisk);
         BtDeleteRiskClicked = ReactiveCommand.Create(ExecuteDeleteRisk);
+        BtCloseRiskClicked = ReactiveCommand.Create<Window>(ExecuteCloseRisk);
         BtReloadRiskClicked = ReactiveCommand.Create(ExecuteReloadRisk);
         BtNewFilterClicked = ReactiveCommand.Create(ApplyNewFilter);
         BtMitigationFilterClicked = ReactiveCommand.Create(ApplyMitigationFilter);
@@ -404,6 +405,11 @@ public class RiskViewModel: ViewModelBase
         ExecuteReloadRisk();
         CleanFilters();
         SelectedRisk = Risks!.FirstOrDefault(r=>r.Id == selectedRiskId);
+    }
+    
+    private async void ExecuteCloseRisk(Window openWindow)
+    {
+        
     }
     
     private async void ExecuteEditMitigation(Window openWindow)

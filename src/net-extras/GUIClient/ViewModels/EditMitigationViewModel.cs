@@ -98,11 +98,11 @@ public class EditMitigationViewModel: ViewModelBase
         _authenticationService = GetService<IAuthenticationService>();
         _teamsService = GetService<ITeamsService>();
 
-        PlanningStrategies = new ObservableCollection<PlanningStrategy>(_mitigationService.GetStrategies()!);
-        MitigationCosts = new ObservableCollection<MitigationCost>(_mitigationService.GetCosts()!);
-        MitigationEfforts = new ObservableCollection<MitigationEffort>(_mitigationService.GetEfforts()!);
-        Users = new ObservableCollection<UserListing>(_usersService.ListUsers());
-        Teams = new ObservableCollection<Team>(_teamsService.GetAll());
+        _planningStrategies = new ObservableCollection<PlanningStrategy>(_mitigationService.GetStrategies()!);
+        _mitigationCosts = new ObservableCollection<MitigationCost>(_mitigationService.GetCosts()!);
+        _mitigationEfforts = new ObservableCollection<MitigationEffort>(_mitigationService.GetEfforts()!);
+        _users = new ObservableCollection<UserListing>(_usersService.ListUsers());
+        _teams = new ObservableCollection<Team>(_teamsService.GetAll());
         
         if (_operationType == OperationType.Create)
         {
