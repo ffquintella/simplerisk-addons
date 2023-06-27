@@ -142,6 +142,36 @@ public class RisksService: ServiceBase, IRisksService
             throw new RestComunicationException("Error getting risk scoring", ex);
         }
     }
+
+    public Closure? GetRiskClosure(int riskId)
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/{riskId}/Closure");
+        try
+        {
+            var response = client.Get<Closure>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting closure ");
+                return null;
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk closure message: {Message}", ex.Message);
+            throw new RestComunicationException("Error getting risk closure", ex);
+        }
+
+    }
     
     public List<Category>? GetRiskCategories()
     {

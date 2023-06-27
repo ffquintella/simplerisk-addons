@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DAL.Entities;
 using Serilog;
 using ClientServices.Interfaces;
+using Model.Risks;
 using ReactiveUI;
 
 namespace GUIClient.Hydrated;
@@ -41,6 +42,20 @@ public class Risk: BaseHydrated
     public string SubmittedBy => _usersService.GetUserName(_baseRisk.SubmittedBy);
     
     public RiskScoring Scoring => _risksService.GetRiskScoring(_baseRisk.Id);
+
+    
+    public Closure? Closure
+    {
+        get
+        {
+            if (_baseRisk.Status == RiskHelper.GetRiskStatusName(RiskStatus.Closed))
+            {
+                return _risksService.GetRiskClosure(_baseRisk.Id);
+            }
+
+            return null;
+        }
+    }
 
     private Mitigation? _mitigation;
     public Mitigation? Mitigation

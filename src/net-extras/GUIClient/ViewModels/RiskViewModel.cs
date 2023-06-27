@@ -47,6 +47,8 @@ public class RiskViewModel: ViewModelBase
     public string StrProjected { get; }
     public string StrCost { get; }
     public string StrEffort { get; }
+    
+    public string StrClosed { get; }
     #endregion
 
     #region PROPERTIES
@@ -263,6 +265,7 @@ public class RiskViewModel: ViewModelBase
         StrProjected = Localizer["Projected"];
         StrCost = Localizer["Cost"];
         StrEffort = Localizer["Effort"];
+        StrClosed = Localizer["Closed"].ToString().ToUpper();
 
         _risks = new ObservableCollection<Risk>();
         

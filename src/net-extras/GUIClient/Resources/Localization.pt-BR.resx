@@ -348,4 +348,7 @@
     <data name="ErrorMitigationMSG" xml:space="preserve">
         <value>Erro criando ou atualizando uma mitigação.</value>
     </data>
+    <data name="Closed" xml:space="preserve">
+        <value>Fechado</value>
+    </data>
 </root>

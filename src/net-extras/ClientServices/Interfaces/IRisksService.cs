@@ -13,6 +13,8 @@ public interface IRisksService
     public List<Category>? GetRiskCategories();
     public string GetRiskSource(int id);
     
+    public Closure? GetRiskClosure(int riskId);
+    
     public List<Source>? GetRiskSources();
     
     public List<Likelihood>? GetProbabilities();
