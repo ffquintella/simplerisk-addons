@@ -16,6 +16,7 @@
         <entry key="GUIClient/Styles/WindowStyles.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/AssessmentQuestionView.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/AssessmentView.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/CloseRiskWindow.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/Dashboard.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/DashboardView.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/DeviceView.axaml" value="GUIClient/GUIClient.csproj" />

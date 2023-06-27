@@ -409,7 +409,15 @@ public class RiskViewModel: ViewModelBase
     
     private async void ExecuteCloseRisk(Window openWindow)
     {
-        
+        var dialog = new CloseRiskWindow()
+        {
+            DataContext = new CloseRiskViewModel(),
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Width = 500,
+            Height = 500,
+            CanResize = false
+        };
+        await dialog.ShowDialog( openWindow );
     }
     
     private async void ExecuteEditMitigation(Window openWindow)

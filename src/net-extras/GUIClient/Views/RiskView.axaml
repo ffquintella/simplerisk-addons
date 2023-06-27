@@ -77,7 +77,8 @@
                     <material:MaterialIcon Kind="Reload"/>
                 </Button>
                 <Button Grid.Column="4" IsEnabled="{Binding CanDeleteRisk, Mode=TwoWay}" Name="BtCloseRisk"
-                        Command="{Binding BtCloseRiskClicked}">
+                        Command="{Binding BtCloseRiskClicked}"
+                        CommandParameter="{Binding $parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent}">
                     <material:MaterialIcon Kind="Close"/>
                 </Button>
                 <Button Grid.Column="5" IsEnabled="{Binding CanDeleteRisk, Mode=TwoWay}" Name="BtDeleteRisk"
