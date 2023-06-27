@@ -109,6 +109,33 @@ public interface IRiskManagementService
     /// <returns></returns>
     public List<Likelihood> GetRiskProbabilities();
     
+    
+    /// <summary>
+    /// Gets the list of risk close reasons
+    /// </summary>
+    /// <returns></returns>
+    public List<CloseReason> GetRiskCloseReasons();
+    
+    /// <summary>
+    /// Returns risk closure by risk id
+    /// </summary>
+    /// <param name="riskId"></param>
+    /// <returns></returns>
+    public Closure GetRiskClosureByRiskId(int riskId);
+    
+    /// <summary>
+    /// Creates a new risk closure
+    /// </summary>
+    /// <param name="closure"></param>
+    /// <returns></returns>
+    public Closure CreateRiskClosure(Closure closure);
+    
+    /// <summary>
+    /// Deletes a risck closure
+    /// </summary>
+    /// <param name="closureId"></param>
+    public void DeleteRiskClosure(int closureId);
+    
     /// <summary>
     /// Get the list of risk impacts
     /// </summary>

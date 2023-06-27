@@ -224,7 +224,55 @@ public class RisksController : ApiBaseController
 
 
     }
+
+    /// <summary>
+    /// Get the list of possible risk close reasons
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("CloseReasons")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<List<CloseReason>> ListCloseReasons()
+    {
+        var user = GetUser();
+        Logger.Information("User:{UserValue} listed risk close reasons", user.Value);
+        try
+        {
+            var reasons = _riskManagement.GetRiskCloseReasons();
+            return Ok(reasons);
+        } catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
     
+    [HttpGet]
+    [Route("{riskId}/Closure")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<List<CloseReason>> GetClosure(int riskId)
+    {
+        var user = GetUser();
+        Logger.Information("User:{UserValue} got risk:{Id} closure", user.Value, riskId);
+        try
+        {
+            var closure = _riskManagement.GetRiskClosureByRiskId(riskId);
+            return Ok(closure);
+        }
+        catch (DataNotFoundException dnfe)
+        {
+            return NotFound($"Risk or closure not found:{dnfe.Message}");
+        } 
+        
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
     // Updates a Scoring
     [HttpPut]
     [Route("{id}/Scoring")]
@@ -233,6 +281,9 @@ public class RisksController : ApiBaseController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public ActionResult SaveRiskScoring(int id, [FromBody] RiskScoring? scoring = null)
     {
+        var user = GetUser();
+        Logger.Information("User:{UserValue} saved a risk soring:{Id}", user.Value, id);
+
         if(scoring == null) return StatusCode(StatusCodes.Status500InternalServerError);
             scoring.Id = id;
         try
@@ -256,8 +307,7 @@ public class RisksController : ApiBaseController
     {
 
         var user = GetUser();
-
-        Logger.Information("User:{UserValue} deleted risk soring: {Id}", user.Value, id);
+        Logger.Information("User:{UserValue} deleted risk soring:{Id}", user.Value, id);
 
         try
         {
@@ -271,7 +321,7 @@ public class RisksController : ApiBaseController
 
             if (typeof(DataNotFoundException) == ex.GetType())
             {
-                Logger.Warning("The risk scoring: {Id} was not found in the database: {ExMessage}", id, ex.Message);
+                Logger.Warning("The risk scoring: {Id} was not found in the database:{ExMessage}", id, ex.Message);
                 return this.NotFound();
             }
             else

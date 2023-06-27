@@ -181,20 +181,67 @@ public class RiskManagementService: IRiskManagementService
     
     public List<Category> GetRiskCategories()
     {
-        using (var contex = _dalManager.GetContext())
+        using var contex = _dalManager.GetContext();
+        var cats = contex.Categories.ToList();
+
+        if (cats == null)
         {
-            
-            var cats = contex.Categories.ToList();
-
-            if (cats == null)
-            {
-                throw new DataNotFoundException("Categories", "");
-            }
-
-            return cats;
+            throw new DataNotFoundException("Categories", "");
         }
+
+        return cats;
     }
 
+    public List<CloseReason> GetRiskCloseReasons()
+    {
+        using var contex = _dalManager.GetContext();
+        var crs = contex.CloseReasons.ToList();
+
+        if (crs == null)
+        {
+            throw new DataNotFoundException("CloseReason", "");
+        }
+
+        return crs;
+    }
+
+    public Closure GetRiskClosureByRiskId(int riskId)
+    {
+        using var context = _dalManager.GetContext();
+        //Let´s check if the risk exists
+        var risk = context.Risks.FirstOrDefault(r => r.Id == riskId);
+        if(risk == null) throw new DataNotFoundException("Risk", riskId.ToString());
+        
+        var closure = context.Closures.FirstOrDefault(c => c.RiskId == riskId);
+        if(closure == null) throw new DataNotFoundException("Closure", riskId.ToString());
+        return closure;
+    }
+
+    public Closure CreateRiskClosure(Closure closure)
+    {
+        using var context = _dalManager.GetContext();
+        
+        //Let´s check if the risk already has a closure
+        var result = context.Closures.FirstOrDefault(c => c.RiskId == closure.RiskId);
+        if(result!= null) throw new DataAlreadyExistsException("local", "Closure", closure.RiskId.ToString(),
+            "Risk already has a closure");
+        
+        var newClosure = context.Closures.Add(closure);
+        context.SaveChanges();
+        return newClosure.Entity;
+    }
+
+    public void DeleteRiskClosure(int closureId)
+    {
+        using var context = _dalManager.GetContext();
+        
+        var result = context.Closures.FirstOrDefault(c => c.Id == closureId);
+        if(result == null) throw new DataNotFoundException("Closure", closureId.ToString());
+        
+        context.Closures.Remove(result);
+        context.SaveChanges();
+    }
+    
     public List<Likelihood> GetRiskProbabilities()
     {
         using (var contex = _dalManager.GetContext())
