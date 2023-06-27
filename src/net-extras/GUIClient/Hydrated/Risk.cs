@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DAL.Entities;
 using Serilog;
 using ClientServices.Interfaces;
+using ReactiveUI;
 
 namespace GUIClient.Hydrated;
 
@@ -49,7 +50,11 @@ public class Risk: BaseHydrated
             if (_baseRisk.Status != "New")
             {
                 if (_mitigation == null || _mitigation.RiskId != _baseRisk.Id)
+                {
                     _mitigation = _mitigationService.GetByRiskId(_baseRisk.Id);
+                    this.RaisePropertyChanged();
+                }
+
             }
             else
             {

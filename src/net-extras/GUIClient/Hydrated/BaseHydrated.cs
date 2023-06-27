@@ -1,9 +1,10 @@
 using System;
+using ReactiveUI;
 using Splat;
 
 namespace GUIClient.Hydrated;
 
-public class BaseHydrated
+public class BaseHydrated: ReactiveObject
 {
     protected static T GetService<T>()
     {

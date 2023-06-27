@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using Avalonia.Controls;
 using ClientServices.Interfaces;
 using DAL.Entities;
+using DynamicData.Binding;
 using GUIClient.Models;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
@@ -96,6 +98,12 @@ public class EditMitigationViewModel: ViewModelBase
         _authenticationService = GetService<IAuthenticationService>();
         _teamsService = GetService<ITeamsService>();
 
+        PlanningStrategies = new ObservableCollection<PlanningStrategy>(_mitigationService.GetStrategies()!);
+        MitigationCosts = new ObservableCollection<MitigationCost>(_mitigationService.GetCosts()!);
+        MitigationEfforts = new ObservableCollection<MitigationEffort>(_mitigationService.GetEfforts()!);
+        Users = new ObservableCollection<UserListing>(_usersService.ListUsers());
+        Teams = new ObservableCollection<Team>(_teamsService.GetAll());
+        
         if (_operationType == OperationType.Create)
         {
             SubmissionDate = new DateTimeOffset(DateTime.Now);
@@ -104,7 +112,7 @@ public class EditMitigationViewModel: ViewModelBase
             _mitigation!.LastUpdate = DateTime.Now;
             SecurityRequirements = "";
             RecommendedSolution = "";
-            SelectedMitigationOwner = Users.Find(x => x.Id == _authenticationService.AuthenticatedUserInfo!.UserId);
+            SelectedMitigationOwner = Users.ToList().Find(x => x.Id == _authenticationService.AuthenticatedUserInfo!.UserId);
             MitigationPercent = 0;
         }
         else
@@ -113,12 +121,12 @@ public class EditMitigationViewModel: ViewModelBase
             Solution = _mitigation!.CurrentSolution;
             PlannedDate = new DateTimeOffset(_mitigation!.PlanningDate.ToDateTime(new TimeOnly(0,0)));
             _mitigation.LastUpdate = DateTime.Now;
-            SelectedPlanningStrategy = PlanningStrategies.Find(x => x.Value == _mitigation.PlanningStrategy);
+            SelectedPlanningStrategy = PlanningStrategies.ToList().Find(x => x.Value == _mitigation.PlanningStrategy);
             SecurityRequirements = _mitigation.SecurityRequirements;
-            SelectedMitigationEffort = MitigationEfforts.Find(x => x.Value == _mitigation.MitigationEffort);
-            SelectedMitigationCost = MitigationCosts.Find(x => x.Value == _mitigation.MitigationCost);
+            SelectedMitigationEffort = MitigationEfforts.ToList().Find(x => x.Value == _mitigation.MitigationEffort);
+            SelectedMitigationCost = MitigationCosts.ToList().Find(x => x.Value == _mitigation.MitigationCost);
             RecommendedSolution = _mitigation.SecurityRecommendations;
-            SelectedMitigationOwner = Users.Find(x => x.Id == _mitigation.MitigationOwner);
+            SelectedMitigationOwner = Users.ToList().Find(x => x.Id == _mitigation.MitigationOwner);
 
             var mitigationTeams = _mitigationService.GetTeamsById(_mitigation.Id);
             if (mitigationTeams != null)
@@ -175,8 +183,16 @@ public class EditMitigationViewModel: ViewModelBase
             get => _saveEnabled;
             set => this.RaiseAndSetIfChanged(ref _saveEnabled, value);
         }
+
+        private ObservableCollection<Team> _teams;
+        public ObservableCollection<Team> Teams
+        {
+            get => _teams;
+            set => this.RaiseAndSetIfChanged(ref _teams, value);
+        }
+
+        //public List<Team> Teams => _teamsService.GetAll();
         
-        public List<Team> Teams => _teamsService.GetAll();
         private Team? _selectedMitigationTeam;
         public Team? SelectedMitigationTeam
         {
@@ -184,7 +200,14 @@ public class EditMitigationViewModel: ViewModelBase
             set => this.RaiseAndSetIfChanged(ref _selectedMitigationTeam, value);
         }
 
-        public List<UserListing> Users => _usersService.ListUsers();
+        private ObservableCollection<UserListing> _users;
+        public ObservableCollection<UserListing> Users
+        {
+            get => _users;
+            set => this.RaiseAndSetIfChanged(ref _users, value);
+        }
+
+        //public List<UserListing> Users => _usersService.ListUsers();
 
         private UserListing? _selectedMitigationOwner;
         public UserListing? SelectedMitigationOwner
@@ -199,8 +222,15 @@ public class EditMitigationViewModel: ViewModelBase
             get => _recommendedSolution;
             set => this.RaiseAndSetIfChanged(ref _recommendedSolution, value);
         }
-    
-        public List<MitigationEffort> MitigationEfforts => _mitigationService.GetEfforts()!;
+
+        private ObservableCollection<MitigationEffort> _mitigationEfforts;
+        public ObservableCollection<MitigationEffort> MitigationEfforts
+        {
+            get => _mitigationEfforts;
+            set => this.RaiseAndSetIfChanged(ref _mitigationEfforts, value);
+        }
+
+        //public List<MitigationEffort> MitigationEfforts => _mitigationService.GetEfforts()!;
         
         private MitigationEffort? _selectedMitigationEffort;
         public MitigationEffort? SelectedMitigationEffort
@@ -209,17 +239,33 @@ public class EditMitigationViewModel: ViewModelBase
             set => this.RaiseAndSetIfChanged(ref _selectedMitigationEffort, value);
         }
         
-        public List<MitigationCost> MitigationCosts => _mitigationService.GetCosts()!;
+        private ObservableCollection<MitigationCost> _mitigationCosts;
+        public ObservableCollection<MitigationCost> MitigationCosts 
+        {
+            get => _mitigationCosts;
+            set => this.RaiseAndSetIfChanged(ref _mitigationCosts, value);
+        }
+        
+        //public List<MitigationCost> MitigationCosts => _mitigationService.GetCosts()!;
+        
+        
+        
         private MitigationCost? _selectedMitigationCost;
         public MitigationCost? SelectedMitigationCost
         {
             get => _selectedMitigationCost;
             set => this.RaiseAndSetIfChanged(ref _selectedMitigationCost, value);
         }
-        
-    
-        public List<PlanningStrategy> PlanningStrategies => _mitigationService.GetStrategies()!;
-    
+
+
+        private ObservableCollection<PlanningStrategy> _planningStrategies;
+
+        public ObservableCollection<PlanningStrategy> PlanningStrategies
+        {
+            get => _planningStrategies;
+            set => this.RaiseAndSetIfChanged(ref _planningStrategies, value);
+        }
+
         private PlanningStrategy? _selectedPlanningStrategy;
         public PlanningStrategy? SelectedPlanningStrategy
         {

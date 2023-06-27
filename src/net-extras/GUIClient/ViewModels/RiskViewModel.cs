@@ -391,8 +391,6 @@ public class RiskViewModel: ViewModelBase
     
     private async void ExecuteAddMitigation(Window openWindow)
     {
-        //Mitigation mitigation = new Mitigation();
-        
         var dialog = new EditMitigationWindow()
         {
             DataContext = new EditMitigationViewModel(OperationType.Create, SelectedRisk!.Id),
@@ -408,9 +406,21 @@ public class RiskViewModel: ViewModelBase
         SelectedRisk = Risks!.FirstOrDefault(r=>r.Id == selectedRiskId);
     }
     
-    private void ExecuteEditMitigation(Window openWindow)
+    private async void ExecuteEditMitigation(Window openWindow)
     {
-        throw new NotImplementedException();
+        var dialog = new EditMitigationWindow()
+        {
+            DataContext = new EditMitigationViewModel(OperationType.Edit, SelectedRisk!.Id, HdRisk.Mitigation),
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Width = 1050,
+            Height = 530,
+            CanResize = false
+        };
+        await dialog.ShowDialog( openWindow );
+        var selectedRiskId = SelectedRisk.Id;
+        ExecuteReloadRisk();
+        CleanFilters();
+        SelectedRisk = Risks!.FirstOrDefault(r=>r.Id == selectedRiskId);
     }
 
     private async void ExecuteAddRisk(Window openWindow)
