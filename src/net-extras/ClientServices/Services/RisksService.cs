@@ -172,6 +172,36 @@ public class RisksService: ServiceBase, IRisksService
         }
 
     }
+
+    public List<CloseReason> GetRiskCloseReasons()
+    {
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/CloseReasons");
+        try
+        {
+            var response = client.Get<List<CloseReason>>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error getting closure reasons");
+                return null;
+            }
+            
+            return response;
+            
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error getting risk closure reasons message: {Message}", ex.Message);
+            throw new RestComunicationException("Error getting risk closure reasons", ex);
+        }
+    }
+
     
     public List<Category>? GetRiskCategories()
     {

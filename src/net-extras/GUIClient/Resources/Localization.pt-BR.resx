@@ -351,4 +351,7 @@
     <data name="Closed" xml:space="preserve">
         <value>Fechado</value>
     </data>
+    <data name="Reason" xml:space="preserve">
+        <value>Motivo</value>
+    </data>
 </root>

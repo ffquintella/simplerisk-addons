@@ -14,6 +14,8 @@ public interface IRisksService
     public string GetRiskSource(int id);
     
     public Closure? GetRiskClosure(int riskId);
+
+    public List<CloseReason> GetRiskCloseReasons();
     
     public List<Source>? GetRiskSources();
     

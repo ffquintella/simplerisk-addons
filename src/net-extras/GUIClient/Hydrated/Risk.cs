@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DAL.Entities;
 using Serilog;
 using ClientServices.Interfaces;
+using Model.Exceptions;
 using Model.Risks;
 using ReactiveUI;
 
@@ -43,17 +45,35 @@ public class Risk: BaseHydrated
     
     public RiskScoring Scoring => _risksService.GetRiskScoring(_baseRisk.Id);
 
-    
+    private Closure? _closure;
     public Closure? Closure
     {
         get
         {
+            if(_closure != null) return _closure;
             if (_baseRisk.Status == RiskHelper.GetRiskStatusName(RiskStatus.Closed))
             {
-                return _risksService.GetRiskClosure(_baseRisk.Id);
+                _closure = _risksService.GetRiskClosure(_baseRisk.Id);
+                return _closure;
             }
 
             return null;
+        }
+    }
+    
+    private List<CloseReason>? _closeReasons;
+    public string ClosureReason
+    {
+        get
+        {
+            if (_closure == null) return "";
+            else
+            {
+                if(_closeReasons == null) _closeReasons = _risksService.GetRiskCloseReasons();
+                var reason = _closeReasons.Where(cr => cr.Value == _closure.CloseReason).FirstOrDefault();
+                if(reason == null) throw new DataNotFoundException("ClosureReason", _closure.CloseReason.ToString());
+                return reason.Name;
+            }
         }
     }
 
