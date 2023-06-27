@@ -192,7 +192,33 @@ public class MitigationService: ServiceBase, IMitigationService
 
     public void Save(Mitigation mitigation)
     {
-        throw new NotImplementedException();
+        using var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Mitigations/{mitigation.Id}");
+
+        request.AddJsonBody(mitigation);
+        
+        try
+        {
+            var response = client.Put(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error saving mitigation");
+                throw new RestComunicationException($"Error saving mitigation");
+            }
+            
+
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error saving mitigation");
+            throw new RestComunicationException("Error saving mitigation", ex);
+        } 
     }
     public Mitigation? Create(Mitigation mitigation)
     {
