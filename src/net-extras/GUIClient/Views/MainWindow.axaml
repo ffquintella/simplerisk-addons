@@ -10,7 +10,8 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="Simplerisk .Net Client"
         ExtendClientAreaToDecorationsHint="True"
-        Height="700" Width="1000"
+        
+        SizeToContent="Height"
 >
 <!--
         TransparencyLevelHint="AcrylicBlur"
