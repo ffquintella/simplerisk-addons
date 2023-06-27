@@ -350,6 +350,33 @@ public class EditMitigationViewModel: ViewModelBase
             }
 
         }
+        else
+        {
+            try
+            {
+                if(_mitigation == null) throw new InvalidParameterException("_mitigation", "Mitigation is null");
+                _mitigationService.Save(_mitigation);
+                _mitigationService.DeleteTeamsAssociations(_mitigation.Id);
+                _mitigationService.AssociateMitigationToTeam(_mitigation.Id, SelectedMitigationTeam!.Value);
+                baseWindow.Close();
+
+            }catch(Exception e)
+            {
+                Logger.Error("Error saving mitigation: {Message}", e.Message);
+                
+                var msgError = MessageBox.Avalonia.MessageBoxManager
+                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams
+                    {
+                        ContentTitle = Localizer["Error"],
+                        ContentMessage = Localizer["ErrorMitigationMSG"],
+                        Icon = Icon.Error,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    });
+
+                await msgError.Show();
+                
+            }
+        }
     }
 
     private void SyncMitigation()

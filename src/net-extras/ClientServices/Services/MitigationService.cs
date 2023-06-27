@@ -190,6 +190,10 @@ public class MitigationService: ServiceBase, IMitigationService
         } 
     }
 
+    public void Save(Mitigation mitigation)
+    {
+        throw new NotImplementedException();
+    }
     public Mitigation? Create(Mitigation mitigation)
     {
         using var client = _restService.GetClient();

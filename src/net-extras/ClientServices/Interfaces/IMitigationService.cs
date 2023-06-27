@@ -52,6 +52,12 @@ public interface IMitigationService
     public Mitigation? Create(Mitigation mitigation);
     
     /// <summary>
+    /// Saves an existing mitigation to the database
+    /// </summary>
+    /// <param name="mitigation"></param>
+    public void Save(Mitigation mitigation);
+    
+    /// <summary>
     /// Deletes all teams associations for a mitigation
     /// </summary>
     /// <param name="mitigationId"></param>
