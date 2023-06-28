@@ -420,6 +420,7 @@ public class RiskViewModel: ViewModelBase
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             Width = 500,
             Height = 250,
+            SizeToContent = SizeToContent.Height,
             CanResize = false
         };
         await dialog.ShowDialog( openWindow );

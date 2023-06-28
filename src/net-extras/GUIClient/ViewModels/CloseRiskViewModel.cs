@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.Reactive;
 using Avalonia.Controls;
 using ClientServices.Interfaces;
-using ClientServices.Services;
 using DAL.Entities;
-using GUIClient.Models;
 using ReactiveUI;
+using ReactiveUI.Validation.Extensions;
+
+
 
 namespace GUIClient.ViewModels;
 
@@ -22,15 +24,15 @@ public class CloseRiskViewModel: ViewModelBase
     
     #region PROPERTIES
 
-        private List<CloseReason> _closeReasons;
+        private List<CloseReason> _closeReasons = new ();
         public List<CloseReason> CloseReasons
         {
             get => _closeReasons;
             set => this.RaiseAndSetIfChanged(ref _closeReasons, value);
         }
         
-        private CloseReason _selectedCloseReason;
-        public CloseReason SelectedCloseReason
+        private CloseReason? _selectedCloseReason;
+        public CloseReason? SelectedCloseReason
         {
             get => _selectedCloseReason;
             set => this.RaiseAndSetIfChanged(ref _selectedCloseReason, value);
@@ -39,10 +41,13 @@ public class CloseRiskViewModel: ViewModelBase
         private bool _saveEnabled;
         public bool SaveEnabled
         {
-            get => _saveEnabled;
+            get
+            {
+                return _saveEnabled;
+            }
             set => this.RaiseAndSetIfChanged(ref _saveEnabled, value);
         }
-        
+
         public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
         public ReactiveCommand<Window, Unit> BtCancelClicked { get; }
     #endregion
@@ -68,6 +73,14 @@ public class CloseRiskViewModel: ViewModelBase
         
         BtSaveClicked = ReactiveCommand.Create<Window>(ExecuteSave);
         BtCancelClicked = ReactiveCommand.Create<Window>(ExecuteCancel);
+        
+        this.ValidationRule(
+            viewModel => viewModel.SelectedCloseReason, 
+            val => val != null,
+            Localizer["PleaseSelectOneMSG"]);
+
+        this.IsValid()
+            .Subscribe(isvalid => { SaveEnabled = isvalid; });
     }
     
     #region METHODS
