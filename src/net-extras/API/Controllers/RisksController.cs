@@ -3,6 +3,7 @@ using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Exceptions;
+using Model.Risks;
 using ServerServices.Interfaces;
 using ILogger = Serilog.ILogger;
 
@@ -273,6 +274,101 @@ public class RisksController : ApiBaseController
         }
     }
 
+    [HttpDelete]
+    [Route("{riskId}/Closure")]
+    [Authorize(Policy = "RequireCloseRisk")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult ReopenRisk(int riskId)
+    {
+        var user = GetUser();
+        Logger.Information("User:{UserValue} reopened risk:{Id}", 
+            user.Value, riskId);
+        try
+        {
+            /// Let´s check if the risk exists
+
+            var risk = _riskManagement.GetRisk(riskId);
+            
+            /// let´s check the risk status
+            
+            if (risk.Status != RiskHelper.GetRiskStatusName(RiskStatus.Closed)) return BadRequest("Risk is not closed");
+            
+            if (_riskManagement.ClosureExists(riskId))
+            {
+                _riskManagement.DeleteRiskClosure(riskId);
+            }
+
+            risk.Status = RiskHelper.GetRiskStatusName(RiskStatus.MitigationPlanned);
+            
+            _riskManagement.SaveRisk(risk);
+
+            return Ok();
+        }
+        catch (DataNotFoundException dnfe)
+        {
+            return NotFound($"Risk not found:{dnfe.Message}");
+        } 
+        
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpPost]
+    [Route("{riskId}/Closure")]
+    [Authorize(Policy = "RequireCloseRisk")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Risk>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<Closure> CloseRisk(int riskId, [FromBody] Closure closure)
+    {
+        var user = GetUser();
+        Logger.Information("User:{UserValue} closed risk:{Id} closure:{Reason}", 
+            user.Value, riskId, closure.CloseReason);
+        try
+        {
+            /// Let´s check if the risk exists
+
+            var risk = _riskManagement.GetRisk(riskId);
+            
+            //if(risk == null) return NotFound($"Risk:{riskId} not found");
+            
+            if(closure.RiskId != riskId) return BadRequest("RiskId does not match the riskId in the closure");
+
+            //let´s check if the risk is already closed
+            if(risk.Status == RiskHelper.GetRiskStatusName(RiskStatus.Closed)) return BadRequest("Risk is already closed");
+            
+            risk.Status = RiskHelper.GetRiskStatusName(RiskStatus.Closed);
+
+            //let´s check if there is already a closure for this risk
+            if (_riskManagement.ClosureExists(riskId))
+            {
+                _riskManagement.DeleteRiskClosure(riskId);
+            }
+
+            var newClosure = _riskManagement.CreateRiskClosure(closure);
+            
+            risk.CloseId = newClosure.Id;
+            _riskManagement.SaveRisk(risk);
+            
+            
+            return Ok(newClosure);
+        }
+        catch (DataNotFoundException dnfe)
+        {
+            return NotFound($"Risk not found:{dnfe.Message}");
+        } 
+        
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    
+    
     // Updates a Scoring
     [HttpPut]
     [Route("{id}/Scoring")]

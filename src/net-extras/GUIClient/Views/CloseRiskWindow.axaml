@@ -32,7 +32,7 @@
         <TextBlock  Grid.Row="2" Grid.Column="0" Text="{Binding StrNotes}"
                     Margin="5 10 5 0" Classes="label"/>
         <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Name="TxtReason" 
-                 AcceptsReturn="True"  TextWrapping="Wrap" Height="120"
+                 AcceptsReturn="True"  TextWrapping="Wrap" Height="120" Text="{Binding Notes}"
                  Margin="5 5"/>
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Right" Orientation="Horizontal">
             <Button  Name="BtSave" 

@@ -202,6 +202,11 @@ public class RisksService: ServiceBase, IRisksService
         }
     }
 
+
+    public void CloseRisk(Closure closure)
+    {
+        throw new NotImplementedException();
+    }
     
     public List<Category>? GetRiskCategories()
     {

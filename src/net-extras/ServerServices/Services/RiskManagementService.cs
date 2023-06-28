@@ -217,6 +217,17 @@ public class RiskManagementService: IRiskManagementService
         return closure;
     }
 
+    public bool ClosureExists(int riskId)
+    {
+        using var context = _dalManager.GetContext();
+        //Let´s check if the risk exists
+        var risk = context.Risks.FirstOrDefault(r => r.Id == riskId);
+        if (risk == null) return false;
+        
+        var closure = context.Closures.FirstOrDefault(c => c.RiskId == riskId);
+        return closure != null;
+    }
+
     public Closure CreateRiskClosure(Closure closure)
     {
         using var context = _dalManager.GetContext();

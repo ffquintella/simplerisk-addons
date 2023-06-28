@@ -141,12 +141,20 @@ public static class AuthenticationBootstrapper
             {
                 policy.RequireAuthenticatedUser()
                     .Requirements.Add(new ValidUserRequirement());
-                //policy.Requirements.Add(new ClaimsAuthorizationRequirement("Permission", new []{"delete_risk"}));
-                
                 policy.RequireAssertion(context =>
                     context.User.HasClaim(c =>
                         (c.Type == ClaimTypes.Role && c.Value=="Admin") || 
                          (c.Type == "Permission" && c.Value == "delete_risk")));
+                
+            });
+            options.AddPolicy("RequireCloseRisk", policy =>
+            {
+                policy.RequireAuthenticatedUser()
+                    .Requirements.Add(new ValidUserRequirement());
+                policy.RequireAssertion(context =>
+                    context.User.HasClaim(c =>
+                        (c.Type == ClaimTypes.Role && c.Value=="Admin") || 
+                        (c.Type == "Permission" && c.Value == "close_risks")));
                 
             });
             options.AddPolicy("RequireMgmtReviewAccess", policy =>

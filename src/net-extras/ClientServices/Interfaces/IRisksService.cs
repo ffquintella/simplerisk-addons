@@ -42,7 +42,10 @@ public interface IRisksService
     public void SaveRiskScoring(RiskScoring scoring);
     
     public void DeleteRiskScoring(int scoringId);
-    
-
+    /// <summary>
+    /// Closes the risk with the specified closure
+    /// </summary>
+    /// <param name="closure"></param>
+    public void CloseRisk(Closure closure);
 
 }

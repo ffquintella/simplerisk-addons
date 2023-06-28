@@ -48,6 +48,13 @@ public class CloseRiskViewModel: ViewModelBase
             set => this.RaiseAndSetIfChanged(ref _saveEnabled, value);
         }
 
+        private string _notes = "";
+        public string Notes
+        {
+            get => _notes;
+            set => this.RaiseAndSetIfChanged(ref _notes, value);
+        }
+        
         public ReactiveCommand<Window, Unit> BtSaveClicked { get; }
         public ReactiveCommand<Window, Unit> BtCancelClicked { get; }
     #endregion
@@ -55,6 +62,7 @@ public class CloseRiskViewModel: ViewModelBase
     #region INTERNAL FIELDS
         private Risk _risk;
         private readonly IRisksService _risksService;
+        private readonly IAuthenticationService _authenticationService;
 
     #endregion
 
@@ -68,6 +76,7 @@ public class CloseRiskViewModel: ViewModelBase
         
         _risk = risk;
         _risksService = GetService<IRisksService>();
+        _authenticationService = GetService<IAuthenticationService>();
         
         CloseReasons = _risksService.GetRiskCloseReasons();
         
@@ -87,6 +96,16 @@ public class CloseRiskViewModel: ViewModelBase
 
     private async void ExecuteSave(Window baseWindow)
     {
+        var closure = new Closure()
+        {
+            RiskId = _risk.Id,
+            UserId = _authenticationService.AuthenticatedUserInfo!.UserId!.Value,
+            ClosureDate = DateTime.Now,
+            CloseReason = SelectedCloseReason!.Value,
+            Note = Notes
+        };
+        
+        
     }
     
     private async void ExecuteCancel(Window baseWindow)

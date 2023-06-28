@@ -123,12 +123,21 @@ public interface IRiskManagementService
     /// <returns></returns>
     public Closure GetRiskClosureByRiskId(int riskId);
     
+    
     /// <summary>
     /// Creates a new risk closure
     /// </summary>
     /// <param name="closure"></param>
     /// <returns></returns>
     public Closure CreateRiskClosure(Closure closure);
+
+
+    /// <summary>
+    /// Checks if a closure already exists for a risk
+    /// </summary>
+    /// <param name="riskId"></param>
+    /// <returns></returns>
+    public bool ClosureExists(int riskId);
     
     /// <summary>
     /// Deletes a risck closure
