@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:GUIClient.ViewModels"
+        xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GUIClient.Views.CloseRiskWindow"
         Title="CloseRiskWindow"
@@ -33,20 +34,28 @@
         <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Name="TxtReason" 
                  AcceptsReturn="True"  TextWrapping="Wrap" Height="120"
                  Margin="5 5"/>
-        
-        <Button Grid.Row="3" Grid.Column="0" Name="BtSave" 
-                            Margin="5 0"
-                            IsEnabled="{Binding SaveEnabled}"
-                            Command="{Binding BtSaveClicked}"
-                            CommandParameter="{Binding ElementName=CloseRisk}">
-            <TextBlock Text="{Binding StrSave}"/>
-        </Button>
-        <Button  Name="BtCancel" 
-                 Margin="5 0"
-                 Command="{Binding BtCancelClicked}"
-                 CommandParameter="{Binding ElementName=CloseRisk}">
-            <TextBlock Text="{Binding StrCancel}"/>
-        </Button>
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button  Name="BtSave" 
+                     Margin="5 5"
+                     IsEnabled="{Binding SaveEnabled}"
+                     Command="{Binding BtSaveClicked}"
+                     CommandParameter="{Binding ElementName=CloseRisk}">
+                <StackPanel Orientation="Horizontal">
+                    <material:MaterialIcon Kind="ContentSave" Margin="5 0"/>
+                    <TextBlock Text="{Binding StrSave}"/> 
+                </StackPanel>
+            </Button>
+            <Button   Name="BtCancel" 
+                    Margin="5 5"
+                    Command="{Binding BtCancelClicked}"
+                    CommandParameter="{Binding ElementName=CloseRisk}">
+                <StackPanel Orientation="Horizontal">
+                    <material:MaterialIcon Kind="Cancel" Margin="5 0"/>
+                    <TextBlock Text="{Binding StrCancel}"/> 
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
         
     </Grid>
     

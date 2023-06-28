@@ -419,7 +419,7 @@ public class RiskViewModel: ViewModelBase
             DataContext = new CloseRiskViewModel(SelectedRisk!),
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             Width = 500,
-            Height = 500,
+            Height = 250,
             CanResize = false
         };
         await dialog.ShowDialog( openWindow );
