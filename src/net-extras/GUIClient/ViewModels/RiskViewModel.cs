@@ -127,10 +127,12 @@ public class RiskViewModel: ViewModelBase
             if (value != null)
             {
                 HdRisk = new Hydrated.Risk(value);
+                IsMitigationVisible = HdRisk.Mitigation != null;
             }
             else
             {
                 HdRisk = null;
+                IsMitigationVisible = false;
             }
             this.RaiseAndSetIfChanged(ref _selectedRisk, value);
         }
@@ -209,8 +211,14 @@ public class RiskViewModel: ViewModelBase
         get => _impact;
         set => this.RaiseAndSetIfChanged(ref _impact, value);
     }
-    
-    
+
+    private bool _isMitigationVisible;
+    public bool IsMitigationVisible
+    {
+        get => _isMitigationVisible;
+        set => this.RaiseAndSetIfChanged(ref _isMitigationVisible, value);
+    }
+
     public List<PlanningStrategy>? Strategies { get; set; }
     
     public List<MitigationCost>? Costs { get; set; }
@@ -231,12 +239,14 @@ public class RiskViewModel: ViewModelBase
     
     #endregion
 
+    #region PRIVATE FIELDS
     private IRisksService _risksService;
     private IAuthenticationService _autenticationService;
     private IMitigationService _mitigationService;
     
     private bool _initialized;
     private List<RiskStatus> _filterStatuses;
+    #endregion
     
     public RiskViewModel()
     {
@@ -307,6 +317,7 @@ public class RiskViewModel: ViewModelBase
         
     }
 
+    #region METHODS
     private void ApplyNewFilter()
     {
         if (_filterStatuses.Any(s => s == RiskStatus.New))
@@ -571,4 +582,5 @@ public class RiskViewModel: ViewModelBase
             _initialized = true;
         }
     }
+    #endregion
 }

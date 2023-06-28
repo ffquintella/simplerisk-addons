@@ -139,9 +139,7 @@
                 </StackPanel>
                 <!-- MITIGATION -->
                 <Panel Background="Black" IsVisible="{Binding !!SelectedRisk }">
-                    <Grid ColumnDefinitions="Auto, *, Auto" IsVisible="{Binding SelectedRisk.Status, 
-                                    Converter={StaticResource stringEqualConverter},
-                                    ConverterParameter=New}">
+                    <Grid ColumnDefinitions="Auto, *, Auto" IsVisible="{Binding !IsMitigationVisible}">
                         <TextBlock Grid.Column="0" Text="{Binding StrMitigationNotPlanned}" Margin="0 5"/>
                         <Button Grid.Column="2" Name="BtPlanMitigation"
                                 Command="{Binding BtAddMitigationClicked}"
@@ -152,9 +150,7 @@
                     </Grid>
                     <Grid ColumnDefinitions="Auto, Auto, Auto, Auto, *, Auto"
                           RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
-                          IsVisible="{Binding SelectedRisk.Status, 
-                                    Converter={StaticResource stringNotEqualConverter},
-                                    ConverterParameter=New}">
+                          IsVisible="{Binding IsMitigationVisible, Mode=OneWay}">
                         <TextBlock Grid.Row="0" Grid.Column="0"  Classes="label" Text="{Binding StrMitigation}" />
                         <Button Grid.Row="0" Grid.Column="5" Name="BtEditMitigation"
                                 Command="{Binding BtEditMitigationClicked}"
