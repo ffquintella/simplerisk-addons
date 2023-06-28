@@ -780,6 +780,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while closing risk..
+        /// </summary>
+        internal static string RiskClosingErrorMSG {
+            get {
+                return ResourceManager.GetString("RiskClosingErrorMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you shure you want to delete the selected risk?.
         /// </summary>
         internal static string RiskDeleteConfirmationMSG {

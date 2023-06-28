@@ -357,4 +357,7 @@
     <data name="CloseRisk" xml:space="preserve">
         <value>Fechar risco</value>
     </data>
+    <data name="RiskClosingErrorMSG" xml:space="preserve">
+        <value>Um erro ocorreu enquanto fechava o risco.</value>
+    </data>
 </root>

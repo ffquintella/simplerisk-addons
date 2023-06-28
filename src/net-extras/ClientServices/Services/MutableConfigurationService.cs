@@ -32,74 +32,64 @@ public class MutableConfigurationService: IMutableConfigurationService
         if (!IsInitialized)
         {
             if(!Directory.Exists(_environmentService.ApplicationDataFolder)) Directory.CreateDirectory(_environmentService.ApplicationDataFolder);
-            
-            using (var db = new LiteDatabase(_configurationConnectionString))
-            {
-                var col = db.GetCollection<MutableConfiguration>("configuration");
 
-                col.Insert(new MutableConfiguration
-                {
-                    ID = 1,
-                    Name = "DeviceID",
-                    Value = _environmentService.DeviceID
-                });
-                col.EnsureIndex(x => x.Name);
-            }
+            using var db = new LiteDatabase(_configurationConnectionString);
+            var col = db.GetCollection<MutableConfiguration>("configuration");
+
+            col.Insert(new MutableConfiguration
+            {
+                ID = 1,
+                Name = "DeviceID",
+                Value = _environmentService.DeviceID
+            });
+            col.EnsureIndex(x => x.Name);
         }
     }
 
     public string? GetConfigurationValue(string name)
     {
         if (!IsInitialized) Initialize();
-        using (var db = new LiteDatabase(_configurationConnectionString))
-        {
-            var col = db.GetCollection<MutableConfiguration>("configuration");
-            var config = col.FindOne(x => x.Name == name);
-            if (config == null) return null;
-            return config.Value;
-        }
+        using var db = new LiteDatabase(_configurationConnectionString);
+        var col = db.GetCollection<MutableConfiguration>("configuration");
+        var config = col.FindOne(x => x.Name == name);
+        if (config == null) return null;
+        return config.Value;
     }
 
     public void SetConfigurationValue(string name, string value)
     {
         if (!IsInitialized) Initialize();
-        using (var db = new LiteDatabase(_configurationConnectionString))
+        using var db = new LiteDatabase(_configurationConnectionString);
+        var col = db.GetCollection<MutableConfiguration>("configuration");
+
+        MutableConfiguration conf = col.FindOne(mo => mo.Name == name);
+
+        if (conf == null)
         {
-            var col = db.GetCollection<MutableConfiguration>("configuration");
-
-            MutableConfiguration conf = col.FindOne(mo => mo.Name == name);
-
-            if (conf == null)
+            col.Insert(new MutableConfiguration
             {
-                col.Insert(new MutableConfiguration
-                {
-                    Name = name,
-                    Value = value
-                });
-            }
-            else
-            {
-                conf.Value = value;
-                col.Update(conf);
-            }
-
+                Name = name,
+                Value = value
+            });
+        }
+        else
+        {
+            conf.Value = value;
+            col.Update(conf);
         }
     }
 
     public void RemoveConfigurationValue(string name)
     {
         if (!IsInitialized) Initialize();
-        using (var db = new LiteDatabase(_configurationConnectionString))
+        using var db = new LiteDatabase(_configurationConnectionString);
+        var col = db.GetCollection<MutableConfiguration>("configuration");
+
+        MutableConfiguration conf = col.FindOne(mo => mo.Name == name);
+
+        if (conf != null)
         {
-            var col = db.GetCollection<MutableConfiguration>("configuration");
-
-            MutableConfiguration conf = col.FindOne(mo => mo.Name == name);
-
-            if (conf != null)
-            {
-                col.Delete(conf.ID);
-            }
-            
+            col.Delete(conf.ID);
         }
     }
     

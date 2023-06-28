@@ -4,6 +4,9 @@ using System.Reactive;
 using Avalonia.Controls;
 using ClientServices.Interfaces;
 using DAL.Entities;
+using MessageBox.Avalonia.DTO;
+using MessageBox.Avalonia.Enums;
+using Model.Exceptions;
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
 
@@ -96,7 +99,7 @@ public class CloseRiskViewModel: ViewModelBase
 
     private async void ExecuteSave(Window baseWindow)
     {
-        var closure = new Closure()
+        var closure = new Closure
         {
             RiskId = _risk.Id,
             UserId = _authenticationService.AuthenticatedUserInfo!.UserId!.Value,
@@ -104,12 +107,31 @@ public class CloseRiskViewModel: ViewModelBase
             CloseReason = SelectedCloseReason!.Value,
             Note = Notes
         };
-        
-        
+
+        try
+        {
+            _risksService.CloseRisk(closure);
+            baseWindow.Close();
+        }
+        catch (RestComunicationException ex)
+        {
+            var msgOk = MessageBox.Avalonia.MessageBoxManager
+                .GetMessageBoxStandardWindow(new MessageBoxStandardParams
+                {
+                    ContentTitle = Localizer["Error"],
+                    ContentMessage = Localizer["RiskClosingErrorMSG"],
+                    Icon = Icon.Error,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                });
+
+            await msgOk.Show();
+
+        }
     }
     
     private async void ExecuteCancel(Window baseWindow)
     {
+        baseWindow.Close();
     }
 
     #endregion

@@ -87,9 +87,8 @@ public class Risk: BaseHydrated
                 if (_mitigation == null || _mitigation.RiskId != _baseRisk.Id)
                 {
                     _mitigation = _mitigationService.GetByRiskId(_baseRisk.Id);
-                    this.RaisePropertyChanged();
+                    if(_mitigation != null) this.RaisePropertyChanged();
                 }
-
             }
             else
             {

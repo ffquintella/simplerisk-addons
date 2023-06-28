@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.Json;
 using ClientServices.Interfaces;
 using DAL.Entities;
 using Model.Exceptions;
@@ -52,15 +53,19 @@ public class MitigationService: ServiceBase, IMitigationService
         var request = new RestRequest($"/Risks/{id}/Mitigation");
         try
         {
-            var response = client.Get<Mitigation>(request);
+            var response = client.Get(request);
 
-            if (response == null)
+            if (response.StatusCode != HttpStatusCode.OK)
             {
                 _logger.Error("Error getting mitigation for risk {Id}", id);
-                throw new RestComunicationException($"Error getting mitigation for risk {id}");
+                return null;
+                //throw new RestComunicationException($"Error getting mitigation for risk {id}");
             }
-            
-            return response;
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            return response.Content == null ? null : JsonSerializer.Deserialize<Mitigation>(response.Content, options);
             
         }
         catch (HttpRequestException ex)

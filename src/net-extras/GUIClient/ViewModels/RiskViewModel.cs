@@ -424,6 +424,8 @@ public class RiskViewModel: ViewModelBase
             CanResize = false
         };
         await dialog.ShowDialog( openWindow );
+        ExecuteReloadRisk();
+        CleanFilters();
     }
     
     private async void ExecuteEditMitigation(Window openWindow)

@@ -205,7 +205,31 @@ public class RisksService: ServiceBase, IRisksService
 
     public void CloseRisk(Closure closure)
     {
-        throw new NotImplementedException();
+        var client = _restService.GetClient();
+        
+        var request = new RestRequest($"/Risks/{closure.RiskId}/Closure");
+        
+        request.AddJsonBody(closure);
+        
+        try
+        {
+            var response = client.Post<Closure>(request);
+
+            if (response == null)
+            {
+                _logger.Error("Error closing risk");
+                throw new RestComunicationException("Error closing risk");
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _authenticationService.DiscardAuthenticationToken();
+            }
+            _logger.Error("Error closing risk: {Message}", ex.Message);
+            throw new RestComunicationException("Error closing risk", ex);
+        }
     }
     
     public List<Category>? GetRiskCategories()
