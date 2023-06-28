@@ -195,6 +195,15 @@ namespace GUIClient.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fechar risco.
+        /// </summary>
+        internal static string CloseRisk {
+            get {
+                return ResourceManager.GetString("CloseRisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Computador.
         /// </summary>
         internal static string Computer {

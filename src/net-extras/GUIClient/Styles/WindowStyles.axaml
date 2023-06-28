@@ -75,6 +75,12 @@
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
     
+    <Style Selector="TextBlock.title">
+        <Setter Property="Margin" Value="3 5 3 5"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    
     <Style Selector="TextBlock.formData">
         <Setter Property="Margin" Value="0 5 0 0"/>
         <Setter Property="TextWrapping" Value="Wrap"/>

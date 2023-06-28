@@ -416,7 +416,7 @@ public class RiskViewModel: ViewModelBase
     {
         var dialog = new CloseRiskWindow()
         {
-            DataContext = new CloseRiskViewModel(),
+            DataContext = new CloseRiskViewModel(SelectedRisk!),
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             Width = 500,
             Height = 500,

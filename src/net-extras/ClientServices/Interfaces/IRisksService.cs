@@ -42,5 +42,7 @@ public interface IRisksService
     public void SaveRiskScoring(RiskScoring scoring);
     
     public void DeleteRiskScoring(int scoringId);
+    
+
 
 }

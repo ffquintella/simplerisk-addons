@@ -354,4 +354,7 @@
     <data name="Reason" xml:space="preserve">
         <value>Reason</value>
     </data>
+    <data name="CloseRisk" xml:space="preserve">
+        <value>Close risk</value>
+    </data>
 </root>
