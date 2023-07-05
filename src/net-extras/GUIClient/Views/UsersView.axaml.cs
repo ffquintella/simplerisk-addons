@@ -8,6 +8,7 @@ public partial class UsersView : UserControl
 {
     public UsersView()
     {
+        DataContext = new ViewModels.UsersViewModel();
         InitializeComponent();
     }
 

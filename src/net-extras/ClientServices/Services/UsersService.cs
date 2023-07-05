@@ -1,5 +1,7 @@
+using ClientServices.Events;
 using Model.Exceptions;
 using ClientServices.Interfaces;
+using DAL.Entities;
 using Model.DTO;
 using RestSharp;
 
@@ -10,6 +12,7 @@ public class UsersService: ServiceBase, IUsersService
     
     public UsersService(IRestService restService): base(restService)
     {
+        UserAdded += (_, _) => { };
     }
 
     public string GetUserName(int id)
@@ -62,4 +65,26 @@ public class UsersService: ServiceBase, IUsersService
             throw new RestComunicationException("Error listing users", ex);
         }
     }
+
+    public void AddUser(User user)
+    {
+        // TODO: Implement this
+        var ul = new UserListing
+        {
+            Id = user.Value,
+            Name = user.Name
+        };
+        NotifyUserAdded(new UserAddedEventArgs
+        {
+            User = ul
+        });
+    }
+    
+    private void NotifyUserAdded(UserAddedEventArgs ua)
+    {
+        EventHandler<UserAddedEventArgs> handler = UserAdded;
+        handler(this, ua);
+    }
+    public event EventHandler<UserAddedEventArgs> UserAdded;
+    
 }

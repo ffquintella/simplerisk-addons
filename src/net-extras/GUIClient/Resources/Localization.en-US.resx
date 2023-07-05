@@ -360,4 +360,7 @@
     <data name="RiskClosingErrorMSG" xml:space="preserve">
         <value>An error occurred while closing risk.</value>
     </data>
+    <data name="Users" xml:space="preserve">
+        <value>Users</value>
+    </data>
 </root>

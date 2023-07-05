@@ -3,10 +3,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:GUIClient.ViewModels"
+             xmlns:material="using:Material.Icons.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GUIClient.Views.UsersView">
     <Design.DataContext>
         <viewModels:UsersViewModel/>
     </Design.DataContext>
-    Welcome to Avalonia!
+    <Grid ColumnDefinitions="150, 2, *">
+        <!-- LEFT SIDE AREA -->
+        <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto">
+            <Panel Grid.Row="0" Background="#222222">
+                <TextBlock Grid.Row="0" Foreground="Azure" Text="{Binding StrUsers}"  HorizontalAlignment="Center"/>
+            </Panel>
+            <!-- User List -->
+            <ListBox Grid.Row="1" Name="LstUsers"  
+                     ItemsSource="{Binding Users, Mode=TwoWay}" SelectionMode="Single"
+                     SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                     HorizontalAlignment="Center" Width="300" MinHeight="100"
+                     ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="280"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <GridSplitter Grid.Column="1" Background="DarkGray" ResizeDirection="Columns"/>
+        <!-- RIGHT SIDE AREA -->
+        <Rectangle Grid.Column="2" Fill="Red"/>
+    </Grid>
 </UserControl>
