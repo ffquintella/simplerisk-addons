@@ -64,6 +64,8 @@ public class NavigationBarViewModel: ViewModelBase
     public ReactiveCommand<MainWindow, Unit> BtDeviceClicked { get; }
     public ReactiveCommand<MainWindow, Unit> BtAssessmentClicked { get; }
     public ReactiveCommand<MainWindow, Unit> BtRiskClicked { get; }
+    
+    public ReactiveCommand<MainWindow, Unit> BtUsersClicked { get; }
     public ReactiveCommand<MainWindow, Unit> BtAccountClicked { get; }
     
     public NavigationBarViewModel(
@@ -80,6 +82,7 @@ public class NavigationBarViewModel: ViewModelBase
         BtDashboardClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenDashboard);
         BtSettingsClicked = ReactiveCommand.Create<Window>(ExecuteOpenSettings);
         BtDeviceClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenDevice);
+        BtUsersClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenUsers);
         BtAssessmentClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAssessment);
         BtRiskClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenRisk);
         BtAccountClicked = ReactiveCommand.Create<MainWindow>(ExecuteOpenAccount);
@@ -133,6 +136,11 @@ public class NavigationBarViewModel: ViewModelBase
         ((MainWindowViewModel)window.DataContext!)
             .NavigateTo(AvaliableViews.Devices);
         
+    }
+    
+    public void ExecuteOpenUsers(MainWindow window)
+    {
+        //((MainWindowViewModel)window.DataContext!).NavigateTo(AvaliableViews.Devices);
     }
     
     public void  ExecuteOpenDashboard(MainWindow window)
