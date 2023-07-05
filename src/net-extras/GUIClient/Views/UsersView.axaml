@@ -9,7 +9,7 @@
     <Design.DataContext>
         <viewModels:UsersViewModel/>
     </Design.DataContext>
-    <Grid ColumnDefinitions="250, 2, *">
+    <Grid ColumnDefinitions="250, 3, *">
         <!-- LEFT SIDE AREA -->
         <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto">
             <Panel Grid.Row="0" Background="#222222">
