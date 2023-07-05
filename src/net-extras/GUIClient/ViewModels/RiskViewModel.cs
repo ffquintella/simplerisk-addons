@@ -443,7 +443,7 @@ public class RiskViewModel: ViewModelBase
     {
         var dialog = new EditMitigationWindow()
         {
-            DataContext = new EditMitigationViewModel(OperationType.Edit, SelectedRisk!.Id, HdRisk.Mitigation),
+            DataContext = new EditMitigationViewModel(OperationType.Edit, SelectedRisk!.Id, HdRisk!.Mitigation),
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             Width = 1050,
             Height = 530,

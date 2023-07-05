@@ -14,7 +14,7 @@ namespace GUIClient.Views
 
         public MainWindow()
         {
-            DataContext = new MainWindowViewModel( GetService<ILocalizationService>());
+            DataContext = new MainWindowViewModel();
             
             InitializeComponent();
              

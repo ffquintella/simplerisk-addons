@@ -12,6 +12,7 @@ namespace GUIClient.ViewModels
         private bool _viewDeviceIsVisible = false;
         private bool _assessmentIsVisible = false;
         private bool _riskIsVisible = false;
+        private bool _usersIsVisible = false;
         
         public string StrApplicationMN { get; }
         public string StrExitMN { get; }
@@ -40,6 +41,12 @@ namespace GUIClient.ViewModels
             set => this.RaiseAndSetIfChanged(ref _riskIsVisible, value);
         }
         
+        public bool UsersIsVisible
+        {
+            get => _usersIsVisible;
+            set => this.RaiseAndSetIfChanged(ref _usersIsVisible, value);
+        }
+        
         private DeviceViewModel _deviceViewModel = 
             new DeviceViewModel();
 
@@ -49,7 +56,7 @@ namespace GUIClient.ViewModels
             set =>  this.RaiseAndSetIfChanged(ref _deviceViewModel, value);
         }
 
-        public MainWindowViewModel(ILocalizationService localizationService)
+        public MainWindowViewModel()
         {
             
             StrApplicationMN = Localizer["ApplicationMN"];
@@ -79,6 +86,9 @@ namespace GUIClient.ViewModels
                 case AvaliableViews.Risk:
                     RiskIsVisible = true;
                     break;
+                case AvaliableViews.Users:
+                    UsersIsVisible = true;
+                    break;
             }
         }
 
@@ -88,6 +98,7 @@ namespace GUIClient.ViewModels
             ViewDeviceIsVisible = false;
             AssessmentIsVisible = false;
             RiskIsVisible = false;
+            UsersIsVisible = false;
         }
         
         

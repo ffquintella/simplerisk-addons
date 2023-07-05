@@ -140,7 +140,7 @@ public class NavigationBarViewModel: ViewModelBase
     
     public void ExecuteOpenUsers(MainWindow window)
     {
-        //((MainWindowViewModel)window.DataContext!).NavigateTo(AvaliableViews.Devices);
+        ((MainWindowViewModel)window.DataContext!).NavigateTo(AvaliableViews.Users);
     }
     
     public void  ExecuteOpenDashboard(MainWindow window)

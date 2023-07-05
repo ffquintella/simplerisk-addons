@@ -119,7 +119,7 @@ public class CloseRiskViewModel: ViewModelBase
                 .GetMessageBoxStandardWindow(new MessageBoxStandardParams
                 {
                     ContentTitle = Localizer["Error"],
-                    ContentMessage = Localizer["RiskClosingErrorMSG"],
+                    ContentMessage = Localizer["RiskClosingErrorMSG"] + "\n" + ex.Message,
                     Icon = Icon.Error,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 });
@@ -129,7 +129,7 @@ public class CloseRiskViewModel: ViewModelBase
         }
     }
     
-    private async void ExecuteCancel(Window baseWindow)
+    private void ExecuteCancel(Window baseWindow)
     {
         baseWindow.Close();
     }

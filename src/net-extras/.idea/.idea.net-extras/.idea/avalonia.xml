@@ -32,6 +32,7 @@
         <entry key="GUIClient/Views/RisksPanelView.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/Settings.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/UserInfo.axaml" value="GUIClient/GUIClient.csproj" />
+        <entry key="GUIClient/Views/UsersView.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/teste.axaml" value="GUIClient/GUIClient.csproj" />
         <entry key="GUIClient/Views/testeUC.axaml" value="GUIClient/GUIClient.csproj" />
       </map>

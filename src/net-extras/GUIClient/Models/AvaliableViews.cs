@@ -5,5 +5,6 @@ public enum AvaliableViews
     Dashboard,
     Devices,
     Assessment,
-    Risk
+    Risk, 
+    Users
 }
