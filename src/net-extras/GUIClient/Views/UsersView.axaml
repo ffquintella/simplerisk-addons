@@ -9,7 +9,7 @@
     <Design.DataContext>
         <viewModels:UsersViewModel/>
     </Design.DataContext>
-    <Grid ColumnDefinitions="150, 2, *">
+    <Grid ColumnDefinitions="250, 2, *">
         <!-- LEFT SIDE AREA -->
         <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto">
             <Panel Grid.Row="0" Background="#222222">
@@ -19,17 +19,22 @@
             <ListBox Grid.Row="1" Name="LstUsers"  
                      ItemsSource="{Binding Users, Mode=TwoWay}" SelectionMode="Single"
                      SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
-                     HorizontalAlignment="Center" Width="300" MinHeight="100"
+                     HorizontalAlignment="Center"  MinHeight="100"
                      ScrollViewer.HorizontalScrollBarVisibility="Visible">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="280"/>
+                        <TextBlock Text="{Binding Name}"   />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
         <GridSplitter Grid.Column="1" Background="DarkGray" ResizeDirection="Columns"/>
         <!-- RIGHT SIDE AREA -->
-        <Rectangle Grid.Column="2" Fill="Red"/>
+        <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto" IsVisible="{Binding !!SelectedUser}">
+            <Panel Grid.Row="0" Background="#222222">
+                <TextBlock Grid.Row="0" Foreground="Azure" Text="{Binding StrDetails}"  HorizontalAlignment="Center"/>
+            </Panel>
+        </Grid>
+            
     </Grid>
 </UserControl>

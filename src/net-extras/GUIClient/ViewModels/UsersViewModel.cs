@@ -10,6 +10,7 @@ public class UsersViewModel: ViewModelBase
 {
     #region LANGUAGE
     private string StrUsers { get;  }
+    private string StrDetails { get;  }
     
     #endregion
 
@@ -40,6 +41,7 @@ public class UsersViewModel: ViewModelBase
     public UsersViewModel()
     {
         StrUsers = Localizer["Users"];
+        StrDetails = Localizer["Details"];
 
         _users = new ObservableCollection<UserListing>();
         _usersService.UserAdded += (_, user) => _users.Add(user.User);        

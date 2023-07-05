@@ -11,24 +11,38 @@ namespace GUIClient.ViewModels;
 public class DeviceViewModel: ViewModelBase
 {
 
-    private bool _initialized = false;
+    #region LANGUAGES
+
+    private string StrName { get;  }
+    private string StrComputer { get;  }
+    private string StrLoggedAccount { get;  }
+    private string StrActions { get;  }
+
+    #endregion
+
+    #region PROPERTIES
+
     private List<Client> _clients;
     public List<Client> Clients
     {
         get => _clients;
         set => this.RaiseAndSetIfChanged(ref _clients, value);
     }
-
-    private IClientService _clientService;
-    
-    private string StrName { get;  }
-    private string StrComputer { get;  }
-    private string StrLoggedAccount { get;  }
-    private string StrActions { get;  }
-    
     public ReactiveCommand<int, Unit> BtApproveClicked { get; }
     public ReactiveCommand<int, Unit> BtRejectClicked { get; }
     public ReactiveCommand<int, Unit> BtDeleteClicked { get; }
+
+    #endregion
+
+    #region PRIVATE FIELDS
+    
+    private bool _initialized = false;
+    private readonly IAuthenticationService _authenticationService = GetService<IAuthenticationService>();
+    private IClientService _clientService;
+    
+    #endregion
+    
+
     public DeviceViewModel()
     {
         var clientService = GetService<IClientService>();
@@ -44,7 +58,10 @@ public class DeviceViewModel: ViewModelBase
         BtRejectClicked = ReactiveCommand.Create<int>(ExecuteRejectOrder);
         BtDeleteClicked = ReactiveCommand.Create<int>(ExecuteDeleteOrder);
 
-        
+        _authenticationService.AuthenticationSucceeded += (_, _) =>
+        {
+            Initialize();
+        };
     }
 
     private void ExecuteAproveOrder(int id)
@@ -126,8 +143,8 @@ public class DeviceViewModel: ViewModelBase
         }
          
     }
-    
-    public void Initialize()
+
+    private void Initialize()
     {
         if (!_initialized)
         {

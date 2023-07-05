@@ -77,7 +77,7 @@ namespace GUIClient.ViewModels
                     ViewDashboardIsVisible = true;
                     break;
                 case AvaliableViews.Devices:
-                    DeviceViewModel.Initialize();
+                    //DeviceViewModel.Initialize();
                     ViewDeviceIsVisible = true;
                     break;
                 case AvaliableViews.Assessment:
