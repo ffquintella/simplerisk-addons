@@ -1,3 +1,5 @@
+using AutoMapper;
+using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +17,43 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class UsersController: ApiBaseController
 {
+    
+    private IMapper _mapper;
 
     public UsersController(ILogger logger,
         IHttpContextAccessor httpContextAccessor,
+        IMapper mapper,
         IUserManagementService userManagementService) : base(logger, httpContextAccessor, userManagementService)
     {
+        _mapper = mapper;
+    }
+    
+    /// <summary>
+    /// Gets one user by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<UserDto> GetUser(int id)
+    {
+        
+        try
+        {
+            var user  = _userManagementService.GetUserById(id);
+            if (user == null) return StatusCode(StatusCodes.Status500InternalServerError, "Error looking for the user");
+            var userDto = _mapper.Map<UserDto>(user);
+            return Ok(userDto);
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning($"The user with id: {id} was not found: {ex.Message}");
+            return NotFound($"The user with the id:{ex.Identification} was not found");
+        }
+        
     }
     
     

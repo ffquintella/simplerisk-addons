@@ -30,6 +30,7 @@ public class ServicesBootstrapper
         services.AddSwaggerGen();
         services.AddAutoMapper(typeof(ClientProfile));
         services.AddAutoMapper(typeof(ObjectUpdateProfile));
+        services.AddAutoMapper(typeof(UserProfile));
         services.AddMemoryCache();
         services.AddMemoryCache(options =>
         {
