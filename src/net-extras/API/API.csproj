@@ -4,15 +4,16 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-      <UserSecretsId>3d122153-2cd0-49d9-ba35-8582c65790a2</UserSecretsId>
-      <LangVersion>11</LangVersion>
-  </PropertyGroup>
+        <UserSecretsId>3d122153-2cd0-49d9-ba35-8582c65790a2</UserSecretsId>
+        <LangVersion>11</LangVersion>
+        <MvcRazorExcludeRefAssembliesFromPublish>false</MvcRazorExcludeRefAssembliesFromPublish>
+    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="12.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-        <PackageReference Include="FluentEmail.Liquid" Version="3.0.2" />
+        <PackageReference Include="FluentEmail.Razor" Version="3.0.2" />
         <PackageReference Include="FluentEmail.Smtp" Version="3.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.8" />
@@ -54,6 +55,8 @@
       <Content Include="Certificates\key.pem">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <Content Remove="EmailTemplates\welcome.cshtml" />
+      <None Remove="EmailTemplates\Welcome.liquid" />
     </ItemGroup>
 
     <ItemGroup>
@@ -67,6 +70,10 @@
       <Reference Include="Serilog.Extensions.Logging">
         <HintPath>..\..\..\..\..\.nuget\packages\serilog.extensions.logging\3.1.0\lib\netstandard2.0\Serilog.Extensions.Logging.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="EmailTemplates\welcome.cshtml.cs" />
     </ItemGroup>
 
 </Project>

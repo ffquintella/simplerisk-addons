@@ -32,7 +32,7 @@ public class ServicesBootstrapper
         services.AddAutoMapper(typeof(ObjectUpdateProfile));
         services.AddAutoMapper(typeof(UserProfile));
         services.AddFluentEmail(config!["email:from"]!)
-            .AddLiquidRenderer()
+            .AddRazorRenderer()
             .AddSmtpSender(config!["email:smtp:server"]!, Int32.Parse(config!["email:smtp:port"]!));
         services.AddMemoryCache();
         services.AddMemoryCache(options =>
