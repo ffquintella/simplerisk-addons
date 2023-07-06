@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using ServerServices;
+using ServerServices.Interfaces;
 using ILogger = Serilog.ILogger;
 
 namespace API.Controllers;

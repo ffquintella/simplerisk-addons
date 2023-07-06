@@ -1,9 +1,9 @@
 ﻿using DAL;
 using DAL.Entities;
 using Serilog;
-using Serilog.Core;
+using ServerServices.Interfaces;
 
-namespace ServerServices;
+namespace ServerServices.Services;
 
 public class AssetManagementService: IAssetManagementService
 {

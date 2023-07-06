@@ -1,6 +1,6 @@
 ﻿using DAL.Entities;
 
-namespace ServerServices;
+namespace ServerServices.Interfaces;
 
 public interface IAssetManagementService
 {

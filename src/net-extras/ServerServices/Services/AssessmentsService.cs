@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using DAL;
+﻿using DAL;
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Model.Exceptions;
-using System.Linq;
+using ServerServices.Interfaces;
 
-namespace ServerServices;
+namespace ServerServices.Services;
 using ILogger = Serilog.ILogger;
 
 

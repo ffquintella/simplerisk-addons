@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using DAL;
 using DAL.Entities;
-using Serilog;
-using System.Linq;
+using ServerServices.Interfaces;
 
-namespace ServerServices;
+namespace ServerServices.Services;
 
 public class PermissionManagementService: IPermissionManagementService
 {

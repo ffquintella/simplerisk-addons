@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using DAL.Entities;
+﻿using DAL.Entities;
 
-namespace ServerServices;
+namespace ServerServices.Interfaces;
 
 public interface IAssessmentsService
 {

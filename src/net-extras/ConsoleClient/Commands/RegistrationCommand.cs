@@ -4,6 +4,7 @@ using System.ComponentModel;
 using DAL.Entities;
 using Serilog;
 using ServerServices;
+using ServerServices.Interfaces;
 using Spectre.Console;
 using Spectre.Console.Cli;
 

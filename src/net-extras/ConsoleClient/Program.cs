@@ -12,6 +12,8 @@ using ServerServices;
 using Spectre.Console.Cli.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 using System.IO;
+using ServerServices.Interfaces;
+using ServerServices.Services;
 
 
 var configuration =  new ConfigurationBuilder()

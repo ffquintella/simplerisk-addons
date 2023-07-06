@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using DAL;
+﻿using DAL;
 using DAL.Entities;
 using Model.Exceptions;
 using Serilog;
-using Serilog.Core;
-using System.Linq;
+using ServerServices.Interfaces;
 
-namespace ServerServices;
+namespace ServerServices.Services;
 
 public class ClientRegistrationService: IClientRegistrationService
 {

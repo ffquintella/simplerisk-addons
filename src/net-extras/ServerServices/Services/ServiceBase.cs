@@ -1,7 +1,7 @@
 ﻿using DAL;
 using ILogger = Serilog.ILogger;
 
-namespace ServerServices;
+namespace ServerServices.Services;
 
 public class ServiceBase
 {

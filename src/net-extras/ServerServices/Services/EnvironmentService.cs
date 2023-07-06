@@ -1,11 +1,10 @@
-using System;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using ServerServices.Interfaces;
 using Tools;
 using SysEnv = System.Environment;
 
-namespace ServerServices;
+namespace ServerServices.Services;
 
 public class EnvironmentService: IEnvironmentService
 {

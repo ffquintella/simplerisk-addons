@@ -1,4 +1,4 @@
-namespace ServerServices;
+namespace ServerServices.Interfaces;
 
 public interface IEnvironmentService
 {
