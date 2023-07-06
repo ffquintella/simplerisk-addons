@@ -101,8 +101,51 @@ public class UsersController: ApiBaseController
         }
         
     }
-    
-    
+
+    /// <summary>
+    /// Creates a new user
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<UserDto> CreateUser([FromBody] UserDto user)
+    {
+        var callingUser = GetUser();
+        if (user.Id != 0)
+        {
+            Logger.Warning("Invalid Id in user creation attempt from user: {User}", callingUser.Value);
+            return StatusCode(StatusCodes.Status400BadRequest);
+            
+        }
+        try
+        {
+            var usr = _mapper.Map<User>(user);
+            var newUser = _userManagementService.CreateUser(usr);
+            var newUserDto = _mapper.Map<UserDto>(newUser);
+            //TODO: Set password and send e-mail to user
+            
+            return newUserDto;
+        }
+        catch (DataAlreadyExistsException ex)
+        {
+            Logger.Warning("The user with Id:{Id} already exists Message:{Message}", user.Id, ex.Message);
+            return BadRequest("User already exists");
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning("Unknown error creating user with Id:{Id}  Message:{Message}", user.Id, ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError,"Unknown error creating user");
+        }
+
+        
+    }
+
+
     [Authorize(Policy = "RequireValidUser")]
     [HttpGet]
     [Route("Name/{id}")]

@@ -172,5 +172,20 @@ public class UserManagementService: IUserManagementService
         return _permissionManagement.GetUserPermissions(user);
     }
 
+    public User CreateUser(User user)
+    {
+        using var dbContext = _dalManager!.GetContext();
+        var dbUser = dbContext?.Users?.Find(user.Value);
+        if(dbUser != null) throw new DataAlreadyExistsException("local", "user", user.Value.ToString(), "User already exists");
+
+        var newUser = dbContext?.Users?.Add(user);
+
+        if (newUser == null) throw new Exception("Unknown error creating user");
+        
+        dbContext?.SaveChanges();
+
+        return newUser!.Entity;
+    }
+
 
 }

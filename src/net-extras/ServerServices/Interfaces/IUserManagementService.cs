@@ -33,5 +33,11 @@ public interface IUserManagementService
     /// </summary>
     /// <param name="user"></param>
     public void SaveUser(User user);
+    
+    /// <summary>
+    /// Creates a new user
+    /// </summary>
+    /// <param name="user"></param>
+    public User CreateUser(User user);
 
 }
