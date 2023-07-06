@@ -9,32 +9,42 @@
     <Design.DataContext>
         <viewModels:UsersViewModel/>
     </Design.DataContext>
-    <Grid ColumnDefinitions="250, 3, *">
-        <!-- LEFT SIDE AREA -->
-        <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto">
-            <Panel Grid.Row="0" Background="#222222">
-                <TextBlock Grid.Row="0" Foreground="Azure" Text="{Binding StrUsers}"  HorizontalAlignment="Center"/>
-            </Panel>
-            <!-- User List -->
-            <ListBox Grid.Row="1" Name="LstUsers"  
-                     ItemsSource="{Binding Users, Mode=TwoWay}" SelectionMode="Single"
-                     SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
-                     HorizontalAlignment="Center"  MinHeight="100"
-                     ScrollViewer.HorizontalScrollBarVisibility="Visible">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}"   />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </Grid>
-        <GridSplitter Grid.Column="1" Background="DarkGray" ResizeDirection="Columns"/>
-        <!-- RIGHT SIDE AREA -->
-        <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto" IsVisible="{Binding !!SelectedUser}">
-            <Panel Grid.Row="0" Background="#222222">
-                <TextBlock Grid.Row="0" Foreground="Azure" Text="{Binding StrDetails}"  HorizontalAlignment="Center"/>
-            </Panel>
-        </Grid>
+    <Panel Margin="0 2">
+        <TabControl>
+            <!-- USERS TAB -->
+            <TabItem Header="{Binding StrUsers}"  VerticalContentAlignment="Center" Margin="0 2">
+                <Grid ColumnDefinitions="250, 3, *">
+                    <!-- LEFT SIDE AREA -->
+                    <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto">
+                        <Panel Grid.Row="0" Background="#222222">
+                            <TextBlock Grid.Row="0" Foreground="Azure" Text="{Binding StrUsers}"  HorizontalAlignment="Center"/>
+                        </Panel>
+                        <!-- User List -->
+                        <ListBox Grid.Row="1" Name="LstUsers"  
+                                 ItemsSource="{Binding Users, Mode=TwoWay}" SelectionMode="Single"
+                                 SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                                 HorizontalAlignment="Center"  MinHeight="100" MinWidth="244"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"   />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                    <GridSplitter Grid.Column="1" Background="DarkGray" ResizeDirection="Columns"/>
+                    <!-- RIGHT SIDE AREA -->
+                    <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto" IsVisible="{Binding !!SelectedUser}">
+                        <Panel Grid.Row="0" Background="#222222">
+                            <TextBlock Grid.Row="0" Foreground="Azure" Text="{Binding StrDetails}"  HorizontalAlignment="Center"/>
+                        </Panel>
+                    </Grid>
             
-    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem VerticalContentAlignment="Center" Header="{Binding StrProfiles}" Margin="0 2" >
+                <TextBlock>TESTE</TextBlock>
+            </TabItem>
+        </TabControl>
+    </Panel>
 </UserControl>

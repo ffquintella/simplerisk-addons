@@ -12,6 +12,8 @@ public class UsersViewModel: ViewModelBase
     private string StrUsers { get;  }
     private string StrDetails { get;  }
     
+    private string StrProfiles { get;  }
+    
     #endregion
 
     #region PROPERTIES
@@ -30,6 +32,13 @@ public class UsersViewModel: ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _selectedUser, value);
     }
     
+    private User _user;
+    public User User
+    {
+        get => _user;
+        set => this.RaiseAndSetIfChanged(ref _user, value);
+    }
+    
     #endregion
 
     #region PRIVATE FIELDS
@@ -41,6 +50,7 @@ public class UsersViewModel: ViewModelBase
     public UsersViewModel()
     {
         StrUsers = Localizer["Users"];
+        StrProfiles = Localizer["Profiles"];
         StrDetails = Localizer["Details"];
 
         _users = new ObservableCollection<UserListing>();

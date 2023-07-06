@@ -363,4 +363,7 @@
     <data name="Users" xml:space="preserve">
         <value>Usuários</value>
     </data>
+    <data name="Profiles" xml:space="preserve">
+        <value>Perfis</value>
+    </data>
 </root>
