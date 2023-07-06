@@ -21,6 +21,17 @@ public interface IUserManagementService
     
     bool ChangePassword(int userId, string password);
 
+    /// <summary>
+    /// Get a user by their id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     public User? GetUserById(int userId);
+    
+    /// <summary>
+    /// Saves the user to the database
+    /// </summary>
+    /// <param name="user"></param>
+    public void SaveUser(User user);
 
 }

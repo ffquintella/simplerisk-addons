@@ -56,6 +56,52 @@ public class UsersController: ApiBaseController
         
     }
     
+    /// <summary>
+    /// Saves the user 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult SaveUser(int id, [FromBody] UserDto user)
+    {
+        
+        try
+        {
+            if (id != user.Id) return StatusCode(StatusCodes.Status400BadRequest);
+            //Let´s find the user 
+            var userEntity = _userManagementService.GetUserById(id);
+            if (userEntity == null) return StatusCode(StatusCodes.Status500InternalServerError, "Error looking for the user");
+            
+            // Now let´s update the user
+            
+            var finalUser = _mapper.Map<User>(user);
+            
+            //Coping values 
+            
+            finalUser.Password = userEntity.Password;
+            finalUser.Salt = userEntity.Salt;
+            
+            _userManagementService.SaveUser(finalUser);
+            return Ok();
+        }
+        catch (DataNotFoundException ex)
+        {
+            Logger.Warning("The user with Id:{Id} was not found Message:{Message}", id, ex.Message);
+            return NotFound($"The user with the id:{ex.Identification} was not found");
+        }
+        catch (Exception ex)
+        {
+            Logger.Warning("Internal error while saving user with Id:{Id} Message:{Message}", id, ex.Message);
+            return NotFound($"Internal error while saving user:{id}");
+        }
+        
+    }
+    
     
     [Authorize(Policy = "RequireValidUser")]
     [HttpGet]

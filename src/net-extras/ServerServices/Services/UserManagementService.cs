@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using AutoMapper;
 using DAL;
 using DAL.Entities;
 using Microsoft.Extensions.Logging;
@@ -16,11 +17,13 @@ public class UserManagementService: IUserManagementService
     private DALManager? _dalManager;
     private ILogger _log;
     private IRoleManagementService _roleManagementService;
+    private IMapper _mapper;
     private readonly IPermissionManagementService _permissionManagement;
 
     public UserManagementService(DALManager dalManager,
         ILoggerFactory logger,
         IRoleManagementService roleManagementService,
+        IMapper mapper,
         IPermissionManagementService permissionManagementService)
     {
         //_dbContext = dalManager.GetContext();
@@ -28,11 +31,12 @@ public class UserManagementService: IUserManagementService
         _log = logger.CreateLogger(nameof(UserManagementService));
         _roleManagementService = roleManagementService;
         _permissionManagement = permissionManagementService;
+        _mapper = mapper;
     }
 
     public User? GetUser(string userName)
     {
-        var dbContext = _dalManager!.GetContext();
+        using var dbContext = _dalManager!.GetContext();
         var user = dbContext?.Users?
             .Where(u => u.Username == Encoding.UTF8.GetBytes(userName))
             .FirstOrDefault();
@@ -70,7 +74,7 @@ public class UserManagementService: IUserManagementService
 
     public bool ChangePassword(int userId, string password)
     {
-        var dbContext = _dalManager!.GetContext();
+        using var dbContext = _dalManager!.GetContext();
 
         var user = GetUserById(userId);
 
@@ -101,13 +105,26 @@ public class UserManagementService: IUserManagementService
     }
     public User? GetUserById(int userId)
     {
-        var dbContext = _dalManager!.GetContext();
+        using var dbContext = _dalManager!.GetContext();
         var user = dbContext?.Users?
             .Where(u => u.Value == userId)
             .FirstOrDefault();
       
         
         return user;
+    }
+
+    public void SaveUser(User user)
+    {
+        using var dbContext = _dalManager!.GetContext();
+        var dbUser = dbContext?.Users?.Find(user.Value);
+        if(dbUser == null) throw new DataNotFoundException("user", user.Value.ToString());
+        
+        _mapper.Map(user, dbUser);
+        dbContext?.SaveChanges();
+        
+        //dbContext?.Users?.Update(dbUser);
+
     }
 
     public String GetUserName(int id)
