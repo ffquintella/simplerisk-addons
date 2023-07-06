@@ -17,20 +17,23 @@ public class ServicesBootstrapper
 {
     public static void RegisterServices(IServiceCollection services, IConfiguration config)
     {
-        AddGeneralServices(services);
+        AddGeneralServices(services, config);
         RegisterDIClasses(services, config);
     }
 
-    private static void AddGeneralServices(IServiceCollection services)
+    private static void AddGeneralServices(IServiceCollection services,  IConfiguration config)
     {
         // Add services to the container.
         services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        //services.AddSwaggerGen();
         services.AddAutoMapper(typeof(ClientProfile));
         services.AddAutoMapper(typeof(ObjectUpdateProfile));
         services.AddAutoMapper(typeof(UserProfile));
+        services.AddFluentEmail(config!["email:from"]!)
+            .AddLiquidRenderer()
+            .AddSmtpSender(config!["email:smtp:server"]!, Int32.Parse(config!["email:smtp:port"]!));
         services.AddMemoryCache();
         services.AddMemoryCache(options =>
         {
