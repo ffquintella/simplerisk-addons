@@ -64,6 +64,7 @@
       <ProjectReference Include="..\Model\Model.csproj" />
       <ProjectReference Include="..\Saml2.Authentication.Core\Source\Saml2.Authentication.Core\Saml2.Authentication.Core.csproj" />
       <ProjectReference Include="..\ServerServices\ServerServices.csproj" />
+      <ProjectReference Include="..\SharedServices\SharedServices.csproj" />
     </ItemGroup>
 
     <ItemGroup>

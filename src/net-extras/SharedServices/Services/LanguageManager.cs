@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using Model.Configuration;
-using ClientServices.Interfaces;
 using Model.Globalization;
+using SharedServices.Interfaces;
 
-namespace ClientServices.Services;
+namespace SharedServices.Services;
 
 public class LanguageManager : ILanguageManager
 {
@@ -21,7 +21,8 @@ public class LanguageManager : ILanguageManager
         _configuration = configuration;
         _availableLanguages = new Lazy<Dictionary<string, LanguageModel>>(GetAvailableLanguages);
 
-        DefaultLanguage = CreateLanguageModel(CultureInfo.GetCultureInfo("en_US"));
+        //DefaultLanguage = CreateLanguageModel(CultureInfo.GetCultureInfo("en_US"));
+        DefaultLanguage = CreateLanguageModel(CultureInfo.GetCultureInfo(configuration.DefaultLocale));
     }
 
     public void SetLanguage(string languageCode)
@@ -34,7 +35,7 @@ public class LanguageManager : ILanguageManager
         Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(languageCode);
     }
 
-    public void SetLanguage(LanguageModel languageModel) => SetLanguage(languageModel.Code);
+    public void SetLanguage(LanguageModel languageModel) => SetLanguage((string) languageModel.Code);
 
     private Dictionary<string, LanguageModel> GetAvailableLanguages() =>
         _configuration

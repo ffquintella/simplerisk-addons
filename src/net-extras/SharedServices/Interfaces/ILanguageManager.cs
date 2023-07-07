@@ -1,6 +1,6 @@
 ﻿using Model.Globalization;
 
-namespace ClientServices.Interfaces;
+namespace SharedServices.Interfaces;
 
 public interface ILanguageManager
 {

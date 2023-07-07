@@ -14,19 +14,19 @@ public class EmailService: IEmailService
     }
     
     
-    public async Task SendEmailAsync(string to, string subject, string template, Object parameters, Assembly templatesAssembly)
+    public async Task SendEmailAsync(string to, string subject, string template, string localizationCode, Object parameters)
     {
         //var c = new CultureInfo("en-US");
-        var c = CultureInfo.CurrentCulture;
+        /*var c = CultureInfo.CurrentCulture;
         var r = new RegionInfo(c.LCID);
-        string contrySufix = r.TwoLetterISORegionName;
+        string contrySufix = r.TwoLetterISORegionName;*/
 
         await _fluentEmail
             .To(to)
             .Subject(subject)
-            .UsingTemplateFromEmbedded("API.EmailTemplates." + template + "-" + contrySufix + ".cshtml",
+            .UsingTemplateFromEmbedded("API.EmailTemplates." + template + "-" + localizationCode + ".cshtml",
                 parameters,
-                templatesAssembly).SendAsync();
+                typeof(EmailService).GetTypeInfo().Assembly).SendAsync();
 
 
         //new { Name = "Bob" },

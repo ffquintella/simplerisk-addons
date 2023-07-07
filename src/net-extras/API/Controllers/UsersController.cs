@@ -1,14 +1,16 @@
+using System.Text;
 using AutoMapper;
 using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.Exceptions;
 using Model.Users;
-using ServerServices;
 using ServerServices.Interfaces;
+using SharedServices.Interfaces;
+using Tools;
 using ILogger = Serilog.ILogger;
+using static BCrypt.Net.BCrypt;
 
 namespace API.Controllers;
 
@@ -18,14 +20,20 @@ namespace API.Controllers;
 public class UsersController: ApiBaseController
 {
     
-    private IMapper _mapper;
+    private readonly IMapper _mapper;
+    private readonly IEmailService _emailService;
+    private readonly ILanguageManager _languageManager;
 
     public UsersController(ILogger logger,
         IHttpContextAccessor httpContextAccessor,
         IMapper mapper,
+        IEmailService emailService,
+        ILanguageManager languageManager,
         IUserManagementService userManagementService) : base(logger, httpContextAccessor, userManagementService)
     {
         _mapper = mapper;
+        _emailService = emailService;
+        _languageManager = languageManager;
     }
     
     /// <summary>
@@ -50,7 +58,7 @@ public class UsersController: ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            Logger.Warning($"The user with id: {id} was not found: {ex.Message}");
+            Logger.Warning("The user with id: {Id} was not found: {Message}", id, ex.Message);
             return NotFound($"The user with the id:{ex.Identification} was not found");
         }
         
@@ -59,7 +67,8 @@ public class UsersController: ApiBaseController
     /// <summary>
     /// Saves the user 
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">Id of the user to be saved</param>
+    /// <param name="user">User Object </param>
     /// <returns></returns>
     [HttpPut]
     [Route("{id}")]
@@ -105,7 +114,7 @@ public class UsersController: ApiBaseController
     /// <summary>
     /// Creates a new user
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="user">The user object</param>
     /// <returns></returns>
     [HttpPost]
     [Route("")]
@@ -119,15 +128,52 @@ public class UsersController: ApiBaseController
         if (user.Id != 0)
         {
             Logger.Warning("Invalid Id in user creation attempt from user: {User}", callingUser.Value);
-            return StatusCode(StatusCodes.Status400BadRequest);
+            return StatusCode(StatusCodes.Status400BadRequest, "Invalid Id");
             
         }
+        
+        //Check if user already exists 
+        var existingUser = _userManagementService.GetUser(user.UserName);
+        if (existingUser != null)
+        {
+            Logger.Warning("User already exists in user creation attempt from user: {User}", callingUser.Value);
+            return StatusCode(StatusCodes.Status400BadRequest, "User already exists");
+        }
+        
+        //Let´s check if user language is valid
+        if(user.Lang == "") user.Lang = _languageManager.DefaultLanguage.Code.ToLower();
+        else
+        {
+            var lang = _languageManager.AllLanguages.FirstOrDefault(l =>
+                string.Equals(l.Code.ToLower(), user.Lang.ToLower(), StringComparison.Ordinal));
+            if(lang == null)
+            {
+                Logger.Warning("Invalid language in user creation attempt from user: {User}", callingUser.Value);
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+        }
+        
         try
         {
             var usr = _mapper.Map<User>(user);
+            
+            // SET temporary password 
+
+            var password = RandomGenerator.RandomString(12);
+            
+            
+            usr.Password = Encoding.UTF8.GetBytes(HashPassword(password, 15));
+            
             var newUser = _userManagementService.CreateUser(usr);
             var newUserDto = _mapper.Map<UserDto>(newUser);
-            //TODO: Set password and send e-mail to user
+            
+            //Email Parameters
+            
+            var emailParameters = new {Name=newUserDto.Name, Link = "http://kjshdfkjshfdkdsjfh.com"};
+            
+            //Send email
+            _emailService.SendEmailAsync(user.Email, "User created", "UserCreated", user.Lang.ToLower(), emailParameters);
+            
             
             return newUserDto;
         }
@@ -162,7 +208,7 @@ public class UsersController: ApiBaseController
         }
         catch (DataNotFoundException ex)
         {
-            Logger.Warning($"The user with id: {id} was not found: {ex.Message}");
+            Logger.Warning("The user with id: {Id} was not found: {Message}", id, ex.Message);
             return NotFound($"The user with the id:{ex.Identification} was not found");
         }
         
@@ -186,7 +232,7 @@ public class UsersController: ApiBaseController
             // Then the user can only change it´s own password
             if (loggedUser.Value != id)
             {
-                Logger.Warning($"The user with id: {id} was not found: {loggedUser.Value} tried to change password of {id}");
+                Logger.Warning("Invalid permission while trying to change password of: {Id} ", id);
                 return Unauthorized($"The user with the id:{loggedUser.Value} is not authorized to change the password of {id}");
             }
             
@@ -194,7 +240,7 @@ public class UsersController: ApiBaseController
             
             if (!_userManagementService.VerifyPassword(id, changePasswordRequest.OldPassword))
             {
-                Logger.Warning($"The user with id: {id} was not found: {loggedUser.Value} tried to change password of {id}");
+                Logger.Warning("The user with id: {Id} was not found: {LoggedUserValue} while trying to change it´s password", id, loggedUser.Value);
                 return Unauthorized($"The user with the id:{loggedUser.Value} is not authorized to change the password of {id}");
             }
         }
@@ -210,17 +256,17 @@ public class UsersController: ApiBaseController
             var okResult = _userManagementService.ChangePassword(id, changePasswordRequest.NewPassword);
             if (okResult)
             {
-                Logger.Information("Password changed for user {id}", id);
+                Logger.Information("Password changed for user {Id}", id);
                 return Ok("Password changed");
             }
             
-            Logger.Error("Error changing password for user {id}", id);
+            Logger.Error("Error changing password for user {Id}", id);
             return StatusCode(StatusCodes.Status500InternalServerError, $"Error changing password");
 
         }
         catch (Exception ex)
         {
-            Logger.Warning($"Error changing the password of the user {id}: {ex.Message}");
+            Logger.Warning("Error changing the password of the user {Id}: {Message}", id, ex.Message);
             return NotFound($"The password could not be changed");
         }
         
@@ -243,7 +289,7 @@ public class UsersController: ApiBaseController
         }
         catch (Exception ex)
         {
-            Logger.Warning($"Error listing users: {ex.Message}");
+            Logger.Warning("Error listing users: {Message}", ex.Message);
             return StatusCode(StatusCodes.Status500InternalServerError, $"Error listing user");
         }
         
