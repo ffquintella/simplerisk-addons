@@ -17,7 +17,7 @@ public static class ServicesBootstrapper
     public static void RegisterServices(IServiceCollection services, IConfiguration config)
     {
         AddGeneralServices(services, config);
-        RegisterDIClasses(services, config);
+        RegisterDependencyInjectionClasses(services, config);
     }
 
     private static void AddGeneralServices(IServiceCollection services,  IConfiguration config)
@@ -41,7 +41,7 @@ public static class ServicesBootstrapper
         });
     }
 
-    private static void RegisterDIClasses(IServiceCollection services, IConfiguration config)
+    private static void RegisterDependencyInjectionClasses(IServiceCollection services, IConfiguration config)
     {
         if(config == null) throw new Exception("Error loading configuration");
         

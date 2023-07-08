@@ -1,17 +1,17 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Extensions.Logging;
 using ILogger = Serilog.ILogger;
 
-namespace API;
+namespace WebSite;
 
 public static class LoggingBootstrapper
 {
-    public static void RegisterLogging(IServiceCollection services,IConfiguration config)
+    public static void RegisterLogging(IServiceCollection services, IConfiguration config)
     {
-        string logDir = "";
+         string logDir = "";
         if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/nrserver";
         if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -20,7 +20,7 @@ public static class LoggingBootstrapper
             logDir = Path.Combine( "/tmp/" , "nrserver");
         Directory.CreateDirectory(logDir);
 
-        var logFile = Path.Combine(logDir, "nr-api.log");
+        var logFile = Path.Combine(logDir, "nr-website.log");
 
         LoggingLevelSwitch defaultLoggingLevel = new LoggingLevelSwitch();
         switch (config["Logging:LogLevel:Default"])
@@ -105,7 +105,5 @@ public static class LoggingBootstrapper
         services.AddSingleton<ILoggerFactory>(factory);
         
         services.AddSingleton<ILogger>(logger);
-        
-
     }
 }

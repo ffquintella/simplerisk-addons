@@ -1,7 +1,25 @@
+using WebSite;
+
+#if DEBUG
+var configuration =  new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddUserSecrets<Program>()
+    .AddJsonFile($"appsettings.json");
+#else 
+var configuration =  new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile($"appsettings.json");
+#endif
+
+var config = configuration.Build();
+if (config == null) throw new Exception("Error loading configuration");
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+Bootstrapper.Register(builder.Services, config);
 
 var app = builder.Build();
 
