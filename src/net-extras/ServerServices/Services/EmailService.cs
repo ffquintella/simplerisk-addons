@@ -1,13 +1,14 @@
-﻿using System.Globalization;
-using System.Reflection;
+﻿using System.Reflection;
 using FluentEmail.Core;
+using Serilog;
 using ServerServices.Interfaces;
+using Tools.Extensions;
 
 namespace ServerServices.Services;
 
 public class EmailService: IEmailService
 {
-    private IFluentEmail _fluentEmail;
+    private readonly IFluentEmail _fluentEmail;
 
     public EmailService(IFluentEmail fluentEmail) {
         _fluentEmail = fluentEmail;
@@ -16,20 +17,21 @@ public class EmailService: IEmailService
     
     public async Task SendEmailAsync(string to, string subject, string template, string localizationCode, Object parameters)
     {
-        //var c = new CultureInfo("en-US");
-        /*var c = CultureInfo.CurrentCulture;
-        var r = new RegionInfo(c.LCID);
-        string contrySufix = r.TwoLetterISORegionName;*/
-
-        await _fluentEmail
-            .To(to)
-            .Subject(subject)
-            .UsingTemplateFromEmbedded("API.EmailTemplates." + template + "-" + localizationCode + ".cshtml",
-                parameters,
-                typeof(EmailService).GetTypeInfo().Assembly).SendAsync();
-
-
-        //new { Name = "Bob" },
-        //throw new NotImplementedException();
+        try
+        {
+            var currentDir = Assembly.GetExecutingAssembly().AssemblyDirectory();
+            await _fluentEmail
+                .To(to)
+                .Subject(subject)
+                .UsingTemplateFromFile($"{currentDir}/EmailTemplates/{template}-{localizationCode}.cshtml",
+                    parameters).SendAsync();
+        }
+        catch (Exception e)
+        {
+            Log.Error(e,
+                "Error sending email to {To} with subject {Subject} and template {Template} and localizationCode {LocalizationCode} and parameters {Parameters}. Message: {Message}",
+                to, subject, template, localizationCode, parameters, e.Message);
+            throw new Exception("Error sending mail.", e);
+        }
     }
 }

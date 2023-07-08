@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.Exceptions;
 using Model.Users;
+using ServerServices.EmailTemplates;
 using ServerServices.Interfaces;
 using SharedServices.Interfaces;
 using Tools;
@@ -169,12 +170,18 @@ public class UsersController: ApiBaseController
             
             //Email Parameters
             
-            var emailParameters = new {Name=newUserDto.Name, Link = "http://kjshdfkjshfdkdsjfh.com"};
+            var emailParameters = new UserCreated {
+                Name = newUserDto.Name, 
+                Link = "http://kjshdfkjshfdkdsjfh.com"
+            };
             
-            //Send email
-            _emailService.SendEmailAsync(user.Email, "User created", "UserCreated", user.Lang.ToLower(), emailParameters);
-            
-            
+            if(user.Type != "saml")
+            {
+                //Send email
+                _emailService.SendEmailAsync(user.Email, "User created", "UserCreated", user.Lang.ToLower(), emailParameters);
+            }
+
+
             return newUserDto;
         }
         catch (DataAlreadyExistsException ex)
